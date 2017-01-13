@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.MineRechargeSuccessActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/recharge_success_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="充值成功"
+        >
+
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:background="@color/app_red"
+        android:paddingLeft="30dp"
+        android:paddingRight="40dp"
+        >
+
+        <TextView
+            android:id="@+id/recharge_success_tv0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="恭喜您！"
+            android:textColor="@color/white"
+            />
+
+        <RelativeLayout
+            android:id="@+id/recharge_rl_gold_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recharge_success_tv0"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:id="@+id/recharge_success_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您的UU余额为"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_tiny"
+                />
+
+            <TextView
+                android:id="@+id/recharge_success_tv_gold_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/recharge_success_tv1"
+                android:layout_toRightOf="@id/recharge_success_tv1"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_xlarge"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/recharge_success_tv_gold_coin"
+                android:layout_toRightOf="@id/recharge_success_tv_gold_coin"
+                android:text="UU！"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_tiny"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/recharge_rl_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recharge_success_tv0"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:id="@+id/recharge_success_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您的积分余额为"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_tiny"
+                />
+
+            <TextView
+                android:id="@+id/recharge_success_tv_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/recharge_success_tv2"
+                android:layout_toRightOf="@id/recharge_success_tv2"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_xlarge"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/recharge_success_tv_points"
+                android:layout_toRightOf="@id/recharge_success_tv_points"
+                android:text="积分！"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_tiny"
+                />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/list_recharge_success"
+            />
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_width="match_parent"
+        android:layout_height="3.5dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="/猜你喜欢/"
+        android:textColor="@color/app_dark_gray"
+        android:visibility="gone"
+        />
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+    <GridView
+        android:id="@+id/recharge_success_gv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:horizontalSpacing="2dp"
+        android:numColumns="2"
+        android:visibility="gone"
+        >
+
+    </GridView>
+</LinearLayout>

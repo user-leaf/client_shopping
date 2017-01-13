@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.AddressAddActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/address_add_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="添加新地址"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="收货人：    "
+            />
+
+        <EditText
+            android:id="@+id/address_add_et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="联系电话："
+            />
+
+        <EditText
+            android:id="@+id/address_add_et_tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small"
+            android:inputType="number"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"/>
+
+    <RelativeLayout
+        android:id="@+id/address_add_district"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="所在地区："
+            />
+
+        <ImageView
+            android:id="@+id/address_add_district_jump"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+
+        <TextView
+            android:id="@+id/address_add_tv_county"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/address_add_district_jump"
+            android:gravity="right"
+            />
+
+        <TextView
+            android:id="@+id/address_add_tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/address_add_tv_county"
+            android:gravity="right"
+            />
+
+        <TextView
+            android:id="@+id/address_add_tv_province"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/address_add_tv_city"
+            android:gravity="right"
+            />
+
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="街道地址："
+            />
+
+
+        <EditText
+            android:id="@+id/address_add_et_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/address_add_tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设为默认地址"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/address_add_tv1"
+            android:text="注：每次下单时会默认使用该地址"
+            android:textColor="#88888888"
+            />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/address_add_sb_isdefault"
+            android:checked="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+
+            app:kswAnimationDuration="300"
+            app:kswBackDrawable="@drawable/ios_back_drawable"
+            app:kswThumbDrawable="@drawable/ios_thumb_selector"
+            app:kswBackMeasureRatio="1.4"
+            app:kswThumbMarginBottom="-8dp"
+            app:kswThumbMarginLeft="-5dp"
+            app:kswThumbMarginRight="-5dp"
+            app:kswThumbMarginTop="-2.5dp"
+            />
+
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"/>
+
+    <TextView
+        android:id="@+id/address_add_tv_save"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="保存"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_copy_button_bg_red"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="50dp"
+        />
+
+</LinearLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/bt_takePhotoBack"
+            android:layout_width="@dimen/width_top_barLarge"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="返回"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/bt_takePhotoHistory"
+            android:layout_width="@dimen/width_top_barLarge"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="拍照历史"/>
+
+    </LinearLayout>
+    <FrameLayout
+        android:layout_margin="@dimen/height_top_bar"
+        android:id="@+id/rl_takePhotoRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <SurfaceView
+            android:id="@+id/surfaceView_takePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+        </SurfaceView>
+
+       <RelativeLayout
+           android:layout_gravity="bottom"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/height_top_bar">
+           <Button
+               android:id="@+id/bt_takePhoto"
+               android:layout_width="50dp"
+               android:text="拍照"
+               android:layout_centerInParent="true"
+               android:background="@mipmap/ic_launcher"
+               android:layout_height="match_parent" />
+           <TextView
+               android:id="@+id/bt_Retake"
+               android:layout_width="@dimen/height_top_bar"
+               android:text="重拍"
+               android:gravity="center"
+               android:layout_alignParentLeft="true"
+
+               android:layout_height="match_parent" />
+           <TextView
+               android:id="@+id/bt_takePhotoSure"
+               android:layout_width="50dp"
+               android:text="确定"
+               android:layout_alignParentRight="true"
+               android:gravity="center"
+               android:layout_height="match_parent" />
+       </RelativeLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal"
+        android:layout_height="@dimen/height_top_bar">
+        <Button
+            android:id="@+id/bt_getPhoto"
+            android:layout_width="@dimen/width_top_barLarge"
+            android:text="相册"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

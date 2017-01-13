@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.GoodsListShowActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_history_buy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="历史购买"
+        >
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--历史购买为空-->
+        <include layout="@layout/layout_history_buy_empty"/>
+
+        <!--数据加载中-->
+        <include layout="@layout/layout_data_loading"/>
+
+        <!--断网-->
+        <include layout="@layout/layout_un_network"/>
+
+
+        <!--登录-->
+        <include layout="@layout/layout_not_login"/>
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/gv_history_buy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:horizontalSpacing="2.5dp"
+            android:numColumns="2"
+            android:verticalSpacing="5dp"
+            />
+    </FrameLayout>
+</LinearLayout>

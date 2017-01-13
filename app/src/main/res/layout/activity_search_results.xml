@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#eee"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              tools:context="com.bjaiyouyou.thismall.activity.SearchResultsActivity">
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="我的搜索"
+        >
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_data_loading"/>
+        <include layout="@layout/layout_un_network"/>
+        <include layout="@layout/layout_search_result_empty"/>
+
+
+        <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+            android:id="@+id/scrl_search_result_null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ll_search_result_null_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_margin="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/home_points_failed"/>
+                    <TextView
+                        android:layout_margin="10dp"
+                        android:id="@+id/tv_search_result_null_hing"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="暂时没有搜到相关商品，您可以换个词试试" />
+                </LinearLayout>
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#FA9843"
+                    android:text="/ 大家都在买 /" />
+                <com.bjaiyouyou.thismall.widget.NoScrollGridView
+                    android:id="@+id/gv_search_result_null"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:numColumns="2"
+                    android:gravity="center"
+                    android:verticalSpacing="5dp"
+                    android:horizontalSpacing="2.5dp"
+                    />
+            </LinearLayout>
+        </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/gv_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </FrameLayout>
+
+</LinearLayout>

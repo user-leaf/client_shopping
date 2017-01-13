@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:zhy="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/searchTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/top_bar_normal_bg">
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/left_image_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            android:src="@mipmap/nav_back_white"
+            />
+        <ImageView
+            android:layout_margin="10dp"
+            android:id="@+id/iv_search_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/left_image_search"
+            android:src="@mipmap/nav_icon_scan"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:gravity="center_vertical"
+               android:background="@drawable/shape_home_top_bar_et_bg"
+               android:orientation="horizontal">
+               <EditText
+                   android:id="@+id/et_search"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:singleLine="true"
+                   android:layout_weight="1"
+                   android:background="@drawable/shape_home_top_bar_et_bg"
+                   android:padding="3dp"
+                   >
+               </EditText>
+               <ImageView
+                   android:id="@+id/iv_search_etClear"
+                   android:layout_marginRight="10dp"
+                   android:layout_width="15dp"
+                   android:layout_height="15dp"
+                   android:scaleType="centerInside"
+                   android:src="@mipmap/delete_black"
+                   android:layout_gravity="center_vertical"
+                   android:visibility="gone"
+                   />
+           </LinearLayout>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/right_layout_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_common_tab_bg"
+            android:clickable="true">
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/right_image_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@mipmap/nav_icon_seach"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+ <ScrollView
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:orientation="vertical">
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:paddingLeft="10dp"
+             >
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:gravity="center_vertical"
+                 android:text="历史搜索"
+                 />
+
+             <ImageView
+                 android:id="@+id/iv_search_historyClear"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:padding="10dp"
+                 android:src="@mipmap/list_clear"
+                 />
+         </RelativeLayout>
+
+         <com.zhy.view.flowlayout.TagFlowLayout
+             android:id="@+id/flowLayout_HistorySearch"
+             android:paddingRight="10dp"
+             android:paddingLeft="10dp"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             zhy:auto_select_effect="true"
+             zhy:max_select="1">
+         </com.zhy.view.flowlayout.TagFlowLayout>
+
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:padding="10dp"
+             >
+
+             <TextView
+                 android:id="@+id/search_goods_tv2"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="热门搜索"
+                 android:layout_marginBottom="15dp"
+                 />
+
+             <com.zhy.view.flowlayout.TagFlowLayout
+                 android:id="@+id/flowLayout_HotSearch"
+                 android:layout_below="@id/search_goods_tv2"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 zhy:auto_select_effect="true"
+                 zhy:max_select="1">
+
+             </com.zhy.view.flowlayout.TagFlowLayout>
+         </RelativeLayout>
+
+
+     </LinearLayout>
+
+ </ScrollView>
+</LinearLayout>

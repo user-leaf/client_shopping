@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.MineCustomerServiceActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/customer_service_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="客服"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+    <RelativeLayout
+        android:id="@+id/customer_service_suggestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:id="@+id/customer_service_tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="意见反馈"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customer_service_tv1"
+            android:text="您的建议是我们前进的动力"
+            android:layout_marginTop="10dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_edit"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+    <RelativeLayout
+        android:id="@+id/customer_service_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:id="@+id/customer_service_tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机通讯录"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customer_service_tv2"
+            android:text="您的建议是我们前进的动力"
+            android:layout_marginTop="10dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_edit"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+</LinearLayout>

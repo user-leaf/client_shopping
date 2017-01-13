@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#eee">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"></LinearLayout>
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/sample1_wechat"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:clickToClose="true">
+
+    <LinearLayout
+        android:tag="Bottom4"
+        android:id="@+id/bottom_wrapper_wechat"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <!-- magnifier2  star2  trash2 -->
+
+        <TextView
+            android:id="@+id/tv_bangdingPayment_wechat_setingdefault"
+            android:layout_width="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:text="设为默认"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_bangdingPayment_wechat_delete"
+            android:layout_width="wrap_content"
+            android:background="@drawable/red"
+            android:text="  删除  "
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_bangding_modeofpayment_wechat"
+        android:layout_marginTop="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_icon_wechatpay"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="微信支付"/>
+        <ImageView
+            android:id="@+id/iv_wecah_defaultpayment"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_icon_quicklypay"/>
+
+    </LinearLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/sample1_zhifubao"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:clickToClose="true">
+
+    <LinearLayout
+        android:tag="Bottom4"
+        android:id="@+id/bottom_wrapper_zhifubao"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <!-- magnifier2  star2  trash2 -->
+
+        <TextView
+            android:id="@+id/tv_bangdingPayment_zhifubao_setingdefault"
+            android:layout_width="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:text="设为默认"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_bangdingPayment_zhifubao_delete"
+            android:layout_width="wrap_content"
+            android:background="@drawable/red"
+            android:text="  删除  "
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_bangding_modeofpayment_zhifubao"
+        android:layout_marginTop="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_icon_alipay"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="支付宝"/>
+        <ImageView
+            android:id="@+id/iv_zhifubao_default"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_icon_quicklypay"/>
+
+    </LinearLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+    <LinearLayout
+        android:id="@+id/ll_bangding_modeofpayment_yinhangka"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="1dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="银行卡支付"/>
+
+    </LinearLayout>
+
+</LinearLayout>

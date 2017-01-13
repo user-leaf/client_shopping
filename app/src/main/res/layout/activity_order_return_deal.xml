@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_common_bg"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.OrderReturnDealActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/order_return_deal_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="退款进度"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <!-- 进度显示 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        >
+
+        <!-- 图标 -->
+        <RelativeLayout
+            android:id="@+id/order_return_deal_rl0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/order_return_deal_iv0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:src="@mipmap/icon_application_sel"
+                />
+
+            <ImageView
+                android:id="@+id/order_return_deal_iv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_processing_sel"
+                />
+
+            <ImageView
+                android:id="@+id/order_return_deal_iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:src="@mipmap/icon_refund_nor"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/order_return_deal_iv1"
+                android:layout_toRightOf="@id/order_return_deal_iv0"
+                android:background="@mipmap/icon_progressbar_sel"
+                android:scaleType="fitXY"
+                />
+
+            <ImageView
+                android:id="@+id/order_return_deal_progress1"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/order_return_deal_iv2"
+                android:layout_toRightOf="@id/order_return_deal_iv1"
+                android:background="@mipmap/icon_progressbar_nor"
+                android:scaleType="fitXY"
+                />
+
+        </RelativeLayout>
+
+        <!-- 文字 -->
+        <RelativeLayout
+            android:id="@+id/order_return_deal_rl1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/order_return_deal_rl0"
+            >
+
+            <TextView
+                android:id="@+id/order_return_deal_stage0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="退款申请成功"
+                />
+
+            <TextView
+                android:id="@+id/order_return_deal_stage1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="退款受理中"
+                />
+
+            <TextView
+                android:id="@+id/order_return_deal_stage2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="审核结果"
+                />
+        </RelativeLayout>
+
+        <!-- 时间 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/order_return_deal_rl1"
+            >
+
+            <TextView
+                android:id="@+id/order_return_deal_time0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_micro"
+                />
+
+            <TextView
+                android:id="@+id/order_return_deal_time1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/text_size_micro"
+                />
+
+            <TextView
+                android:id="@+id/order_return_deal_time2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/text_size_micro"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_bold_line_style"/>
+
+    <TextView
+        android:id="@+id/order_return_deal_sheet_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        android:text="退款受理中"
+        android:textColor="#000000"
+        />
+
+    <View
+        style="@style/entry_divider_bold_line_style"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单编号"
+            />
+
+        <TextView
+            android:id="@+id/order_return_deal_tv_order_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="申请时间"
+            />
+
+        <TextView
+            android:id="@+id/order_return_deal_tv_apply_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:id="@+id/order_return_deal_tv0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退款原因"
+            />
+
+        <TextView
+            android:id="@+id/order_return_deal_tv_cause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/order_return_deal_tv0"
+            android:gravity="right"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="处理方式"
+            />
+
+        <TextView
+            android:id="@+id/order_return_deal_tv_way"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退款金额"
+            />
+
+        <TextView
+            android:id="@+id/order_return_deal_tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_height="3.5dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/order_return_deal_rl_kefu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="联系客服"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4001-599-586"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

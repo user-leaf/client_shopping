@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/mains"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp" >
+
+        <!-- SurfaceView显示动画效果 -->
+
+        <SurfaceView
+            android:id="@+id/preview_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
+
+        <com.bjaiyouyou.thismall.zxing.view.ViewfinderView
+            android:id="@+id/viewfinder_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/height_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_top_bar"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_scanCodePhoto"
+                android:layout_width="@dimen/width_top_barLarge"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:src="@mipmap/list_myalbum"
+                />
+            <ImageView
+                android:id="@+id/iv_scanCodeHistory"
+                android:layout_marginLeft="40dp"
+                android:layout_width="@dimen/width_top_barLarge"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone"
+                android:src="@mipmap/list_scanning_history"/>
+        </LinearLayout>
+        <!--标题-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_top_bar"
+            android:gravity="center"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:layout_gravity="top"
+            >
+            <TextView
+                android:textColor="#6b6b6b"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="扫码页面"
+                android:textSize="@dimen/text_size_xxxlarge"
+                android:gravity="center"
+                />
+            <ImageView
+                android:id="@+id/iv_scanCodeBack"
+                android:layout_width="@dimen/height_top_bar"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:scaleType="centerInside"
+                android:src="@mipmap/nav_return_black"
+                />
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

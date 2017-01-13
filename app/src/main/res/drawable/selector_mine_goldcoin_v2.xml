@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true" android:drawable="@mipmap/list_level_v2_sel"/>
+    <item android:state_enabled="false" android:drawable="@mipmap/list_level_v2_nor"/>
+</selector>

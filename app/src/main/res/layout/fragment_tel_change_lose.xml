@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/app_common_bg"
+             tools:context="com.bjaiyouyou.thismall.fragment.TelChangeLoseFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+
+        <EditText
+            android:id="@+id/tel_change_lose_et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入你的密码"
+            android:textSize="@dimen/text_size_small"
+            android:inputType="text"
+            />
+
+        <EditText
+            android:id="@+id/tel_changing_lose_et_pay_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入你的支付密码"
+            android:textSize="@dimen/text_size_small"
+            android:inputType="text"
+            />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/tel_changing_lose_btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下一步"
+        android:layout_margin="10dp"
+        />
+
+</LinearLayout>

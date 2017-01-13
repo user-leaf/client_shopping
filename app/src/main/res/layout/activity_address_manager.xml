@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".activity.AddressManagerActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/address_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="管理收货地址"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <ListView
+        android:id="@+id/address_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/address_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加新地址"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:padding="15dp"
+        android:background="#FF6666"
+        />
+
+</LinearLayout>

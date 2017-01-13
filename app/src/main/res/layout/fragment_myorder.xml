@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/tv_myOrderEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/top_bar_normal_bg"
+        android:scaleType="centerInside"
+        android:src="@mipmap/list_order_empty"
+        android:visibility="gone"
+        />
+    <!--数据加载中-->
+    <include layout="@layout/layout_data_loading"/>
+    <!--断网-->
+    <include layout="@layout/layout_un_network"/>
+
+    <!--登录-->
+    <include layout="@layout/layout_not_login"/>
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:layout_gravity="top"
+        android:id="@+id/lv_fragment_myOrder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</FrameLayout>

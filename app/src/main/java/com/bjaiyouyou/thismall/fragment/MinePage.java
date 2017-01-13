@@ -1,0 +1,1343 @@
+package com.bjaiyouyou.thismall.fragment;
+
+import android.Manifest;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.bjaiyouyou.thismall.Constants;
+import com.bjaiyouyou.thismall.MainApplication;
+import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.activity.AboutIUUActivity;
+import com.bjaiyouyou.thismall.activity.AddressManagerNewActivity;
+import com.bjaiyouyou.thismall.activity.HistoryBuyNewActivity;
+import com.bjaiyouyou.thismall.activity.InviteActivity;
+import com.bjaiyouyou.thismall.activity.LoginActivity;
+import com.bjaiyouyou.thismall.activity.MineBingPhoneNumActivity;
+import com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity;
+import com.bjaiyouyou.thismall.activity.MineMemberCenterActivity;
+import com.bjaiyouyou.thismall.activity.MineMemberCenterIntegralPayActivity;
+import com.bjaiyouyou.thismall.activity.MyOrderActivity;
+import com.bjaiyouyou.thismall.activity.PermissionsActivity;
+import com.bjaiyouyou.thismall.activity.SettingsActivity;
+import com.bjaiyouyou.thismall.activity.UpdateMineUserMessageActivity;
+import com.bjaiyouyou.thismall.activity.WithdrawActivity;
+import com.bjaiyouyou.thismall.adapter.MineAdapter;
+import com.bjaiyouyou.thismall.callback.OnNoDoubleClickListener;
+import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.model.MyMine;
+import com.bjaiyouyou.thismall.model.PermissionsChecker;
+import com.bjaiyouyou.thismall.model.User;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DialUtils;
+import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.NetStateUtils;
+import com.bjaiyouyou.thismall.utils.SPUtils;
+import com.bjaiyouyou.thismall.utils.ScreenUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
+import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
+import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+import com.bjaiyouyou.thismall.widget.LoadingDialog;
+import com.bjaiyouyou.thismall.widget.NoScrollGridView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+
+/**
+ * 个人页
+ *
+ * @author quxinhang
+ * @author kanbin
+ * @date 2016/5/31
+ * @date 2016/6/20
+ */
+public class MinePage extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+    public static final String TAG = MinePage.class.getSimpleName();
+
+    private IUUTitleBar mTitle;
+    //    功能列表
+    private NoScrollGridView gv;
+
+    //记录用户积分，网络请求
+    private int integral;
+    //  功能按钮数据
+    private List<MyMine> dataListLogin;
+    private List<MyMine> dataListNotLogin;
+    //功能按钮适配器
+    private MineAdapter adapter;
+
+    //    登陆后的头部
+    private View mLoginView;
+
+    //    登录入口
+    private TextView mBtLogin;
+
+    //    未登录的头部
+    private View mNotLoginView;
+
+    //最高级会员需要的UU数
+    private int mGoldCoinAll = 3000;
+    //UU的数量
+    private int mGoldCoinNum = 0;
+    //会员等级  网络获取
+    private int mLevel;
+    //会员头像地址
+    private String mImgUrl;
+
+
+    private TextView mTVGoldCoinNum;
+    private TextView mTVIntegralNum;
+
+    //用户的电话
+    private TextView mTVTel;
+    //名字
+    private TextView mTvName;
+    //积分
+    private TextView mTvIntegral;
+    //UU
+    private TextView mTvGoldCoin;
+    //用户
+    private User mUser;
+    private PullToRefreshScrollView mScrollView;
+    //UU布局
+    private LinearLayout mRLGoldCoin;
+    //积分布局
+    private LinearLayout mRLIntegral;
+    private LinearLayout mLLUnNetWork;
+    //UU数量
+    private long mCoin;
+    //积分数量
+    private long mIntegral;
+    //记录用户是否登录
+    private boolean isLogin = false;
+
+    //用户头像
+    private CircleImageView mIVUserIcon;
+
+    //要跳转的类
+    private Class mClassJump;
+    private Intent mIntentSafeCode;
+    //记录用户是否设置过安全码
+    private boolean mIsHaveSafeCode = false;
+
+    //是否有邮箱
+    private boolean isHaveEmail = false;
+
+    //用户邮箱
+    private String mEmail;
+    //用户安全码
+    private String mSafeCode;
+    //安全密码下限制
+    private int mSafeCodeMinLimit = 8;
+    private int mSafeCodeMaxLimit = 16;
+    private LinearLayout mLLNeedSafe;
+    //屏幕高度
+    private int mHeight;
+    private TextView mTvBandCardNum;
+    //获得order的返回
+    private Intent mOrderIntent;
+    //用户会员图标
+    private ImageView mIvMember;
+    //第五季图标
+    private ImageView mIvMemberFive;
+    //区分用户是否是第五季会员字段
+    private int mMember_type;
+    //判断是否是微信绑定用户
+    private String mOpenId;
+    //是否是测试用户
+    private int isInTestUser;
+    //安全码验证对话框
+    private MaterialDialog mSafeCodeDialog;
+    //找回安全码对话框
+    private MaterialDialog mFindSafeCodeDialog;
+    //邮件发送成功对话框
+    private MaterialDialog mEmailSendSucceedDialog;
+    //提现
+    private TextView mTvWithdraw;
+    //提现布局
+    private LinearLayout mRLWithdraw;
+    //邮箱
+    private TextView mTVEmail;
+    //供货电话
+    private LinearLayout mLLSupplyPhone;
+
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.INTERNET
+    };
+
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
+    //用户头像名称
+    private String mImgName;
+    //用户头像路径
+    private String mUserImgUrl;
+    //判断头像是否存在
+    private boolean isHaveImg;
+    //可提金额
+    private TextView mTvWithdrawNum;
+
+    private LoadingDialog mLoadingDialog;
+    //2为已升级为vip
+    private int isVip;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        layout = inflater.inflate(R.layout.fragment_mine, container, false);
+        return layout;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //初始化权限检查器
+        mPermissionsChecker = new PermissionsChecker(getContext());
+
+        initView();
+        setupView();
+        initData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mIVUserIcon.setImageResource(R.mipmap.list_profile_photo);
+
+        //判断登录与否隐藏显示头部和添加好友按钮
+        String token = CurrentUserManager.getUserToken();
+        if (TextUtils.isEmpty(token)) {
+            isLogin = false;
+            mLoginView.setVisibility(View.GONE);
+            mNotLoginView.setVisibility(View.VISIBLE);
+            initGridViewChange();
+//            initGridView();
+//            gv.setAlpha(0.6f);
+//            mLLNeedSafe.setAlpha(0.6f);
+            mTVIntegralNum.setText("" + 0);
+            mTVGoldCoinNum.setText("" + 0);
+            mTvWithdrawNum.setText("" + 0);
+        } else {
+            mLoginView.setVisibility(View.VISIBLE);
+            mNotLoginView.setVisibility(View.GONE);
+            //清空本地存储
+            SPUtils.put(getContext(), Constants.USER, "");
+            initData();
+        }
+        dialogDismiss(mFindSafeCodeDialog);
+        dialogDismiss(mEmailSendSucceedDialog);
+        dialogDismiss(mSafeCodeDialog);
+
+    }
+
+
+    private void initView() {
+        mHeight = ScreenUtils.getScreenHeight(getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mHeight / 5);
+        //登录后的头部布局
+        mLoginView = layout.findViewById(R.id.rl_mine_head_login);
+        //没登录的头部布局
+        mNotLoginView = layout.findViewById(R.id.ll_mine_head_notlogin);
+        mLoginView.setLayoutParams(params);
+        mNotLoginView.setLayoutParams(params);
+
+
+        //需要安全码区域背景
+        mLLNeedSafe = ((LinearLayout) layout.findViewById(R.id.ll_mine_safe_code_thing));
+        //断网提示
+        mLLUnNetWork = ((LinearLayout) layout.findViewById(R.id.ll_mine_un_network));
+//        //个人设置图标
+//        titleBar.setRightImageResource(R.mipmap.nav_set);
+        //功能列表
+        gv = ((NoScrollGridView) layout.findViewById(R.id.gv_mine));
+        initGridView();
+        //未登录布局中的登录按钮
+        mBtLogin = ((TextView) layout.findViewById(R.id.bt_mine_login));
+
+
+        //用户登录的基本信息
+        //用户头像
+        mIVUserIcon = ((CircleImageView) layout.findViewById(R.id.iv_mine_head));
+        //用户名称
+        mTvName = ((TextView) layout.findViewById(R.id.tv_mine_ll_login_name));
+        //电话
+        mTVTel = ((TextView) layout.findViewById(R.id.tv_mine_tel));
+        //积分
+        mTvIntegral = ((TextView) layout.findViewById(R.id.tv_mine_integral_num));
+        //UU
+        mTvGoldCoin = ((TextView) layout.findViewById(R.id.tv_mine_goldcoin_num));
+        //提现方式
+        mTvWithdraw = ((TextView) layout.findViewById(R.id.tv_mine_withdraw));
+        //提现金额
+        mTvWithdrawNum = ((TextView) layout.findViewById(R.id.tv_mine_withdraw_num));
+
+        //积分布局
+        mRLIntegral = ((LinearLayout) layout.findViewById(R.id.rl_mine_integral));
+        //UU布局
+        mRLGoldCoin = ((LinearLayout) layout.findViewById(R.id.rl_mine_goldcoin));
+        //支付方式布局
+        mRLWithdraw = ((LinearLayout) layout.findViewById(R.id.rl_mine_withdraw));
+
+
+        mTVIntegralNum = ((TextView) layout.findViewById(R.id.tv_mine_integral_num));
+        //UU
+        mTVGoldCoinNum = ((TextView) layout.findViewById(R.id.tv_mine_goldcoin_num));
+        //最外层的刷新
+        mScrollView = ((PullToRefreshScrollView) layout.findViewById(R.id.ptsv_mine));
+
+        //会员图标
+        mIvMember = ((ImageView) layout.findViewById(R.id.iv_mine_member));
+        mIvMemberFive = ((ImageView) layout.findViewById(R.id.iv_mine_member_five));
+
+        //供货电话
+        mLLSupplyPhone = ((LinearLayout) layout.findViewById(R.id.ll_mine_supply_the_phone));
+        //邮箱
+        mTVEmail = ((TextView) layout.findViewById(R.id.tv_mine_email));
+
+    }
+
+    private void setupView() {
+        gv.setOnItemClickListener(this);
+        mLoginView.setOnClickListener(this);
+        // 解决页面不从顶部开始
+        gv.setFocusable(false);
+        mIVUserIcon.setOnClickListener(this);
+        mRLIntegral.setOnClickListener(this);
+        mRLGoldCoin.setOnClickListener(this);
+        mRLWithdraw.setOnClickListener(this);
+//        titleBar.setRightLayoutClickListener(this);
+        mLoginView.setOnClickListener(this);
+        mBtLogin.setOnClickListener(this);
+        mScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                if (mScrollView.isRefreshing()) {
+                    mScrollView.onRefreshComplete();
+                    initData();
+                }
+            }
+        });
+
+        mLLSupplyPhone.setOnClickListener(this);
+    }
+
+    /**
+     * 网络请求数据
+     */
+
+    private void initData() {
+        //模拟我的邀请好友假数据
+//        friendList=new ArrayList<>();
+        mLoadingDialog=new LoadingDialog(getContext());
+//        mLoadingDialog.show();
+        String token = CurrentUserManager.getUserToken();
+        if (token != null) {
+            ClientAPI.getUserData(token, new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    //断网提示
+                    if (!NetStateUtils.isNetworkAvailable(getContext())) {
+                        mLLUnNetWork.setVisibility(View.VISIBLE);
+                    } else {
+                        mLLUnNetWork.setVisibility(View.GONE);
+                        String eString = e.toString();
+                        LogUtils.e("--eString:", eString);
+                        if (eString != null) {
+                            if (eString.contains("400") || eString.contains("401")) {
+                            } else {
+//                Toast.makeText(context,"提交失败"+e.toString(),Toast.LENGTH_SHORT).show();
+                                ToastUtils.showException(e, getContext());
+                            }
+                        }
+                    }
+                    dismissLoadingDialog();
+                    //token是否过期，过期后对头部的显示隐藏进行处理
+                    isLogin = false;
+                    mLoginView.setVisibility(View.GONE);
+                    mNotLoginView.setVisibility(View.VISIBLE);
+                    mTVIntegralNum.setText("" + 0);
+                    mTVGoldCoinNum.setText("" + 0);
+                    mTvWithdrawNum.setText("" + 0);
+                    initGridViewChange();
+//                    gv.setAlpha(0.6f);
+//                    mLLNeedSafe.setAlpha(0.6f);
+
+                }
+
+                @Override
+                public void onResponse(String response, int id) {
+                    isLogin = true;
+                    //隐藏网络请求
+                    mLLUnNetWork.setVisibility(View.GONE);
+                    mLoginView.setVisibility(View.VISIBLE);
+                    mNotLoginView.setVisibility(View.GONE);
+                    if (!TextUtils.isEmpty(response.trim())) {
+                        mUser = new Gson().fromJson(response, User.class);
+                        setData();
+                        //本地存储个人信息
+                        /**
+                         * 频繁报错
+                         */
+//                        SPUtils.put(getContext(), Constants.USER, response+"");
+                        SPUtils.put(MainApplication.getContext(), Constants.USER, response+"");
+                    }else {
+                        ToastUtils.showShort("数据加载错误");
+                    }
+                    dismissLoadingDialog();
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "请先登录后再回来哦", Toast.LENGTH_SHORT).show();
+            dismissLoadingDialog();
+        }
+
+        //设置背景透明度
+//        initGridView();
+    }
+
+    private void dismissLoadingDialog() {
+        if (mLoadingDialog!=null){
+            mLoadingDialog.dismiss();
+        }
+    }
+
+    private void setData() {
+        dismissLoadingDialog();
+        //重新设置头像为默认头像
+//        mIVUserIcon.setImageResource(R.mipmap.list_profile_photo);
+        User.MemberBean memberBean = mUser.getMember();
+        initGridViewChange();
+//        gv.setAlpha(1);
+//        mLLNeedSafe.setAlpha(1);
+
+//        //用户名
+//        mTvName.setText(memberBean.getName());
+//        //昵称
+        if (memberBean != null) {
+            mTvName.setText(memberBean.getNick_name());
+            String tel = memberBean.getPhone().trim();
+
+            if (!TextUtils.isEmpty(tel)) {
+                tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 3, tel.length());
+            }
+            mTVTel.setText(tel);
+
+            //test
+//        mEmail="";
+//        mEmail="aiyouyou_bj@163.com";
+
+            mEmail = memberBean.getEmail().trim();
+            if (!TextUtils.isEmpty(mEmail)) {
+                isHaveEmail = true;
+                String email = mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
+                mTVEmail.setText(email);
+            } else {
+                isHaveEmail = false;
+            }
+
+            //test
+//            mSafeCode = "11";
+
+            if (!TextUtils.isEmpty(mSafeCode)) {
+                mIsHaveSafeCode = true;
+            } else {
+                mIsHaveSafeCode = false;
+            }
+            mSafeCode = memberBean.getSecurity_code_hint();
+            mIsHaveSafeCode = memberBean.isSecurity_code_state();
+
+            mCoin = memberBean.getMoney_quantity();
+            mMember_type = memberBean.getMember_type();
+            isVip=memberBean.getIs_vip();
+            isInTestUser = memberBean.getIs_in_test_user();
+            mTVGoldCoinNum.setText(mCoin + "");
+            mIntegral = memberBean.getIntegration();
+            mTVIntegralNum.setText(mIntegral + "");
+            mOpenId = memberBean.getOpen_id();
+
+
+            String inCome=memberBean.getPush_money();
+            int inComeNum=0;
+            if (!TextUtils.isEmpty(inCome)){
+                inComeNum=Integer.valueOf(inCome);
+            }
+            String canDraw=memberBean.getCan_drawings_amount();
+            double canDrawNum=0;
+            if (!TextUtils.isEmpty(canDraw)){
+                canDrawNum=Double.valueOf(canDraw);
+            }
+            LogUtils.e("inCome",""+inCome);
+            LogUtils.e("canDraw",""+canDraw);
+
+            //可提现数
+            int money= (int) (inComeNum+canDrawNum);
+            mTvWithdrawNum.setText(""+money);
+
+            mImgUrl = memberBean.getAvatar_path();
+            mImgName = memberBean.getAvatar_name();
+
+
+            //加载头像
+            if (!TextUtils.isEmpty(mImgUrl) && !TextUtils.isEmpty(mImgName)) {
+                isHaveImg = true;
+                mUserImgUrl = mImgUrl + "/" + mImgName;
+                LogUtils.e("UserImgUrl", mUserImgUrl);
+                Glide.with(MainApplication.getContext())
+                        .load(mUserImgUrl)
+//                        .signature(new StringSignature(UUID.randomUUID().toString()))
+                        //不注释掉清除缓存失效
+//                        .placeholder(R.mipmap.list_profile_photo)
+//                        .error(R.mipmap.list_profile_photo)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用磁盘缓存
+                        .skipMemoryCache(true)//跳过内存缓存
+                        .into(mIVUserIcon);
+            } else {
+                isHaveImg = false;
+            }
+
+            mLevel = memberBean.getMember_level();
+            //test
+            mLevel = 2;
+            //修改会员等级的进度
+            if (mLevel != 0) {
+                if (mLevel == 1) {
+                    mGoldCoinNum = 1500;
+                } else if (mLevel == 2) {
+                    mGoldCoinNum = 2500;
+                } else if (mLevel == 3) {
+                    mGoldCoinNum = 3000;
+                }
+            } else {
+                mGoldCoinNum = 0;
+            }
+
+
+            //根据数据判断显示图标
+            LogUtils.e("getMember_type", "" + memberBean.getMember_type());
+            //test
+//           if (memberBean.getMember_type()==4){
+            if (memberBean.getMember_type() == 5) {
+                mIvMemberFive.setVisibility(View.VISIBLE);
+            } else {
+                mIvMemberFive.setVisibility(View.GONE);
+            }
+
+            LogUtils.e("getIs_vip", "" + memberBean.getIs_vip());
+            //test
+//           if (memberBean.getIs_vip()==0){
+            if (memberBean.getIs_vip() == 2) {
+                mIvMember.setVisibility(View.VISIBLE);
+            } else {
+                mIvMember.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    /**
+     * 布局功能控价列表
+     */
+    private void initGridView() {
+        initNotLoginGv();
+    }
+
+    /**
+     * 改变功能布局的显示
+     */
+    private void initGridViewChange() {
+        if (isLogin) {
+            initLoginGv();
+
+        } else {
+            initNotLoginGv();
+        }
+    }
+
+    /**
+     * 登录功能布局的初始化
+     */
+    private void initLoginGv() {
+        //已经登录的布局初始化
+        dataListLogin = new ArrayList<>();
+
+        MyMine mine1 = new MyMine("我的订单", R.mipmap.list_order);
+        dataListLogin.add(mine1);
+        MyMine mine2 = new MyMine("历史购物", R.mipmap.list_historyrecorde);
+        dataListLogin.add(mine2);
+        MyMine mine3 = new MyMine("收货地址", R.mipmap.list_icon_address);
+        dataListLogin.add(mine3);
+        MyMine mine4 = new MyMine("邀请好友", R.mipmap.list_addfriend);
+        dataListLogin.add(mine4);
+        MyMine mine5 = new MyMine("关于我们", R.mipmap.list_aiyouyou);
+        dataListLogin.add(mine5);
+        MyMine mine6 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice);
+        dataListLogin.add(mine6);
+        MyMine mine7 = new MyMine("通用设置", R.mipmap.list_set);
+        dataListLogin.add(mine7);
+        adapter = new MineAdapter(getActivity(), gv, dataListLogin);
+        gv.setAdapter(adapter);
+    }
+
+    /**
+     * 未登录功能布局的初始化
+     */
+
+    private void initNotLoginGv() {
+        //未登录的布局初始化
+        dataListNotLogin = new ArrayList<>();
+        MyMine mine11 = new MyMine("我的订单", R.mipmap.list_order_nor);
+        dataListNotLogin.add(mine11);
+        MyMine mine22 = new MyMine("历史购物", R.mipmap.list_historyrecorde_nor);
+        dataListNotLogin.add(mine22);
+        MyMine mine33 = new MyMine("收货地址", R.mipmap.list_addressinformation_nor);
+        dataListNotLogin.add(mine33);
+        MyMine mine44 = new MyMine("邀请好友", R.mipmap.list_addfriend_nor);
+        dataListNotLogin.add(mine44);
+        MyMine mine55 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
+        dataListNotLogin.add(mine55);
+        MyMine mine66 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
+        dataListNotLogin.add(mine66);
+        MyMine mine77 = new MyMine("通用设置", R.mipmap.list_set_nor);
+        dataListNotLogin.add(mine77);
+//        MyMine mine8= new MyMine("绑定微信", R.mipmap.list_signinwechat);
+//        dataList.add(mine8);
+//        MyMine mine9= new MyMine("绑定QQ", R.mipmap.list_signinqq);
+//        dataList.add(mine9);
+
+        adapter = new MineAdapter(getActivity(), gv, dataListNotLogin);
+        gv.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_mine_login: // 登录
+                jump(LoginActivity.class, false);
+
+                break;
+            case R.id.rl_mine_integral: // 积分
+                mClassJump = MineMemberCenterIntegralPayActivity.class;
+//                Toast.makeText(getActivity(), "积分", Toast.LENGTH_SHORT).show();
+                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
+                mIntentSafeCode.putExtra("mIntegral", mIntegral);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+                if (isLogin) {
+//                    showSafeCodePopWin();
+                    createSafeCodeDialog();
+                } else {
+                    startActivity(mIntentSafeCode);
+                }
+//                startActivity(intentMIntegral);
+                break;
+            case R.id.rl_mine_goldcoin: // UU
+                mClassJump = MineMemberCenterActivity.class;
+//                Toast.makeText(getActivity(), "UU", Toast.LENGTH_SHORT).show();
+                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
+                mIntentSafeCode.putExtra("coin", mCoin);
+                mIntentSafeCode.putExtra("integral", mIntegral);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+                mIntentSafeCode.putExtra("member_type", mMember_type);
+                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
+                mIntentSafeCode.putExtra("openId", mOpenId);
+                mIntentSafeCode.putExtra("safeCode", mSafeCode);
+
+                if (isLogin) {
+//                    showSafeCodePopWin();
+                    createSafeCodeDialog();
+                } else {
+                    startActivity(mIntentSafeCode);
+                }
+//                startActivity(intentMCoin);
+
+                break;
+            case R.id.rl_mine_withdraw: //提现
+                mIntentSafeCode = new Intent(getActivity(), WithdrawActivity.class);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+                mIntentSafeCode.putExtra("safeCode", mSafeCode);
+                mIntentSafeCode.putExtra("coin", mCoin);
+                mIntentSafeCode.putExtra("member_type", mMember_type);
+                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
+                mIntentSafeCode.putExtra("isVip", isVip);
+                mClassJump = WithdrawActivity.class;
+                /**
+                 * 根据mOpenId判断是否绑定微信
+                 * 没绑定弹框提示绑定
+                 * 绑定直接跳转
+                 */
+                //已经绑定的
+                //test
+//                mOpenId=null;
+//                isLogin=false;
+                //没设置安全码
+                if (TextUtils.isEmpty(mSafeCode)){
+                    createSafeCodeDialog();
+                    //设置安全码
+                }else {
+                    //绑定微信
+                    if (!TextUtils.isEmpty(mOpenId)) {
+                        //登录
+                        if (isLogin) {
+                            createSafeCodeDialog();
+                            //没登录
+                        } else {
+                            startActivity(mIntentSafeCode);
+                        }
+                    } else {
+                        //没绑定微信的，显示弹出框
+                        showBindingWeChatDialog();
+                    }
+                }
+
+                break;
+
+            case R.id.rl_mine_head_login: //带值跳转到安全码页面，然后再修改信息页面
+                updateMineUserMessage();
+                break;
+            case R.id.iv_mine_head: //带值跳转到安全码页面，然后再修改信息页面
+                updateMineUserMessage();
+                break;
+
+            case R.id.ll_mine_supply_the_phone: //拨打供货电话
+//                ToastUtils.showShort("拨打供货电话");
+//                callCustomerServerPhone();
+                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
+                break;
+
+        }
+    }
+
+
+    /**
+     * 跳转到修改个人信息
+     */
+    private void updateMineUserMessage() {
+        mIntentSafeCode = new Intent(getActivity(), UpdateMineUserMessageActivity.class);
+        mIntentSafeCode.putExtra("mUser", mUser);
+        if (isHaveImg) {
+            mIntentSafeCode.putExtra("mUserImgUrl", mUserImgUrl);
+        } else {
+            mIntentSafeCode.putExtra("mUserImgUrl", "");
+        }
+        mClassJump = UpdateMineUserMessageActivity.class;
+//        showSafeCodePopWin();
+        createSafeCodeDialog();
+//                startActivity(mIntentSafeCode);
+    }
+
+    /**
+     * 跳转页面
+     *
+     * @param cls      要填转到的页面
+     * @param isFinish 是否关闭本页
+     */
+    public void jump(Class<?> cls, boolean isFinish) {
+        Intent intent = new Intent(getActivity(), cls);
+        startActivity(intent);
+        if (isFinish) {
+            getActivity().finish();
+        }
+    }
+
+    /**
+     * @param parent
+     * @param view
+     * @param position
+     * @param id       处理条目点击事件
+     */
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0:
+                // 我的订单
+                jump(MyOrderActivity.class, false);
+                break;
+            case 1:
+                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
+                //携带数据接口
+                phIntent.putExtra("title", "历史购买");
+                startActivity(phIntent);
+                break;
+            case 2:
+                //Toast.makeText(getActivity(), "收货地址", Toast.LENGTH_SHORT).show();
+
+                jump(AddressManagerNewActivity.class, false);
+                break;
+            case 3:
+                //Toast.makeText(getActivity(), "邀请好友", Toast.LENGTH_SHORT).show();
+//                jump(MobileContactActivity.class,false);
+                jump(InviteActivity.class, false);
+                break;
+            case 4:
+                // Toast.makeText(getActivity(), "关于我们", Toast.LENGTH_SHORT).show();
+                jump(AboutIUUActivity.class, false);
+                break;
+            case 5:
+                //Toast.makeText(getActivity(), "意见反馈", Toast.LENGTH_SHORT).show();
+//                jump(MineCustomerServiceActivity.class, false);
+                jump(MineCustomerServiceSuggestionActivity.class, false);
+                break;
+            case 6:
+                //Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
+                jump(SettingsActivity.class, false);
+
+                break;
+//            case 7:
+//                // Toast.makeText(getActivity(), "绑定微信", Toast.LENGTH_SHORT).show();
+//                if (isLogin){
+//                    //微信第三方登录，登录成功绑定手机号
+//
+//
+//                }else {
+//                    //直接跳转提示去登录
+//                    bindPhone();
+//                }
+//                break;
+//            case 8:
+//                if (isLogin){
+//                    //QQ第三方登录，登录成功绑定手机号
+//
+//
+//                }else {
+//                    bindPhone();
+//                }
+//                // Toast.makeText(getActivity(), "绑定QQ", Toast.LENGTH_SHORT).show();
+//                break;
+        }
+    }
+
+    /**
+     * 绑定微信
+     * 绑定qq
+     * （绑定手机号）
+     */
+    private void bindPhone() {
+        Intent bindIntent = new Intent(getActivity(), MineBingPhoneNumActivity.class);
+        bindIntent.putExtra("isLogin", false);
+        startActivity(bindIntent);
+    }
+
+
+    ////////////////////////////////////////////////安全码弹框处理/////////////////////////////////////////////
+
+    private EditText mEtEmail;
+    //安全码输入框
+    private EditText etSateCodeInput;
+    //确认安全码输入框
+    private EditText etSateCodeMakeSure;
+    //安全码输入标题
+    private TextView tvSateCodeMode;
+    //提交按钮
+    private TextView tvSateCodeSubmit;
+    //忘记安全码
+    private TextView tvSateCodeForget;
+    //关闭图标
+    private ImageView ivSateCodeClose;
+    //设置安全码找回邮箱布局
+    private LinearLayout mLLSetEmail;
+
+    private void createSafeCodeDialog() {
+        if (mSafeCodeDialog!=null){
+            mSafeCodeDialog.dismiss();
+        }
+        mSafeCodeDialog = new MaterialDialog.Builder(getContext())
+                .customView(R.layout.mine_safe_code_layout, false)
+                .build();
+
+        View view = mSafeCodeDialog.getCustomView();
+        mSafeCodeDialog.setCancelable(false);
+
+        etSateCodeInput = (EditText) view.findViewById(R.id.et_safe_code_input);
+        etSateCodeMakeSure = (EditText) view.findViewById(R.id.et_safe_code_input_makesure);
+        tvSateCodeMode = (TextView) view.findViewById(R.id.tv_safe_code_mode);
+        tvSateCodeSubmit = (TextView) view.findViewById(R.id.tv_safe_code_submit);
+        tvSateCodeForget = (TextView) view.findViewById(R.id.tv_safe_code_forget);
+        tvSateCodeForget = (TextView) view.findViewById(R.id.tv_safe_code_forget);
+        ivSateCodeClose = (ImageView) view.findViewById(R.id.iv_safe_code_close);
+        mLLSetEmail = ((LinearLayout) view.findViewById(R.id.ll_safe_code_email));
+        mEtEmail = ((EditText) view.findViewById(R.id.et_safe_code_input_email));
+
+
+        //添加输入字符上限判断
+        etSateCodeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String safeCode = s.toString().trim();
+                int inPutLength = safeCode.length();
+                if (inPutLength > mSafeCodeMaxLimit) {
+                    Toast.makeText(getContext(), "安全码不超过" + mSafeCodeMaxLimit + "位", Toast.LENGTH_SHORT).show();
+                    etSateCodeInput.setText(safeCode.substring(0, mSafeCodeMaxLimit));
+                    etSateCodeInput.setSelection(mSafeCodeMaxLimit);
+                    return;
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        // 设置按钮监听
+        ivSateCodeClose.setOnClickListener(onClickListener);
+        tvSateCodeSubmit.setOnClickListener(onClickListener);
+        tvSateCodeForget.setOnClickListener(onClickListener);
+//        ivSateCodeClose.setOnClickListener(this);
+//        tvSateCodeSubmit.setOnClickListener(this);
+//        tvSateCodeForget.setOnClickListener(this);
+
+
+        //判断存不存在安全码进行页面显示变化
+        if (mIsHaveSafeCode) {
+            //安全码验证将输入类型改为密码
+            etSateCodeInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            etSateCodeInput.setText("");
+            tvSateCodeMode.setText("输入安全码");
+            tvSateCodeMode.setGravity(Gravity.CENTER);
+            tvSateCodeForget.setEnabled(true);
+            tvSateCodeForget.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+            etSateCodeMakeSure.setVisibility(View.GONE);
+            etSateCodeInput.setHint(mSafeCode + "********");
+            mLLSetEmail.setVisibility(View.GONE);
+        } else {
+            if (isHaveEmail) {
+                tvSateCodeMode.setText("设置安全码");
+                tvSateCodeMode.setGravity(Gravity.CENTER);
+                tvSateCodeForget.setEnabled(false);
+                etSateCodeMakeSure.setVisibility(View.GONE);
+                etSateCodeInput.setHint("8~16位，数字、字母组合");
+                mLLSetEmail.setVisibility(View.GONE);
+            } else {
+                tvSateCodeMode.setText("设置安全码");
+                tvSateCodeForget.setEnabled(false);
+                etSateCodeMakeSure.setVisibility(View.GONE);
+                etSateCodeInput.setHint("8~16位，数字、字母组合");
+                mLLSetEmail.setVisibility(View.VISIBLE);
+            }
+        }
+
+        //对话框显示
+        mSafeCodeDialog.show();
+    }
+
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        switch (v.getId()) {
+            //提交安全码，判断是否已经有安全码分别调用两个接口
+            //有：验证
+            case R.id.tv_safe_code_submit:
+                //处理安全码
+                submitSafeCode();
+                break;
+            //跳转到忘记密码处理, popWin
+            case R.id.tv_safe_code_forget:
+                dialogDismiss(mSafeCodeDialog);
+                createFindSafeCodeDialog();
+                break;
+            //关闭安全码验证的窗口
+            case R.id.iv_safe_code_close:
+                dialogDismiss(mSafeCodeDialog);
+                break;
+
+            //忘记密码页面，验证邮箱提交
+            case R.id.tv_safe_code_forget_submit:
+                emailValidate();
+                break;
+
+            //忘记你密码页面联系客服
+            case R.id.tv_safe_code_forget_callcentre:
+                //拨打客服电话
+                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                //Test
+                dialogDismiss(mFindSafeCodeDialog);
+                break;
+            //关闭找回安全码的窗口
+            case R.id.iv_safe_code_forget_close:
+                dialogDismiss(mFindSafeCodeDialog);
+                break;
+            //关闭邮箱验证成功的窗口
+            case R.id.iv_email_send_succeed:
+                dialogDismiss(mEmailSendSucceedDialog);
+                break;
+        }
+
+    }
+
+    /**
+     * 对话框的点击事件
+     */
+
+    private OnNoDoubleClickListener onClickListener = new OnNoDoubleClickListener() {
+        @Override
+        public void onNoDoubleClick(View view) {
+            switch (view.getId()) {
+                //提交安全码，判断是否已经有安全码分别调用两个接口
+                //有：验证
+                case R.id.tv_safe_code_submit:
+                    //处理安全码
+                    submitSafeCode();
+                    break;
+                //跳转到忘记密码处理, popWin
+                case R.id.tv_safe_code_forget:
+                    dialogDismiss(mSafeCodeDialog);
+                    createFindSafeCodeDialog();
+                    break;
+                //关闭安全码验证的窗口
+                case R.id.iv_safe_code_close:
+                    dialogDismiss(mSafeCodeDialog);
+                    break;
+
+                //忘记密码页面，验证邮箱提交
+                case R.id.tv_safe_code_forget_submit:
+                    emailValidate();
+                    break;
+
+                //忘记你密码页面联系客服
+                case R.id.tv_safe_code_forget_callcentre:
+                    //拨打客服电话
+                    DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                    //Test
+                    dialogDismiss(mFindSafeCodeDialog);
+                    break;
+                //关闭邮箱验证的窗口
+                case R.id.iv_safe_code_forget_close:
+                    dialogDismiss(mFindSafeCodeDialog);
+                    break;
+                //关闭邮箱验证成功的窗口
+                case R.id.iv_email_send_succeed:
+                    dialogDismiss(mEmailSendSucceedDialog);
+                    break;
+
+
+            }
+
+        }
+    };
+
+
+    /**
+     * 验证邮箱
+     */
+    private void emailValidate() {
+        String emailReset = etSateCodeReGetEmailInput.getText().toString().trim();
+//        tvSateCodeFindSubmit.setEnabled(false);
+        LogUtils.e("emailReset----", mEmail);
+        if (isHaveEmail) {
+            if (mEmail.equals(emailReset)) {
+                //调用邮件发送接口
+                String token = CurrentUserManager.getUserToken();
+                if (!TextUtils.isEmpty(token)) {
+                    ClientAPI.sendEmailResetCode(token, mEmail, new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+//                            createSafeCodeForgetPopWin.tvSateCodeSubmit.setEnabled(true);
+                            UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+                            dialogDismiss(mFindSafeCodeDialog);
+//                            tvSateCodeFindSubmit.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            //提交成功后就跳转到邮件发送成功页面
+                            //创建发送成功对话框
+                            dialogDismiss(mFindSafeCodeDialog);
+                            createEmailSendSucceedDialog();
+//                            tvSateCodeFindSubmit.setEnabled(true);
+                            return;
+                        }
+                    });
+                }
+
+            } else {
+                Toast.makeText(getContext(), "输入邮箱与预设邮箱不相符", Toast.LENGTH_SHORT).show();
+//                tvSateCodeFindSubmit.setEnabled(true);
+                return;
+            }
+        } else {
+            Toast.makeText(getContext(), "未设置预设邮箱，请直接拨打客服找回安全码", Toast.LENGTH_SHORT).show();
+//            tvSateCodeFindSubmit.setEnabled(true);
+            return;
+        }
+    }
+
+    /**
+     * 提交弹出框的安全码
+     */
+    private void submitSafeCode() {
+
+        //提交成功条状到   mClassJump  类
+        //没有：添加
+        String safeCode = etSateCodeInput.getText().toString().trim();
+        int minLeght = safeCode.length();
+        if (minLeght < mSafeCodeMinLimit) {
+            Toast.makeText(getContext(), "安全密码不能少于8位数", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String token = CurrentUserManager.getUserToken().toString().trim();
+        //验证安全码
+        if (mIsHaveSafeCode) {
+            ClientAPI.postValidateSafeCode(token, safeCode, new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    LogUtils.e("getMessage-----", e.getMessage());
+                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+                    dialogDismiss(mSafeCodeDialog);
+                }
+
+                @Override
+                public void onResponse(String response, int id) {
+                    startActivity(mIntentSafeCode);
+                    dialogDismiss(mSafeCodeDialog);
+                }
+            });
+            return;
+        } else {
+            //设置安全码 mIsHaveSafeCode=true
+            //情况一：邮箱未设置
+            if (!isHaveEmail) {
+                String email = mEtEmail.getText().toString().trim();
+                if (!(!TextUtils.isEmpty(email) && email.contains("@") && email.length() > 1)) {
+                    Toast.makeText(getContext(), "请输入正确的邮箱", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ClientAPI.postSetSafeCode(token, safeCode, email, new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+                        dialogDismiss(mSafeCodeDialog);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        //设置成功刷新数据
+                        initData();
+                        dialogDismiss(mSafeCodeDialog);
+                    }
+                });
+            } else {
+                //情况一：邮箱已经设置
+                ClientAPI.postSetSafeCode(token, safeCode, new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+                        dialogDismiss(mSafeCodeDialog);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        //设置成功刷新数据
+                        initData();
+                        dialogDismiss(mSafeCodeDialog);
+                    }
+                });
+
+            }
+        }
+
+        dialogDismiss(mSafeCodeDialog);
+    }
+
+    private void dialogDismiss(MaterialDialog dialog) {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+
+    }
+
+    ///////////////////////////处理忘记密码的对话框/////////////////////////////////////////////////
+
+
+    /**
+     * 创建邮箱验证的对话框
+     */
+
+    //邮箱输入
+    private EditText etSateCodeReGetEmailInput;
+    //标题
+    private TextView tvSateCodeEmail;
+    //提交按钮
+    private TextView tvSateCodeFindSubmit;
+    //呼叫客服中心
+    private TextView tvSateCodeCallCentre;
+    //窗口关闭按钮
+    private ImageView ivSateCodeFindClose;
+
+    private void createFindSafeCodeDialog() {
+        if (mFindSafeCodeDialog!=null){
+            mFindSafeCodeDialog.dismiss();
+        }
+
+        mFindSafeCodeDialog = new MaterialDialog.Builder(getContext())
+                .customView(R.layout.mine_safe_code_forget_layout, false)
+                .build();
+        View view = mFindSafeCodeDialog.getCustomView();
+//        mFindSafeCodeDialog.setCancelable(false);
+
+        etSateCodeReGetEmailInput = (EditText) view.findViewById(R.id.tv_input_safe_code_forget);
+        tvSateCodeEmail = (TextView) view.findViewById(R.id.tv_email_safe_code_forget);
+        tvSateCodeFindSubmit = (TextView) view.findViewById(R.id.tv_safe_code_forget_submit);
+        tvSateCodeCallCentre = (TextView) view.findViewById(R.id.tv_safe_code_forget_callcentre);
+        ivSateCodeFindClose = (ImageView) view.findViewById(R.id.iv_safe_code_forget_close);
+
+        tvSateCodeCallCentre.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        etSateCodeReGetEmailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                tvSateCodeFindSubmit.setEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+//        // 设置按钮监听确定
+        tvSateCodeFindSubmit.setOnClickListener(onClickListener);
+        //联系客服
+        tvSateCodeCallCentre.setOnClickListener(onClickListener);
+        //关闭窗体
+        ivSateCodeFindClose.setOnClickListener(onClickListener);
+        // 设置按钮监听确定
+//        tvSateCodeFindSubmit.setOnClickListener(this);
+//        //联系客服
+//        tvSateCodeCallCentre.setOnClickListener(this);
+//        //关闭窗体
+//        ivSateCodeFindClose.setOnClickListener(this);
+        //根据状态设置页面显示
+        //登录、添加过
+
+//        //test
+//        mEmail="111111999@dhh.com";
+//        isHaveEmail=true;
+        if (isHaveEmail) {
+            String email = mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
+
+            etSateCodeReGetEmailInput.setHint(email);
+            etSateCodeReGetEmailInput.setEnabled(true);
+        } else {
+            etSateCodeReGetEmailInput.setHint("未绑定邮箱，请直接联系客服找回");
+            etSateCodeReGetEmailInput.setEnabled(false);
+        }
+        mFindSafeCodeDialog.show();
+    }
+
+
+    ///////////////////////////邮箱验证成功的对话框//////////////////////////////////////////////////
+
+    /**
+     * 创建邮箱验证成功的对话框
+     */
+
+    private ImageView ivEmailSendSucceedClose;
+
+    private void createEmailSendSucceedDialog() {
+        if (mEmailSendSucceedDialog!=null){
+            mEmailSendSucceedDialog.dismiss();
+        }
+        mEmailSendSucceedDialog = new MaterialDialog.Builder(getContext())
+                .customView(R.layout.mine_email_send_succeed_layout, false)
+                .build();
+        View view = mEmailSendSucceedDialog.getCustomView();
+        mEmailSendSucceedDialog.setCancelable(false);
+
+        ivEmailSendSucceedClose = ((ImageView) view.findViewById(R.id.iv_email_send_succeed));
+        ivEmailSendSucceedClose.setOnClickListener(onClickListener);
+//        ivEmailSendSucceedClose.setOnClickListener(this);
+
+        mEmailSendSucceedDialog.show();
+
+    }
+
+
+    ////////////////////////////////////////////处理拨打打电话////////////////////////////////////////////////////
+
+    /**
+     * 拨打客服电话
+     */
+    private void callCustomerServerPhone() {
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            LogUtils.e("缺少拨打电话权限", "");
+            startPermissionsActivity();
+        } else {
+            //已经授权直接拨打电话
+            DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
+        }
+    }
+
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(getActivity(), DialUtils.REQUEST_CODE, PERMISSIONS);
+    }
+
+    // 提示去公众号绑定微信的
+    private void showBindingWeChatDialog() {
+        final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                .customView(R.layout.notify_binding_wechat_dialog_item, false)
+                .build();
+        View view = dialog.getCustomView();
+        dialog.setCancelable(false);
+        ImageView ivClose = (ImageView) view.findViewById(R.id.iv_mine_member_dialog_close);
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        // 修改窗口大小
+        // http://blog.csdn.net/misly_vinky/article/details/19109517
+        Window dialogWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+
+        dialogWindow.setGravity(Gravity.CENTER);
+
+        dialog.show();
+    }
+}

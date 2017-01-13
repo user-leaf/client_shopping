@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_common_bg"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.SettingsActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="设置"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_height="3.5dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+        <RelativeLayout
+            android:id="@+id/settings_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/entry_bar_style"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分享给朋友"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_edit"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+        </RelativeLayout>
+
+        <View
+            style="@style/entry_divider_fine_line_style"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/entry_bar_style"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关于我们"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_edit"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+        </RelativeLayout>
+
+        <View
+            style="@style/entry_divider_fine_line_style"/>
+
+        <RelativeLayout
+            android:id="@+id/settings_rl_cache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/entry_bar_style"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清除本地缓存"
+                />
+            <TextView
+                android:id="@+id/settings_tv_cache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_height="3.5dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+        <RelativeLayout
+            android:id="@+id/settings_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/entry_bar_style"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="地址管理"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_edit"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+        </RelativeLayout>
+
+        <View
+            style="@style/entry_divider_fine_line_style"/>
+
+        <RelativeLayout
+            android:id="@+id/settings_rl_change_tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/entry_bar_style"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="更改手机号"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_edit"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+        </RelativeLayout>
+
+        <View
+            style="@style/entry_divider_fine_line_style"/>
+
+        <RelativeLayout
+            android:id="@+id/settings_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/entry_bar_style"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="检查更新"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_edit"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="申请退款"
+            android:onClick="OrderReturn"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/entry_divider_bold_line_style"/>
+
+    <Button
+        android:id="@+id/settings_btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="退出账号"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/text_size_large"
+        android:background="@color/app_red"
+        android:textColor="#ffffff"
+        />
+</LinearLayout>

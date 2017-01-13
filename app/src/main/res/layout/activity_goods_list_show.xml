@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.GoodsListShowActivity"
+    android:orientation="vertical">
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_purhchase_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="限时抢购"
+        >
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/layout_data_loading"/>
+
+        <include layout="@layout/layout_un_network"/>
+        <!--数据为空-->
+        <include layout="@layout/layout_more_buy_empty"/>
+
+        <com.handmark.pulltorefresh.library.PullToRefreshGridView
+            android:id="@+id/gv_purhchase_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:gravity="center"
+            android:verticalSpacing="5dp"
+            android:horizontalSpacing="2.5dp"
+            />
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,80 @@
+package com.bjaiyouyou.thismall.user;
+
+import android.util.Log;
+
+import com.bjaiyouyou.thismall.MainApplication;
+import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.SPUtils;
+
+/**
+ * 当前登录用户信息管理
+ *
+ * @author kanbin
+ * @date 2016/7/9
+ */
+public class CurrentUserManager {
+    public static final String SP_CURRENT_USER = "current_user";
+    public static final String SP_USER_TOKEN = "user_token";
+
+
+    /**
+     * 清除当前登录用户（退出登录时调用）
+     */
+    public static void clearCurrentUser() {
+        SPUtils.remove(MainApplication.getContext(), SP_CURRENT_USER);
+
+    }
+
+    /**
+     * 设置当前登录用户（登录成功时调用）
+     *
+     * @param userInfo
+     * @return
+     */
+    public static UserInfo setCurrentUser(UserInfo userInfo) {
+        SPUtils.put(MainApplication.getContext(), SP_CURRENT_USER, userInfo);
+        return userInfo;
+    }
+
+    /**
+     * 获取当前登录用户信息
+     *
+     * @return
+     */
+    public static UserInfo getCurrentUser() {
+        return (UserInfo) SPUtils.get(MainApplication.getContext(), SP_CURRENT_USER, null);
+    }
+
+    /**
+     * 设置登录用户Token
+     *
+     * @param token
+     */
+    public static void setUserToken(String token) {
+        LogUtils.e("TOKEN",token);
+        Log.e("TOKEN",token);
+        if (token != null) {
+            SPUtils.put(MainApplication.getContext(), SP_USER_TOKEN, token);
+        }
+    }
+
+    /**
+     * 获取登录用户Token
+     *
+     * @return
+     */
+    public static String getUserToken() {
+        String  token=(String) SPUtils.get(MainApplication.getContext(), SP_USER_TOKEN,"");
+        LogUtils.e("TOKEN",token);
+//        Log.e("TOKEN",token);
+        return token;
+
+    }
+
+    /**
+     * 清除登录用户Token
+     */
+    public static void clearUserToken() {
+        SPUtils.remove(MainApplication.getContext(), SP_USER_TOKEN);
+    }
+}

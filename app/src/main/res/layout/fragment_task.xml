@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="@string/controller_two"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+    <TextView
+        android:id="@+id/net_fail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="当前网络不可用，请检查网络设置"
+        android:visibility="gone"
+        />
+
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+            android:id="@+id/task_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/task_rl_no_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="30dp"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/task_iv_note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/list_note"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="每天签到赚UU"
+                        android:layout_toRightOf="@id/task_iv_note"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/task_tv_login"
+                        android:layout_width="87dp"
+                        android:layout_height="30dp"
+                        android:text="去登录"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_task_button"
+                        android:gravity="center"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:id="@+id/task_fl_has_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="10dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/task_tv2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="20dp"
+                            android:text="已连续签到"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/task_tv_continue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/task_tv2"
+                            android:layout_toRightOf="@id/task_tv2"
+                            android:text="0"
+                            android:textColor="@color/app_red"
+                            android:textSize="24sp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/task_tv2"
+                            android:layout_toRightOf="@id/task_tv_continue"
+                            android:text="天"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/task_tv_get_gold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/task_tv2"
+                            android:layout_marginTop="10dp"
+                            android:text="签到可领取"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/task_get_gold_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0UU"
+                            android:textColor="@color/app_red"
+                            android:layout_toRightOf="@id/task_tv_get_gold"
+                            android:layout_alignTop="@id/task_tv_get_gold"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_toRightOf="@id/task_get_gold_today"
+                            android:layout_alignTop="@id/task_get_gold_today"
+                            android:layout_marginLeft="10dp"
+                            >
+                            <TextView
+                                android:id="@+id/task_tv3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="已累计签到"
+                                android:textColor="@color/black"
+                                />
+
+                            <TextView
+                                android:id="@+id/task_sign_in_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@color/app_red"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="天"
+                                android:textColor="@color/black"
+                                />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingRight="30dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/task_rbtn_sign_in"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/selector_task_sign_in"
+                            android:button="@null"
+                            />
+                    </RelativeLayout>
+                </FrameLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_style"
+                    android:layout_height="3.5dp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="每日购物满188元可获得36UU"
+                        />
+                </RelativeLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_style"
+                    android:layout_height="3.5dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="66dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:background="@color/white"
+                    >
+
+                    <ImageView
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/list_icon_member_litle"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/task_tv_vip_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="200元开通会员特权"
+                        android:textColor="@color/app_red"
+                        android:textSize="@dimen/text_size_medium"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@drawable/layer_list_task_notice_bg"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/list_icon_member_a"
+                            android:layout_marginRight="20dp"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="持有康养证会员将会获得权益："
+                                android:textColor="#dc9600"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="9dp"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="享有本商城"
+                                    />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="现金收益权"
+                                    android:textColor="@color/app_red"
+                                    />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="9dp"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="提现上限由100/周提升为"
+                                    />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="300/周"
+                                    android:textColor="@color/app_red"
+                                    />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="同步康养会员"
+                                    />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="积分"
+                                    android:textColor="@color/app_red"
+                                    />
+
+                                <LinearLayout
+                                    android:id="@+id/task_ll_sync"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:background="@drawable/selector_task_button_sync"
+                                    android:gravity="center_vertical"
+                                    android:padding="8dp"
+                                    android:layout_marginLeft="5dp"
+                                    >
+
+                                    <ImageView
+                                        android:id="@+id/task_iv_sync"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/selector_task_button_sync_icon"
+                                        android:layout_marginRight="3dp"
+                                        />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="同步积分"
+                                        android:textColor="@color/app_gray_6b6b6b"
+                                        android:singleLine="true"
+                                        android:ellipsize="end"
+                                        />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/list_line_dashed"
+                        android:scaleType="centerInside"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="15dp"
+                        android:layout_marginBottom="25dp"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/list_icon_member_b"
+                            android:layout_marginRight="20dp"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="普通会员将会获得权益："
+                                android:textColor="#dc9600"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="9dp"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="提现上限由100/周提升为"
+                                    />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="200/周"
+                                    android:textColor="@color/app_red"
+                                    />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/task_tv_recharge"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="激活会员权益"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_task_button"
+                        android:layout_marginBottom="25dp"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_style"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="#ffffff"
+                    android:paddingLeft="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="点击广告获得UU"
+                        />
+                </RelativeLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_style"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <com.bjaiyouyou.thismall.widget.NoScrollGridView
+                    android:id="@+id/task_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:numColumns="2"
+                    android:horizontalSpacing="1dp"
+                    android:verticalSpacing="1dp"
+                    >
+
+                </com.bjaiyouyou.thismall.widget.NoScrollGridView>
+
+            </LinearLayout>
+        </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+        <TextView
+            android:id="@+id/task_tv_sync_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+5万积分"
+            android:textColor="@color/app_red"
+            android:textSize="35sp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+    </FrameLayout>
+</LinearLayout>

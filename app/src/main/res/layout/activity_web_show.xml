@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.bjaiyouyou.thismall.activity.WebShowActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/web_show_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <ProgressBar
+        android:id="@+id/web_show_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:progressDrawable="@drawable/webview_progressbar_bg"
+        android:layout_below="@id/web_show_title_bar"
+        />
+
+    <WebView
+        android:id="@+id/web_show_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/web_show_title_bar">
+
+    </WebView>
+</RelativeLayout>

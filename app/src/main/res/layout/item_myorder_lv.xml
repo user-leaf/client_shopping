@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:descendantFocusability="blocksDescendants"
+              android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="单号:"
+            android:textSize="@dimen/text_size_medium"/>
+
+        <TextView
+            android:id="@+id/tv_myOrder_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="1111111"
+            android:textSize="@dimen/text_size_medium"/>
+
+        <TextView
+            android:id="@+id/tv_myOrderState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/top_bar_normal_bg"
+            android:textSize="@dimen/text_size_medium"/>
+    </LinearLayout>
+
+    <!--订单只有一个商品显示-->
+
+    <LinearLayout
+        android:id="@+id/ll_myorder_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/iv_myOrder_img"
+            android:layout_width="@dimen/width_top_barLarge"
+            android:layout_height="@dimen/width_top_barLarge"
+            android:scaleType="centerInside"
+            android:src="@mipmap/list_image_loading"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_myOrder_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="物品名称"
+                android:textColor="#6b6b6b"
+                android:textSize="@dimen/text_size_small"/>
+
+            <TextView
+                android:id="@+id/tv_myOrder_dimension"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="规格"
+                android:textColor="#8b8b8b"
+                android:textSize="@dimen/text_size_small"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_myOrder_singleMoney"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="￥0\n+0积分"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_medium"/>
+
+            <TextView
+                android:id="@+id/tv_myOrder_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="right|center_vertical"
+                android:text=""
+                android:textColor="#cdcdcd"
+                android:textSize="@dimen/text_size_tiny"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <!--订单有多个商品-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lv_myorder_more"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_gravity="left|center_vertical"
+        android:padding="10dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_myOrder_goodsNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="共0件商品  合计:"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/tv_myOrder_allMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="￥0"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_medium"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_myOrder_travelMoney"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical|right"
+        android:singleLine="true"
+        android:text="+0积分"
+        android:textColor="#000000"
+        android:textSize="@dimen/text_size_small"
+        />
+
+
+    <!--未完成（未发货）：申请退款
+        未完成（已发货）：申请退款，确认收货
+    -->
+    <LinearLayout
+        android:id="@+id/ll_myOrderSendAndReceive"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/bt_myOrder_applyForRefund"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_copy_button_bg_stroke_gray"
+            android:padding="10dp"
+            android:text="申请退款"
+            android:textColor="#6b6b6b"/>
+
+        <TextView
+            android:id="@+id/bt_myOrder_CheckTheLogistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_copy_button_bg_stroke_gray"
+            android:padding="10dp"
+            android:text="查看物流"
+            android:textColor="#6b6b6b"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/bt_myOrder_confirmReceipt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_red"
+            android:padding="10dp"
+            android:text="确认收货"
+            android:textColor="@android:color/white"
+            />
+
+    </LinearLayout>
+
+
+    <!--未付款状态-->
+    <LinearLayout
+        android:id="@+id/ll_myOrderPayment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:visibility="gone"
+
+        >
+
+        <TextView
+            android:id="@+id/bt_myOrder_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_stroke_gray"
+            android:clickable="true"
+            android:padding="10dp"
+
+            android:text="取消订单"
+            android:textColor="#6b6b6b"/>
+
+        <TextView
+            android:id="@+id/bt_myOrder_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_red"
+            android:clickable="true"
+            android:padding="10dp"
+            android:text="立即付款"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+    <!--未完成（申请退款）-->
+    <LinearLayout
+        android:id="@+id/ll_myorder_refund"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/bt_myOrder_contactcustomerservice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_stroke_gray"
+            android:clickable="true"
+            android:padding="10dp"
+            android:text="联系客服"
+            android:textColor="#6b6b6b"/>
+
+        <TextView
+            android:id="@+id/bt_myOrder_refundprogress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_red"
+            android:clickable="true"
+            android:padding="10dp"
+            android:text="退款进度"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+    <!--已完成：-->
+    <LinearLayout
+        android:id="@+id/ll_myOrderFinish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/bt_myOrderFinish_CheckTheLogistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_stroke_gray"
+            android:padding="10dp"
+            android:text="删除订单"
+            android:textColor="#6b6b6b"/>
+
+        <TextView
+            android:id="@+id/bt_myOrder_repay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_red"
+            android:padding="10dp"
+            android:text="再次购买"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+    <!--已完成（退款成功）-->
+    <LinearLayout
+        android:id="@+id/ll_myOrderFinish_refund"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/bt_myOrder_deleteorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_stroke_gray"
+            android:padding="10dp"
+            android:text="删除订单"
+            android:textColor="#6b6b6b"/>
+
+        <TextView
+            android:id="@+id/bt_myOrder_refund_detaile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/shape_copy_button_bg_red"
+            android:padding="10dp"
+            android:text="退款详情"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</LinearLayout>

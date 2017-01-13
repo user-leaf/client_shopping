@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 标题栏 -->
+    <declare-styleable name="IUUTitleBar">
+        <attr name="iuuTitleBarTitle" format="string"/>
+        <attr name="iuuTitleBarTitleColor" format="color"/>
+        <attr name="iuuTitleBarLeftImage" format="reference"/>
+        <attr name="iuuTitleBarRightImage" format="reference"/>
+        <attr name="iuuTitleBarBackground" format="reference|color"/>
+    </declare-styleable>
+
+</resources>

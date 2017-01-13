@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="green">#37C445</color>
+    <color name="pink">#FF3052</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="blue">#0000FF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="orange">#FF6600</color>
+
+    <color name="app_common_bg">#EEEEEE</color>  <!--fcfcfc-->
+    <color name="top_bar_normal_bg">#E10C28</color> <!--00acff--> <!--FF6666-->
+    <color name="app_red">#E10C28</color>
+    <color name="app_gray">#b5b5b5</color>
+    <color name="app_gray_dcdcdc">#dcdcdc</color>
+    <color name="app_gray_6b6b6b">#6b6b6b</color>
+    <color name="app_dark_gray">#6b6b6b</color>
+    <color name="app_gray_bbbbbb">#BBBBBB</color>
+    <color name="app_orange">#FF7800</color>
+    <color name="app_blue">#0A92DC</color>
+
+    <color name="side_bar_text">#4A4A4A</color>
+    <color name="shadow_bg">#66000000</color>
+
+    <color name="black_green">#199d26</color>
+
+    <!-- 扫描用到的 -->
+    <color name="viewfinder_frame">#ff000000</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="result_view">#b0000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="no_read">#3C3C3C</color>
+    <color name="read">#969696</color>
+    <color name="erweima">#b0000000</color>
+
+    <!-- 地址管理页 swipe -->
+    <color name="backgroundColor">#E8E8E0</color>
+    <color name="backgroundColorPress">#DBDBD3</color>
+    <color name="red">#FF3B00</color>
+    <color name="red_press">#990000</color>
+    <color name="dark_gray">#4C535B</color>
+    <color name="dark_gray_press">#ff7e8a97</color>
+
+</resources>

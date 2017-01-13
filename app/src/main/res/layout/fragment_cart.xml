@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_common_bg"
+              android:orientation="vertical">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="@string/controller_three"
+        >
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+    <TextView
+        android:id="@+id/net_fail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="当前网络不可用，请检查网络设置"
+        android:visibility="gone"
+        />
+
+    <View
+        style="@style/entry_divider_fine_line_style"
+        />
+
+    <include layout="@layout/no_login_layout"/>
+
+    <LinearLayout
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:id="@+id/cart_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_shoppingcart"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="25dp"
+                android:text="您的购物车空荡荡的"
+                android:textColor="@color/app_dark_gray"
+                />
+
+            <TextView
+                android:id="@+id/cart_tv_goshopping"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_copy_button_bg_stroke_red"
+                android:gravity="center"
+                android:paddingLeft="32.5dp"
+                android:paddingRight="32.5dp"
+                android:text="赶紧去逛逛"
+                android:textColor="@color/app_red"
+                />
+        </LinearLayout>
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/cart_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"
+            >
+
+        </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+        <View
+            style="@style/entry_divider_fine_line_style"
+            />
+
+        <RelativeLayout
+            android:id="@+id/cart_rl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="#ffffff"
+            >
+
+            <CheckBox
+                android:id="@+id/cart_chb_choose_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:button="@drawable/selector_cart_chb_bg"
+                android:text="全选"
+                />
+
+            <Button
+                android:id="@+id/cart_btn_order"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/app_red"
+                android:text="结算(0)"
+                android:textColor="@color/white"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/cart_btn_order"
+                android:layout_toRightOf="@id/cart_chb_choose_all"
+                android:paddingTop="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/cart_tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="合计："
+                    android:textColor="@color/black"
+                    />
+
+                <!-- 总价 ¥10 -->
+                <TextView
+                    android:id="@+id/cart_tv_total_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/cart_tv1"
+                    android:textColor="@color/app_red"
+                    />
+
+                <!-- 积分 +20积分 -->
+                <TextView
+                    android:id="@+id/cart_tv_total_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/cart_tv_total_fee"
+                    android:layout_below="@id/cart_tv1"
+                    android:textColor="@color/app_red"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
+                android:layout_below="@id/cart_btn_order"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

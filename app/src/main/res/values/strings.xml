@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">哎呦呦商城</string>
+    <string name="controller_one">首页</string>
+    <string name="controller_two">任务</string>
+    <string name="controller_three">购物车</string>
+    <string name="controller_four">个人中心</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--权限提醒需要-->
+    <string name="permission">权限(permission)</string>
+    <string name="no_permissions">应用需要必要的运行权限</string>
+    <string name="settings">设置</string>
+    <string name="help">帮助</string>
+    <string name="string_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
+    <string name="quit">退出</string>
+
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+
+    <string name="mis_permission_dialog_title">权限拒绝</string>
+    <string name="mis_permission_rationale">下载安装包需要您提供存储的权限</string>
+    
+    <string name="tip_send">公告：由于年前订单量激增和物流时间影响，商城重新调整如下：预售商品1月5日之后的订单、正售商品1月13日之后的订单、厂家直发商品1月16日之后的订单将于年后统一发货，退换货商品也将于年后处理，详情请咨询客服。以此给您带来的不便，我们深表歉意！</string>
+    <string name="tip_send_2">公告：由于年前订单量激增和物流时间影响，商城重新调整如下：预售商品1月5日之后的订单、正售商品1月13日之后的订单、厂家直发商品1月16日之后的订单将于年后统一发货，退换货商品也将于年后处理，详情请咨询客服。以此给您带来的不便，我们深表歉意！商品大于10个，将于10日后发货。</string>
+</resources>

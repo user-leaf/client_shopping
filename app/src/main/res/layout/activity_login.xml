@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_common_bg"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.LoginActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/login_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="登录"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <TextView
+        android:id="@+id/login_tv_agree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:text="温馨提示：未注册的手机号，登录时将自动注册，且代表您已经同意《用户服务协议》"
+        />
+
+    <View
+        style="@style/entry_divider_bold_line_style"/>
+
+    <LinearLayout
+        android:id="@+id/login_ll_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:visibility="invisible"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@mipmap/list_note"
+            />
+
+        <TextView
+            android:id="@+id/login_tv_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="提示"
+            android:textColor="@color/app_red"
+            />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        >
+
+        <!--<com.aiyouyou.thismall.widget.ClearEditText-->
+        <!--android:id="@+id/login_et_tel"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:background="#ffffff"-->
+        <!--android:hint="手机号"-->
+        <!--android:inputType="phone"-->
+        <!--android:singleLine="true"-->
+        <!--android:textSize="@dimen/text_size_small"-->
+        <!--/>-->
+
+        <EditText
+            android:id="@+id/login_et_tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="#ffffff"
+            android:hint="手机号"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/delete_black"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/login_iv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/delete_black"
+            android:visibility="invisible"
+            />
+    </RelativeLayout>
+
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_height="3.5dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        >
+
+        <TextView
+            android:id="@+id/login_btn_get_veri_code"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_login_btn_bg"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            />
+
+        <EditText
+            android:id="@+id/login_et_veri_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/login_btn_get_veri_code"
+            android:background="#ffffff"
+            android:hint="填写短信验证码"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small"
+            />
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_height="3.5dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        >
+
+        <EditText
+            android:id="@+id/login_et_invite_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="#ffffff"
+            android:hint="邀请人的手机号(选填，一经确认无法更改)"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_small"
+            android:inputType="number"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/login_btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        android:alpha="0.5"
+        android:background="@color/app_red"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="@color/white"
+        />
+    <!-- android:clickable="false" 不起作用，需要在代码中，setOnClickListener之后setClickable("false") -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="第三方账号登录"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_login_QQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_share_qqzone"/>
+
+            <ImageView
+                android:id="@+id/iv_login_wechat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:src="@mipmap/list_share_wechat"/>
+
+            <ImageView
+                android:id="@+id/iv_login_sina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/list_signinblog"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

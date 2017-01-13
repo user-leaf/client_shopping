@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_common_bg"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.OrderPaySuccessActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/order_pay_success_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="订单详情"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/order_pay_success_iv_success"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="15dp"
+                    android:src="@mipmap/home_points_completed"
+                    />
+
+                <TextView
+                    android:id="@+id/order_pay_success_tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_pay_success_iv_success"
+                    android:layout_centerHorizontal="true"
+                    android:text="恭喜您获得100积分"
+                    android:visibility="gone"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <RelativeLayout
+                android:id="@+id/order_pay_success_rl_this_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/order_pay_success_tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/list_edit"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查看订单"
+                    android:textColor="@color/app_red"
+                    android:layout_toLeftOf="@id/order_pay_success_tv2"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:id="@+id/order_pay_success_tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="某某"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/order_pay_success_tv_tel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123"
+                    android:textColor="@color/black"
+                    android:layout_alignParentRight="true"
+                    />
+
+                <TextView
+                    android:id="@+id/order_pay_success_tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收货地址："
+                    android:layout_below="@id/order_pay_success_tv_name"
+                    />
+
+                <TextView
+                    android:id="@+id/order_pay_success_tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1816"
+                    android:layout_toRightOf="@id/order_pay_success_tv3"
+                    android:layout_alignBaseline="@id/order_pay_success_tv3"
+                    />
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:padding="10dp"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="猜你喜欢"
+                    android:textColor="@color/app_red"
+                    />
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <com.bjaiyouyou.thismall.widget.NoScrollGridView
+                android:id="@+id/order_pay_success_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="2dp"
+                android:numColumns="2"
+                android:verticalSpacing="2dp"
+                android:visibility="gone"
+                >
+
+            </com.bjaiyouyou.thismall.widget.NoScrollGridView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

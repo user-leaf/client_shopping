@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eee"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.WithdrawRecordActivity">
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_withdraw_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="提现记录"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        />
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_marginTop="7px"
+        android:id="@+id/lv_withdraw_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

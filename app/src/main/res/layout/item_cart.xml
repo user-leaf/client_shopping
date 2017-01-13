@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.daimajia.swipe.SwipeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sample1"
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        app:clickToClose="true">
+
+        <LinearLayout
+            android:id="@+id/bottom_wrapper_2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:tag="Bottom4">
+            <!-- magnifier2  star2  trash2 -->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/item_topit"-->
+            <!--android:src="@drawable/star"-->
+            <!--android:layout_width="70dp"-->
+            <!--android:background="#4cd964"-->
+            <!--android:paddingLeft="25dp"-->
+            <!--android:paddingRight="25dp"-->
+            <!--android:layout_height="match_parent" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/item_topit"-->
+            <!--android:layout_width="110dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="#C8C8C8"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingLeft="25dp"-->
+            <!--android:paddingRight="25dp"-->
+            <!--android:text="设为默认"-->
+            <!--android:textColor="@color/white"-->
+            <!--/>-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/item_delete"-->
+            <!--android:src="@drawable/trash"-->
+            <!--android:layout_width="70dp"-->
+            <!--android:background="@drawable/red"-->
+            <!--android:paddingLeft="25dp"-->
+            <!--android:paddingRight="25dp"-->
+            <!--android:layout_height="match_parent" />-->
+
+            <TextView
+                android:id="@+id/cart_item_delete"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:background="@color/app_red"
+                android:gravity="center"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="删除"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:tag="Hover"
+                >
+
+                <CheckBox
+                    android:id="@+id/cart_item_chb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_cart_chb_bg"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="7dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/cart_item_iv_pic"
+                        android:layout_width="110dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/list_image_loading"
+                        />
+
+                    <TextView
+                        android:id="@+id/cart_item_tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:text="商品名称"
+                        android:textColor="@color/black"
+                        android:layout_toRightOf="@id/cart_item_iv_pic"
+                        />
+
+                    <TextView
+                        android:id="@+id/cart_item_tv_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/cart_item_iv_pic"
+                        android:layout_below="@id/cart_item_tv_name"
+                        android:text="规格"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        />
+
+                    <TextView
+                        android:id="@+id/cart_item_tv_sales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/cart_item_tv_name"
+                        android:layout_below="@id/cart_item_tv_type"
+                        android:text="销量"
+                        android:visibility="gone"
+                        />
+
+                    <TextView
+                        android:id="@+id/cart_item_tv_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="积分"
+                        android:textColor="@color/app_dark_gray"
+                        android:textSize="@dimen/text_size_tiny"
+                        android:layout_toRightOf="@id/cart_item_iv_pic"
+                        />
+
+                    <TextView
+                        android:id="@+id/cart_item_tv_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/cart_item_tv_points"
+                        android:text="价格"
+                        android:textColor="@color/app_red"
+                        android:layout_toRightOf="@id/cart_item_iv_pic"
+                        />
+
+                    <ImageView
+                        android:id="@+id/cart_item_tv_inc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/list_addition"
+                        />
+
+                    <TextView
+                        android:id="@+id/cart_item_tv_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/cart_item_tv_inc"
+                        android:layout_alignTop="@id/cart_item_tv_inc"
+                        android:layout_toLeftOf="@id/cart_item_tv_inc"
+                        android:gravity="center"
+                        android:minWidth="25dp"
+                        android:text="0"
+                        />
+
+                    <ImageView
+                        android:id="@+id/cart_item_tv_dec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toLeftOf="@id/cart_item_tv_count"
+                        android:src="@mipmap/list_subtraction"
+                        />
+
+                    <Button
+                        android:id="@+id/cart_item_btn_click"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@id/cart_item_tv_dec"
+                        android:background="#00ffffff"
+                        android:visibility="visible"
+                        />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/cart_item_rl_off_sale"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                >
+
+                <!-- 用TextView的话点击就穿透了-->
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#88ffffff"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12.5dp"
+                    android:text="该商品已下架"
+                    android:textColor="@color/app_red"
+                    />
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+</RelativeLayout>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.activity.OrderReturnActivity">
+
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/order_return_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarTitle="申请退款"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        >
+
+    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+
+    <View
+        style="@style/entry_divider_bold_line_style"
+        android:layout_height="3.5dp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <com.bjaiyouyou.thismall.widget.NoScrollListView
+                android:id="@+id/order_return_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.bjaiyouyou.thismall.widget.NoScrollListView>
+
+
+            <View
+                style="@style/entry_divider_bold_line_style"
+                android:layout_height="3.5dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/order_return_tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="服务类型"
+                    />
+
+                <RadioGroup
+                    android:id="@+id/order_return_rg_service_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_return_tv1"
+                    android:orientation="horizontal"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/order_return_rbtn_no_receive"
+                        style="@style/order_return_rbtn_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="未收到货"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/order_return_rbtn_refund"
+                        style="@style/order_return_rbtn_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="退货退款"
+                        />
+
+                </RadioGroup>
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_bold_line_style"
+                android:layout_height="3.5dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/order_return_tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="描述问题"
+                    />
+
+                <EditText
+                    android:id="@+id/order_return_et_problem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_return_tv2"
+                    android:background="#EEEEEE"
+                    android:gravity="top"
+                    android:hint="请在此描述问题，至少10个字"
+                    android:lines="3"
+                    android:maxLength="50"
+                    android:padding="10dp"
+                    android:textSize="@dimen/text_size_small"
+                    />
+
+                <TextView
+                    android:id="@+id/order_return_tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/order_return_et_problem"
+                    android:text="/50"
+                    />
+
+                <TextView
+                    android:id="@+id/order_return_tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/order_return_tv3"
+                    android:layout_toLeftOf="@id/order_return_tv3"
+                    android:text="0"
+                    />
+            </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_bold_line_style"
+                android:layout_height="3.5dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/order_return_tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上传照片"
+                    />
+
+                <ImageView
+                    android:id="@+id/order_return_iv_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_return_tv4"
+                    android:layout_margin="5dp"
+                    android:src="@mipmap/list_add_photo"
+                    />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/order_return_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+            <Button
+                android:id="@+id/order_return_btn_commit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/app_red"
+                android:text="提交"
+                android:textColor="#ffffff"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

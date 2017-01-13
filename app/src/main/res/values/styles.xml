@@ -1,0 +1,99 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <item name="colorPrimaryDark">@color/app_red</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="controller_style">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/selector_textcolor</item>
+        <item name="android:button">@null</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+
+    <!-- 通用分割线style细线-->
+    <style name="entry_divider_fine_line_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_fine</item>
+        <item name="android:background">#DCDCDC</item> <!-- 88CCCCCC --><!-- EEEEEE -->
+    </style>
+
+    <!-- 通用分割线style粗线-->
+    <style name="entry_divider_bold_line_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_bold</item>
+        <item name="android:background">#DCDCDC</item> <!-- 88CCCCCC -->
+    </style>
+
+    <!-- 入口条目布局style -->
+    <style name="entry_bar_style">
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <!-- 申请退款页按钮style -->
+    <style name="order_return_rbtn_style">
+        <item name="android:background">@drawable/selector_order_return_rbtn_bg</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/selector_order_return_rbtn_txt_color</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="AppSplash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!-- 订单详情页底部栏style -->
+    <style name="order_detail_bottom_bar_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">51dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:visibility">gone</item>
+
+    </style>
+
+    <!-- 条目style -->
+    <style name="order_detail_bar_style">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="loading_dialog" parent="android:Animation.Dialog">
+        <!-- Dialog的windowFrame框为无 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 设置dialog的背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否显示title -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 也是个drawable，定义contentoverlay的背景 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 背景是否模糊显示 -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>
