@@ -31,7 +31,6 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
-import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.GoodsDetailsActivity;
 import com.bjaiyouyou.thismall.activity.GoodsListShowActivity;
@@ -40,7 +39,6 @@ import com.bjaiyouyou.thismall.activity.SearchGoodsActivity;
 import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.HomeEveryDayEmptyAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeGoodGridNewAdapter;
-import com.bjaiyouyou.thismall.adapter.HomeNavigationAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeNavigationNewAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeNavigationNewEmptyAdapter;
 import com.bjaiyouyou.thismall.callback.HomeAdCallback;
@@ -51,8 +49,6 @@ import com.bjaiyouyou.thismall.model.HomeNavigationItem;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNewEmpty;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
-import com.bjaiyouyou.thismall.task.TaskCallback;
-import com.bjaiyouyou.thismall.task.TaskResult;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -127,7 +123,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     //导航按键容器
     private LinearLayout mLLNavigationPanicBuying;
     //限时抢购的适配器
-    private HomeNavigationAdapter mNavigationAdapter;
 
     private HomeNavigationNewAdapter mNavigationAdapterNew;
     //过时角标
@@ -395,33 +390,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mGVPanicBuying.setNumColumns(size); // 设置列数量=列表集合数
         //创建适配器填充数据
 
-    }
-
-    /**
-     * 抢购数据，接口控制数据的数据获取
-     */
-
-    private List<HomeNavigationItem.DataBean> initNavigationData(final int page) {
-        ClientAPI.getHomePanicBuyData(page, new TaskCallback() {
-            @Override
-            public void onTaskFinished(TaskResult result) {
-                if (result.mCode == Constants.TASK_CODE_OK && !TextUtils.isEmpty(result.mData.toString().trim())) {
-                    List<HomeNavigationItem.DataBean> data = new Gson().fromJson(result.mData.toString(), HomeNavigationItem.class).getData();
-                    if (data.size() == 0) {
-                        mIVPanicBuyMore.setVisibility(View.GONE);
-                    } else {
-                        mIVPanicBuyMore.setVisibility(View.VISIBLE);
-                    }
-                    mNavigationData = data;
-                    mNavigationAdapter.clear();
-//                    mNavigationAdapter.notifyDataSetChanged();
-                    mNavigationAdapter.addAll(mNavigationData);
-//                    mNavigationAdapter.notifyDataSetChanged();
-                    initControlNavigation();
-                }
-            }
-        });
-        return mNavigationData;
     }
 
 
