@@ -519,6 +519,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //        View view=View.inflate(getContext(),R.layout.fragment_home_head,null);
 
         mRlAd = (RelativeLayout) headView.findViewById(R.id.home_rl_ad);
+        mRlAd.getLayoutParams().height = ScreenUtils.getScreenWidth(getActivity()) / 3;
 //        //解决首页不从顶端显示
 //        mRlAd.setFocusable(true);
 //        mRlAd.setFocusableInTouchMode(true);
@@ -574,7 +575,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
         // 广告控件
         mConvenientBanner = new ConvenientBanner(getActivity());
-        ViewGroup.LayoutParams adParams = new ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(getActivity()), ScreenUtils.getScreenWidth(getActivity()) / 3);
+        ViewGroup.LayoutParams adParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mConvenientBanner.setLayoutParams(adParams);
 
         //每日上新头部
