@@ -284,12 +284,16 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         if (isReach){
             if (flag != 0) {
                 flag = 0;
-                mTvTipSendDelay.setText(getResources().getString(R.string.tip_send_2));
+                if (isAdded()) {
+                    mTvTipSendDelay.setText(getContext().getResources().getString(R.string.tip_send_2));
+                }
             }
         }else {
             if (flag != 1){
                 flag = 1;
-                mTvTipSendDelay.setText(getResources().getString(R.string.tip_send));
+                if (isAdded()) {
+                    mTvTipSendDelay.setText(getResources().getString(R.string.tip_send));
+                }
             }
         }
 
