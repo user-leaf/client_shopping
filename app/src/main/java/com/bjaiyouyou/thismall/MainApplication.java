@@ -29,8 +29,8 @@ public class MainApplication extends MultiDexApplication {
         sContext = getApplicationContext();
         instance = this;
 
-        isDebug = false;
-//        LeakCanary.install(this);
+        isDebug = true;
+        LeakCanary.install(this);
 
 //        ClientAPIHelper.getInstance().setApplicationContext(this);
     }
