@@ -29,6 +29,7 @@ import com.bjaiyouyou.thismall.model.ProductModel;
 import com.bjaiyouyou.thismall.model.ProductSizeModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -38,18 +39,19 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 
 /**
  * 购物车页面
- *
  *
  * @author kanbin
  * @date 2016/6/5
@@ -65,7 +67,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     private List<CartItem2> mRawList;
     // 经过过滤的数据集（去掉下架商品）
     private List<CartItem2> mDealList;
-//    private CartAdapter mAdapter;
+    //    private CartAdapter mAdapter;
     private CartAdapter2 mAdapter;
 
     // 总价
@@ -226,15 +228,11 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 showTopTip(mDealList);
 
                 // 合计金额
-                mTvTotal.setText("¥" + getSum());
-
+                double sum = getSum();
+                mTvTotal.setText("¥" + ((sum < 10E-6) ? 0 : MathUtil.round(sum, 2)));
                 // 总积分
                 int sumPoint = getPoints();
-                if (sumPoint != 0) {
-                    mTvTotalPoint.setText("+" + sumPoint + "积分");
-                } else {
-                    mTvTotalPoint.setText("");
-                }
+                mTvTotalPoint.setText(String.format(Locale.CHINA, "+%d积分", sumPoint));
 
                 /**
                  * 条目按钮-->全选按钮
@@ -254,7 +252,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
                     mChbAll.setChecked(isChooseAll);
                 }
-                mBtnOrder.setText("结算(" + count + ")");
+                mBtnOrder.setText(String.format(Locale.CHINA, "结算(%d)", count));
             }
         });
     }
@@ -262,16 +260,17 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     /**
      * 检查是否显示发货延迟提示
      * 当存在单个数量>=10，延迟10天发货
+     *
      * @param list
      */
     private void showTopTip(List<CartItem2> list) {
         // 是否复合显示条件
         boolean isReach = false;
-        for (CartItem2 item : list){
+        for (CartItem2 item : list) {
             CartModel cartModel = item.getCartModel();
 
             if (cartModel != null) {
-                if (cartModel.getNumber() >= 10){
+                if (cartModel.getNumber() >= 10) {
                     isReach = true;
                     break;
                 }
@@ -281,18 +280,18 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
         int flag = -1;
 
-        if (isReach){
+        if (isReach) {
             if (flag != 0) {
                 flag = 0;
                 if (isAdded()) {
-                    mTvTipSendDelay.setText(getContext().getResources().getString(R.string.tip_send_2));
+                    mTvTipSendDelay.setText(getString(R.string.tip_send_2));
                 }
             }
-        }else {
-            if (flag != 1){
+        } else {
+            if (flag != 1) {
                 flag = 1;
                 if (isAdded()) {
-                    mTvTipSendDelay.setText(getResources().getString(R.string.tip_send));
+                    mTvTipSendDelay.setText(getString(R.string.tip_send));
                 }
             }
         }
@@ -383,12 +382,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 }
             }
         }
-
-        LogUtils.d(TAG, "合计金额（取舍前）：" + sum);
-        // 四舍五入，保留小数点后两位
-        BigDecimal b = new BigDecimal(sum);
-        sum = b.setScale(2, RoundingMode.HALF_UP).doubleValue();
-        LogUtils.d(TAG, "合计金额（取舍后）：" + sum);
 
         return sum;
     }
@@ -647,7 +640,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                             if (product_time_frame != null) {
                                 boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
                                 // 本次请求时在抢购中
-                                if (if_rush_to_purchasing){
+                                if (if_rush_to_purchasing) {
                                     // 此刻商品是否已过期
                                     ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
                                     if (time_frame != null) {
@@ -692,8 +685,8 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             View customView = dialog.getCustomView();
             View passView = customView.findViewById(R.id.rush_expired_dialog_tv_pass);  // 不买它了
             View goonView = customView.findViewById(R.id.rush_expired_dialog_tv_goon);  // 继续购买
-
             // 不买它了
+
             passView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -785,7 +778,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
     /**
      * 购物车辅助类
-     * <p/>
+     * <p>
      * Created by kanbin on 2016/12/5.
      */
     public static class CartHelper {
@@ -1031,7 +1024,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
          * @param cartModel
          * @return
          */
-        public static boolean isProductSelfInRush(CartModel cartModel){
+        public static boolean isProductSelfInRush(CartModel cartModel) {
             boolean ret = false;
 
             if (cartModel != null) {
@@ -1040,19 +1033,19 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
                 if (product != null) {
 
-                    if (product.getProduct_type() == 0){
+                    if (product.getProduct_type() == 0) {
                         isRushGood = true;
                     }
                 }
 
-                if (isRushGood){
+                if (isRushGood) {
                     ProductSizeModel product_size = cartModel.getProduct_size();
 
                     if (product_size != null) {
                         ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                         if (product_time_frame != null) {
-                            if (product_time_frame.isIf_rush_to_purchasing()){
+                            if (product_time_frame.isIf_rush_to_purchasing()) {
                                 ret = true;
                             }
                         }
@@ -1105,18 +1098,18 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     }
 
 
-    private static class ViewWrapper{
+    private static class ViewWrapper {
         private View mTarget;
 
         public ViewWrapper(View target) {
             mTarget = target;
         }
 
-        public int getHeight(){
+        public int getHeight() {
             return mTarget.getLayoutParams().height;
         }
 
-        public void setHeight(int height){
+        public void setHeight(int height) {
             mTarget.getLayoutParams().height = height;
             mTarget.requestLayout();
         }

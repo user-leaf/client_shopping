@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/app_common_bg"
     tools:context="com.bjaiyouyou.thismall.activity.OrderDetailActivity">
 
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
@@ -131,6 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="@color/white"
                 >
 
                 <LinearLayout
@@ -193,12 +195,13 @@
                         />
 
                 </RelativeLayout>
-            </LinearLayout>
 
-            <View
-                style="@style/entry_divider_fine_line_style"
-                android:layout_height="3.5dp"
-                />
+                <View
+                    style="@style/entry_divider_fine_line_style"
+                    android:layout_height="3.5dp"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:text="商品详情"
@@ -416,11 +419,6 @@
                     android:text="下单时间："
                     />
             </RelativeLayout>
-
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
-                />
 
         </LinearLayout>
     </ScrollView>

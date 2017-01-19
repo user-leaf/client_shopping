@@ -287,10 +287,9 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
             public void run() {
                 MobileUtils mobileUtils = new MobileUtils(getActivity());
                 mSourceDateList = mobileUtils.getAllContacts();
+                LogUtils.d(TAG, "mSourceDateList:" + mSourceDateList.toString());
 
                 if (mSourceDateList.size() != 0) { // 手机没有联系人时会产生异常
-
-                    LogUtils.d(TAG, "mSourceDateList:" + mSourceDateList.toString());
 
                     // 根据a-z进行排序源数据
                     Collections.sort(mSourceDateList, pinyinComparator);
@@ -327,6 +326,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
                                     @Override
                                     public void onResponse(String response, int id) {
+                                        LogUtils.d(TAG, "onResponse: " + response);
 
                                         mNoNetView.setVisibility(View.GONE);
                                         mNoLoginView.setVisibility(View.GONE);
@@ -334,7 +334,6 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
                                         if (response != null && !"[]".equals(response)) {
 
-                                            LogUtils.d(TAG, response);
                                             Gson gson = new Gson();
                                             ContactMemberModel contactMemberModel = gson.fromJson(response, ContactMemberModel.class);
                                             if (contactMemberModel != null) {
