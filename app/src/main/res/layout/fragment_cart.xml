@@ -81,6 +81,7 @@
         </LinearLayout>
 
         <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cart_listview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -88,6 +89,9 @@
             android:divider="@null"
             android:dividerHeight="1dp"
             android:scrollbars="none"
+            ptr:ptrAnimationStyle="flip"
+            ptr:ptrOverScroll="false"
+            ptr:ptrShowIndicator="false"
             >
 
         </com.handmark.pulltorefresh.library.PullToRefreshListView>
