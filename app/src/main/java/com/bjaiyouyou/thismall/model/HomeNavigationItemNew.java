@@ -85,9 +85,9 @@ public class HomeNavigationItemNew {
             private int rush_to_purchase_time_frame_id;
             private int product_id;
             private int product_size_id;
-            private Object deleted_at;
-            private Object created_at;
-            private Object updated_at;
+            private String deleted_at;
+            private String created_at;
+            private String updated_at;
             private boolean if_rush_to_purchasing;
             /**
              * id : 961
@@ -169,27 +169,27 @@ public class HomeNavigationItemNew {
                 this.product_size_id = product_size_id;
             }
 
-            public Object getDeleted_at() {
+            public String getDeleted_at() {
                 return deleted_at;
             }
 
-            public void setDeleted_at(Object deleted_at) {
+            public void setDeleted_at(String deleted_at) {
                 this.deleted_at = deleted_at;
             }
 
-            public Object getCreated_at() {
+            public String getCreated_at() {
                 return created_at;
             }
 
-            public void setCreated_at(Object created_at) {
+            public void setCreated_at(String created_at) {
                 this.created_at = created_at;
             }
 
-            public Object getUpdated_at() {
+            public String getUpdated_at() {
                 return updated_at;
             }
 
-            public void setUpdated_at(Object updated_at) {
+            public void setUpdated_at(String updated_at) {
                 this.updated_at = updated_at;
             }
 
@@ -239,7 +239,7 @@ public class HomeNavigationItemNew {
                 private int score;
                 private int onsell;
                 private int product_type;
-                private Object deleted_at;
+                private String deleted_at;
                 private String updated_at;
 
                 public int getId() {
@@ -282,11 +282,11 @@ public class HomeNavigationItemNew {
                     this.product_type = product_type;
                 }
 
-                public Object getDeleted_at() {
+                public String getDeleted_at() {
                     return deleted_at;
                 }
 
-                public void setDeleted_at(Object deleted_at) {
+                public void setDeleted_at(String deleted_at) {
                     this.deleted_at = deleted_at;
                 }
 
@@ -315,7 +315,7 @@ public class HomeNavigationItemNew {
                 private int stocks;
                 private int presented_gold;
                 private int sale_state;
-                private Object deleted_at;
+                private String deleted_at;
                 private String updated_at;
 
                 public int getId() {
@@ -438,11 +438,11 @@ public class HomeNavigationItemNew {
                     this.sale_state = sale_state;
                 }
 
-                public Object getDeleted_at() {
+                public String getDeleted_at() {
                     return deleted_at;
                 }
 
-                public void setDeleted_at(Object deleted_at) {
+                public void setDeleted_at(String deleted_at) {
                     this.deleted_at = deleted_at;
                 }
 
@@ -456,16 +456,16 @@ public class HomeNavigationItemNew {
             }
 
             public static class ImageBean {
-                private Object deleted_at;
+                private String deleted_at;
                 private String image_path;
                 private String image_base_name;
                 private String updated_at;
 
-                public Object getDeleted_at() {
+                public String getDeleted_at() {
                     return deleted_at;
                 }
 
-                public void setDeleted_at(Object deleted_at) {
+                public void setDeleted_at(String deleted_at) {
                     this.deleted_at = deleted_at;
                 }
 
