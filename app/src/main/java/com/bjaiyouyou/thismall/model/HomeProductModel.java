@@ -35,7 +35,7 @@ public class HomeProductModel {
     private int current_page;
     private int last_page;
     private String next_page_url;
-    private Object prev_page_url;
+    private String prev_page_url;
     private int from;
     private int to;
     /**
@@ -90,11 +90,11 @@ public class HomeProductModel {
         this.next_page_url = next_page_url;
     }
 
-    public Object getPrev_page_url() {
+    public String getPrev_page_url() {
         return prev_page_url;
     }
 
-    public void setPrev_page_url(Object prev_page_url) {
+    public void setPrev_page_url(String prev_page_url) {
         this.prev_page_url = prev_page_url;
     }
 
