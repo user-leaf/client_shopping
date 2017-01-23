@@ -25,8 +25,6 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.CartBigModel;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
-import com.bjaiyouyou.thismall.model.ProductModel;
-import com.bjaiyouyou.thismall.model.ProductSizeModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.MathUtil;
@@ -37,9 +35,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -353,19 +348,19 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             if (item.isChecked()) { // 只计算选中的商品的总价格
                 if (item != null) {
                     CartModel cartModel = item.getCartModel();
-                    ProductSizeModel product_size = cartModel.getProduct_size();
+                    CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                     if (cartModel != null && product_size != null) {
                         int count = cartModel.getNumber();
                         double price = Double.valueOf(product_size.getPrice());
 
                         // 抢购中商品按抢购价
-                        ProductModel product = cartModel.getProduct();
+                        CartModel.ProductBean product = cartModel.getProduct();
                         if (product != null) {
                             boolean isRushGood = product.getProduct_type() == 0 ? true : false;
 
                             if (isRushGood) {
-                                ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                                CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                                 if (product_time_frame != null) {
                                     boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
@@ -625,24 +620,24 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             CartItem2 cartItem = selectedList.get(i);
             CartModel cartModel = cartItem.getCartModel();
             if (cartModel != null) {
-                ProductModel product = cartModel.getProduct();
+                CartModel.ProductBean product = cartModel.getProduct();
 
                 if (product != null) {
                     int product_type = product.getProduct_type();
 
                     // product_type 0: 抢购商品，1：每日新上
                     if (product_type == 0) {
-                        ProductSizeModel product_size = cartModel.getProduct_size();
+                        CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                         if (product_size != null) {
-                            ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                            CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                             if (product_time_frame != null) {
                                 boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
                                 // 本次请求时在抢购中
                                 if (if_rush_to_purchasing) {
                                     // 此刻商品是否已过期
-                                    ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+                                    CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
                                     if (time_frame != null) {
                                         String time_frame1 = time_frame.getTime_frame();
                                         if (CartHelper.isRushGoodExpired(time_frame1)) {
@@ -660,7 +655,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 //                                }
 
 //                                // 此刻商品是否已过期
-//                                ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+//                                ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 //                                if (time_frame != null) {
 //                                    String time_frame1 = time_frame.getTime_frame();
 //                                    if (CartHelper.isRushGoodExpired(time_frame1)) {
@@ -807,7 +802,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             boolean ret = false;
             CartModel cartModel = item.getCartModel();
             if (cartModel != null) {
-                ProductModel product = cartModel.getProduct();
+                CartModel.ProductBean product = cartModel.getProduct();
                 boolean isRush = false;
                 if (product != null) {
                     isRush = product.getProduct_type() == 0 ? true : false;
@@ -820,7 +815,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                     }
                 }
 
-                ProductSizeModel product_size = cartModel.getProduct_size();
+                CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
                 if (product_size != null) {
                     if (!TextUtils.isEmpty(product_size.getDeleted_at())) {
                         ret = true;
@@ -848,7 +843,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
 //            CartModel cartModel = cartItem.getCartModel();
 //            if (cartModel != null) {
-//                ProductModel product = cartModel.getProduct();
+//                ProductBean product = cartModel.getProduct();
 //
 //                if (product != null) {
 //                    // 非抢购商品
@@ -858,14 +853,14 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 //                    }
 //                    // 抢购商品
 //                    else {
-//                        ProductSizeModel product_size = cartModel.getProduct_size();
+//                        ProductSizeBean product_size = cartModel.getProduct_size();
 //
 //                        if (product_size != null) {
-//                            ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+//                            ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 //                            // 利用当前时间判断
 //
 //                            if (product_time_frame != null) {
-//                                ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+//                                ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 //                                String time_frame1 = time_frame.getTime_frame();
 //
 //
@@ -931,19 +926,19 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 CartModel cartModel = cartItem.getCartModel();
 
                 if (cartModel != null) {
-                    ProductModel product = cartModel.getProduct();
+                    CartModel.ProductBean product = cartModel.getProduct();
 
                     if (product != null) {
                         boolean isRushGood = product.getProduct_type() == 0 ? true : false;
 
                         if (isRushGood) { // 如果是抢购商品
-                            ProductSizeModel product_size = cartModel.getProduct_size();
+                            CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                             if (product_size != null) {
-                                ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                                CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                                 if (product_time_frame != null) {
-                                    ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+                                    CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 
                                     if (time_frame != null) {
                                         String time_frame1 = time_frame.getTime_frame();
@@ -987,19 +982,19 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 CartModel cartModel = cartItem.getCartModel();
 
                 if (cartModel != null) {
-                    ProductModel product = cartModel.getProduct();
+                    CartModel.ProductBean product = cartModel.getProduct();
 
                     if (product != null) {
                         boolean isRushGood = product.getProduct_type() == 0 ? true : false;
 
                         if (isRushGood) { // 如果是抢购商品
-                            ProductSizeModel product_size = cartModel.getProduct_size();
+                            CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                             if (product_size != null) {
-                                ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                                CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                                 if (product_time_frame != null) {
-                                    ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+                                    CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 
                                     if (time_frame != null) {
                                         String time_frame1 = time_frame.getTime_frame();
@@ -1028,7 +1023,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             boolean ret = false;
 
             if (cartModel != null) {
-                ProductModel product = cartModel.getProduct();
+                CartModel.ProductBean product = cartModel.getProduct();
                 boolean isRushGood = false;
 
                 if (product != null) {
@@ -1039,10 +1034,10 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 }
 
                 if (isRushGood) {
-                    ProductSizeModel product_size = cartModel.getProduct_size();
+                    CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                     if (product_size != null) {
-                        ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                        CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                         if (product_time_frame != null) {
                             if (product_time_frame.isIf_rush_to_purchasing()) {

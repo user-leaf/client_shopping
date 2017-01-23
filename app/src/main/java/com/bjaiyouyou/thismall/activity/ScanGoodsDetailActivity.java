@@ -25,9 +25,6 @@ import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
 import com.bjaiyouyou.thismall.model.ProductDetail;
-import com.bjaiyouyou.thismall.model.ProductImageModel;
-import com.bjaiyouyou.thismall.model.ProductModel;
-import com.bjaiyouyou.thismall.model.ProductSizeModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -533,24 +530,24 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
 //        private long product_size_id; //,
 //        private int number; //,
 //        private String updated_at; //2016-07-09 12:21:14",
-//        private ProductModel product; //bject{...},
-//        private ProductSizeModel product_size; //bject{...},
-//        private ProductImageModel product_images; //bject{...}
+//        private ProductBean product; //bject{...},
+//        private ProductSizeBean product_size; //bject{...},
+//        private ProductImagesBean product_images; //bject{...}
         long product_id=mProduct.getId();
         long product_size_id=mProduct.getSizes().get(mSizePosition).getId();
         int number=mProductNum;
         String updated_at="";
 
-        ProductModel product=new ProductModel();
+        CartModel.ProductBean product=new CartModel.ProductBean();
         product.setName(mProduct.getName());
 
-        ProductSizeModel product_size=new ProductSizeModel();
+        CartModel.ProductSizeBean product_size=new CartModel.ProductSizeBean();
         product_size.setName(mProduct.getSizes().get(mSizePosition).getName());
         product_size.setPrice(mProduct.getSizes().get(mSizePosition).getPrice());
         product_size.setIntegration_price(mProduct.getSizes().get(mSizePosition).getIntegration_price());
         product_size.setPresented_gold(mProduct.getSizes().get(mSizePosition).getPresented_gold());
 
-        ProductImageModel product_images=new ProductImageModel();
+        CartModel.ProductImagesBean product_images=new CartModel.ProductImagesBean();
         if (mProduct.getImages().size()>0){
             product_images.setImage_base_name(mProduct.getImages().get(0).getImage_base_name());
             product_images.setImage_path(mProduct.getImages().get(0).getImage_path());

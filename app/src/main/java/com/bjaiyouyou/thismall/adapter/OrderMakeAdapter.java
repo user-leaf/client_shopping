@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
-import com.bjaiyouyou.thismall.model.ProductModel;
-import com.bjaiyouyou.thismall.model.ProductSizeModel;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
@@ -107,7 +105,7 @@ public class OrderMakeAdapter extends BaseAdapter {
             // 是否是抢购商品
             boolean isRushGood = false;
 
-            ProductModel product = cartModel.getProduct();
+            CartModel.ProductBean product = cartModel.getProduct();
             String productName = "";
             if (product != null) {
                 productName = product.getName();
@@ -117,14 +115,14 @@ public class OrderMakeAdapter extends BaseAdapter {
                 }
             }
 
-            ProductSizeModel product_size = cartModel.getProduct_size();
+            CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
             if (product_size != null) {
                 holder.desc.setText(product_size.getName());
                 holder.price.setText("¥" + product_size.getPrice());
 
                 // 如果是抢购中商品就设为抢购价+抢购标识
                 if (isRushGood) { // 抢购商品
-                    ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                    CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                     if (product_time_frame != null) { // 判断抢购商品有没有过期，非抢购商品这个字段为null
                         boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
@@ -171,22 +169,22 @@ public class OrderMakeAdapter extends BaseAdapter {
 //                Glide.with(mContext).load(ImageUtils.getThumb(imgUrl, ScreenUtils.getScreenWidth(mContext) / 3, 0)).placeholder(R.mipmap.list_image_loading).into(holder.pic);
 //            }
 //
-//            ProductModel product = cartModel.getProduct();
+//            ProductBean product = cartModel.getProduct();
 //            if (product != null) {
 //                String productName = product.getName();
 //                holder.name.setText(productName);
 //                isRushGood = product.getProduct_type() == 0 ? true : false;
 //
 //                // 包含在if (product != null)中，还是并列..
-//                ProductSizeModel product_size = cartModel.getProduct_size();
+//                ProductSizeBean product_size = cartModel.getProduct_size();
 //                if (product_size != null) {
 //                    holder.price.setText("¥" + product_size.getPrice());
 //
 //                    if (isRushGood) { // 抢购商品
-//                        ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+//                        ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 //
 //                        if (product_time_frame != null) { // 判断抢购商品有没有过期，非抢购商品这个字段为null
-//                            ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+//                            ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 //
 //                            if (time_frame != null) {
 //                                String time_frame1 = time_frame.getTime_frame();

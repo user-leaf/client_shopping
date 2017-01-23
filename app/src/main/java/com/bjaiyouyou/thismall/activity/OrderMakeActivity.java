@@ -23,8 +23,6 @@ import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.model.OrderMakeOrderNumberModel;
 import com.bjaiyouyou.thismall.model.OrderMakeUploadModel;
-import com.bjaiyouyou.thismall.model.ProductModel;
-import com.bjaiyouyou.thismall.model.ProductSizeModel;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.AppPackageChecked;
@@ -384,22 +382,22 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 CartModel cartModel = item.getCartModel();
 
                 if (cartModel != null) {
-                    ProductSizeModel product_size = cartModel.getProduct_size();
+                    CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                     if (product_size != null) {
                         int number = cartModel.getNumber();
                         double price = Double.valueOf(product_size.getPrice());
 
                         // 抢购中商品按抢购价
-                        ProductModel product = cartModel.getProduct();
+                        CartModel.ProductBean product = cartModel.getProduct();
                         if (product != null) {
                             boolean isRushGood = product.getProduct_type() == 0 ? true : false;
 
                             if (isRushGood) {
-                                ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                                CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                                 if (product_time_frame != null) {
-                                    ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+                                    CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 
                                     boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
                                     if (if_rush_to_purchasing) {
@@ -711,19 +709,19 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 CartModel cartModel = item.getCartModel();
 
                 if (cartModel != null) {
-                    ProductModel product = cartModel.getProduct();
+                    CartModel.ProductBean product = cartModel.getProduct();
 
                     if (product != null) {
                         boolean isRush = product.getProduct_type() == 0 ? true : false;
 
                         if (isRush) { // 属于抢购商品
-                            ProductSizeModel product_size = cartModel.getProduct_size();
+                            CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
                             if (product_size != null) {
-                                ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                                CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                                 if (product_time_frame != null) { // 判断抢购商品有没有过期，非抢购商品这个字段为null
-                                    ProductSizeModel.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+                                    CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
 
                                     if (time_frame != null) {
                                         String time_frame1 = time_frame.getTime_frame();

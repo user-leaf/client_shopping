@@ -22,8 +22,6 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.fragment.CartPage;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
-import com.bjaiyouyou.thismall.model.ProductModel;
-import com.bjaiyouyou.thismall.model.ProductSizeModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -184,7 +182,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                 // 是否是抢购商品
                 boolean isRushGood = false;
 
-                ProductModel product = cartModel.getProduct();
+                CartModel.ProductBean product = cartModel.getProduct();
                 String productName = "";
                 if (product != null) {
                     productName = product.getName();
@@ -195,7 +193,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                     }
                 }
 
-                ProductSizeModel product_size = cartModel.getProduct_size();
+                CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
                 if (product_size != null) {
                     tvType.setText(product_size.getName());
 //                    tvSales.setText("已售出" + cartModel.getProduct_size().getSales_volume() + "件");
@@ -204,7 +202,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 
                     // 如果是抢购中商品就设为抢购价+抢购标识
                     if (isRushGood) { // 抢购商品
-                        ProductSizeModel.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                        CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
                         if (product_time_frame != null) { // 判断抢购商品有没有过期，非抢购商品这个字段为null
                             boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
