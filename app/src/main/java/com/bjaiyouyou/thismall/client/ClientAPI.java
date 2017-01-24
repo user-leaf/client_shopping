@@ -36,7 +36,7 @@ public class ClientAPI {
 
     // 外网
 //    public static final String API_POINT = "http://139.129.167.60/";
-//    public static final String API_POINT = "http://testapi.bjaiyouyou.com/";
+//    public static final String API_POINT = "https://testapi.bjaiyouyou.com/";
     public static final String API_POINT = "http://api.bjaiyouyou.com/";
 
     // 内网
