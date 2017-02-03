@@ -318,7 +318,6 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
-//                                    ToastUtils.showShort("请先登录");
                                         checkNet();
                                         mHandler.sendMessage(Message.obtain());
 
@@ -333,9 +332,9 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
                                         mBodyView.setVisibility(View.VISIBLE);
 
                                         if (response != null && !"[]".equals(response)) {
-
                                             Gson gson = new Gson();
                                             ContactMemberModel contactMemberModel = gson.fromJson(response, ContactMemberModel.class);
+
                                             if (contactMemberModel != null) {
                                                 List<ContactMemberModel.DataBean> data = contactMemberModel.getData();
 

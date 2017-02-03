@@ -240,7 +240,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                             mAdapter.notifyDataSetChanged();
 
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -297,15 +297,16 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
                     Gson gson = new Gson();
                     SignInInfo signInInfo = gson.fromJson(response, SignInInfo.class);
-                    LogUtils.d(TAG, "SignInInfo = " + signInInfo.toString());
-                    mTvSignInTotalNum.setText("" + signInInfo.getSign_in_number());
-                    mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
-                    mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
 
-                    haveSigned = signInInfo.isIs_sign_in();
-                    mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
-                    LogUtils.d(TAG, "is sign in = " + signInInfo.isIs_sign_in());
+                    if (signInInfo != null) {
+                        mTvSignInTotalNum.setText("" + signInInfo.getSign_in_number());
+                        mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
+                        mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
 
+                        haveSigned = signInInfo.isIs_sign_in();
+                        mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
+
+                    }
 //                            if (signInInfo.isIs_sign_in()) {  // 改为：如果已签到，则在签到操作之前return掉
 //                                mBtnSignIn.setClickable(false);
 //                            }
