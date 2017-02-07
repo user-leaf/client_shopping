@@ -317,7 +317,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                         for (CartModel item : shopping_carts) {
                             long product_id = item.getProduct_id();
                             long product_size_id = item.getProduct_size_id();
-                            nowCartMap.put("" + product_id +"+"+ product_size_id, item);
+                            nowCartMap.put("" + product_id + "+" + product_size_id, item);
                         }
 
                         // 从map中取出上一页选中的那些
@@ -329,7 +329,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                                 long product_id = cartModel.getProduct_id();
                                 long product_size_id = cartModel.getProduct_size_id();
 
-                                CartModel cm = nowCartMap.get("" + product_id +"+"+ product_size_id);
+                                CartModel cm = nowCartMap.get("" + product_id + "+" + product_size_id);
                                 CartItem2 cartItem2 = new CartItem2();
                                 cartItem2.setCartModel(cm);
                                 chooseList.add(cartItem2);
@@ -499,14 +499,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
 
     public void loadData() {
-        // init
-        mTvName.setText("");
-        mTvTel.setText("");
-        mTvAddress.setText("");
-        mTvPostage.setText("");
-        // 检查地址栏是否为空
-        checkAddressEmpty();
-
         // 获取默认地址
         String userToken = CurrentUserManager.getUserToken();
         String url = ClientAPI.API_POINT + "api/v1/member/allAddress?token=" + userToken;
@@ -517,7 +509,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        e.printStackTrace();
+                        resetAddress();
                         // 检查地址栏是否为空
                         checkAddressEmpty();
                     }
@@ -530,8 +522,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 //                        mNoLoginView.setVisibility(View.GONE);
 //                        mBodyView.setVisibility(View.VISIBLE);
 
+                        hasDefaultAddress = false;
                         if (response != null && !"[]".equals(response)) {
-                            hasDefaultAddress = false;
 
                             Gson gson = new Gson();
                             AddressInfoNew addressInfoNew = gson.fromJson(response, AddressInfoNew.class);
@@ -560,16 +552,25 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 //                                String address = memberAddressesBean.getProvince() + memberAddressesBean.getCity() + memberAddressesBean.getDistrict() + memberAddressesBean.getAddress_detail();
 //                                mTvAddress.setText(address);
 //                            }
-                            if (hasDefaultAddress) {
-                                loadPostageData();
-                            }
                         }
 
+                        if (hasDefaultAddress) {
+                            loadPostageData();
+                        } else {
+                            resetAddress();
+                        }
                         // 检查地址栏是否为空
                         checkAddressEmpty();
                     }
                 });
 
+    }
+
+    private void resetAddress() {
+        mTvName.setText("");
+        mTvTel.setText("");
+        mTvAddress.setText("");
+        mTvPostage.setText("");
     }
 
     /**
