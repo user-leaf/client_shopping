@@ -44,10 +44,10 @@ public class LoadingDialog extends Dialog {
 
     @Override
     public void show() {
+        super.show();
         if (imageLoading != null && !this.isShowing()) {
             imageLoading.startAnimation(operatingAnim);
         }
-        super.show();
     }
 
     @Override

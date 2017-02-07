@@ -493,7 +493,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //       RecyclerView.LayoutManager mgr1=new GridLayoutManager(getContext(),2);
 //        mGvShow.setLayoutManager(mgr1);
         //设置Item间距
-        mGvShow.addItemDecoration(new SpaceItemDecoration(0,5,5,0));
+//        mGvShow.addItemDecoration(new SpaceItemDecoration(0,5,5,0));
         //添加头部
         mGvShow.addHeaderView(headView);
 //        mGvShow.addFootView(footView);
@@ -503,7 +503,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mgr2.setOrientation(LinearLayoutManager.VERTICAL);
         mGvShow.setLayoutManager(mgr2);
         mEveryDayEmpty.setLayoutManager(mgr);
-        mEveryDayEmpty.addItemDecoration(new SpaceItemDecoration(0,5,5,0));
+//        mEveryDayEmpty.addItemDecoration(new SpaceItemDecoration(0,5,5,0));
 //        mEveryDayEmpty.addHeaderView(headView);
         mGvShow.setEmptyView(mEveryDayEmpty);
     }
