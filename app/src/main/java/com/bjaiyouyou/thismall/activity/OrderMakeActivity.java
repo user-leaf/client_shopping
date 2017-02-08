@@ -133,6 +133,13 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 接口返回的地址中是否有默认地址
     private boolean hasDefaultAddress = false;
 
+    // 法1，由于loadListData()中包含loadData()，为防止第一次加载时重复执行loadData()，
+    // 在loadData()中设置是否第一次执行标记（但是loadListData()不一定会执行loadData()）
+
+    // 法2，判断是否已执行完hasLoadListData()，未执行完则不执行loadData()，
+    // 防止重复执行(但是loadListData()先执行的话并不能避免，不过一般不会发生，因为要请求完毕之后才会执行)
+    private boolean hasLoadListData = false;
+
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -303,11 +310,13 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             ClientAPI.getCartData(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    hasLoadListData = true;
                     checkNet();
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
+                    hasLoadListData = true;
 
                     if (response != null && !"[]".equals(response)) {
                         Gson gson = new Gson();
@@ -340,9 +349,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                         setDataForPage(chooseList);
                         loadData(); // 加载地址+计算邮费
                     }
+
                 }
             });
         } else {
+            hasLoadListData = true;
+
             mAdapter.setData(goodList);
             setDataForPage(goodList);
         }
@@ -499,6 +511,10 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
 
     public void loadData() {
+        if (!hasLoadListData){
+            return;
+        }
+
         // 获取默认地址
         String userToken = CurrentUserManager.getUserToken();
         String url = ClientAPI.API_POINT + "api/v1/member/allAddress?token=" + userToken;

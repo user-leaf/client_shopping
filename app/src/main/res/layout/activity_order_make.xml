@@ -125,6 +125,7 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:visibility="gone"
                     >
 
                     <ImageView
@@ -253,7 +254,7 @@
                 </com.bjaiyouyou.thismall.widget.NoScrollListView>
 
                 <View
-                    style="@style/entry_divider_bold_line_style"
+                    style="@style/entry_divider_fine_line_style"
                     android:layout_height="3.5dp"
                     />
 
