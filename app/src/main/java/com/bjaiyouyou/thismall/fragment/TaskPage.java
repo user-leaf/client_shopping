@@ -226,7 +226,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             @Override
             public void onResponse(String response, int id) {
 
-                if (response != null && !"[]".equals(response)) {
+                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
 
                     Gson gson = new Gson();
                     try {

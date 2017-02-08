@@ -462,7 +462,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 mTvNoNet.setVisibility(View.GONE);
 
                 LogUtils.d("CartPage", "onResponse: " + response);
-                if (response != null && !"[]".equals(response)) {
+                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
                     Gson gson = new Gson();
                     CartBigModel cartBigModel = gson.fromJson(response, CartBigModel.class);
                     List<CartModel> shopping_carts = cartBigModel.getShopping_carts();

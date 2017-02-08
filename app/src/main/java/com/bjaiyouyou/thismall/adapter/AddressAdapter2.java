@@ -18,7 +18,7 @@ import com.bjaiyouyou.thismall.activity.AddressAddActivity;
 import com.bjaiyouyou.thismall.activity.AddressManagerNewActivity;
 import com.bjaiyouyou.thismall.activity.OrderMakeActivity;
 import com.bjaiyouyou.thismall.client.ClientAPI;
-import com.bjaiyouyou.thismall.model.AddressInfoNew;
+import com.bjaiyouyou.thismall.model.AddressInfo2;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
@@ -37,16 +37,15 @@ import okhttp3.Call;
  * @author kanbin
  * @date 2016/6/12
  */
-public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickListener {
+public class AddressAdapter2 extends BaseSwipeAdapter implements View.OnClickListener {
 
     private Context mContext;
-    private List<AddressInfoNew.MemberAddressesBean> mList;
-    // 记录选择位置，实现单选
-    private int clickPosition = -1;
+    private List<AddressInfo2.MemberAddressesBean> mList;
+
     private SwipeLayout sample1;
     private String pageName; // 从上一页传过来的flag，用于标记哪一页，如果是确认订单页，则条目点击后finish
 
-    public AddressNewAdapter(Context context, List<AddressInfoNew.MemberAddressesBean> list, String pageName) {
+    public AddressAdapter2(Context context, List<AddressInfo2.MemberAddressesBean> list, String pageName) {
         mContext = context;
         mList = list;
         this.pageName = pageName;
@@ -57,7 +56,7 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
      *
      * @param list
      */
-    public void setData(List<AddressInfoNew.MemberAddressesBean> list) {
+    public void setData(List<AddressInfo2.MemberAddressesBean> list) {
         mList = list;
         this.notifyDataSetChanged();
     }
@@ -67,7 +66,7 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
      *
      * @param list
      */
-    public void addData(List<AddressInfoNew.MemberAddressesBean> list) {
+    public void addData(List<AddressInfo2.MemberAddressesBean> list) {
         if (mList != null) {
             mList.addAll(list);
             this.notifyDataSetChanged();
@@ -132,7 +131,7 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
         delete.setOnClickListener(this);
 
         // 3. 显示数据
-        AddressInfoNew.MemberAddressesBean memberAddressesBean = mList.get(position);
+        AddressInfo2.MemberAddressesBean memberAddressesBean = mList.get(position);
 
         // init
         swipeLayout.close();
@@ -205,7 +204,7 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
 //        }
 //
 //        // 3. 显示数据
-//        AddressInfoNew.MemberAddressesBean memberAddressesBean = mList.get(position);
+//        AddressInfo2.MemberAddressesBean memberAddressesBean = mList.get(position);
 //
 //        // 控制默认地址的花边的显示与隐藏
 //        if (memberAddressesBean.isIs_default()) {
@@ -234,14 +233,14 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
     public void onClick(View v) {
         Object tag = v.getTag();
 
-        Integer position;
+        int position;
         switch (v.getId()) {
 
             case R.id.address_item_btn_clear: // 透明图层
                 if (OrderMakeActivity.TAG.equals(pageName)) {
                     if (tag != null && tag instanceof Integer) {
-                        position = (Integer) tag;
-                        AddressInfoNew.MemberAddressesBean memberAddressesBean = mList.get(position);
+                        position = (int) tag;
+                        AddressInfo2.MemberAddressesBean memberAddressesBean = mList.get(position);
                         if (memberAddressesBean != null) {
                             Intent intent = new Intent();
                             intent.putExtra("name", memberAddressesBean.getContact_person());
@@ -260,7 +259,7 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
 
             case R.id.address_item_iv_edit: // 编辑
                 if (tag != null && tag instanceof Integer) {
-                    position = (Integer) tag;
+                    position = (int) tag;
                     if (mList.get(position) != null) {
 //                        ToastUtils.showShort("编辑");
                         Intent intent = new Intent(mContext, AddressAddActivity.class);
@@ -299,7 +298,7 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
                     .append(userToken);
             String url = sb.toString();
 
-            LogUtils.d("AddressNewAdapter", "delete url= " + url);
+            LogUtils.d("AddressAdapter2", "delete url= " + url);
 
             // 数据请求
             OkHttpUtils.get()
@@ -334,12 +333,12 @@ public class AddressNewAdapter extends BaseSwipeAdapter implements View.OnClickL
 
         if (tag != null && tag instanceof Integer) {
             position = (Integer) tag;
-            AddressInfoNew.MemberAddressesBean memberAddressesBean = mList.get(position);
+            AddressInfo2.MemberAddressesBean memberAddressesBean = mList.get(position);
 
             if (memberAddressesBean != null) {
 
                 // 本地修改为默认地址
-                for (AddressInfoNew.MemberAddressesBean mab :mList) {
+                for (AddressInfo2.MemberAddressesBean mab :mList) {
                     mab.setIs_default(false);
                 }
 

@@ -9,7 +9,7 @@ import java.util.List;
  * @author kanbin
  * @date 2016/7/30
  */
-public class AddressInfoNew {
+public class AddressInfo2 {
 
     /**
      * id : 55

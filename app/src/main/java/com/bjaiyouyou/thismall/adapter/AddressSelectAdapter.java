@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
-import com.bjaiyouyou.thismall.model.AddressInfoNew;
+import com.bjaiyouyou.thismall.model.AddressInfo2;
 
 import java.util.List;
 
@@ -21,19 +21,19 @@ import java.util.List;
 public class AddressSelectAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<AddressInfoNew.MemberAddressesBean> mList;
+    private List<AddressInfo2.MemberAddressesBean> mList;
 
-    public AddressSelectAdapter(Context context, List<AddressInfoNew.MemberAddressesBean> list) {
+    public AddressSelectAdapter(Context context, List<AddressInfo2.MemberAddressesBean> list) {
         mContext = context;
         mList = list;
     }
 
-    public void setData(List<AddressInfoNew.MemberAddressesBean> list){
+    public void setData(List<AddressInfo2.MemberAddressesBean> list){
         mList = list;
         this.notifyDataSetChanged();
     }
 
-    public void addData(List<AddressInfoNew.MemberAddressesBean> list){
+    public void addData(List<AddressInfo2.MemberAddressesBean> list){
         if (mList != null) {
             mList.addAll(list);
             this.notifyDataSetChanged();
@@ -80,7 +80,7 @@ public class AddressSelectAdapter extends BaseAdapter {
         }
 
         // 3. 显示数据
-        AddressInfoNew.MemberAddressesBean addressInfo = mList.get(position);
+        AddressInfo2.MemberAddressesBean addressInfo = mList.get(position);
         if (addressInfo != null) {
             holder.name.setText(addressInfo.getContact_person());
             holder.tel.setText(addressInfo.getContact_phone());

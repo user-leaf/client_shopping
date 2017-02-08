@@ -4,7 +4,7 @@ package com.bjaiyouyou.thismall.model;
  * 收货地址数据类（旧）
  * @author kanbin
  * @date 2016/6/6
- * @see AddressInfoNew(新)
+ * @see AddressInfo2 (新)
  */
 public class AddressInfo {
     private String name;

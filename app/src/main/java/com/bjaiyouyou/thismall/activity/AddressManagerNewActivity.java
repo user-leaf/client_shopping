@@ -1,18 +1,20 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
-import com.bjaiyouyou.thismall.adapter.AddressNewAdapter;
+import com.bjaiyouyou.thismall.adapter.AddressAdapter2;
 import com.bjaiyouyou.thismall.client.ClientAPI;
-import com.bjaiyouyou.thismall.model.AddressInfoNew;
+import com.bjaiyouyou.thismall.model.AddressInfo2;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -33,7 +35,7 @@ import okhttp3.Call;
  * @date 2016/6/12
  * @see AddressManagerActivity
  */
-public class AddressManagerNewActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class AddressManagerNewActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = AddressManagerNewActivity.class.getSimpleName();
     public static final String EXTRA_PAGE_NAME = "pageName";
@@ -41,11 +43,11 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
     // 地址数据列表
     private ListView mListView;
     // 数据集
-    private List<AddressInfoNew.MemberAddressesBean> mDataList;
+    private List<AddressInfo2.MemberAddressesBean> mDataList;
     // 添加地址
     private TextView mTvAdd;
     // 地址列表适配器
-    private AddressNewAdapter mAdapter;
+    private AddressAdapter2 mAdapter;
     // 标题栏
     private IUUTitleBar mTitleBar;
 
@@ -76,38 +78,34 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
 
     private void initVariables() {
         mPageName = getIntent().getStringExtra(EXTRA_PAGE_NAME);
+        mDataList = new ArrayList<>();
     }
 
     private void initView() {
-        mDataList = new ArrayList<>();
-
         mTitleBar = (IUUTitleBar) findViewById(R.id.address_title_bar);
-
         mListView = (ListView) findViewById(R.id.address_listview);
         mTvAdd = (TextView) findViewById(R.id.address_add);
-
-
-    }
-
-    private void setupView() {
-        mTitleBar.setLeftLayoutClickListener(this);
-        mTvAdd.setOnClickListener(this);
-        mListView.setOnItemClickListener(this);
 
         mNoNetView = findViewById(R.id.net_fail);
         mBodyView = findViewById(R.id.body);
         mNoLoginView = findViewById(R.id.no_login);
     }
 
+    private void setupView() {
+        mTitleBar.setLeftLayoutClickListener(this);
+        mTvAdd.setOnClickListener(this);
+
+    }
+
     private void initCtrl() {
-        mAdapter = new AddressNewAdapter(this, mDataList, mPageName);
+        mAdapter = new AddressAdapter2(this, mDataList, mPageName);
         mListView.setAdapter(mAdapter);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.left_layout: // 返回
+            case R.id.left_layout:
                 finish();
                 break;
             case R.id.address_add: // 添加地址页
@@ -116,9 +114,6 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    /**
-     * 请求并设置数据
-     */
     public void loadData() {
         /**
          * 测试数据
@@ -142,6 +137,8 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
         String userToken = CurrentUserManager.getUserToken();
         String url = ClientAPI.API_POINT + "api/v1/member/allAddress?token=" + userToken;
 
+        LogUtils.d(TAG, "url=" + url);
+
         OkHttpUtils.get()
                 .url(url)
                 .build()
@@ -155,16 +152,17 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
 
                     @Override
                     public void onResponse(String response, int id) {
+                        LogUtils.d(TAG, "onResponse()");
                         // 无网、未登录页及body页的显示与隐藏
                         mNoNetView.setVisibility(View.GONE);
                         mNoLoginView.setVisibility(View.GONE);
                         mBodyView.setVisibility(View.VISIBLE);
 
-                        if (response != null) {
+                        if (!TextUtils.isEmpty(response)) {
                             if (!"[]".equals(response)) {
                                 Gson gson = new Gson();
-                                AddressInfoNew addressInfoNew = gson.fromJson(response, AddressInfoNew.class);
-                                List<AddressInfoNew.MemberAddressesBean> data = addressInfoNew.getMember_addresses();
+                                AddressInfo2 addressInfo2 = gson.fromJson(response, AddressInfo2.class);
+                                List<AddressInfo2.MemberAddressesBean> data = addressInfo2.getMember_addresses();
 
                                 if (data != null) {
                                     LogUtils.d("AddressManagerNewActivity", "list = " + data.toString());
@@ -220,8 +218,4 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
         });
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        ToastUtils.showShort(""+position);
-    }
 }

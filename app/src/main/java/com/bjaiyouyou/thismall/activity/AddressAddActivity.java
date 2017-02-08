@@ -3,7 +3,6 @@ package com.bjaiyouyou.thismall.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,10 +10,9 @@ import android.widget.Toast;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
-import com.bjaiyouyou.thismall.model.AddressInfoNew;
+import com.bjaiyouyou.thismall.model.AddressInfo2;
 import com.bjaiyouyou.thismall.task.AddressInitTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.ValidateUserInputUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
@@ -77,7 +75,7 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
         if (mPageType == Constants.ADDRESS_EDIT) { // 页面类型为 修改地址
             mTitleBar.setTitle("修改收货地址");
 
-            AddressInfoNew.MemberAddressesBean mab = (AddressInfoNew.MemberAddressesBean) getIntent().getSerializableExtra("address");
+            AddressInfo2.MemberAddressesBean mab = (AddressInfo2.MemberAddressesBean) getIntent().getSerializableExtra("address");
             mAddressId = mab.getId();
             // 设置上次地址
             mEtName.setText(mab.getContact_person());

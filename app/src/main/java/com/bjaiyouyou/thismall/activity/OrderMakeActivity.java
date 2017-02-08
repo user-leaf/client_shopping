@@ -17,7 +17,7 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.OrderMakeAdapter;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.fragment.CartPage;
-import com.bjaiyouyou.thismall.model.AddressInfoNew;
+import com.bjaiyouyou.thismall.model.AddressInfo2;
 import com.bjaiyouyou.thismall.model.CartBigModel;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
@@ -542,12 +542,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                         if (response != null && !"[]".equals(response)) {
 
                             Gson gson = new Gson();
-                            AddressInfoNew addressInfoNew = gson.fromJson(response, AddressInfoNew.class);
-                            List<AddressInfoNew.MemberAddressesBean> data = addressInfoNew.getMember_addresses();
+                            AddressInfo2 addressInfo2 = gson.fromJson(response, AddressInfo2.class);
+                            List<AddressInfo2.MemberAddressesBean> data = addressInfo2.getMember_addresses();
 
                             mTvAddressDefault.setVisibility(View.GONE);
                             for (int i = 0; i < data.size(); i++) {
-                                AddressInfoNew.MemberAddressesBean memberAddressesBean = data.get(i);
+                                AddressInfo2.MemberAddressesBean memberAddressesBean = data.get(i);
                                 if (memberAddressesBean.isIs_default()) {
                                     hasDefaultAddress = true;
 
@@ -562,7 +562,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
                             // 如果地址列表没有默认地址，选择第一个地址
 //                            if (!hasDefaultAddress && data.size() >= 1) {
-//                                AddressInfoNew.MemberAddressesBean memberAddressesBean = data.get(0);
+//                                AddressInfo2.MemberAddressesBean memberAddressesBean = data.get(0);
 //                                mTvName.setText(memberAddressesBean.getContact_person());
 //                                mTvTel.setText(memberAddressesBean.getContact_phone());
 //                                String address = memberAddressesBean.getProvince() + memberAddressesBean.getCity() + memberAddressesBean.getDistrict() + memberAddressesBean.getAddress_detail();
