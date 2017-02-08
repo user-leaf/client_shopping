@@ -134,46 +134,42 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
 //
 //        mAdapter.setData(mDataList);
 
-        String userToken = CurrentUserManager.getUserToken();
-        String url = ClientAPI.API_POINT + "api/v1/member/allAddress?token=" + userToken;
+        showLoadingDialog();
 
-        LogUtils.d(TAG, "url=" + url);
-
-        OkHttpUtils.get()
-                .url(url)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        e.printStackTrace();
+        ClientAPI.getAddressList(TAG, new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                e.printStackTrace();
 //                        ToastUtils.showShort("请求失败");
-                        checkNet();
-                    }
+                checkNet();
+                dismissLoadingDialog();
+            }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtils.d(TAG, "onResponse()");
-                        // 无网、未登录页及body页的显示与隐藏
-                        mNoNetView.setVisibility(View.GONE);
-                        mNoLoginView.setVisibility(View.GONE);
-                        mBodyView.setVisibility(View.VISIBLE);
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d(TAG, "onResponse()");
+                // 无网、未登录页及body页的显示与隐藏
+                mNoNetView.setVisibility(View.GONE);
+                mNoLoginView.setVisibility(View.GONE);
+                mBodyView.setVisibility(View.VISIBLE);
 
-                        if (!TextUtils.isEmpty(response)) {
-                            if (!"[]".equals(response)) {
-                                Gson gson = new Gson();
-                                AddressInfo2 addressInfo2 = gson.fromJson(response, AddressInfo2.class);
-                                List<AddressInfo2.MemberAddressesBean> data = addressInfo2.getMember_addresses();
+                if (!TextUtils.isEmpty(response)) {
+                    if (!"[]".equals(response)) {
+                        Gson gson = new Gson();
+                        AddressInfo2 addressInfo2 = gson.fromJson(response, AddressInfo2.class);
+                        List<AddressInfo2.MemberAddressesBean> data = addressInfo2.getMember_addresses();
 
-                                if (data != null) {
-                                    LogUtils.d("AddressManagerNewActivity", "list = " + data.toString());
-                                }
-                                mAdapter.setData(data);
-                            }else {
-//                                ToastUtils.showShort("无数据");
-                            }
+                        if (data != null) {
+                            LogUtils.d("AddressManagerNewActivity", "list = " + data.toString());
                         }
+                        mAdapter.setData(data);
+                    }else {
+//                                ToastUtils.showShort("无数据");
                     }
-                });
+                }
+                dismissLoadingDialog();
+            }
+        });
 
     }
 

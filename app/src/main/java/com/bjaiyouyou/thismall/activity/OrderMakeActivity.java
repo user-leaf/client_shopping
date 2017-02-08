@@ -286,14 +286,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private void initCtrl() {
         mAdapter = new OrderMakeAdapter(this, mData);
         mListView.setAdapter(mAdapter);
-        // 解决 ScrollView 与 ListView 嵌套
-//        Utility.setListViewHeightBasedOnChildren(mListView);
 
     }
 
-    /**
-     * 只加载一次
-     */
     private void loadListData() {
         // 获取上一页页面类型pageType
         mPageType = getIntent().getIntExtra("pageType", -1);
@@ -520,54 +515,48 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
         showLoadingDialog();
 
-        // 获取默认地址
-        String userToken = CurrentUserManager.getUserToken();
-        String url = ClientAPI.API_POINT + "api/v1/member/allAddress?token=" + userToken;
+        // 设置默认地址
+        ClientAPI.getOrderMakeAddressList(TAG, new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                resetAddress();
+                // 检查地址栏是否为空
+                checkAddressEmpty();
+                dismissLoadingDialog();
+            }
 
-        OkHttpUtils.get()
-                .url(url)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        resetAddress();
-                        // 检查地址栏是否为空
-                        checkAddressEmpty();
-                        dismissLoadingDialog();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        dismissLoadingDialog();
+            @Override
+            public void onResponse(String response, int id) {
+                dismissLoadingDialog();
 
 //                        // 无网、未登录页及body页的显示与隐藏
 //                        mNoNetView.setVisibility(View.GONE);
 //                        mNoLoginView.setVisibility(View.GONE);
 //                        mBodyView.setVisibility(View.VISIBLE);
 
-                        hasDefaultAddress = false;
-                        if (response != null && !"[]".equals(response)) {
+                hasDefaultAddress = false;
+                if (response != null && !"[]".equals(response)) {
 
-                            Gson gson = new Gson();
-                            AddressInfo2 addressInfo2 = gson.fromJson(response, AddressInfo2.class);
-                            List<AddressInfo2.MemberAddressesBean> data = addressInfo2.getMember_addresses();
+                    Gson gson = new Gson();
+                    AddressInfo2 addressInfo2 = gson.fromJson(response, AddressInfo2.class);
+                    List<AddressInfo2.MemberAddressesBean> data = addressInfo2.getMember_addresses();
 
-                            mTvAddressDefault.setVisibility(View.GONE);
-                            for (int i = 0; i < data.size(); i++) {
-                                AddressInfo2.MemberAddressesBean memberAddressesBean = data.get(i);
-                                if (memberAddressesBean.isIs_default()) {
-                                    hasDefaultAddress = true;
+                    mTvAddressDefault.setVisibility(View.GONE);
+                    for (int i = 0; i < data.size(); i++) {
+                        AddressInfo2.MemberAddressesBean memberAddressesBean = data.get(i);
+                        if (memberAddressesBean.isIs_default()) {
+                            hasDefaultAddress = true;
 
-                                    mTvName.setText(memberAddressesBean.getContact_person());
-                                    mTvTel.setText(memberAddressesBean.getContact_phone());
-                                    String address = memberAddressesBean.getProvince() + memberAddressesBean.getCity() + memberAddressesBean.getDistrict() + memberAddressesBean.getAddress_detail();
-                                    mTvAddress.setText(address);
-                                    mTvAddressDefault.setVisibility(View.VISIBLE);
-                                    break;
-                                }
-                            }
+                            mTvName.setText(memberAddressesBean.getContact_person());
+                            mTvTel.setText(memberAddressesBean.getContact_phone());
+                            String address = memberAddressesBean.getProvince() + memberAddressesBean.getCity() + memberAddressesBean.getDistrict() + memberAddressesBean.getAddress_detail();
+                            mTvAddress.setText(address);
+                            mTvAddressDefault.setVisibility(View.VISIBLE);
+                            break;
+                        }
+                    }
 
-                            // 如果地址列表没有默认地址，选择第一个地址
+                    // 如果地址列表没有默认地址，选择第一个地址
 //                            if (!hasDefaultAddress && data.size() >= 1) {
 //                                AddressInfo2.MemberAddressesBean memberAddressesBean = data.get(0);
 //                                mTvName.setText(memberAddressesBean.getContact_person());
@@ -575,17 +564,17 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 //                                String address = memberAddressesBean.getProvince() + memberAddressesBean.getCity() + memberAddressesBean.getDistrict() + memberAddressesBean.getAddress_detail();
 //                                mTvAddress.setText(address);
 //                            }
-                        }
+                }
 
-                        if (hasDefaultAddress) {
-                            loadPostageData();
-                        } else {
-                            resetAddress();
-                        }
-                        // 检查地址栏是否为空
-                        checkAddressEmpty();
-                    }
-                });
+                if (hasDefaultAddress) {
+                    loadPostageData();
+                } else {
+                    resetAddress();
+                }
+                // 检查地址栏是否为空
+                checkAddressEmpty();
+            }
+        });
 
     }
 
@@ -627,9 +616,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
-    /**
-     * 检查地址栏是否为空
-     */
     private void checkAddressEmpty() {
         // 如果地址为空，显示 去添加 页面
         if (TextUtils.isEmpty(mTvName.getText().toString())
@@ -892,7 +878,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     // 直接去支付
     private void doPingxxPay(int payType) {
-//        loadingDialog.show();
 
         // 去支付
         final int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效

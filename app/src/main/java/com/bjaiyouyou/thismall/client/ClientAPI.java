@@ -15,6 +15,7 @@ import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.GetBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
@@ -288,24 +289,26 @@ public class ClientAPI {
     /**
      * 获取订单详情
      *
-     * @param orderNumbre
+     * @param orderNumber
      * @param token
      * @param callback
      */
 
-    public static void getOrderDetailsData(String orderNumbre, String token, StringCallback callback) {
-        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
-        sb.append("api/v1/order/queryByOrderNumber/")
-                .append(orderNumbre)
-                .append("?token=")
-                .append(token);
-        String url = sb.toString();
-        LogUtils.e("getOrderDetailsData", url);
+    public static void getOrderDetailsData(String orderNumber, String token, StringCallback callback) {
+//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+//        sb.append("api/v1/order/queryByOrderNumber/")
+//                .append(orderNumber)
+//                .append("?token=")
+//                .append(token);
+//        String url = sb.toString();
+//        LogUtils.e("getOrderDetailsData", url);
+//
+//        OkHttpUtils.get()
+//                .url(url)
+//                .build()
+//                .execute(callback);
 
-        OkHttpUtils.get()
-                .url(url)
-                .build()
-                .execute(callback);
+        getOrderDetail(null, orderNumber, callback);
     }
 
     /**
@@ -1083,7 +1086,13 @@ public class ClientAPI {
                 .execute(callback);
     }
 
-    public static void taskSync(String requestTAG, StringCallback callback) {
+    /**
+     * 任务页 - 同步积分
+     *
+     * @param pageTag
+     * @param callback
+     */
+    public static void taskSync(String pageTag, StringCallback callback) {
         String userToken = CurrentUserManager.getUserToken();
         String url = ClientAPI.API_POINT + "v1/member/synchronize" + "?token=" + userToken;
 
@@ -1091,8 +1100,62 @@ public class ClientAPI {
 
         OkHttpUtils.get()
                 .url(url)
-                .tag(requestTAG)
+                .tag(pageTag)
                 .build()
                 .execute(callback);
     }
+
+    /**
+     * 地址管理页
+     *
+     * @param callback
+     */
+    public static void getAddressList(String pageTag, StringCallback callback) {
+
+        String url = ClientAPI.API_POINT + "api/v1/member/allAddress?token=" + CurrentUserManager.getUserToken();
+
+        LogUtils.d(TAG, "getAddressList:" + url);
+
+        OkHttpUtils.get()
+                .url(url)
+                .tag(pageTag)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 订单详情页数据
+     *
+     * @param pageTag
+     * @param orderNumber
+     * @param callback
+     */
+    public static void getOrderDetail(String pageTag, String orderNumber, StringCallback callback) {
+
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/order/queryByOrderNumber/")
+                .append(orderNumber)
+                .append("?token=")
+                .append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "getOrderDetail: " + url);
+
+        GetBuilder builder = OkHttpUtils.get().url(url);
+        if (!TextUtils.isEmpty(pageTag)) {
+            builder.tag(pageTag);
+        }
+        builder.build().execute(callback);
+    }
+
+    /**
+     * 确认订单页地址
+     *
+     * @param callback
+     */
+    public static void getOrderMakeAddressList(String pageTag, StringCallback callback){
+        getAddressList(pageTag, callback);
+
+    }
+
 }

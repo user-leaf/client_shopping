@@ -338,104 +338,92 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
         showLoadingDialog();
 
-        String userToken = CurrentUserManager.getUserToken();
-        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
-        sb.append("api/v1/order/queryByOrderNumber/").append(mOrderNumber)
-                .append("?token=").append(userToken);
+        ClientAPI.getOrderDetail(TAG, mOrderNumber, new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                dismissLoadingDialog();
+            }
 
-        String url = sb.toString();
+            @Override
+            public void onResponse(String response, int id) {
 
-        LogUtils.d(TAG, "url: " + url);
+                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
+                    Gson gson = new Gson();
+                    OrderDetailModel orderDetailModel = gson.fromJson(response, OrderDetailModel.class);
+                    if (orderDetailModel != null) {
+                        OrderDetailModel.OrderBean order = orderDetailModel.getOrder();
+                        if (order != null) {
+                            // 订单编号
+                            mTvOrderNumber.setText(order.getOrder_number());
+                            // 地址
+                            mName = order.getAddressee();
+                            mTel = order.getPhone();
+                            mAddress = order.getAddress();
 
-        OkHttpUtils.get()
-                .url(url)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        dismissLoadingDialog();
-                    }
+                            mTvAddress.setText(order.getAddress());
+                            mTvName.setText(order.getAddressee());
+                            mTvTel.setText(order.getPhone());
 
-                    @Override
-                    public void onResponse(String response, int id) {
+                            // 运单
+                            mTvExpress2Number.setText("" + order.getWaybill_number());
 
-                        if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
-                            Gson gson = new Gson();
-                            OrderDetailModel orderDetailModel = gson.fromJson(response, OrderDetailModel.class);
-                            if (orderDetailModel != null) {
-                                OrderDetailModel.OrderBean order = orderDetailModel.getOrder();
-                                if (order != null) {
-                                    // 订单编号
-                                    mTvOrderNumber.setText(order.getOrder_number());
-                                    // 地址
-                                    mName = order.getAddressee();
-                                    mTel = order.getPhone();
-                                    mAddress = order.getAddress();
+                            // 商品列表
+                            List<OrderDetailModel.OrderBean.OrderDetailBean> order_detail = order.getOrder_detail();
+                            // 购物列表
+                            mData.addAll(order_detail);
+                            mAdapter.setData(order_detail);
 
-                                    mTvAddress.setText(order.getAddress());
-                                    mTvName.setText(order.getAddressee());
-                                    mTvTel.setText(order.getPhone());
+                            // 商品重量
+                            if (order_detail != null) {
 
-                                    // 运单
-                                    mTvExpress2Number.setText("" + order.getWaybill_number());
+                                double sumWeight = 0;
+                                for (OrderDetailModel.OrderBean.OrderDetailBean good : order_detail) {
+                                    OrderDetailModel.OrderBean.OrderDetailBean.ProductSizeBean product_size = good.getProduct_size();
 
-                                    // 商品列表
-                                    List<OrderDetailModel.OrderBean.OrderDetailBean> order_detail = order.getOrder_detail();
-                                    // 购物列表
-                                    mData.addAll(order_detail);
-                                    mAdapter.setData(order_detail);
+                                    if (product_size != null) {
 
-                                    // 商品重量
-                                    if (order_detail != null) {
+                                        String weight1 = product_size.getWeight();
+                                        int sales_volume = good.getNumber();
+                                        if (weight1 != null) {
+                                            double weight = Double.parseDouble(weight1);
+                                            sumWeight += (weight * sales_volume);
 
-                                        double sumWeight = 0;
-                                        for (OrderDetailModel.OrderBean.OrderDetailBean good : order_detail) {
-                                            OrderDetailModel.OrderBean.OrderDetailBean.ProductSizeBean product_size = good.getProduct_size();
-
-                                            if (product_size != null) {
-
-                                                String weight1 = product_size.getWeight();
-                                                int sales_volume = good.getNumber();
-                                                if (weight1 != null) {
-                                                    double weight = Double.parseDouble(weight1);
-                                                    sumWeight += (weight * sales_volume);
-
-                                                }
-                                            }
                                         }
+                                    }
+                                }
 
-                                        LogUtils.d(TAG, "sumWeight: " + sumWeight);
-                                        // 保留2位小数
+                                LogUtils.d(TAG, "sumWeight: " + sumWeight);
+                                // 保留2位小数
 //                                        mTvWeight.setText("" + MathUtil.round(sumWeight, 2) + "公斤");
 
-                                    }
-
-                                    // 配送方式
-//                                    mTvExpressCompany.setText("韵达快递");
-                                    // 运费
-                                    mTvPostage.setText(order.getPostage() + "元");
-
-                                    // 实付金额栏
-                                    mTvMoney.setText("¥" + order.getAll_amount());
-                                    mTvPoints.setText("+" + order.getDeduct_integration() + "积分");
-
-                                    // 本次消费可获得UU
-                                    mTvGoldCoin.setText(order.getGet_gold() + "UU");
-
-                                    // 下单时间
-                                    mTvCreateTime.setText(order.getCreated_at());
-                                    // 订单状态
-                                    mTvOrderStatus.setText(order.getShow_state_msg());
-                                    // 根据页面类型显示相应布局
-                                    type = order.getShow_state();
-                                    showByType(type);
-                                }
                             }
-                        }
 
-                        dismissLoadingDialog();
+                            // 配送方式
+//                                    mTvExpressCompany.setText("韵达快递");
+                            // 运费
+                            mTvPostage.setText(order.getPostage() + "元");
+
+                            // 实付金额栏
+                            mTvMoney.setText("¥" + order.getAll_amount());
+                            mTvPoints.setText("+" + order.getDeduct_integration() + "积分");
+
+                            // 本次消费可获得UU
+                            mTvGoldCoin.setText(order.getGet_gold() + "UU");
+
+                            // 下单时间
+                            mTvCreateTime.setText(order.getCreated_at());
+                            // 订单状态
+                            mTvOrderStatus.setText(order.getShow_state_msg());
+                            // 根据页面类型显示相应布局
+                            type = order.getShow_state();
+                            showByType(type);
+                        }
                     }
-                });
+                }
+
+                dismissLoadingDialog();
+            }
+        });
 
         /**
          * 获取物流信息
