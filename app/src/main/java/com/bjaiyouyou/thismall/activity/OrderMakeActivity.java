@@ -140,6 +140,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 防止重复执行(但是loadListData()先执行的话并不能避免，不过一般不会发生，因为要请求完毕之后才会执行)
     private boolean hasLoadListData = false;
 
+    private int loadingCount = 0;
+
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -291,6 +293,22 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+    private void showLoadingDialog() {
+        if (loadingCount <= 0) {
+            loadingDialog.show();
+        }
+
+        loadingCount++;
+    }
+
+    private void hideLoadingDialog() {
+        if (loadingCount <= 1) {
+            loadingDialog.dismiss();
+        }
+
+        loadingCount--;
+    }
+
     /**
      * 只加载一次
      */
@@ -306,16 +324,19 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         boolean useDataInServer = true;
 
         if (useDataInServer) {
+            showLoadingDialog();
             // 请求购物车接口获取此刻服务器数据
             ClientAPI.getCartData(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
                     hasLoadListData = true;
                     checkNet();
+                    hideLoadingDialog();
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
+                    hideLoadingDialog();
                     hasLoadListData = true;
 
                     if (response != null && !"[]".equals(response)) {
@@ -511,9 +532,11 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
 
     public void loadData() {
-        if (!hasLoadListData){
+        if (!hasLoadListData) {
             return;
         }
+
+        showLoadingDialog();
 
         // 获取默认地址
         String userToken = CurrentUserManager.getUserToken();
@@ -528,10 +551,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                         resetAddress();
                         // 检查地址栏是否为空
                         checkAddressEmpty();
+                        hideLoadingDialog();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        hideLoadingDialog();
 
 //                        // 无网、未登录页及body页的显示与隐藏
 //                        mNoNetView.setVisibility(View.GONE);
@@ -770,7 +795,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    //  第三方控件所需 https://github.com/saiwu-bigkoo/Android-AlertView
+    //  https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
         // 支付方式
