@@ -36,6 +36,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public LoadingDialog loadingDialog;
     private long lastClick = 0;
 
+    private int loadingCount = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +155,24 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             widgetClick(v);
         }
     }
+
+
+    public void showLoadingDialog() {
+        if (loadingCount <= 0) {
+            loadingDialog.show();
+        }
+
+        loadingCount++;
+    }
+
+    public void dismissLoadingDialog() {
+        if (loadingCount <= 1) {
+            loadingDialog.dismiss();
+        }
+
+        loadingCount--;
+    }
+
 
 //    /**
 //     * [防止快速点击]

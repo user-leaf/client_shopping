@@ -336,8 +336,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 //        minute = 0;
 //        second = 0;
 
-        String userToken = CurrentUserManager.getUserToken();
+        showLoadingDialog();
 
+        String userToken = CurrentUserManager.getUserToken();
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/order/queryByOrderNumber/").append(mOrderNumber)
                 .append("?token=").append(userToken);
@@ -352,11 +353,12 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        dismissLoadingDialog();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+
                         if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
                             Gson gson = new Gson();
                             OrderDetailModel orderDetailModel = gson.fromJson(response, OrderDetailModel.class);
@@ -430,6 +432,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                                 }
                             }
                         }
+
+                        dismissLoadingDialog();
                     }
                 });
 

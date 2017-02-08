@@ -140,8 +140,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 防止重复执行(但是loadListData()先执行的话并不能避免，不过一般不会发生，因为要请求完毕之后才会执行)
     private boolean hasLoadListData = false;
 
-    private int loadingCount = 0;
-
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -293,22 +291,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void showLoadingDialog() {
-        if (loadingCount <= 0) {
-            loadingDialog.show();
-        }
-
-        loadingCount++;
-    }
-
-    private void hideLoadingDialog() {
-        if (loadingCount <= 1) {
-            loadingDialog.dismiss();
-        }
-
-        loadingCount--;
-    }
-
     /**
      * 只加载一次
      */
@@ -331,12 +313,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 public void onError(Call call, Exception e, int id) {
                     hasLoadListData = true;
                     checkNet();
-                    hideLoadingDialog();
+                    dismissLoadingDialog();
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
-                    hideLoadingDialog();
+                    dismissLoadingDialog();
                     hasLoadListData = true;
 
                     if (response != null && !"[]".equals(response)) {
@@ -551,12 +533,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                         resetAddress();
                         // 检查地址栏是否为空
                         checkAddressEmpty();
-                        hideLoadingDialog();
+                        dismissLoadingDialog();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        hideLoadingDialog();
+                        dismissLoadingDialog();
 
 //                        // 无网、未登录页及body页的显示与隐藏
 //                        mNoNetView.setVisibility(View.GONE);
