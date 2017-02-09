@@ -539,7 +539,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
 //    }
 
-    //  https://github.com/saiwu-bigkoo/Android-AlertView 所需
+    // https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
         // 去支付
@@ -616,7 +616,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         // 从登录页返回
         if (requestCode == REQUEST_CODE) {
             if (resultCode == LoginActivity.RESULT_OK) {
+                loadData();
                 loadPageData();
+
             }
         }
 
@@ -636,6 +638,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             mVipSyncView.setSelected(false);
             mIvVipSync.setSelected(false);
             mTvVipRecharge.setVisibility(View.VISIBLE);
+
+            pageno = 1;
+            loadData();
         }
     }
 }
