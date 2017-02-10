@@ -96,4 +96,9 @@
         <!-- 背景是否模糊显示 -->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+    
+    <style name="address_picker_anim_style">
+        <item name="android:windowEnterAnimation">@anim/anim_picker_pop_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_picker_pop_exit</item>
+    </style>
 </resources>

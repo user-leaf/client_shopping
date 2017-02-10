@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.picker.AssetsUtils;
 import com.alibaba.fastjson.JSON;
 
@@ -97,6 +98,9 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
         if (result.size() > 0) {
             AddressPicker picker = new AddressPicker(activity, result);
             picker.setTextSize(14);
+            picker.setAnimationStyle(R.style.address_picker_anim_style);
+            picker.setLineColor(activity.getResources().getColor(R.color.app_gray_dcdcdc));
+            picker.setTextColor(activity.getResources().getColor(R.color.black));
             picker.setHideCounty(hideCounty);
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {

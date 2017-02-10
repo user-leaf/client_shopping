@@ -35,7 +35,6 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
 
     private static final java.lang.String TAG = AddressAddActivity.class.getSimpleName();
 
-    // 标题栏
     private IUUTitleBar mTitleBar;
 
     // 地区

@@ -73,11 +73,12 @@
     <View
         style="@style/entry_divider_fine_line_style"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/address_add_district"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:orientation="horizontal"
         >
 
         <TextView
@@ -87,38 +88,38 @@
             android:text="所在地区："
             />
 
-        <ImageView
-            android:id="@+id/address_add_district_jump"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            />
-
         <TextView
-            android:id="@+id/address_add_tv_county"
+            android:id="@+id/address_add_tv_province"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/address_add_district_jump"
-            android:gravity="right"
+            android:textColor="@color/black"
             />
 
         <TextView
             android:id="@+id/address_add_tv_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/address_add_tv_county"
-            android:gravity="right"
+            android:textColor="@color/black"
             />
 
         <TextView
-            android:id="@+id/address_add_tv_province"
-            android:layout_width="wrap_content"
+            android:id="@+id/address_add_tv_county"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/address_add_tv_city"
-            android:gravity="right"
+            android:textColor="@color/black"
+            android:singleLine="true"
             />
 
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/address_add_district_jump"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/list_edit"
+            android:layout_marginLeft="5dp"
+            />
+
+    </LinearLayout>
 
     <View
         style="@style/entry_divider_fine_line_style"/>
