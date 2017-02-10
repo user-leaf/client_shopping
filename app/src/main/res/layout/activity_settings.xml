@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/app_common_bg"
     android:orientation="vertical"
     tools:context="com.bjaiyouyou.thismall.activity.SettingsActivity">
@@ -12,32 +12,26 @@
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="设置"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="设置"
         >
 
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
-    <View
-        style="@style/entry_divider_bold_line_style"
-        android:layout_height="3.5dp"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         >
+
         <RelativeLayout
             android:id="@+id/settings_share"
+            style="@style/settings_entry_bar_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/entry_bar_style"
             android:visibility="gone"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,34 +41,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/list_edit"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                />
-
-        </RelativeLayout>
-
-        <View
-            style="@style/entry_divider_fine_line_style"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/entry_bar_style"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="关于我们"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:src="@mipmap/list_edit"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 />
 
         </RelativeLayout>
@@ -84,96 +53,43 @@
 
         <RelativeLayout
             android:id="@+id/settings_rl_cache"
+            style="@style/settings_entry_bar_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/entry_bar_style"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="清除本地缓存"
                 />
+
             <TextView
                 android:id="@+id/settings_tv_cache"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 />
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <View
-        style="@style/entry_divider_bold_line_style"
-        android:layout_height="3.5dp"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        >
-        <RelativeLayout
-            android:id="@+id/settings_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/entry_bar_style"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="地址管理"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/list_edit"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                />
-
         </RelativeLayout>
 
         <View
-            style="@style/entry_divider_fine_line_style"/>
-
-        <RelativeLayout
-            android:id="@+id/settings_rl_change_tel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/entry_bar_style"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="更改手机号"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/list_edit"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                />
-
-        </RelativeLayout>
+            style="@style/entry_divider_fine_line_style"
+            />
 
         <View
-            style="@style/entry_divider_fine_line_style"/>
+            style="@style/entry_divider_fine_line_style"
+            android:layout_marginTop="3.5dp"
+            />
 
         <RelativeLayout
             android:id="@+id/settings_update"
+            style="@style/settings_entry_bar_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/entry_bar_style"
+
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -183,36 +99,29 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/list_edit"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:src="@mipmap/list_edit"
                 />
 
         </RelativeLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="申请退款"
-            android:onClick="OrderReturn"
-            android:visibility="gone"
+        <View
+            style="@style/entry_divider_fine_line_style"
             />
     </LinearLayout>
-
-    <View
-        style="@style/entry_divider_bold_line_style"/>
 
     <Button
         android:id="@+id/settings_btn_logout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:text="退出账号"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:textSize="@dimen/text_size_large"
+        android:layout_marginTop="20dp"
         android:background="@color/app_red"
+        android:gravity="center"
+        android:text="退出账号"
         android:textColor="#ffffff"
+        android:textSize="@dimen/text_size_large"
         />
 </LinearLayout>

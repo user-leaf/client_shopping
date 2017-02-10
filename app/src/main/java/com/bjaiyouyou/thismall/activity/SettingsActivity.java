@@ -33,8 +33,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
 //    public static SettingsActivity instance;
 
-    // 收货地址管理
-    private View mBtnAddress;
     // 缓存大小
     private TextView mTvCache;
     // 清除缓存
@@ -43,7 +41,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private View mShareView;
     // 返回
     private View mBackView;
-    private View mChangeTelView;
     // 退出登录
     private Button mBtnLogout;
     // 检查升级
@@ -82,9 +79,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         mBackView = findViewById(R.id.left_layout);
         mCleanCacheView = findViewById(R.id.settings_rl_cache);
         mTvCache = (TextView) findViewById(R.id.settings_tv_cache);
-        mBtnAddress = findViewById(R.id.settings_address);
         mShareView = findViewById(R.id.settings_share);
-        mChangeTelView = findViewById(R.id.settings_rl_change_tel);
         mBtnLogout = (Button) findViewById(R.id.settings_btn_logout);
         mUpdateView = findViewById(R.id.settings_update);
     }
@@ -92,9 +87,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private void setupView() {
         mBackView.setOnClickListener(this);
         mCleanCacheView.setOnClickListener(this);
-        mBtnAddress.setOnClickListener(this);
         mShareView.setOnClickListener(this);
-        mChangeTelView.setOnClickListener(this);
         mBtnLogout.setOnClickListener(this);
         mUpdateView.setOnClickListener(this);
 
@@ -134,15 +127,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                break;
-
-            case R.id.settings_address: // 我的收货地址页
-//                jump(AddressManagerActivity.class,false);
-                jump(AddressManagerNewActivity.class, false);
-                break;
-            case R.id.settings_rl_change_tel: // 更换手机号
-//                jump(TelChangeActivity.class,false);
-                jump(TelChangeNewActivity.class, false);
                 break;
 
             case R.id.settings_update: // 检查升级
@@ -212,7 +196,4 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         oks.show(this);
     }
 
-    public void OrderReturn(View view) {
-        jump(OrderReturnActivity.class, false);
-    }
 }
