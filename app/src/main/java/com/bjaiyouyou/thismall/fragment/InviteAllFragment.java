@@ -94,6 +94,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
     private View mNoLoginView;
     // 主页面
     private View mBodyView;
+    private View mEmptyView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,22 +114,21 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
         initView();
         setupView();
-        loadData();
 
     }
-    
+
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            loadData();
-        }
+    public void onResume() {
+        super.onResume();
+        loadData();
+
     }
 
     private void initView() {
         sideBar = (SideBar) layout.findViewById(R.id.sidebar);
         dialog = (TextView) layout.findViewById(R.id.dialog);
         sortListView = (ListView) layout.findViewById(R.id.mobile_contact_list);
+        mEmptyView = layout.findViewById(R.id.invite_all_empty);
         mClearEditText = (ClearEditText) layout.findViewById(R.id.filter_edit);
         mBack = layout.findViewById(R.id.left_layout);
 
@@ -156,6 +156,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
         adapter = new SortAdapter(getActivity(), mSourceDateList);
         sortListView.setAdapter(adapter);
+        sortListView.setEmptyView(mEmptyView);
 
         //根据输入框输入值的改变来过滤搜索
         mClearEditText.addTextChangedListener(new TextWatcher() {

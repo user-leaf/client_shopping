@@ -261,7 +261,9 @@
         <!-- 网页 -->
         <activity
             android:name=".activity.WebShowActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            >
         </activity>
         <!-- 临时用的登录页 -->
         <activity

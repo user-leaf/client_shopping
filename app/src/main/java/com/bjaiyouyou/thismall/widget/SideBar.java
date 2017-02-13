@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,10 +17,12 @@ import com.bjaiyouyou.thismall.R;
  */
 public class SideBar extends View {
 
+    // 第一个字母
+    public static final String markVip = "*";
     // 触摸事件
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
     // 26个字母
-    public static String[] b = {"A", "B", "C", "D", "E", "F", "G", "H", "I",
+    public static String[] b = {markVip, "A", "B", "C", "D", "E", "F", "G", "H", "I",
             "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
             "W", "X", "Y", "Z", "#"};
     private int choose = -1;// 选中
@@ -96,7 +97,7 @@ public class SideBar extends View {
 
         switch (action) {
             case MotionEvent.ACTION_UP:
-                setBackgroundDrawable(new ColorDrawable(0x00000000));
+//                setBackgroundDrawable(new ColorDrawable(0x00000000));
                 choose = -1;//
                 invalidate();
                 if (mTextDialog != null) {
@@ -105,7 +106,7 @@ public class SideBar extends View {
                 break;
 
             default:
-                setBackgroundResource(R.drawable.sidebar_background);
+//                setBackgroundResource(R.drawable.sidebar_background);
                 if (oldChoose != c) {
                     if (c >= 0 && c < b.length) {
                         if (listener != null) {

@@ -3,7 +3,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="#E0E0E0"
               tools:context="com.bjaiyouyou.thismall.fragment.InviteMineFragment">
 
     <include layout="@layout/net_fail_layout"/>
@@ -23,59 +22,49 @@
         />
 
     <!--android:background="@drawable/search_bar_edit_selector"-->
-    <LinearLayout
+
+    <FrameLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         >
 
-        <TextView
-            android:id="@+id/invite_mine_tv_vip"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text=""
-            android:textColor="@color/app_red"
-            />
-
-        <FrameLayout
+        <ListView
+            android:id="@+id/invite_mine_listview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            >
+            android:layout_gravity="center"
+            android:divider="#cccccc"
+            android:dividerHeight="1px"
+            android:scrollbars="none"
+            />
 
-            <ListView
-                android:id="@+id/invite_mine_listview"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:divider="#cccccc"
-                android:dividerHeight="1dp"
-                android:paddingRight="20dp"
-                android:scrollbars="none"
-                />
+        <!--android:background="@drawable/show_head_toast_bg"-->
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="#88888888"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30.0dip"
+            android:visibility="invisible"/>
 
-            <!--android:background="@drawable/show_head_toast_bg"-->
-            <TextView
-                android:id="@+id/dialog"
-                android:layout_width="80.0dip"
-                android:layout_height="80.0dip"
-                android:layout_gravity="center"
-                android:background="#88888888"
-                android:gravity="center"
-                android:textColor="#ffffffff"
-                android:textSize="30.0dip"
-                android:visibility="invisible"/>
+        <com.bjaiyouyou.thismall.widget.SideBar
+            android:id="@+id/sidebar"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="40dp"
+            />
 
-            <com.bjaiyouyou.thismall.widget.SideBar
-                android:id="@+id/sidebar"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|center"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="20dp"
-                />
-        </FrameLayout>
-    </LinearLayout>
+        <include
+            android:id="@+id/invite_mine_empty"
+            layout="@layout/layout_common_data_none"
+            />
+
+    </FrameLayout>
+
 </LinearLayout>

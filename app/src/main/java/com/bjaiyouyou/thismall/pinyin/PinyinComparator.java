@@ -1,6 +1,7 @@
 package com.bjaiyouyou.thismall.pinyin;
 
 import com.bjaiyouyou.thismall.model.ContactModel;
+import com.bjaiyouyou.thismall.widget.SideBar;
 
 import java.util.Comparator;
 
@@ -11,11 +12,11 @@ import java.util.Comparator;
 public class PinyinComparator implements Comparator<ContactModel> {
 
 	public int compare(ContactModel o1, ContactModel o2) {
-		if (o1.getSortLetters().equals("@")
+		if (o1.getSortLetters().equals(SideBar.markVip)
 				|| o2.getSortLetters().equals("#")) {
 			return -1;
 		} else if (o1.getSortLetters().equals("#")
-				|| o2.getSortLetters().equals("@")) {
+				|| o2.getSortLetters().equals(SideBar.markVip)) {
 			return 1;
 		} else {
 			return o1.getSortLetters().compareTo(o2.getSortLetters());

@@ -34,9 +34,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public final String TAG = this.getClass().getSimpleName();
     // 加载中dialog
     public LoadingDialog loadingDialog;
+    private int loadingCount = 0;
     private long lastClick = 0;
 
-    private int loadingCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

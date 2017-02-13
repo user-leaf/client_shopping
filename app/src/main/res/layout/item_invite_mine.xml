@@ -23,7 +23,7 @@
         android:layout_height="51dp"
         android:background="@color/white"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingRight="30dp"
         >
 
 

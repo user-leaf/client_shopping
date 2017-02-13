@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.ContactModel;
+import com.bjaiyouyou.thismall.widget.SideBar;
 
 import java.util.List;
 
@@ -115,8 +116,8 @@ public class InviteMineAdapter extends BaseAdapter implements SectionIndexer {
             holder.tvLetter.setVisibility(View.GONE);
         }
 
-        // 如果是@就隐藏
-        if ("@".equals(mContent.getSortLetters())){
+        // 如果是*就隐藏
+        if (SideBar.markVip.equals(mContent.getSortLetters())){
             holder.tvLetter.setVisibility(View.GONE);
         }
 
@@ -138,11 +139,7 @@ public class InviteMineAdapter extends BaseAdapter implements SectionIndexer {
                 holder.name.setText(tel);
             }
 
-            if (contactModel.isVip()) {
-                holder.vip.setVisibility(View.VISIBLE);
-            } else {
-                holder.vip.setVisibility(View.INVISIBLE);
-            }
+            holder.vip.setVisibility(contactModel.isVip() ? View.VISIBLE : View.INVISIBLE);
         }
         return ret;
     }

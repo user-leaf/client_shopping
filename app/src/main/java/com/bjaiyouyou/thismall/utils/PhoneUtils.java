@@ -5,6 +5,7 @@ import android.content.Context;
 import com.bjaiyouyou.thismall.model.ContactModel;
 import com.bjaiyouyou.thismall.model.InviteMineModel;
 import com.bjaiyouyou.thismall.pinyin.CharacterParser;
+import com.bjaiyouyou.thismall.widget.SideBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class PhoneUtils {
             model.setVip(isVip);
 
             if (isVip){
-                model.setSortLetters("@");
+                model.setSortLetters(SideBar.markVip);
                 mContactList.add(model);
             }else {
                 //汉字转换成拼音

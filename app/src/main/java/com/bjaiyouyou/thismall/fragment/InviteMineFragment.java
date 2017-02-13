@@ -9,9 +9,11 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.bjaiyouyou.thismall.model.ContactModel;
 import com.bjaiyouyou.thismall.model.InviteMineModel;
 import com.bjaiyouyou.thismall.pinyin.CharacterParser;
 import com.bjaiyouyou.thismall.pinyin.PinyinComparator;
+import com.bjaiyouyou.thismall.utils.DensityUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.PhoneUtils;
@@ -39,7 +42,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * 邀请成员页--我邀请的
- * <p/>
+ * <p>
  * User: kanbin
  * Date: 2016/8/24
  */
@@ -47,11 +50,7 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
 
     private static final java.lang.String TAG = InviteMineFragment.class.getSimpleName();
 
-    // 会员数提示
-    private TextView mTvVipCount;
-    // 列表
     private ListView mListView;
-    // 列表适配器
     private InviteMineAdapter mAdapter;
 
     private SideBar sideBar; // 侧边栏索引
@@ -86,6 +85,8 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
 
         }
     };
+    private View mEmptyView;
+    private TextView mTvVip;
 
     public InviteMineFragment() {
         // Required empty public constructor
@@ -108,16 +109,12 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
         initView();
         setupView();
         initCtrl();
-        loadData();
-
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            loadData();
-        }
+    public void onResume() {
+        super.onResume();
+        loadData();
     }
 
     private void initVariable() {
@@ -128,9 +125,8 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
     }
 
     private void initView() {
-//        mList = new ArrayList<>();
-        mTvVipCount = (TextView) layout.findViewById(R.id.invite_mine_tv_vip);
         mListView = (ListView) layout.findViewById(R.id.invite_mine_listview);
+        mEmptyView = layout.findViewById(R.id.invite_mine_empty);
 
         sideBar = (SideBar) layout.findViewById(R.id.sidebar);
         dialog = (TextView) layout.findViewById(R.id.dialog);
@@ -138,6 +134,13 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
         mNoNetView = layout.findViewById(R.id.net_fail);
         mNoLoginView = layout.findViewById(R.id.no_login);
         mBodyView = layout.findViewById(R.id.body);
+
+        mTvVip = new TextView(getContext());
+        mTvVip.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, DensityUtils.dp2px(getContext(), 40)));
+        mTvVip.setPadding(DensityUtils.dp2px(getContext(), 10), 0, 0, 0);
+        mTvVip.setGravity(Gravity.CENTER_VERTICAL);
+        mTvVip.setTextColor(getResources().getColor(R.color.app_red));
+        mListView.addHeaderView(mTvVip);
     }
 
     private void setupView() {
@@ -147,17 +150,29 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
         //设置右侧触摸监听
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
-            @Override
-            public void onTouchingLetterChanged(String s) {
-                //该字母首次出现的位置
-                int position = mAdapter.getPositionForSection(s.charAt(0));
-                if (position != -1) {
-                    mListView.setSelection(position);
-                }
+                                                       @Override
+                                                       public void onTouchingLetterChanged(String s) {
+                                                           //该字母首次出现的位置
+                                                           int position = mAdapter.getPositionForSection(s.charAt(0));
+                                                           LogUtils.d(TAG, "position: " + position + ", headerViewCount: " + mListView.getHeaderViewsCount());
+                                                           LogUtils.d(TAG, "s.charAt(0): " + s.charAt(0));
 
-            }
-        });
+                                                           if (position != -1) {
+                                                               mListView.setSelection(position + mListView.getHeaderViewsCount());
 
+                                                           }
+
+                                                           if (SideBar.markVip.equals("" + s.charAt(0))) { // 当为"*"时直接滑到顶部
+                                                               mListView.setSelection(0);
+                                                           }
+
+                                                       }
+
+                                                   }
+
+        );
+
+        mListView.setEmptyView(mEmptyView);
     }
 
     private void initCtrl() {
@@ -183,7 +198,6 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
     private void checkNet() {
 
         if (!NetStateUtils.isNetworkAvailable(getActivity())) {
-            LogUtils.d(TAG, "checkNet  无网");
             mNoNetView.setVisibility(View.VISIBLE);
             mBodyView.setVisibility(View.GONE);
 
@@ -198,7 +212,6 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
 
         } else {
             // 有网但未登录
-            LogUtils.d(TAG, "checkNet  有网，但未登录");
             mNoNetView.setVisibility(View.GONE);
             mBodyView.setVisibility(View.GONE);
 
@@ -263,7 +276,7 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
                                     vipCount++;
                                 }
                             }
-                            mTvVipCount.setText("已有" + vipCount + "人成为会员");
+                            mTvVip.setText("已有" + vipCount + "人成为会员");
                         }
                     }
                 }
