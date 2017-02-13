@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/app_common_bg"
     tools:context=".activity.AddressManagerActivity">
 
     <com.bjaiyouyou.thismall.widget.IUUTitleBar

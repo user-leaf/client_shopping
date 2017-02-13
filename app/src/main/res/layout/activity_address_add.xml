@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/app_common_bg"
     tools:context="com.bjaiyouyou.thismall.activity.AddressAddActivity">
 
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:background="#FFFFFF"
         >
 
         <TextView
@@ -50,6 +52,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:background="#FFFFFF"
         >
 
         <TextView
@@ -79,6 +82,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="horizontal"
+        android:background="#FFFFFF"
         >
 
         <TextView
@@ -129,6 +133,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:background="#FFFFFF"
         >
 
         <TextView
@@ -155,7 +160,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        >
 
         <TextView
             android:id="@+id/address_add_tv1"
