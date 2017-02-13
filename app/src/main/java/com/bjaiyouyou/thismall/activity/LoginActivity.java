@@ -228,15 +228,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 Intent intent = new Intent(LoginActivity.this, WebShowActivity.class);
                 intent.putExtra(WebShowActivity.PARAM_URLPATH, "http://wxweb.bjaiyouyou.com/user-instructions.html");
                 startActivity(intent);
-                avoidHintColor(widget);
             }
 
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
+                ds.setColor(getResources().getColor(R.color.app_red));
                 ds.setUnderlineText(false);
             }
         };
+
+        avoidHintColor(mTvAgree);
         spannableString.setSpan(clickableSpan,str1.length(), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvAgree.setText(spannableString);
         mTvAgree.setMovementMethod(LinkMovementMethod.getInstance());
@@ -269,7 +271,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.login_btn_get_veri_code: // 获取验证码
-                String phone = mEtTel.getText().toString().trim();
+                String phone = mEtTel.getText().toString();
 
                 if ("".equals(phone)) {
                     mTipsView.setVisibility(View.VISIBLE);
