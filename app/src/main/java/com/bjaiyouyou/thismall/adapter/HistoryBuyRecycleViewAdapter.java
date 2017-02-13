@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.HistoryBuy;
+import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -121,9 +123,9 @@ public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBu
             //test
 //            if (goods.getProduct().getDeleted_at()==null||goods.getProduct().getOnsell()!=0){
 
-            if (goods.getProduct()!=null&&(goods.getProduct().getDeleted_at()!=null||goods.getProduct().getOnsell()==0)){
-                LogUtils.e("Deleted_at",goods.getProduct().getDeleted_at()+"");
-                LogUtils.e("Onsell",goods.getProduct().getOnsell()+"");
+            if (goods.getProduct()==null||goods.getProduct().getDeleted_at()!=null||goods.getProduct().getOnsell()==0){
+//                LogUtils.e("Deleted_at",goods.getProduct().getDeleted_at()+"");
+//                LogUtils.e("Onsell",goods.getProduct().getOnsell()+"");
                 //下架提醒
                 holder.tvSoldOut.setVisibility(View.VISIBLE);
                 //透明度
@@ -157,8 +159,13 @@ public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBu
             }
 
             if (goods.getProduct_image() != null && goods.getProduct_image().getImage_path() != null && goods.getProduct_image().getImage_base_name() != null) {
+                //方法一：获取原图
+//                Glide.with(context)
+//                        .load(goods.getImage().getImage_path() + "/" + goods.getImage().getImage_base_name())
+                //方法二：获取缩略图
+                String imgUrl = goods.getProduct_image().getImage_path() + "/" + goods.getProduct_image().getImage_base_name();
                 Glide.with(mContext)
-                        .load(goods.getProduct_image().getImage_path() + "/" + goods.getProduct_image().getImage_base_name())
+                        .load(ImageUtils.getThumb(imgUrl, ScreenUtils.getScreenWidth(mContext) / 2, 0))
                         .error(R.mipmap.list_image_loading)
                         .placeholder(R.mipmap.list_image_loading)
                         .into(holder.iv);

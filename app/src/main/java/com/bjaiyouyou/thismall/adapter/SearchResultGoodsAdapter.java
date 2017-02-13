@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
+import com.bjaiyouyou.thismall.utils.ImageUtils;
+import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -59,8 +61,13 @@ public class SearchResultGoodsAdapter extends RecyclerView.Adapter<SearchResultG
 
             if (goods.getImage() != null && goods.getImage().getImage_path() != null && goods.getImage().getImage_base_name() != null) {
 
+                //方法一：获取原图
+//                Glide.with(context)
+//                        .load(goods.getImage().getImage_path() + "/" + goods.getImage().getImage_base_name())
+                //方法二：获取缩略图
+                String imgUrl = goods.getImage().getImage_path() + "/" + goods.getImage().getImage_base_name();
                 Glide.with(context)
-                        .load(goods.getImage().getImage_path() + "/" + goods.getImage().getImage_base_name())
+                        .load(ImageUtils.getThumb(imgUrl, ScreenUtils.getScreenWidth(context) / 2, 0))
                         .error(R.mipmap.list_image_loading)
                         .placeholder(R.mipmap.list_image_loading)
                         .into(holder.iv);

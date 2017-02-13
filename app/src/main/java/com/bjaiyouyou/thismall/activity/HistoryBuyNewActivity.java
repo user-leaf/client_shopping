@@ -139,6 +139,9 @@ public class HistoryBuyNewActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
                     unNetWorkView();
                 }
+                //停止刷新
+                mGV.loadMoreComplete();
+                mGV.refreshComplete();
             }
 
             @Override
@@ -172,12 +175,12 @@ public class HistoryBuyNewActivity extends BaseActivity {
                 } else {
                     gvEmpty();
                 }
+                //停止刷新
+                mGV.loadMoreComplete();
+                mGV.refreshComplete();
             }
 
         });
-        //停止刷新
-        mGV.loadMoreComplete();
-        mGV.refreshComplete();
     }
 
     private void initView() {
