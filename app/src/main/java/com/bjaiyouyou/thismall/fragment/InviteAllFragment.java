@@ -2,7 +2,6 @@ package com.bjaiyouyou.thismall.fragment;
 
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,15 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
-import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.adapter.SortAdapter;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.ContactModel;
-import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.pinyin.CharacterParser;
 import com.bjaiyouyou.thismall.pinyin.PinyinComparator;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -88,16 +84,9 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 //            if (pd != null && pd.isShowing()) {
 //                pd.dismiss();
 //            }
-            dismissDialog();
+            dismissLoadingDialog();
         }
     };
-
-    private void dismissDialog() {
-        if (loadingDialog.isShowing()) {
-            loadingDialog.dismiss();
-        }
-
-    }
 
     // 断网页
     private View mNoNetView;
@@ -105,11 +94,6 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
     private View mNoLoginView;
     // 主页面
     private View mBodyView;
-
-
-    public InviteAllFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,14 +113,16 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
         initView();
         setupView();
-//        initDate();
+        loadData();
 
     }
-
+    
     @Override
-    public void onResume() {
-        super.onResume();
-        initDate();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            loadData();
+        }
     }
 
     private void initView() {
@@ -193,7 +179,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
     private static final int RC_CONTACTS_PERM = 123;
 
-    private void initDate() {
+    private void loadData() {
 
         if (EasyPermissions.hasPermissions(getContext(), Manifest.permission.READ_CONTACTS)) {
             getContact();
@@ -243,7 +229,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
             refreshView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    initDate();
+                    loadData();
                 }
             });
 
@@ -279,7 +265,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
         // 显示进度提示框
 //        pd = ProgressDialog.show(getActivity(), null, "加载中...");
-        loadingDialog.show();
+        showLoadingDialog();
 
         // 获取数据
         new Thread(new Runnable() {
@@ -355,6 +341,8 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
                                     }
                                 });
+                    }else {
+                        mHandler.sendMessage(Message.obtain());
                     }
                 } else {
                     mHandler.sendMessage(Message.obtain());

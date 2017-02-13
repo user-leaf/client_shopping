@@ -220,8 +220,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private boolean isRefresh;
     private TextView mTvfoot;
 
-    private LoadingDialog mLoadingDialog;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -681,8 +679,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 每日上新数据
      */
     private void initData() {
-        mLoadingDialog=new LoadingDialog(getContext());
-//        mLoadingDialog.show();
+
         String url=ClientAPI.API_POINT+ClientAPI.EVERYDAY_NEW+mEveryDayPage;
 //        LogUtils.e("EVERYDAY_NEW",url);
        ClientAPI.getGoodsData(url, new StringCallback() {
@@ -758,12 +755,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 }
             }
         });
-    }
-
-    private void dismissLoadingDialog() {
-        if (mLoadingDialog!=null){
-            mLoadingDialog.dismiss();
-        }
     }
 
     /**

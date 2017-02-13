@@ -28,6 +28,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected View layout;
     // 加载中dialog
     public LoadingDialog loadingDialog;
+    private int loadingCount = 0;
     private long lastClick = 0;
 
     // from https://github.com/afollestad/material-dialogs
@@ -201,6 +202,27 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         startActivityForResult(intent, requestCode);
     }
 
+    public void showLoadingDialog() {
+        if (loadingCount <= 0) {
+            if (loadingDialog != null) {
+                loadingDialog.show();
+
+            }
+        }
+
+        loadingCount++;
+    }
+
+    public void dismissLoadingDialog() {
+        if (loadingCount <= 1) {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+
+            }
+        }
+
+        loadingCount--;
+    }
 
     @Override
     public void onDestroy() {

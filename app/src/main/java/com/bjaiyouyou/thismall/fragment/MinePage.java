@@ -205,7 +205,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //可提金额
     private TextView mTvWithdrawNum;
 
-    private LoadingDialog mLoadingDialog;
     //2为已升级为vip
     private int isVip;
 
@@ -359,8 +358,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private void initData() {
         //模拟我的邀请好友假数据
 //        friendList=new ArrayList<>();
-        mLoadingDialog=new LoadingDialog(getContext());
-//        mLoadingDialog.show();
+
         String token = CurrentUserManager.getUserToken();
         if (token != null) {
             ClientAPI.getUserData(token, new StringCallback() {
@@ -424,12 +422,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //设置背景透明度
 //        initGridView();
-    }
-
-    private void dismissLoadingDialog() {
-        if (mLoadingDialog!=null){
-            mLoadingDialog.dismiss();
-        }
     }
 
     private void setData() {
