@@ -598,7 +598,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         //      获得数据对象
         //第一个订单数据
@@ -705,7 +705,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
             // 向控价内填充数据
 
             if (item.getOrder_detail() != null && item.getOrder_detail().size() != 0) {
-                List<MyOrder.DataBean.OrderDetailBean> dataBeani = item.getOrder_detail();
+                final List<MyOrder.DataBean.OrderDetailBean> dataBeani = item.getOrder_detail();
 
                 //默认显示第一个商品的信息
                 if (item.getOrder_detail().size() == 1) {
@@ -713,7 +713,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                     holder.llSingle.setVisibility(View.VISIBLE);
                     holder.lvMore.setVisibility(View.GONE);
 //                    MyOrder.DataBean.OrderDetailBean detailBeani = item.getOrder_detail().get(0);
-                    MyOrder.DataBean.OrderDetailBean detailBeani = dataBeani.get(0);
+                    final MyOrder.DataBean.OrderDetailBean detailBeani = dataBeani.get(0);
                     //图片
                     if (detailBeani != null) {
                         if (detailBeani.getProduct_image() != null && detailBeani.getProduct_image().getImage_path() != null && detailBeani.getProduct_image().getImage_base_name() != null) {
@@ -744,6 +744,19 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         //单件商品的个数
                         holder.tvNum.setText("X" + detailBeani.getNumber());
                     }
+
+                    //添加图片点击事件,跳转到商品详情页面
+//                    holder.iv.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            long productId=detailBeani.getProduct().getId();
+//                            Intent intent=new Intent(context, GoodsDetailsActivity.class);
+//                            intent.putExtra(GoodsDetailsActivity.PARAM_PRODUCT_ID,productId);
+//                            context.startActivity(intent);
+//                        }
+//                    });
+
+
                 } else {
 
                     //订单中多个商品图片横线显示
@@ -1144,7 +1157,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
      *
      * @param dataBeani
      */
-    private void initHorizontalListView(List<MyOrder.DataBean.OrderDetailBean> dataBeani, RecyclerView lv) {
+    private void initHorizontalListView(final List<MyOrder.DataBean.OrderDetailBean> dataBeani, RecyclerView lv) {
         LinearLayoutManager manager = new LinearLayoutManager(context);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         lv.setLayoutManager(manager);
@@ -1154,6 +1167,11 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
             @Override
             public void onItemClick(View view, int position) {
 //                ToastUtils.showShort("第"+position+"照片");
+                //添加点击事件
+//                long productId=dataBeani.get(position).getProduct().getId();
+//                Intent intent=new Intent(context, GoodsDetailsActivity.class);
+//                intent.putExtra(GoodsDetailsActivity.PARAM_PRODUCT_ID,productId);
+//                context.startActivity(intent);
             }
         });
         lv.setAdapter(adapterImg);
