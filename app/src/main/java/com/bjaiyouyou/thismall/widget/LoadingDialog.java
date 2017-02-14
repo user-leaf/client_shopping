@@ -24,9 +24,14 @@ public class LoadingDialog extends Dialog {
     private ImageView imageLoading;
     private RotateAnimation operatingAnim;
 
-    public LoadingDialog(Context context) {
+    private LoadingDialog(Context context) {
         super(context, R.style.loading_dialog);
         this.context = context;
+    }
+
+    /**这里只是为了防止私自new对象，如果可以，直接使用base类中的show/dismiss方法*/
+    public static LoadingDialog getInstance(Context context){
+        return new LoadingDialog(context);
     }
 
     @Override

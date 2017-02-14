@@ -46,7 +46,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         if (!isAllowScreenRotate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        loadingDialog = new LoadingDialog(this);
+        loadingDialog = LoadingDialog.getInstance(this);
     }
 
     /**

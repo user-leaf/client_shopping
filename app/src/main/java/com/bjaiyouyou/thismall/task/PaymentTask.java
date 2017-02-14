@@ -63,7 +63,7 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
         this.clickView = clickView;
         this.className = className;
         this.context = context;
-        loadingDialog = new LoadingDialog(context);
+        loadingDialog = LoadingDialog.getInstance(context);
     }
 
     /**
@@ -82,7 +82,7 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
         this.channel = channel;
         this.clickView = clickView;
         this.className = className;
-        loadingDialog = new LoadingDialog(context);
+        loadingDialog = LoadingDialog.getInstance(context);
     }
 
     @Override

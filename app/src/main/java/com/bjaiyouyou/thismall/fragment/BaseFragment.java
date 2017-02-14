@@ -76,7 +76,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         super.onActivityCreated(savedInstanceState);
         inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         titleBar = (IUUTitleBar) getView().findViewById(R.id.title_bar);
-        loadingDialog = new LoadingDialog(getContext());
+        loadingDialog = LoadingDialog.getInstance(getContext());
 //        initView();
 //        setUpView();
     }
