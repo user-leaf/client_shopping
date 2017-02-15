@@ -114,6 +114,7 @@
                 android:inputType="number"
                 android:singleLine="true"
                 android:textSize="40sp"
+                android:hint="0"
                 />
 
             <View

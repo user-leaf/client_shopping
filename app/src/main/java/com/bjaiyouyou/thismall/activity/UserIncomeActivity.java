@@ -19,6 +19,7 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.UserInComeModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
@@ -131,6 +132,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
                 }
                 if (input != min) {
                     mEtIncomeWant.setText("" + (int) min);
+                    mEtIncomeWant.setSelection(mEtIncomeWant.getText().length());
                 }
             }
         });
@@ -337,16 +339,18 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         double v1 = Double.parseDouble(income);
         double v2 = Double.parseDouble(uu);
         double v3 = Double.parseDouble(want);
-        double min = 0;
 
-        List<Double> list = new ArrayList<>();
-        list.add(v1);
-        list.add(v2);
-        list.add(v3);
-        Collections.sort(list);
+//        double min = 0;
+//        List<Double> list = new ArrayList<>();
+//        list.add(v1);
+//        list.add(v2);
+//        list.add(v3);
+//        Collections.sort(list);
+//
+//        min = list.get(0);
+//        return min;
 
-        min = list.get(0);
-        return min;
+        return Math.min(Math.min(v1, v2), v3);
 
     }
 
