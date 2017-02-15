@@ -117,9 +117,11 @@ dependencies {
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
-//    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
-//    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
+    //    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
+
+    //    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
+
+    //    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
     compile 'com.alibaba:fastjson:1.2.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
@@ -146,4 +148,6 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.0.2'
     compile 'com.afollestad.material-dialogs:commons:0.9.0.2'
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
+    compile project(':library:Common')
+    compile project(':library:WheelPicker')
 }
