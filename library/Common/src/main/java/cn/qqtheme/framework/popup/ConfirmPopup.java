@@ -34,6 +34,8 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> {
     protected int cancelTextColor = Color.BLACK;
     protected int submitTextColor = Color.BLACK;
     protected int titleTextColor = Color.BLACK;
+    protected float cancelTextSize = 16;
+    protected float submitTextSize = 16;
 
     /**
      * Instantiates a new Confirm popup.
@@ -136,6 +138,15 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> {
         this.titleText = activity.getString(textRes);
     }
 
+    public void setCancelTextSize(float cancelTextSize){
+        this.cancelTextSize = cancelTextSize;
+    }
+
+    public void setSubmitTextSize(float submitTextSize){
+        this.submitTextSize = submitTextSize;
+    }
+
+
     /**
      * Sets cancel text color.
      *
@@ -218,7 +229,7 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> {
         if (!TextUtils.isEmpty(cancelText)) {
             cancelButton.setText(cancelText);
         }
-        cancelButton.setTextSize(14);
+        cancelButton.setTextSize(cancelTextSize);
         cancelButton.setTextColor(cancelTextColor);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +265,7 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> {
         if (!TextUtils.isEmpty(submitText)) {
             submitButton.setText(submitText);
         }
-        submitButton.setTextSize(14);
+        submitButton.setTextSize(submitTextSize);
         submitButton.setTextColor(submitTextColor);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override

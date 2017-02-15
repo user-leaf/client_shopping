@@ -97,6 +97,8 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
 
         if (result.size() > 0) {
             AddressPicker picker = new AddressPicker(activity, result);
+            picker.setCancelTextSize(14);
+            picker.setSubmitTextSize(14);
             picker.setTextSize(14);
             picker.setAnimationStyle(R.style.address_picker_anim_style);
             picker.setLineColor(activity.getResources().getColor(R.color.app_gray_dcdcdc));
