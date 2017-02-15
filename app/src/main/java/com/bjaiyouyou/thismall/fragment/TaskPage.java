@@ -28,14 +28,16 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.TaskGridViewAdapter;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4Task;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.SignInInfo;
 import com.bjaiyouyou.thismall.model.TaskModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.AppPackageChecked;
-import com.bjaiyouyou.thismall.utils.ExceptionUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
@@ -102,6 +104,8 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private View mSigninHasLoginView;
     private TaskInitReceiver mTaskInitReceiver;
 
+    private Api4Task mApi4Task;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,6 +117,8 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mApi4Task = (Api4Task) ClientApiHelper.getInstance().getClientApi(Api4Task.class);
 
         initView();
         setupView();
@@ -216,38 +222,63 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private void loadData() {
 
         // 请求广告数据
-        ClientAPI.getTaskAD(CurrentUserManager.getUserToken(), pageno, new StringCallback() {
+        mApi4Task.getTaskAd(pageno, new DataCallback<TaskModel>(getContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
-
+            public void onFail(Call call, Exception e, int id) {
                 closeRefresh();
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
 
-                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
+                TaskModel taskModel = (TaskModel) response;
+                if (taskModel != null) {
 
-                    Gson gson = new Gson();
-                    try {
-                        TaskModel taskModel = gson.fromJson(response, TaskModel.class);
-                        if (taskModel != null) {
-
-                            if (pageno == 1) {
-                                mList.clear();
-                            }
-                            mList.addAll(taskModel.getData());
-                            mAdapter.notifyDataSetChanged();
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (pageno == 1) {
+                        mList.clear();
                     }
+                    mList.addAll(taskModel.getData());
+                    mAdapter.notifyDataSetChanged();
+
                 }
                 closeRefresh();
 
             }
         });
+
+//        // 请求广告数据
+//        ClientAPI.getTaskAD(CurrentUserManager.getUserToken(), pageno, new StringCallback() {
+//            @Override
+//            public void onError(Call call, Exception e, int id) {
+//
+//                closeRefresh();
+//            }
+//
+//            @Override
+//            public void onResponse(String response, int id) {
+//
+//                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
+//
+//                    Gson gson = new Gson();
+//                    try {
+//                        TaskModel taskModel = gson.fromJson(response, TaskModel.class);
+//                        if (taskModel != null) {
+//
+//                            if (pageno == 1) {
+//                                mList.clear();
+//                            }
+//                            mList.addAll(taskModel.getData());
+//                            mAdapter.notifyDataSetChanged();
+//
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                closeRefresh();
+//
+//            }
+//        });
 
     }
 
@@ -283,36 +314,59 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         haveSigned = false;
 
         // 获取签到数据
-        ClientAPI.getTaskSignInfo(new StringCallback() {
+        mApi4Task.getTaskSignInfo(new DataCallback<SignInInfo>(getContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onSuccess(Object response, int id) {
+                SignInInfo signInInfo = (SignInInfo) response;
+                if (signInInfo != null) {
+                    mTvSignInTotalNum.setText("" + signInInfo.getSign_in_number());
+                    mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
+                    mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
+
+                    haveSigned = signInInfo.isIs_sign_in();
+                    mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
+
+                }
+            }
+
+            @Override
+            public void onFail(Call call, Exception e, int id) {
                 mBtnSignIn.setSelected(false);
                 checkNet();
             }
-
-            @Override
-            public void onResponse(String response, int id) {
-                mTvNoNet.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
-
-                    Gson gson = new Gson();
-                    SignInInfo signInInfo = gson.fromJson(response, SignInInfo.class);
-
-                    if (signInInfo != null) {
-                        mTvSignInTotalNum.setText("" + signInInfo.getSign_in_number());
-                        mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
-                        mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
-
-                        haveSigned = signInInfo.isIs_sign_in();
-                        mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
-
-                    }
-//                            if (signInInfo.isIs_sign_in()) {  // 改为：如果已签到，则在签到操作之前return掉
-//                                mBtnSignIn.setClickable(false);
-//                            }
-                }
-            }
         });
+
+//        // 获取签到数据
+//        ClientAPI.getTaskSignInfo(new StringCallback() {
+//            @Override
+//            public void onError(Call call, Exception e, int id) {
+//                mBtnSignIn.setSelected(false);
+//                checkNet();
+//            }
+//
+//            @Override
+//            public void onResponse(String response, int id) {
+//                mTvNoNet.setVisibility(View.GONE);
+//                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
+//
+//                    Gson gson = new Gson();
+//                    SignInInfo signInInfo = gson.fromJson(response, SignInInfo.class);
+//
+//                    if (signInInfo != null) {
+//                        mTvSignInTotalNum.setText("" + signInInfo.getSign_in_number());
+//                        mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
+//                        mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
+//
+//                        haveSigned = signInInfo.isIs_sign_in();
+//                        mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
+//
+//                    }
+////                            if (signInInfo.isIs_sign_in()) {  // 改为：如果已签到，则在签到操作之前return掉
+////                                mBtnSignIn.setClickable(false);
+////                            }
+//                }
+//            }
+//        });
 
         // 初始化数据 // 现，退出时发送广播重置数据
 //        mTvVipTip.setText("200元开通会员特权");

@@ -31,7 +31,7 @@ import okhttp3.Call;
  * @author kanbin
  * @date 2016/6/1
  */
-public class ClientAPI {
+public class ClientAPI extends BaseClientApi{
 
     public static final String TAG = ClientAPI.class.getSimpleName();
 

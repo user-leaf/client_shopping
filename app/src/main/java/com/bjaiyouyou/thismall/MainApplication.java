@@ -3,6 +3,7 @@ package com.bjaiyouyou.thismall;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -32,7 +33,7 @@ public class MainApplication extends MultiDexApplication {
         isDebug = true;
         LeakCanary.install(this);
 
-//        ClientAPIHelper.getInstance().setApplicationContext(this);
+        ClientApiHelper.getInstance().setApplicationContext(this);
     }
 
     public static Context getContext() {
