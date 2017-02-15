@@ -19,6 +19,7 @@ import com.bjaiyouyou.thismall.fragment.CartPage;
 import com.bjaiyouyou.thismall.fragment.HomePage;
 import com.bjaiyouyou.thismall.fragment.MinePage;
 import com.bjaiyouyou.thismall.fragment.TaskPage;
+import com.bjaiyouyou.thismall.utils.AppUtils;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.UpdateUtils;
@@ -173,11 +174,9 @@ public class MainActivity extends BaseActivity {
         android.support.v4.app.Fragment homePage = fm.findFragmentByTag(HomePage.TAG);
         WebView webview = (WebView) homePage.getView().findViewById(R.id.home_webview);
 
-        /**
-         * 打开APP直接点击返回（不进行WebView操作）时
-         */
+        // 打开APP直接点击返回（不进行WebView操作）时
         if ((keyCode == KeyEvent.KEYCODE_BACK) && !webview.canGoBack() && ((System.currentTimeMillis() - mExitTime) > 2000)) {
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "再按一次退出哎呦呦商城", Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
             return true;
         }
