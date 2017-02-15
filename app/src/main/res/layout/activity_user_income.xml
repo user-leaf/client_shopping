@@ -43,7 +43,7 @@
             android:background="@drawable/selector_if_can_withdraw_bg"
             android:gravity="center"
             android:text="¥0"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="#DC9600"
             android:textSize="30sp"
             />
 

@@ -141,6 +141,8 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
 
     private void initData() {
         // TODO: 2016/11/11 登录之后存储用户信息
+
+        resetData();
         ClientAPI.getUserIncome(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -194,6 +196,13 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
             }
         });
 
+    }
+
+    private void resetData() {
+        mEtIncomeWant.getText().clear();
+        mEtSafecode.getText().clear();
+        mEtPayee.getText().clear();
+        mEtIncomeWant.requestFocus();
     }
 
 //    @Override
@@ -255,14 +264,17 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         String open_id = mMember.getOpen_id();
 
         if (canWithdraw(mMember)) {
+            showLoadingDialog();
             ClientAPI.postWithDraw(TAG, open_id, amount, strPayee, strSafecode, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    dismissLoadingDialog();
                     ToastUtils.showException(e);
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
+                    dismissLoadingDialog();
                     jump(WithDrawSucceedActivity.class, false);
                 }
             });
@@ -339,16 +351,6 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         double v1 = Double.parseDouble(income);
         double v2 = Double.parseDouble(uu);
         double v3 = Double.parseDouble(want);
-
-//        double min = 0;
-//        List<Double> list = new ArrayList<>();
-//        list.add(v1);
-//        list.add(v2);
-//        list.add(v3);
-//        Collections.sort(list);
-//
-//        min = list.get(0);
-//        return min;
 
         return Math.min(Math.min(v1, v2), v3);
 
