@@ -41,8 +41,10 @@ import com.bjaiyouyou.thismall.adapter.HomeEveryDayEmptyAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeGoodGridNewAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeNavigationNewAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeNavigationNewEmptyAdapter;
-import com.bjaiyouyou.thismall.callback.HomeAdCallback;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4Home;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.HomeAdBigModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
 import com.bjaiyouyou.thismall.model.HomeNavigationItem;
@@ -77,7 +79,7 @@ import okhttp3.Call;
  * @author QuXinhang
  *         Update 2016/7/3 17:44
  *         添加抢购区域
- *
+ *         <p>
  *         填充每日上新数据
  */
 
@@ -95,7 +97,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     // 历史购买
     private View mTvPurchaseHistory;
     // 广告位容器
-    private RelativeLayout mRlAd;
+    private RelativeLayout mAdContainer;
     // 广告栏控件
     private ConvenientBanner mConvenientBanner;
     // 每日上新物品列表
@@ -124,9 +126,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     private HomeNavigationNewAdapter mNavigationAdapterNew;
     //过时角标
-    private int mOldIndex=0;
+    private int mOldIndex = 0;
     //现在的角标
-    private int mCurrentIndex=0;
+    private int mCurrentIndex = 0;
     //限时抢购列表
     private GridView mGVPanicBuying;
     //侧滑更多
@@ -157,16 +159,16 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     private HomeNavigationNewEmptyAdapter emptyAdapterNavigation;
     //抢购页的角标
-    private int  mIndexs[]={1,2,3,4};
+    private int mIndexs[] = {1, 2, 3, 4};
     //获取系统当前小时
     private int mHour;
     private int mMinuts;
     private int mSecond;
     //计时的时间差
-    private long mTimeDifference=0L;
+    private long mTimeDifference = 0L;
     //初始化时间节点
-    private int  mTimes[]={9,12,15,18};
-    private int mTimeLast=21;
+    private int mTimes[] = {9, 12, 15, 18};
+    private int mTimeLast = 21;
     //抢购导航状态
     private TextView mTVPanicBuyState1;
     private TextView mTVPanicBuyState2;
@@ -181,12 +183,12 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private TextView mTimeTVs[];
 
     //计时启动标识
-    private Handler mHandler=new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
-                case  0:
+            switch (msg.what) {
+                case 0:
                     initTime();
             }
         }
@@ -198,31 +200,32 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private TimerTask mTimeTask;
 
     //第一次进入页面
-    private boolean mFirstComeIn=true;
+    private boolean mFirstComeIn = true;
     //屏幕宽
     private int width2;
 
     //抢购的时间节点下标
-    private int timeIndex=0;
+    private int timeIndex = 0;
     //抢购不存在显示
     private LinearLayout mLLPanicBuyEmpty;
     //抢购布局
     private HorizontalScrollView mSCRlPanicBuyEmpty;
     //每日上新的头部
-    private  View headView;
-    private  View footView;
+    private View headView;
+    private View footView;
     private TextView mTVEveryDayTitle;
     //每日上新为空的布局适配器
     private HomeEveryDayEmptyAdapter everyDayEmptyAdapter;
 
     private boolean isRefresh;
     private TextView mTvfoot;
+    private Api4Home mClientApi;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.fragment_home, container, false);
-        mTimeFrameBeans=new ArrayList<>();
+        mTimeFrameBeans = new ArrayList<>();
         return layout;
     }
 
@@ -249,14 +252,14 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
+        if (!hidden) {
             initTime();
             //处理抢购区域
 //        initPanicBuying();
             initPanicBuyingEmpty();
-            if (timeIndex==4||timeIndex==-1){
+            if (timeIndex == 4 || timeIndex == -1) {
                 changeNavigation(0);
-            }else {
+            } else {
                 changeNavigation(timeIndex);
             }
         }
@@ -265,7 +268,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private void initPanicBuyingEmpty() {
         //计算宽度
         int size = 4;
-        int length = width2 /3;
+        int length = width2 / 3;
         int gridviewWidth = (int) (size * (length + 4));
         int itemWidth = (int) (length);
 
@@ -278,8 +281,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mGVPanicBuyingEmpty.setStretchMode(GridView.NO_STRETCH);
 
         mGVPanicBuyingEmpty.setNumColumns(size); // 设置列数量=列表集合数
-        List<HomeNavigationItemNewEmpty> navigationItemNewEmpty =new ArrayList<>();
-        emptyAdapterNavigation=new HomeNavigationNewEmptyAdapter(navigationItemNewEmpty,getContext());
+        List<HomeNavigationItemNewEmpty> navigationItemNewEmpty = new ArrayList<>();
+        emptyAdapterNavigation = new HomeNavigationNewEmptyAdapter(navigationItemNewEmpty, getContext());
         mGVPanicBuyingEmpty.setAdapter(emptyAdapterNavigation);
 //        mGVPanicBuying.setEmptyView(mGVPanicBuyingEmpty);
         mGVPanicBuying.setEmptyView(mLLPanicBuyEmpty);
@@ -289,6 +292,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 初始化变量
      */
     private void initVariables() {
+        mClientApi = (Api4Home) ClientApiHelper.getInstance().getClientApi(Api4Home.class);
         //商品列表
         mProductInfoList = new ArrayList<>();
         // 广告数据集
@@ -296,23 +300,23 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     }
 
     private void initCtrl() {
-        mHomeGoodGridAdapter = new HomeGoodGridNewAdapter( getActivity(),mProductInfoList);
+        mHomeGoodGridAdapter = new HomeGoodGridNewAdapter(getActivity(), mProductInfoList);
         mHomeGoodGridAdapter.setOnItemClickListener(new HomeGoodGridNewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 //获取商品的ID
-                position=position-2;
-                LogUtils.e("onItemClick",""+position);
-                long productID=mProductInfoList.get(position).getId();
+                position = position - 2;
+                LogUtils.e("onItemClick", "" + position);
+                long productID = mProductInfoList.get(position).getId();
 //                Toast.makeText(getActivity(),""+productID,Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(getActivity(), GoodsDetailsActivity.class);
-                intent.putExtra("productID",productID);
+                Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
+                intent.putExtra("productID", productID);
                 startActivity(intent);
             }
         });
         mGvShow.setAdapter(mHomeGoodGridAdapter);
 
-        everyDayEmptyAdapter=new HomeEveryDayEmptyAdapter(getActivity());
+        everyDayEmptyAdapter = new HomeEveryDayEmptyAdapter(getActivity());
         mEveryDayEmpty.setAdapter(everyDayEmptyAdapter);
     }
 
@@ -322,35 +326,36 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     private void initPanicBuying() {
         mNavigationDataNew = new ArrayList<>();
-        initNavigationDataNew(ClientAPI.API_POINT+ClientAPI.PANICBUY_NEW);
-        mNavigationAdapterNew = new HomeNavigationNewAdapter (mNavigationDataNew, getActivity());
+        initNavigationDataNew(ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW);
+        mNavigationAdapterNew = new HomeNavigationNewAdapter(mNavigationDataNew, getActivity());
         mGVPanicBuying.setAdapter(mNavigationAdapterNew);
         initControlNavigation();
     }
+
     /**
      * 抢购数据，集合控制数据的数据获取
      */
 
     private void initNavigationDataNew(final String url) {
-        LogUtils.e("抢购数据:",url);
+        LogUtils.e("抢购数据:", url);
         ClientAPI.getGoodsData(url, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                if (NetStateUtils.isNetworkAvailable(getContext())){
-                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(),e);
+                if (NetStateUtils.isNetworkAvailable(getContext())) {
+                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                 }
             }
 
             @Override
             public void onResponse(String response, int id) {
-                if ( !TextUtils.isEmpty(response.toString().trim())) {
-                    mTimeFrameBeans = new Gson().fromJson(response,HomeNavigationItemNew.class).getRush_to_purchase_time_frame();
+                if (!TextUtils.isEmpty(response.toString().trim())) {
+                    mTimeFrameBeans = new Gson().fromJson(response, HomeNavigationItemNew.class).getRush_to_purchase_time_frame();
                     //是否显示更多按钮
-                    mNavigationDataNew= mTimeFrameBeans.get(mCurrentIndex).getDetail();
+                    mNavigationDataNew = mTimeFrameBeans.get(mCurrentIndex).getDetail();
                     checkGetMore();
                     //test
 //                    mNavigationDataNew.clear();
-                    LogUtils.e("mNavigationDataNew:",mNavigationDataNew.size()+"");
+                    LogUtils.e("mNavigationDataNew:", mNavigationDataNew.size() + "");
 //                    moreChange(mNavigationDataNew);
                     mNavigationAdapterNew.clear();
 //                    mNavigationAdapterNew.notifyDataSetChanged();
@@ -362,6 +367,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             }
         });
     }
+
     /**
      * 处理抢购数据
      */
@@ -372,7 +378,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //检查是否需要显示查看更多按钮
         checkGetMore();
 //        Log.e("size",""+size);
-        int length = width2 /3;
+        int length = width2 / 3;
         int gridviewWidth = (int) (size * (length + 4));
         int itemWidth = (int) (length);
 
@@ -391,13 +397,14 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     /**
      * 是否显示更多按钮
+     *
      * @param
      */
 
     private void moreChange(List<HomeNavigationItemNew.RushToPurchaseTimeFrameBean.DetailBean> data) {
-        if (data==null){
+        if (data == null) {
             mIVPanicBuyMore.setVisibility(View.GONE);
-        }else {
+        } else {
             if (data.size() == 0) {
                 mIVPanicBuyMore.setVisibility(View.GONE);
             } else {
@@ -408,18 +415,19 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
 
     /**
-     *  处理导航的切换
+     * 处理导航的切换
+     *
      * @param position
      */
     private void changeNavigation(int position) {
 //        initNavigationData(0);
-        mOldIndex=mCurrentIndex;
+        mOldIndex = mCurrentIndex;
         mLLNavigationPanicBuying.getChildAt(mOldIndex).setEnabled(true);
-        mCurrentIndex=position;
+        mCurrentIndex = position;
         //改变数据
 //        initNavigationData(mCurrentIndex);
-        if (mTimeFrameBeans.size()==4){
-            mNavigationDataNew=mTimeFrameBeans.get(mCurrentIndex).getDetail();
+        if (mTimeFrameBeans.size() == 4) {
+            mNavigationDataNew = mTimeFrameBeans.get(mCurrentIndex).getDetail();
             //控制查看更多的按钮是否显示
             checkGetMore();
 //            Toast.makeText(getActivity(),""+mTimeFrameBeans.get(mCurrentIndex).getId(),Toast.LENGTH_SHORT).show();
@@ -438,12 +446,12 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private void checkGetMore() {
         //test
 //        mNavigationDataNew.clear();
-        if (mNavigationDataNew.size()==0){//为空
+        if (mNavigationDataNew.size() == 0) {//为空
             mIVPanicBuyMore.setVisibility(View.GONE);
-        }else {
-            if(mNavigationDataNew.size()<3){//非空小于3
+        } else {
+            if (mNavigationDataNew.size() < 3) {//非空小于3
                 mIVPanicBuyMore.setVisibility(View.GONE);
-            }else {
+            } else {
                 mIVPanicBuyMore.setVisibility(View.VISIBLE);
             }
         }
@@ -459,17 +467,17 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         manager.getDefaultDisplay().getMetrics(outMetrics);
         width2 = outMetrics.widthPixels;
 
-        SPUtils.put(getContext(),"mFirstComeIn",!mFirstComeIn);
-        int size=8;
-        Map<String,Object> empty;
-        List<Map<String ,Object>> emptys=new ArrayList<>();
-        for (int i=0;i<size;i++){
-            empty= new HashMap<>();
-            empty.put("img",R.mipmap.list_image_loading);
-            empty.put("price","￥0.00\n+0积分");
+        SPUtils.put(getContext(), "mFirstComeIn", !mFirstComeIn);
+        int size = 8;
+        Map<String, Object> empty;
+        List<Map<String, Object>> emptys = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            empty = new HashMap<>();
+            empty.put("img", R.mipmap.list_image_loading);
+            empty.put("price", "￥0.00\n+0积分");
             emptys.add(empty);
         }
-       emptyAdapter=new SimpleAdapter(getActivity(),emptys,R.layout.item_home_navigatiom_gv_empty,new String[]{"img","price"},new int[]{R.id.iv_home_navigation_item_empty,R.id.tv_home_navigation_item_empty});
+        emptyAdapter = new SimpleAdapter(getActivity(), emptys, R.layout.item_home_navigatiom_gv_empty, new String[]{"img", "price"}, new int[]{R.id.iv_home_navigation_item_empty, R.id.tv_home_navigation_item_empty});
 
         //无网提示
         mLLUNNetWork = ((LinearLayout) layout.findViewById(R.id.ll_home_un_network));
@@ -483,7 +491,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         initHeadView();
 
         mGvShow = (XRecyclerView) layout.findViewById(R.id.home_gv_show);
-        GridLayoutManager mgr=new GridLayoutManager(getContext(),2);
+        GridLayoutManager mgr = new GridLayoutManager(getContext(), 2);
         mgr.setOrientation(LinearLayoutManager.VERTICAL);
         mGvShow.setLayoutManager(mgr);
 //       RecyclerView.LayoutManager mgr1=new GridLayoutManager(getContext(),2);
@@ -495,7 +503,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //        mGvShow.addFootView(footView);
 
         mEveryDayEmpty = ((XRecyclerView) layout.findViewById(R.id.rv_everyday_empty));
-        GridLayoutManager mgr2=new GridLayoutManager(getContext(),2);
+        GridLayoutManager mgr2 = new GridLayoutManager(getContext(), 2);
         mgr2.setOrientation(LinearLayoutManager.VERTICAL);
         mGvShow.setLayoutManager(mgr2);
         mEveryDayEmpty.setLayoutManager(mgr);
@@ -508,22 +516,22 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 初始化头部
      */
     private void initHeadView() {
-        headView=LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_head,null,false);
-        footView=LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_foot,null,false);
+        headView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_head, null, false);
+        footView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_home_foot, null, false);
         mTvfoot = ((TextView) footView.findViewById(R.id.tv_fragment_home_food));
 
 //        View view=View.inflate(getContext(),R.layout.fragment_home_head,null);
 
-        mRlAd = (RelativeLayout) headView.findViewById(R.id.home_rl_ad);
-        mRlAd.getLayoutParams().height = ScreenUtils.getScreenWidth(getActivity()) / 3;
+        mAdContainer = (RelativeLayout) headView.findViewById(R.id.home_rl_ad);
+        mAdContainer.getLayoutParams().height = ScreenUtils.getScreenWidth(getActivity()) / 3;
 //        //解决首页不从顶端显示
-//        mRlAd.setFocusable(true);
-//        mRlAd.setFocusableInTouchMode(true);
-//        mRlAd.requestFocus();
+//        mAdContainer.setFocusable(true);
+//        mAdContainer.setFocusableInTouchMode(true);
+//        mAdContainer.requestFocus();
 
         // 抢购区域
         mLLNavigationPanicBuying = ((LinearLayout) headView.findViewById(R.id.ll_home_navigation_panicbuying));
-        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(width2, ViewGroup.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width2, ViewGroup.LayoutParams.WRAP_CONTENT);
         mLLNavigationPanicBuying.setLayoutParams(params);
 
         mGVPanicBuying = ((GridView) headView.findViewById(R.id.gv_home_panicbuying));
@@ -545,7 +553,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //抢购默认选中
 //        mLLPanicBuy1.setEnabled(false);
 
-        mLLPanicBuys=new ArrayList<>();
+        mLLPanicBuys = new ArrayList<>();
         mLLPanicBuys.add(mLLPanicBuy1);
         mLLPanicBuys.add(mLLPanicBuy2);
         mLLPanicBuys.add(mLLPanicBuy3);
@@ -555,15 +563,15 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mTVPanicBuyState2 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_state2));
         mTVPanicBuyState3 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_state3));
         mTVPanicBuyState4 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_state4));
-        mTimeStateTVs= new TextView[]{mTVPanicBuyState1, mTVPanicBuyState2, mTVPanicBuyState3, mTVPanicBuyState4};
+        mTimeStateTVs = new TextView[]{mTVPanicBuyState1, mTVPanicBuyState2, mTVPanicBuyState3, mTVPanicBuyState4};
 
         mTVPanicBuyTime1 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_time1));
         mTVPanicBuyTime2 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_time2));
         mTVPanicBuyTime3 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_time3));
         mTVPanicBuyTime4 = ((TextView) headView.findViewById(R.id.tv_home_navigation_panicbuying_time4));
-        mTimeTVs=new TextView[]{mTVPanicBuyTime1,mTVPanicBuyTime2,mTVPanicBuyTime3,mTVPanicBuyTime4};
-        for (int i=0;i<mTimes.length;i++){
-            mTimeTVs[i].setText(mTimes[i]+":00");
+        mTimeTVs = new TextView[]{mTVPanicBuyTime1, mTVPanicBuyTime2, mTVPanicBuyTime3, mTVPanicBuyTime4};
+        for (int i = 0; i < mTimes.length; i++) {
+            mTimeTVs[i].setText(mTimes[i] + ":00");
         }
 
         mLLPanicBuyEmpty = ((LinearLayout) headView.findViewById(R.id.ll_gv_home_panicbuying_empty));
@@ -589,11 +597,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //获取商品的ID
-                long productID=mNavigationDataNew.get(position).getProduct_id();
+                long productID = mNavigationDataNew.get(position).getProduct_id();
 
 //                Toast.makeText(getActivity(),""+position,Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(getActivity(), GoodsDetailsActivity.class);
-                intent.putExtra("productID",productID);
+                Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
+                intent.putExtra("productID", productID);
                 startActivity(intent);
 
             }
@@ -608,7 +616,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //对每日新列表进行监听
 
         //抢购导航设置监听
-        for (int i=0;i<mLLPanicBuys.size();i++){
+        for (int i = 0; i < mLLPanicBuys.size(); i++) {
             mLLPanicBuys.get(i).setTag(i);
             mLLPanicBuys.get(i).setOnClickListener(this);
         }
@@ -617,19 +625,19 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mGvShow.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                if (NetStateUtils.isNetworkAvailable(getContext())){
+                if (NetStateUtils.isNetworkAvailable(getContext())) {
                     //刷新抢购
 //                   initPanicBuying();
                     refreshPanicBuying();
                     //刷新每日上新
-                    mEveryDayPage=1;
-                    isHaveNextNews=true;
-                    isRefresh=true;
+                    mEveryDayPage = 1;
+                    isHaveNextNews = true;
+                    isRefresh = true;
 //                   mHomeGoodGridAdapter.notifyDataSetChanged();
                     initData();
                     initTime();
 
-                }else {
+                } else {
                     mLLUNNetWork.setVisibility(View.VISIBLE);
                     mGvShow.refreshComplete();
                 }
@@ -638,12 +646,12 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             @Override
             public void onLoadMore() {
 
-                if (isHaveNextNews){
+                if (isHaveNextNews) {
                     ++mEveryDayPage;
                     initData();
 //                    mGvShow.loadMoreComplete();
 //                    Toast.makeText(getActivity(),"上拉加载",Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
 //                    Toast.makeText(getActivity(),"已经是最后一页暂无更多商品",Toast.LENGTH_SHORT).show();
                     mGvShow.postDelayed(new Runnable() {
 
@@ -667,7 +675,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      */
     private void refreshPanicBuying() {
         mNavigationDataNew = new ArrayList<>();
-        initNavigationDataNew(ClientAPI.API_POINT+ClientAPI.PANICBUY_NEW);
+        initNavigationDataNew(ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW);
 //        mNavigationAdapterNew = new HomeNavigationNewAdapter (mNavigationDataNew, getActivity());
 //        mGVPanicBuying.setAdapter(mNavigationAdapterNew);
 //        initControlNavigation();
@@ -678,85 +686,95 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      */
     private void initData() {
 
-        String url=ClientAPI.API_POINT+ClientAPI.EVERYDAY_NEW+mEveryDayPage;
+        String url = ClientAPI.API_POINT + ClientAPI.EVERYDAY_NEW + mEveryDayPage;
 //        LogUtils.e("EVERYDAY_NEW",url);
-       ClientAPI.getGoodsData(url, new StringCallback() {
-           @Override
-           public void onError(Call call, Exception e, int id) {
-               if (!NetStateUtils.isNetworkAvailable(getContext())){
-                   mLLUNNetWork.setVisibility(View.VISIBLE);
-//                   mEveryDayEmpty.setVisibility(View.VISIBLE);
-               }else {
-                   mLLUNNetWork.setVisibility(View.GONE);
-//                   mEveryDayEmpty.setVisibility(View.GONE);
-                   UNNetWorkUtils.unNetWorkOnlyNotify(getContext(),e);
-               }
-               dismissLoadingDialog();
-               mGvShow.refreshComplete();
-               mGvShow.loadMoreComplete();
-
-           }
-
-           @Override
-           public void onResponse(String response, int id) {
-               mGvShow.refreshComplete();
-               mGvShow.loadMoreComplete();
-               //有网隐藏提示
-               mLLUNNetWork.setVisibility(View.GONE);
-               //获得数据
-               if (!TextUtils.isEmpty(response.toString().trim())){
-                   //是刷新清空数据
-                   if (isRefresh){
-                       mHomeGoodGridAdapter.clear();
-                   }
-                   //恢复不是刷新状态
-                   isRefresh=false;
-                   mHomeProductModel=new Gson().fromJson(response.toString(),HomeProductModel.class);
-                   isHaveNextNews=(mHomeProductModel.getNext_page_url()!=null);
-                   List<HomeProductModel.DataBean> listAdd=mHomeProductModel.getData();
-                   reSetEveryDayNew(listAdd);
-               }
-               dismissLoadingDialog();
-           }
-       });
-
-        // 请求广告数据
-        ClientAPI.getHomeAdData(new HomeAdCallback() {
-
+        ClientAPI.getGoodsData(url, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                if (NetStateUtils.isNetworkAvailable(getContext())){
-                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(),e);
+                if (!NetStateUtils.isNetworkAvailable(getContext())) {
+                    mLLUNNetWork.setVisibility(View.VISIBLE);
+//                   mEveryDayEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    mLLUNNetWork.setVisibility(View.GONE);
+//                   mEveryDayEmpty.setVisibility(View.GONE);
+                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                 }
+                dismissLoadingDialog();
+                mGvShow.refreshComplete();
+                mGvShow.loadMoreComplete();
+
             }
 
             @Override
-            public void onResponse(HomeAdBigModel response, int id) {
-                if (response != null && !"[]".equals(response)) {
-                    if (mNetImages != null) {
-                        mNetImages.clear();
-                        mNetImages.addAll(response.getBanners());
-
-                        if (mNetImages.size() == 1) {
-                            mConvenientBanner.setCanLoop(false);
-                        } else {
-                            mConvenientBanner.setCanLoop(true);
-                        }
-
-                        if (mRlAd.getChildCount() > 0) {
-                            mConvenientBanner.notifyDataSetChanged();
-                        } else {
-                            setupAd();
-                        }
-
+            public void onResponse(String response, int id) {
+                mGvShow.refreshComplete();
+                mGvShow.loadMoreComplete();
+                //有网隐藏提示
+                mLLUNNetWork.setVisibility(View.GONE);
+                //获得数据
+                if (!TextUtils.isEmpty(response.toString().trim())) {
+                    //是刷新清空数据
+                    if (isRefresh) {
+                        mHomeGoodGridAdapter.clear();
                     }
+                    //恢复不是刷新状态
+                    isRefresh = false;
+                    mHomeProductModel = new Gson().fromJson(response.toString(), HomeProductModel.class);
+                    isHaveNextNews = (mHomeProductModel.getNext_page_url() != null);
+                    List<HomeProductModel.DataBean> listAdd = mHomeProductModel.getData();
+                    reSetEveryDayNew(listAdd);
                 }
+                dismissLoadingDialog();
             }
         });
+
+        // 请求广告数据
+        mClientApi.getHomeAdData(TAG, new DataCallback<HomeAdBigModel>(getContext()) {
+                    @Override
+                    public void onFail(Call call, Exception e, int id) {
+                        if (NetStateUtils.isNetworkAvailable(getContext())) {
+                            UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(Object response, int id) {
+                        mNetImages.clear();
+
+                        if (response != null) {
+                            HomeAdBigModel model = (HomeAdBigModel) response;
+
+                            if (mNetImages != null) {
+
+                                mNetImages.addAll(model.getBanners());
+
+                                if (mNetImages.size() == 1) {
+                                    mConvenientBanner.setCanLoop(false);
+                                } else {
+                                    mConvenientBanner.setCanLoop(true);
+                                }
+
+                                if (mAdContainer.getChildCount() <= 0) {
+                                    setupAdView();
+                                }
+
+                            }
+                        }
+
+                        if (mNetImages.isEmpty()){ // mConvenientBanner貌似不支持数据减为空时的刷新
+                            mAdContainer.removeView(mConvenientBanner);
+                        }else {
+                            mConvenientBanner.notifyDataSetChanged();
+                        }
+                    }
+                }
+
+        );
     }
 
     /**
-     *  重新设置每日推荐数据
+     * 重新设置每日推荐数据
+     *
      * @param productInfoList
      */
 
@@ -798,9 +816,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 //携带数据接口
                 intentNavigation.putExtra("title", "限时抢购");
                 //页数
-                String moreUrl=ClientAPI.API_POINT+ClientAPI.PANICBUY_MORE+mIndexs[mCurrentIndex];
-                LogUtils.e("moreUrl",moreUrl);
-                intentNavigation.putExtra("url",moreUrl );
+                String moreUrl = ClientAPI.API_POINT + ClientAPI.PANICBUY_MORE + mIndexs[mCurrentIndex];
+                LogUtils.e("moreUrl", moreUrl);
+                intentNavigation.putExtra("url", moreUrl);
                 startActivity(intentNavigation);
                 break;
 
@@ -826,7 +844,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     }
 
-    private void setupAd() {
+    private void setupAdView() {
         //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         mConvenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
@@ -844,7 +862,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mConvenientBanner.setOnItemClickListener(this);
 
         // 把广告控件加入到广告栏容器中
-        mRlAd.addView(mConvenientBanner);
+        mAdContainer.addView(mConvenientBanner);
 
     }
 
@@ -874,6 +892,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                     .into(imageView);
 
         }
+
     }
 
     /**
@@ -910,10 +929,10 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==300&&resultCode==getActivity().RESULT_OK&&data!=null){
-            Toast.makeText(getContext(),"Home----"+data.getStringExtra("result").toString(),Toast.LENGTH_SHORT).show();
+        if (requestCode == 300 && resultCode == getActivity().RESULT_OK && data != null) {
+            Toast.makeText(getContext(), "Home----" + data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
 //            Log.e("QRCode",data.getData().toString());
-            Log.e("QRCode",data.getStringExtra("result").toString());
+            Log.e("QRCode", data.getStringExtra("result").toString());
         }
     }
 
@@ -932,58 +951,58 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private void initTime() {
 //        initTimer();
         //获取24时间制的时间
-        Date date=new Date();
-        mHour=date.getHours();
-        mMinuts=date.getMinutes();
-        mSecond=date.getSeconds();
-        LogUtils.e("time","hour:"+mHour+"--minute:"+mMinuts+"--second:"+mSecond);
+        Date date = new Date();
+        mHour = date.getHours();
+        mMinuts = date.getMinutes();
+        mSecond = date.getSeconds();
+        LogUtils.e("time", "hour:" + mHour + "--minute:" + mMinuts + "--second:" + mSecond);
         setTimeTV();
     }
 
     private void setTimeTV() {
-        for(int i=0;i<mTimes.length;i++){
-            if (i<mTimes.length-1){
+        for (int i = 0; i < mTimes.length; i++) {
+            if (i < mTimes.length - 1) {
                 //在限制区间内
-                if (mTimes[i]<=mHour&&mHour<mTimes[i+1]){
-                    LogUtils.e("time","mTimes[i]:"+mTimes[i]+"--mTimes[i+1]:"+mTimes[i+1]);
-                    timeIndex=i;
-                    mTimeDifference=(mTimes[timeIndex+1]-mHour)*3600000-mMinuts*60000-mSecond*1000;
+                if (mTimes[i] <= mHour && mHour < mTimes[i + 1]) {
+                    LogUtils.e("time", "mTimes[i]:" + mTimes[i] + "--mTimes[i+1]:" + mTimes[i + 1]);
+                    timeIndex = i;
+                    mTimeDifference = (mTimes[timeIndex + 1] - mHour) * 3600000 - mMinuts * 60000 - mSecond * 1000;
                     break;
                 }
             }
             //在限制区间外
             else {
                 //最后的时间点到结束
-                if (mTimes[mTimes.length-1]<=mHour&&mHour<mTimeLast){
-                    timeIndex=mTimes.length-1;
-                    mTimeDifference=(mTimeLast-mHour)*3600000-mMinuts*60000-mSecond*1000;
+                if (mTimes[mTimes.length - 1] <= mHour && mHour < mTimeLast) {
+                    timeIndex = mTimes.length - 1;
+                    mTimeDifference = (mTimeLast - mHour) * 3600000 - mMinuts * 60000 - mSecond * 1000;
                 }
                 //结束时间到零点
-                else if(mTimeLast<=mHour&&mHour<=23){
-                    timeIndex=mTimes.length;
-                    mTimeDifference=(23-mHour)*3600000-mMinuts*60000-mSecond*1000;
+                else if (mTimeLast <= mHour && mHour <= 23) {
+                    timeIndex = mTimes.length;
+                    mTimeDifference = (23 - mHour) * 3600000 - mMinuts * 60000 - mSecond * 1000;
                 }
                 //零点到开始之前
-                else if (0<=mHour&&mHour<mTimes[1]) {
+                else if (0 <= mHour && mHour < mTimes[1]) {
                     timeIndex = -1;
                     mTimeDifference = (10 - mHour) * 3600000 - mMinuts * 60000 - mSecond * 1000;
                 }
             }
         }
         //修改状态栏
-        for (int i=0;i<mTimeStateTVs.length;i++){
+        for (int i = 0; i < mTimeStateTVs.length; i++) {
             //恢复所有的切换按钮的状态
             mLLPanicBuys.get(i).setEnabled(true);
             //抢购导航按钮处理
-            if (i<timeIndex){
+            if (i < timeIndex) {
                 mTimeStateTVs[i].setText("已结束");
-            }else if (i>timeIndex){
+            } else if (i > timeIndex) {
                 mTimeStateTVs[i].setText("即将开始");
-            }else {
+            } else {
                 mTimeStateTVs[i].setText("疯抢中");
                 //将抢购的状态设置为选中
-                if (mLLPanicBuys.get(i)!= null){
-                    mCurrentIndex=i;
+                if (mLLPanicBuys.get(i) != null) {
+                    mCurrentIndex = i;
                     mLLPanicBuys.get(i).setEnabled(false);
                 }
             }
@@ -995,7 +1014,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             public void run() {
                 mHandler.sendEmptyMessage(0);
             }
-        },mTimeDifference);
+        }, mTimeDifference);
     }
 
     /**
@@ -1003,16 +1022,16 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      */
     private void initTimer() {
         mTimer = new Timer(true);
-        mTimeTask = new TimerTask(){
+        mTimeTask = new TimerTask() {
             public void run() {
-                LogUtils.e("time","mTimeDifference--"+mTimeDifference);
+                LogUtils.e("time", "mTimeDifference--" + mTimeDifference);
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         //重新获取时间
                         initTime();
                     }
-                },mTimeDifference);
+                }, mTimeDifference);
             }
         };
     }
