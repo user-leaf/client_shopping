@@ -47,7 +47,7 @@ public class HomeEveryDayEmptyAdapter extends RecyclerView.Adapter<HomeEveryDayE
 
     @Override
     public int getItemCount() {
-        return 6;
+        return 0;
     }
 
     /**

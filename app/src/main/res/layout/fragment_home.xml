@@ -84,6 +84,7 @@
                 android:layout_height="match_parent"
                 >
                 <com.jcodecraeer.xrecyclerview.XRecyclerView
+                    android:visibility="visible"
                     android:id="@+id/rv_everyday_empty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

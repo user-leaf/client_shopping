@@ -54,9 +54,7 @@ import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SPUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
-import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
-import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.bjaiyouyou.thismall.zxing.activity.CaptureActivity;
 import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
@@ -503,7 +501,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mEveryDayEmpty.setLayoutManager(mgr);
 //        mEveryDayEmpty.addItemDecoration(new SpaceItemDecoration(0,5,5,0));
 //        mEveryDayEmpty.addHeaderView(headView);
-        mGvShow.setEmptyView(mEveryDayEmpty);
+//        mGvShow.setEmptyView(mEveryDayEmpty);
     }
 
     /**
