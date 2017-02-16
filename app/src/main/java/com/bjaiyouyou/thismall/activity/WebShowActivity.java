@@ -3,6 +3,7 @@ package com.bjaiyouyou.thismall.activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -38,10 +39,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         initView();
         setupView();
 
-        // 设置WebView
         initWebView();
-
-        // 加载网页
         loadUrl();
 
     }
@@ -165,5 +163,18 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         return false;
     }
 
+    @Override
+    public void onDestroy() {
+        if (mWebView != null) {
+            ViewGroup parent = (ViewGroup) mWebView.getParent();
+            if (parent != null) {
+                parent.removeView(mWebView);
+            }
+            mWebView.removeAllViews();
+            mWebView.destroy();
+        }
+
+        super.onDestroy();
+    }
 
 }
