@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.reflect.ParameterizedType;
@@ -14,7 +15,7 @@ import okhttp3.Response;
 
 /**
  * 将服务器返回的数据转换成接口需要的参数类型
- * <p/>
+ * <p>
  * Created by kanbin on 2016/12/8.
  */
 public abstract class DataCallback<T> extends Callback {
@@ -39,19 +40,21 @@ public abstract class DataCallback<T> extends Callback {
 
     @Override
     public T parseNetworkResponse(Response response, int id) throws Exception {
+        String str = response.body().string();
         if (response != null && !"[]".equals(response)) {
             try {
                 Gson gson = new Gson();
-                String str = response.body().string();
                 T t = gson.fromJson(str, mType);
 
-//            BaseBean baseBean = (BaseBean) t;
-//            baseBean.code = response.code();
-//            baseBean.desc = str;
                 return t;
-            }catch (Exception e){
-                // TODO: 2017/2/14 解析错误，上传响应数据及错误信息到友盟统计
-
+            } catch (Exception e) {
+                // 上传响应数据及错误信息到友盟统计
+                MobclickAgent.reportError(mContext,
+                        "[" + mContext.getClass() + "]"
+                                + "\n[" + mType + "]"
+                                + "\n[gson] " + e.getMessage()
+                                + "\n[json] " + str
+                );
                 return null;
             }
         }
