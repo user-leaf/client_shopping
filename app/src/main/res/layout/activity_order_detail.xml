@@ -122,8 +122,15 @@
             </RelativeLayout>
 
             <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"/>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
                 />
 
             <LinearLayout
@@ -197,7 +204,16 @@
 
                 <View
                     style="@style/entry_divider_fine_line_style"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
                     android:layout_height="3.5dp"
+                    android:background="@color/app_common_bg"
+                    />
+
+                <View
+                    style="@style/entry_divider_fine_line_style"
                     />
 
             </LinearLayout>
@@ -225,8 +241,15 @@
             </com.bjaiyouyou.thismall.widget.NoScrollListView>
 
             <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"/>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
                 />
 
             <LinearLayout
@@ -331,6 +354,7 @@
                 </RelativeLayout>
 
                 <View
+                    android:visibility="gone"
                     style="@style/entry_divider_fine_line_style"/>
 
                 <RelativeLayout
@@ -363,8 +387,15 @@
             </LinearLayout>
 
             <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
+                style="@style/entry_divider_fine_line_style"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"/>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
                 />
 
             <RelativeLayout
@@ -418,6 +449,10 @@
                     android:text="下单时间："
                     />
             </RelativeLayout>
+
+            <View
+                style="@style/entry_divider_fine_line_style"
+                />
 
         </LinearLayout>
     </ScrollView>

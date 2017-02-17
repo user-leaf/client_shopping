@@ -8,7 +8,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
-import com.bjaiyouyou.thismall.callback.HomeAdCallback;
 import com.bjaiyouyou.thismall.task.TaskCallback;
 import com.bjaiyouyou.thismall.task.TaskResult;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -99,28 +98,6 @@ public class ClientAPI extends BaseClientApi{
         });
 
         RequestManager.addRequest(request, null);
-    }
-
-    /**
-     * 首页广告数据请求
-     *
-     * @param callback
-     */
-    public static void getHomeAdData(HomeAdCallback callback) {
-
-        // 请求地址
-        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
-        sb.append("api/v1/banner/index");
-        String url = sb.toString();
-
-        LogUtils.d(TAG, "getHomeAdData: " + url);
-
-        // 数据请求
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(callback);
     }
 
     /**

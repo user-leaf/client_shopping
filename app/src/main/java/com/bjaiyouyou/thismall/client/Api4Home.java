@@ -1,10 +1,8 @@
 package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
-import com.bjaiyouyou.thismall.callback.HomeAdCallback;
 import com.bjaiyouyou.thismall.model.HomeAdBigModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 /**
  * Created by Administrator on 2017/2/16.

@@ -432,7 +432,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 if (!TextUtils.isEmpty(e.getMessage()) && (e.getMessage().contains("401") || e.getMessage().contains("400"))) {
                     // TODO: 2016/9/17 隐式登录 自动刷新token
 
-
                     // 清空token(临时先这样，token过期，清空token)
                     CurrentUserManager.clearUserToken();
                 } else if (!TextUtils.isEmpty(e.getMessage())) {
@@ -442,9 +441,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 //                if (e.getMessage().contains("502")){
 //                    isPerform = false;
 //                }
-
-                // 提示token失效，请重新登录
-//                TokenCallback.onDealTokenError(getActivity());
 
                 // 结束刷新
                 if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
@@ -778,9 +774,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
      */
     public static class CartHelper {
 
-        /**
-         * 抢购商品的类型
-         */
+        // 抢购商品的类型
         public enum RushType {
             rush_before, // 未到抢购期
             rush_in,  // 抢购中
