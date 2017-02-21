@@ -56,7 +56,6 @@ import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.bjaiyouyou.thismall.widget.NoScrollGridView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
