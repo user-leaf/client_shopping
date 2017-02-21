@@ -51,6 +51,7 @@ import com.bjaiyouyou.thismall.model.HomeNavigationItem;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNewEmpty;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -907,8 +908,10 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         if (!TextUtils.isEmpty(link) && !"#".equals(link)) {
             //带值跳转到广告页面
             Intent intent = new Intent(getActivity(), WebShowActivity.class);
-            intent.putExtra(WebShowActivity.PARAM_URLPATH, link);
+            intent.putExtra(WebShowActivity.PARAM_URLPATH, link + "?token=" + CurrentUserManager.getUserToken() + "&type=android");
             startActivity(intent);
+
+
         }
 
     }

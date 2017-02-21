@@ -29,7 +29,7 @@ public class LoadingDialog extends Dialog {
         this.context = context;
     }
 
-    /**这里只是为了防止私自new对象，如果可以，直接使用base类中的show/dismiss方法*/
+    /**这里只是为了防止私自new对象，如果可以，请直接使用base类中的show/dismiss方法*/
     public static LoadingDialog getInstance(Context context){
         return new LoadingDialog(context);
     }
