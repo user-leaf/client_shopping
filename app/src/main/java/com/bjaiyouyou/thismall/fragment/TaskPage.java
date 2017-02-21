@@ -55,7 +55,7 @@ import java.util.List;
 import okhttp3.Call;
 
 /**
- * 任务页（新）
+ * 任务页
  *
  * @author kanbin
  * @date 2016/6/16
@@ -184,12 +184,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 // 下拉刷新
                 pageno = 1;
-//                mTvSignInTotalNum.setText("0");
-//                mTvGetGoldToday.setText("0UU");
-//                haveSigned = false;
-
                 loadData();
-//                onHiddenChanged(false);
                 loadPageData();
                 checkNet();
             }
@@ -199,7 +194,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                 // 上拉加载
                 pageno++;
                 loadData();
-                LogUtils.d(TAG, "pageno " + pageno);
+                LogUtils.d(TAG, "pageno: " + pageno);
             }
         });
 
@@ -246,40 +241,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             }
         });
 
-//        // 请求广告数据
-//        ClientAPI.getTaskAD(CurrentUserManager.getUserToken(), pageno, new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//
-//                closeRefresh();
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//
-//                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
-//
-//                    Gson gson = new Gson();
-//                    try {
-//                        TaskModel taskModel = gson.fromJson(response, TaskModel.class);
-//                        if (taskModel != null) {
-//
-//                            if (pageno == 1) {
-//                                mList.clear();
-//                            }
-//                            mList.addAll(taskModel.getData());
-//                            mAdapter.notifyDataSetChanged();
-//
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                closeRefresh();
-//
-//            }
-//        });
-
     }
 
     private void closeRefresh() {
@@ -308,9 +269,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private void loadPageData() {
         checkLogin();
 
-        // 初始化数据 // 是不是应该写在下拉刷新里 // 现，退出时发送广播重置数据
-//        mTvSignInTotalNum.setText("0");
-//        mTvGetGoldToday.setText("0UU");
         haveSigned = false;
 
         // 获取签到数据
@@ -335,42 +293,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                 checkNet();
             }
         });
-
-//        // 获取签到数据
-//        ClientAPI.getTaskSignInfo(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//                mBtnSignIn.setSelected(false);
-//                checkNet();
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                mTvNoNet.setVisibility(View.GONE);
-//                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
-//
-//                    Gson gson = new Gson();
-//                    SignInInfo signInInfo = gson.fromJson(response, SignInInfo.class);
-//
-//                    if (signInInfo != null) {
-//                        mTvSignInTotalNum.setText("" + signInInfo.getSign_in_number());
-//                        mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
-//                        mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
-//
-//                        haveSigned = signInInfo.isIs_sign_in();
-//                        mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
-//
-//                    }
-////                            if (signInInfo.isIs_sign_in()) {  // 改为：如果已签到，则在签到操作之前return掉
-////                                mBtnSignIn.setClickable(false);
-////                            }
-//                }
-//            }
-//        });
-
-        // 初始化数据 // 现，退出时发送广播重置数据
-//        mTvVipTip.setText("200元开通会员特权");
-//        mTvVipRecharge.setVisibility(View.VISIBLE);
 
         // 获取用户信息
         ClientAPI.getUserData(CurrentUserManager.getUserToken(), new StringCallback() {
@@ -453,7 +375,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         switch (v.getId()) {
 
             case R.id.task_tv_login:
-//                startActivityForResult(LoginActivity.class, null, REQUEST_CODE);
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 TaskPage.this.startActivityForResult(intent, REQUEST_CODE);
                 break;
@@ -465,7 +386,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                     return;
                 }
 
-                loadingDialog.show();
+                showLoadingDialog();
 
                 // 点击签到
                 // 累计签到天数+1
@@ -479,12 +400,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
+                                dismissLoadingDialog();
                                 mBtnSignIn.setSelected(false);
-//                                ToastUtils.showShort("请先登录");
                                 checkNet();
-//                                showToast("请先登录");
-
-                                loadingDialog.dismiss();
                             }
 
                             @Override
@@ -494,11 +412,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                                 mBtnSignIn.setSelected(true);
 //                                mBtnSignIn.setClickable(false); // 改为：如果已签到，则在签到操作之前return掉
 
-//                                mTvSignInTotalNum.setText("" + (Integer.parseInt(mTvSignInTotalNum.getText().toString()) + 1));
-//                                mTvSignInContCount.setText(""+(Integer.parseInt(mTvSignInContCount.getText().toString())+1));
                                 loadPageData();
 
-                                loadingDialog.dismiss();
+                                dismissLoadingDialog();
                             }
                         });
                 break;
@@ -537,7 +453,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (TextUtils.isEmpty(CurrentUserManager.getUserToken())) {
-//                                    TokenCallback.onDealTokenError(getContext());
                                     startActivityForResult(LoginActivity.class, null, REQUEST_CODE);
                                     return;
                                 }
@@ -565,8 +480,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private void showSyncAnim(String str) {
         mTvVipSyncShow.setText(str);
 
-
-//        if (mTvVipSyncShow.getVisibility() == View.GONE) {
         mTvVipSyncShow.setVisibility(View.VISIBLE);
 
         Animation asyncAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_task_sync);
@@ -590,8 +503,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
         mTvVipSyncShow.startAnimation(asyncAnim);
     }
-
-//    }
 
     // https://github.com/saiwu-bigkoo/Android-AlertView
     @Override

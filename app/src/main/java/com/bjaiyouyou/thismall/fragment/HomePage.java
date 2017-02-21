@@ -905,12 +905,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     public void onItemClick(int position) {
         String link = mNetImages.get(position).getLink().trim();
         // 广告link不为空则跳转，为空不跳转
-        if (!TextUtils.isEmpty(link) && !"#".equals(link)) {
+        if (!TextUtils.isEmpty(link) && !"#".equals(link) && (link.startsWith("http://") || link.startsWith("https://"))) {
             //带值跳转到广告页面
             Intent intent = new Intent(getActivity(), WebShowActivity.class);
             intent.putExtra(WebShowActivity.PARAM_URLPATH, link + "?token=" + CurrentUserManager.getUserToken() + "&type=android");
             startActivity(intent);
-
 
         }
 

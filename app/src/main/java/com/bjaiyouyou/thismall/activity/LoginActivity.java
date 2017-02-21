@@ -52,16 +52,6 @@ import okhttp3.Call;
  *
  * @author kanbin
  * @date 2016/6/18
- * @author QuXinhang
- * UpDate 2016/6/25 10:12
- * <p>
- * 添加三方登录的入口
- * 添加第三方登录的方法
- * @author QuXinhang
- * UpDate 2016/6/25 10:12
- * <p>
- * 添加三方登录的入口
- * 添加第三方登录的方法
  */
 
 /**
@@ -82,9 +72,7 @@ import okhttp3.Call;
 public class LoginActivity extends BaseActivity implements View.OnClickListener, PlatformActionListener {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-    // 标题栏
     private IUUTitleBar mTitleBar;
-    // 获取验证码
     private TextView mBtnGetVeriCode;
     // 倒计时
     private CountDownTimer mCountDownTimer;
@@ -97,7 +85,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private EditText mEtTel;
     //数据获取验证码
     private EditText mEtVeriCode;
-    //登录按钮
     private View mBtnLogin;
     // 提示栏
     private View mTipsView;
@@ -107,8 +94,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private ImageView mIvDelete;
     // 邀请码
     private EditText mEtInviteCode;
-    // 加载中
-//    private AVLoadingIndicatorView mLoadingView;
     private TextView mTvAgree;
 
     @Override
@@ -239,15 +224,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         };
 
         avoidHintColor(mTvAgree);
-        spannableString.setSpan(clickableSpan,str1.length(), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(clickableSpan, str1.length(), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvAgree.setText(spannableString);
         mTvAgree.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
     private void avoidHintColor(View view) {
-        if(view instanceof TextView)
-            ((TextView)view).setHighlightColor(getResources().getColor(android.R.color.transparent));
+        if (view instanceof TextView)
+            ((TextView) view).setHighlightColor(getResources().getColor(android.R.color.transparent));
     }
 
     /**
@@ -279,7 +264,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     return;
                 }
 
-                if (!ValidateUserInputUtils.validateUserPhone(phone)){
+                if (!ValidateUserInputUtils.validateUserPhone(phone)) {
                     mTipsView.setVisibility(View.VISIBLE);
                     mTvTelTips.setText("手机号码有误");
                     return;
@@ -303,7 +288,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                 if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
                                     mTipsView.setVisibility(View.VISIBLE);
                                     mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
-                                }else {
+                                } else {
                                     mTipsView.setVisibility(View.VISIBLE);
                                     mTvTelTips.setText("网络未连接");
                                 }
@@ -351,78 +336,62 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         String password = mEtVeriCode.getText().toString();
         String invitationCode = mEtInviteCode.getText().toString();
 
-        if (TextUtils.isEmpty(phone)) {
-            mTipsView.setVisibility(View.VISIBLE);
-            mTvTelTips.setText("请输入手机号");
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            mTipsView.setVisibility(View.VISIBLE);
-            mTvTelTips.setText("请输入密码");
-            return;
-        }
-
-        // 检查手机号
-        if (phone.length() < 11) {
-            mTipsView.setVisibility(View.VISIBLE);
-            mTvTelTips.setText("输入位数不足，不是有效的手机号");
-            return;
-        } else if (phone.length() > 11) {
-            mTipsView.setVisibility(View.VISIBLE);
-            mTvTelTips.setText("输入位数过多，不是有效的手机号");
-            return;
-        }else if (!ValidateUserInputUtils.validateUserPhone(phone)){
+        if (!ValidateUserInputUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
             mTvTelTips.setText("手机号码有误");
             return;
         }
 
-        if (!TextUtils.isEmpty(invitationCode)){
-            if (!ValidateUserInputUtils.validateUserPhone(invitationCode)) {
-                mTipsView.setVisibility(View.VISIBLE);
-                mTvTelTips.setText("邀请人号码有误");
-                return;
-            }
+        if (!TextUtils.isEmpty(invitationCode) && !ValidateUserInputUtils.validateUserPhone(invitationCode)) {
+            mTipsView.setVisibility(View.VISIBLE);
+            mTvTelTips.setText("邀请人号码有误");
+            return;
         }
 
-        loadingDialog.show();
+        showLoadingDialog();
 
-        ClientAPI.postLogin(phone, password, invitationCode, new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                loadingDialog.dismiss();
-                if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
-                    mTipsView.setVisibility(View.VISIBLE);
-                    mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
-                }else {
-                    mTipsView.setVisibility(View.VISIBLE);
-                    mTvTelTips.setText("网络未连接");
-                }
-            }
+        ClientAPI.postLogin(phone, password, invitationCode, new
 
-            @Override
-            public void onResponse(String response, int id) {
-                loadingDialog.dismiss();
-                if (response != null && !"[]".equals(response)) {
-                    Gson gson = new Gson();
-                    TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
-                    if (tokenModel == null){
-                        return;
+                StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dismissLoadingDialog();
+
+                        if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
+                            mTipsView.setVisibility(View.VISIBLE);
+                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
+                        } else {
+                            mTipsView.setVisibility(View.VISIBLE);
+                            mTvTelTips.setText("网络未连接");
+                        }
                     }
-                    String token = tokenModel.getToken();
-                    if (token != null) {
-                        LogUtils.d(TAG, "保存token：" + token);
-                        CurrentUserManager.setUserToken(token);
-                        setResult(RESULT_OK);
-                        finish();
 
-                    } else {
-                        ToastUtils.showShort("token为空");
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dismissLoadingDialog();
+
+                        if (response != null && !"[]".equals(response)) {
+                            Gson gson = new Gson();
+                            TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
+                            if (tokenModel == null) {
+                                return;
+                            }
+
+                            String token = tokenModel.getToken();
+                            if (token != null) {
+                                LogUtils.d(TAG, "保存token：" + token);
+                                CurrentUserManager.setUserToken(token);
+                                setResult(RESULT_OK);
+                                finish();
+
+                            } else {
+                                ToastUtils.showShort("token为空");
+                            }
+                        }
                     }
                 }
-            }
-        });
+
+        );
 
     }
 

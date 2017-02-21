@@ -25,12 +25,15 @@ import java.util.Set;
 import okhttp3.Call;
 
 /**
- * 网络请求
+ * 网络请求(旧)
+ *
+ * @see ClientApiHelper
+ * ClientApiHelper.getInstance().getClientApi(Api4XXX.class).xxx()
  *
  * @author kanbin
  * @date 2016/6/1
  */
-public class ClientAPI extends BaseClientApi{
+public class ClientAPI {
 
     public static final String TAG = ClientAPI.class.getSimpleName();
 
