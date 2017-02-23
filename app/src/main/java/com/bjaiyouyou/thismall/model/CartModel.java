@@ -159,6 +159,11 @@ public class CartModel {
         public void setUpdated_at(String updated_at) {
             this.updated_at = updated_at;
         }
+
+        @Override
+        public String toString() {
+            return "[ProductBean] name: " + name;
+        }
     }
 
     /**

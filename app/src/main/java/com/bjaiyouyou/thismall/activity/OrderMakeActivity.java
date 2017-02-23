@@ -59,15 +59,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     public static final String PARAM_PAGE_TYPE = "pageType";
     public static final int REQUEST_CODE = 0;
 
-    // 标题栏
     private IUUTitleBar mTitleBar;
     // 延误提示
     private TextView mTvDelayTip;
     // 订单列表
     private NoScrollListView mListView;
-    // 订单列表适配器
     private OrderMakeAdapter mAdapter;
-    // 订单列表数据
 //    private List<OrderMakeItem> mData;
     private List<CartItem2> mData;
     // 统计商品集合mData中的抢购中商品
@@ -297,11 +294,18 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         final List<CartItem2> goodList = (List<CartItem2>) MainApplication.getInstance().getData();
 //        MainApplication.getInstance().setData(null); // 断网之后刷新，重新获取会获取不到数据，null，导致空指针异常
 
+        LogUtils.d(TAG, "loadListData: " + goodList);
+
+        if (goodList.isEmpty()){
+            return;
+        }
+
         // 使用此刻的服务器数据还是本地数据(是否校准数据)
         boolean useDataInServer = true;
 
         if (useDataInServer) {
             showLoadingDialog();
+
             // 请求购物车接口获取此刻服务器数据
             ClientAPI.getCartData(new StringCallback() {
                 @Override

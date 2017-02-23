@@ -388,7 +388,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        doDelete(position);
+                                        deleteItem(position);
                                     }
                                 })
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -443,18 +443,13 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                 if (tag != null && tag instanceof Integer) {
                     position = (Integer) tag;
                     // 执行删除
-                    doDelete(position);
+                    deleteItem(position);
                 }
                 break;
         }
     }
 
-    /**
-     * 条目左滑删除
-     *
-     * @param position
-     */
-    private void doDelete(final Integer position) {
+    private void deleteItem(final Integer position) {
 
         String userToken = CurrentUserManager.getUserToken();
 
@@ -479,6 +474,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                     public void onResponse(String response, int id) {
                         if (position <= mList.size() - 1) {
                             mList.remove(mList.get(position));
+                            // mDealList集合中也要删除，在CartPage的数据观察者中处理的
                         }
                         CartAdapter2.this.notifyDataSetChanged();
                         mCartPage.checkDataSize();

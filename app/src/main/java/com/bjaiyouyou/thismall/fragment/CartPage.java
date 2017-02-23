@@ -3,6 +3,7 @@ package com.bjaiyouyou.thismall.fragment;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -57,7 +58,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
     private PullToRefreshListView mRefreshListView;
 
-    // 接口返回的初始的数据集，这里只用于列表显示
+    // 接口返回的初始的数据集，这里只用于列表显示(发现删除、加减都是在这个数据集上操作的..)
 //    private List<CartItem> mRawList;
     private List<CartItem2> mRawList;
     // 经过过滤的数据集（去掉下架商品）
@@ -65,24 +66,19 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     //    private CartAdapter mAdapter;
     private CartAdapter2 mAdapter;
 
-    // 总价
-    private TextView mTvTotal;
-    // 总积分
-    private TextView mTvTotalPoint;
-    // 全选
+    // 底部栏（全选、总价、总积分、结算按钮）
+    private View mBottomView;
     private CheckBox mChbAll;
-    // 结账，下订单
+    private TextView mTvTotalPrice;
+    private TextView mTvTotalPoint;
     private Button mBtnOrder;
     // 全选标识
     private boolean isChooseAll = false;
-    // 选中个数
-    private int count = 0;
-    // EmptyView
+    private int selectedCount = 0;
+
     private View mEmptyView;
     // EmptyView中的“赶紧去逛逛”
     private View mTvGoShopping;
-    // 底部总金额栏
-    private View mBottomView;
     // 断网提示
     private TextView mTvNoNet;
 
@@ -174,7 +170,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     private void initView() {
         mBodyView = (LinearLayout) layout.findViewById(R.id.body);
         mRefreshListView = (PullToRefreshListView) layout.findViewById(R.id.cart_listview);
-        mTvTotal = (TextView) layout.findViewById(R.id.cart_tv_total_fee);
+        mTvTotalPrice = (TextView) layout.findViewById(R.id.cart_tv_total_fee);
         mTvTotalPoint = (TextView) layout.findViewById(R.id.cart_tv_total_points);
         mChbAll = (CheckBox) layout.findViewById(R.id.cart_chb_choose_all);
         mBtnOrder = (Button) layout.findViewById(R.id.cart_btn_order);
@@ -219,14 +215,18 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             @Override
             public void onChanged() {
                 super.onChanged();
+
+                // 重新计算mDealList(当删除了某个条目，如果不重新计算，在全选时会把这个删除掉的也加进去了)
+                fillDealList(mRawList);
+
                 // 检查是否显示发货延迟提示
                 showTopTip(mDealList);
 
                 // 合计金额
-                double sum = getSum();
-                mTvTotal.setText("¥" + ((sum < 10E-6) ? 0 : MathUtil.round(sum, 2)));
+                double sum = countTotalPrice();
+                mTvTotalPrice.setText("¥" + ((sum < 10E-6) ? 0 : MathUtil.round(sum, 2)));
                 // 总积分
-                int sumPoint = getPoints();
+                int sumPoint = countTotalPoints();
                 mTvTotalPoint.setText(String.format(Locale.CHINA, "+%d积分", sumPoint));
 
                 /**
@@ -234,20 +234,20 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                  * 只有所有条目选择，“全选”按钮才选中
                  * 所有条目有一个没有选中，则“全选”按钮不选中
                  */
-                count = 0;
+                selectedCount = 0;
                 if (!mDealList.isEmpty()) {
                     isChooseAll = true;
                     for (CartItem2 item : mDealList) {
                         if (!item.isChecked()) {
                             isChooseAll = false;
                         } else {
-                            count++; // 统计选中个数
+                            selectedCount++; // 统计选中个数
                         }
                     }
 
                     mChbAll.setChecked(isChooseAll);
                 }
-                mBtnOrder.setText(String.format(Locale.CHINA, "结算(%d)", count));
+                mBtnOrder.setText(String.format(Locale.CHINA, "结算(%d)", selectedCount));
             }
         });
     }
@@ -336,12 +336,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 //        }
     }
 
-    /**
-     * 计算总价
-     *
-     * @return
-     */
-    public double getSum() {
+    public double countTotalPrice() {
         double sum = 0;
 
         for (CartItem2 item : mRawList) {
@@ -386,7 +381,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
      *
      * @return
      */
-    public int getPoints() {
+    public int countTotalPoints() {
         int sum = 0;
         for (CartItem2 item : mRawList) {
             if (item.isChecked()) {
@@ -608,9 +603,52 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             return;
         }
 
+        final List<CartItem2> expiredList = listRushGoodExpired(selectedList);
+
+        // 存在抢购中商品过抢购期
+        if (!expiredList.isEmpty()) {
+            final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                    .customView(R.layout.layout_dialog_rush_expired, false)
+                    .build();
+            View customView = dialog.getCustomView();
+            View passView = customView.findViewById(R.id.rush_expired_dialog_tv_pass);  // 不买它了
+            View goonView = customView.findViewById(R.id.rush_expired_dialog_tv_goon);  // 继续购买
+
+            // 不买它了
+            passView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    LogUtils.d(TAG, "selectedList before: " + selectedList.toString());
+                    selectedList.removeAll(expiredList);
+//                    LogUtils.d(TAG, "selectedList after: " + selectedList.toString());
+                    toMakeOrder(selectedList);
+                    dialog.dismiss();
+                }
+            });
+
+            // 继续购买
+            goonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toMakeOrder(selectedList);
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
+        // 没有商品过抢购期
+        else {
+            toMakeOrder(selectedList);
+        }
+
+    }
+
+    @NonNull
+    private List<CartItem2> listRushGoodExpired(List<CartItem2> selectedList) {
         // 对本次接口返回的商品中，选中的那些在抢购中的商品进行处理，判断此时有无过期
         // 记录过期商品
-        final List<CartItem2> expiredList = new ArrayList<>();
+        List<CartItem2> expiredList = new ArrayList<>();
 
         for (int i = 0; i < selectedList.size(); i++) {
             CartItem2 cartItem = selectedList.get(i);
@@ -667,44 +705,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
             }
         }
-
-        // 存在抢购中商品过抢购期
-        if (!expiredList.isEmpty()) {
-            final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                    .customView(R.layout.layout_dialog_rush_expired, false)
-                    .build();
-            View customView = dialog.getCustomView();
-            View passView = customView.findViewById(R.id.rush_expired_dialog_tv_pass);  // 不买它了
-            View goonView = customView.findViewById(R.id.rush_expired_dialog_tv_goon);  // 继续购买
-            // 不买它了
-
-            passView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    LogUtils.d(TAG, "selectedList before: " + selectedList.toString());
-                    selectedList.removeAll(expiredList);
-//                    LogUtils.d(TAG, "selectedList after: " + selectedList.toString());
-                    toMakeOrder(selectedList);
-                    dialog.dismiss();
-                }
-            });
-
-            // 继续购买
-            goonView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toMakeOrder(selectedList);
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        }
-        // 没有商品过抢购期
-        else {
-            toMakeOrder(selectedList);
-        }
-
+        return expiredList;
     }
 
     /**
@@ -757,12 +758,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             mAdapter.notifyDataSetChanged();
             checkDataSize();
 
-//            ToastUtils.showShort("请先登录");
-            // BaseFragment中的方法
-//            showToast("请先登录");
-
-            // CustomToast类中的方法
-//            CustomToast.showToast(getActivity(),"请先登录",2000);
         }
 
     }
@@ -1045,7 +1040,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             return ret;
         }
 
-        // 有了新状态，抢购时间段前加入购物车
+        // 有了新状态，抢购时间段前加入购物车。 // 需求理解错了，这样写是对的。
 //        /**
 //         * 判断此刻商品有没有过期
 //         * 只保留时分，转换成毫秒去比较的
