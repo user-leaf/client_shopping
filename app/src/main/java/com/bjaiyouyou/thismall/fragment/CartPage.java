@@ -93,6 +93,8 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     private View mNoLoginGoto;
     // 延迟发货提示
     private TextView mTvTipSendDelay;
+    // 防止重复执行
+    private int tipFlag = -1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -389,20 +391,18 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             }
         }
 
-        int flag = -1; // 防止重复执行
-
         if (isReach) {
-            if (flag != 0) {
-                flag = 0;
+            if (tipFlag != 0) {
                 if (isAdded()) {
                     mTvTipSendDelay.setText(getString(R.string.tip_send_2));
+                    tipFlag = 0;
                 }
             }
         } else {
-            if (flag != 1) {
-                flag = 1;
+            if (tipFlag != 1) {
                 if (isAdded()) {
                     mTvTipSendDelay.setText(getString(R.string.tip_send));
+                    tipFlag = 1;
                 }
             }
         }
