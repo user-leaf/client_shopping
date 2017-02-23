@@ -58,11 +58,11 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
     private PullToRefreshListView mRefreshListView;
 
-    // 接口返回的初始的数据集，这里只用于列表显示(发现删除、加减都是在这个数据集上操作的..)
+    // 接口返回的初始的数据集(删除、加减都是在这个数据集上操作的，不只用于显示..)
 //    private List<CartItem> mRawList;
     private List<CartItem2> mRawList;
-    // 经过过滤的数据集（去掉下架商品）
-    private List<CartItem2> mDealList;
+    // 过滤得到的合法数据集（目前仅去掉下架商品，用于全选判断、头部提示是否显示判断..）
+    private List<CartItem2> mOkList;
     //    private CartAdapter mAdapter;
     private CartAdapter2 mAdapter;
 
@@ -118,7 +118,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
         // 加上，解决首次进入APP的时候底部栏不消失的问题
         // 首次进入底部栏不消失，因为未登录所以不走onResume()中的initData()中的checkDataSize()，已解决。
-        checkDataSize();
+        checkDataSetEmpty();
     }
 
     @Override
@@ -150,7 +150,9 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             return;
         }
 
-        initData();
+        if (!isHidden()){
+            initData();
+        }
 
     }
 
@@ -164,7 +166,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
     private void initVariable() {
         mRawList = new LinkedList<>();
-        mDealList = new LinkedList<>();
+        mOkList = new LinkedList<>();
     }
 
     private void initView() {
@@ -216,11 +218,11 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             public void onChanged() {
                 super.onChanged();
 
-                // 重新计算mDealList(当删除了某个条目，如果不重新计算，在全选时会把这个删除掉的也加进去了)
-                fillDealList(mRawList);
+                // 重新计算mOkList(当删除了某个条目，如果不重新计算，在全选时会把这个删除掉的也加进去了)
+                buildOkList(mRawList);
 
                 // 检查是否显示发货延迟提示
-                showTopTip(mDealList);
+                showTopTip(mOkList);
 
                 // 合计金额
                 double sum = countTotalPrice();
@@ -235,9 +237,9 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                  * 所有条目有一个没有选中，则“全选”按钮不选中
                  */
                 selectedCount = 0;
-                if (!mDealList.isEmpty()) {
+                if (!mOkList.isEmpty()) {
                     isChooseAll = true;
-                    for (CartItem2 item : mDealList) {
+                    for (CartItem2 item : mOkList) {
                         if (!item.isChecked()) {
                             isChooseAll = false;
                         } else {
@@ -250,6 +252,120 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 mBtnOrder.setText(String.format(Locale.CHINA, "结算(%d)", selectedCount));
             }
         });
+    }
+
+    private void initData() {
+
+        // 未登录
+        if (TextUtils.isEmpty(CurrentUserManager.getUserToken())) {
+            mNoLoginView.setVisibility(View.VISIBLE);
+            mBodyView.setVisibility(View.GONE);
+            return;
+
+        } else {
+            mNoLoginView.setVisibility(View.GONE);
+            mBodyView.setVisibility(View.VISIBLE);
+
+        }
+
+        ClientAPI.getCartData(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                /**
+                 * 错误类型：断网、token过期、服务器错误
+                 */
+
+                // 检查网络
+                checkNet();
+
+                /**
+                 * token过期或者未登录
+                 * token过期是401错误，见接口文档
+                 * 未登录400
+                 */
+                LogUtils.d(TAG, "onError:" + e.getMessage());
+                if (!TextUtils.isEmpty(e.getMessage()) && (e.getMessage().contains("401") || e.getMessage().contains("400"))) {
+                    // TODO: 2016/9/17 隐式登录 自动刷新token
+
+                    // 清空token(临时先这样，token过期，清空token)
+                    CurrentUserManager.clearUserToken();
+                } else if (!TextUtils.isEmpty(e.getMessage())) {
+                    isPerform = false;
+                }
+
+//                if (e.getMessage().contains("502")){
+//                    isPerform = false;
+//                }
+
+                if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
+                    mRefreshListView.onRefreshComplete();
+                }
+
+                // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
+                checkDataSetEmpty();
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                // 无网提示栏
+                mTvNoNet.setVisibility(View.GONE);
+
+                LogUtils.d("CartPage", "onResponse: " + response);
+                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
+                    Gson gson = new Gson();
+                    CartBigModel cartBigModel = gson.fromJson(response, CartBigModel.class);
+                    List<CartModel> shopping_carts = cartBigModel.getShopping_carts();
+
+                    LogUtils.d(TAG, "shopping_carts = " + shopping_carts.toString());
+
+                    /**
+                     * 转换为本地数据类型
+                     * （由于数据接口拿到较晚，之前已经做了假数据，本地数据类型与接口返回的数据类型不一致）
+                     * 在此，用转换数据类型的方式吧，不修改adapter了，就用之前的数据类型
+                     * 算了，全部改了吧
+                     */
+                    mRawList.clear();
+                    for (CartModel item : shopping_carts) {
+                        CartItem2 cartItem2 = new CartItem2();
+                        cartItem2.setCartModel(item);
+                        mRawList.add(cartItem2);
+                    }
+
+                    // 在给适配器设置数据前得到dealList // dataSetObserver()中加了，这里貌似没必要了
+//                    buildOkList(mRawList);
+
+                    mAdapter.setData(mRawList);
+
+                } else {
+                    mRawList.clear();
+                    // 在给适配器设置数据前得到dealList // dataSetObserver()中加了，这里貌似没必要了
+//                    buildOkList(mRawList);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+
+                // 结束刷新
+                if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
+                    mRefreshListView.onRefreshComplete();
+                }
+
+                // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
+                checkDataSetEmpty();
+
+            }
+        });
+        // token过期未提示
+//        } else { // token为空
+//            ToastUtils.showShort("Token为空，请先登录");
+//            // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
+//            checkDataSetEmpty();
+//            // 结束刷新
+//            if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
+//                mRefreshListView.onRefreshComplete();
+//            }
+//        }
+
     }
 
     /**
@@ -395,140 +511,25 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         return sum;
     }
 
-    private void initData() {
-
-        // 未登录
-        if (TextUtils.isEmpty(CurrentUserManager.getUserToken())) {
-            mNoLoginView.setVisibility(View.VISIBLE);
-            mBodyView.setVisibility(View.GONE);
-        } else {
-            mNoLoginView.setVisibility(View.GONE);
-            mBodyView.setVisibility(View.VISIBLE);
-
-        }
-
-//        if (!TextUtils.isEmpty(token)) {
-        ClientAPI.getCartData(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                /**
-                 * 错误类型：断网、token过期、服务器错误
-                 */
-
-                // 检查网络
-                checkNet();
-
-                /**
-                 * token过期或者未登录
-                 * token过期是401错误，见接口文档
-                 * 未登录400
-                 */
-                LogUtils.d(TAG, "onError:" + e.getMessage());
-                if (!TextUtils.isEmpty(e.getMessage()) && (e.getMessage().contains("401") || e.getMessage().contains("400"))) {
-                    // TODO: 2016/9/17 隐式登录 自动刷新token
-
-                    // 清空token(临时先这样，token过期，清空token)
-                    CurrentUserManager.clearUserToken();
-                } else if (!TextUtils.isEmpty(e.getMessage())) {
-                    isPerform = false;
-                }
-
-//                if (e.getMessage().contains("502")){
-//                    isPerform = false;
-//                }
-
-                // 结束刷新
-                if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
-                    mRefreshListView.onRefreshComplete();
-                }
-
-                // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
-                checkDataSize();
-
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                // 无网提示栏
-                mTvNoNet.setVisibility(View.GONE);
-
-                LogUtils.d("CartPage", "onResponse: " + response);
-                if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
-                    Gson gson = new Gson();
-                    CartBigModel cartBigModel = gson.fromJson(response, CartBigModel.class);
-                    List<CartModel> shopping_carts = cartBigModel.getShopping_carts();
-
-                    LogUtils.d(TAG, "shopping_carts = " + shopping_carts.toString());
-
-                    /**
-                     * 转换为本地数据类型
-                     * （由于数据接口拿到较晚，之前已经做了假数据，本地数据类型与接口返回的数据类型不一致）
-                     * 在此，用转换数据类型的方式吧，不修改adapter了，就用之前的数据类型
-                     * 算了，全部改了吧
-                     */
-                    mRawList.clear();
-                    for (CartModel item : shopping_carts) {
-                        CartItem2 cartItem2 = new CartItem2();
-                        cartItem2.setCartModel(item);
-                        mRawList.add(cartItem2);
-                    }
-
-                    // 在给适配器设置数据前得到dealList
-                    fillDealList(mRawList);
-
-                    mAdapter.setData(mRawList);
-
-
-                } else {
-                    mRawList.clear();
-                    // 在给适配器设置数据前得到dealList
-                    fillDealList(mRawList);
-                    mAdapter.notifyDataSetChanged();
-                }
-
-
-                // 结束刷新
-                if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
-                    mRefreshListView.onRefreshComplete();
-                }
-
-                // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
-                checkDataSize();
-
-            }
-        });
-        // token过期未提示
-//        } else { // token为空
-//            ToastUtils.showShort("Token为空，请先登录");
-//            // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
-//            checkDataSize();
-//            // 结束刷新
-//            if (mRefreshListView != null && mRefreshListView.isRefreshing()) {
-//                mRefreshListView.onRefreshComplete();
-//            }
-//        }
-
-    }
-
     /**
-     * 对rawList进行过滤（1、去掉下架商品），得到dealList
+     * 对rawList进行过滤（1、去掉下架商品），得到mOkList
      *
      * @param rawList
      */
-    private void fillDealList(List<CartItem2> rawList) {
-        mDealList.clear();
+    private void buildOkList(List<CartItem2> rawList) {
+        mOkList.clear();
         if (rawList != null && !rawList.isEmpty()) {
             for (CartItem2 item : rawList) {
                 if (CartHelper.isOffShelf(item)) {
                     continue;
                 }
-                mDealList.add(item);
+                mOkList.add(item);
             }
 
         }
     }
 
-    public void checkDataSize() {
+    public void checkDataSetEmpty() {
         // 底部“总金额”栏显示与隐藏，当数据为空时隐藏
         if (mRawList.size() == 0) {
             mBottomView.setVisibility(View.GONE);
@@ -546,7 +547,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            for (CartItem2 item : mDealList) {
+            for (CartItem2 item : mOkList) {
                 item.setChecked(true);
             }
         }
@@ -555,7 +556,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         // 即只有当此时全部选中时，点击全不选，所有条目取消选择
         else {
             if (isChooseAll) {
-                for (CartItem2 item : mDealList) {
+                for (CartItem2 item : mOkList) {
                     item.setChecked(false);
                 }
             }
@@ -592,7 +593,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 //            }
 //        }
 
-        for (CartItem2 item : mDealList) {
+        for (CartItem2 item : mOkList) {
             if (item.isChecked()) { // 只打印选中的商品 && 去掉下架商品
                 selectedList.add(item);
             }
@@ -756,7 +757,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             // 未登录时清空购物车
             mRawList.clear();
             mAdapter.notifyDataSetChanged();
-            checkDataSize();
+            checkDataSetEmpty();
 
         }
 

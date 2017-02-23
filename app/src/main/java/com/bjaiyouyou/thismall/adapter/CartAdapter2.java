@@ -474,10 +474,10 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                     public void onResponse(String response, int id) {
                         if (position <= mList.size() - 1) {
                             mList.remove(mList.get(position));
-                            // mDealList集合中也要删除，在CartPage的数据观察者中处理的
+                            // mOkList集合中也要删除，在CartPage的DataSetObserver中处理的
                         }
                         CartAdapter2.this.notifyDataSetChanged();
-                        mCartPage.checkDataSize();
+                        mCartPage.checkDataSetEmpty();
                     }
                 });
     }
