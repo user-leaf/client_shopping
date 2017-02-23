@@ -801,7 +801,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void limitNotify() {
         //商品没下架
-        if (mProduct!=null&&mProduct.getOnsell()!=0&&mProduct.getDeleted_at()==null){
+//        if (mProduct!=null&&mProduct.getOnsell()!=0&&mProduct.getDeleted_at()==null){
+        if (mProduct!=null&&mProduct.getOnsell()!=0&&TextUtils.isEmpty(mProduct.getDeleted_at().toString())){
             //超过提醒限购数量
             if (mProductNum>=mBuyLimit){
                 mLLOverNum.setVisibility(View.VISIBLE);

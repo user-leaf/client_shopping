@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:textColor="#6b6b6b"
-                        android:text="2017年1月23日截止发货，2月5号开始正常发货。"
+                        android:text=""
                         />
                     <TextView
                         android:layout_width="match_parent"
