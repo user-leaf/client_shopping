@@ -150,7 +150,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             return;
         }
 
-        if (!isHidden()){
+        if (!isHidden()) {
             initData();
         }
 
@@ -389,7 +389,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             }
         }
 
-        int flag = -1;
+        int flag = -1; // 防止重复执行
 
         if (isReach) {
             if (flag != 0) {
@@ -548,7 +548,9 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             for (CartItem2 item : mOkList) {
-                item.setChecked(true);
+                if (!item.isChecked()) { // 减少触发DataSetChangeObserver的次数
+                    item.setChecked(true);
+                }
             }
         }
         // 全选按钮-->条目选中
@@ -557,7 +559,9 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         else {
             if (isChooseAll) {
                 for (CartItem2 item : mOkList) {
-                    item.setChecked(false);
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                    }
                 }
             }
         }
