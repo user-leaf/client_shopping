@@ -54,13 +54,11 @@ import okhttp3.Call;
 
 
 /**
- *
  * @author QuXinhang
- *Creare 2016/6/4 11:15
- * 商品详情页面
- *
+ *         Creare 2016/6/4 11:15
+ *         商品详情页面
  */
-public class GoodsDetailsActivity extends BaseActivity implements View.OnClickListener,OnItemClickListener {
+public class GoodsDetailsActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {
     public static final String PARAM_PRODUCT_ID = "productID";
     private IUUTitleBar mTitleBar;
 
@@ -102,10 +100,10 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     //规格ID，在规格选择监听的时候改变
     private int mSizeID;
     //商品数量
-    private int mProductNum=1;
+    private int mProductNum = 1;
 
     //规格角标，在规格选择监听的时候改变
-    private int mMOdleIndex=0;
+    private int mMOdleIndex = 0;
     //商品单价
     private double mMoney;
     //商品单积分
@@ -131,7 +129,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     //规格数据适配器
     private TagAdapter<String> sizeModelAdapterOne;
     //获得布局填充器
-    private  LayoutInflater mInflater;
+    private LayoutInflater mInflater;
     private View mLLOnNet;
     private LinearLayout mLLUnNetWork;
     private TextView mTVLoading;
@@ -142,8 +140,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private LinearLayout mLLDone;
 
     //单次购买数量限制哦
-    private int mNumLimit=99;
-    private int mBuyLimit=10;
+    private int mNumLimit = 99;
+    private int mBuyLimit = 10;
 
 
     //是否在抢购中
@@ -152,12 +150,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     //规格
     private LinearLayout mLLSize;
     //判断规格是否存在
-    private boolean isSizeHave=false;
+    private boolean isSizeHave = false;
     //标记是否是正在抢购商品
-    private  boolean isRush=false;
+    private boolean isRush = false;
 
     //标记是否是正在抢购商品
-    private boolean isRushing=false;
+    private boolean isRushing = false;
     //商品的重量
     private TextView mTvWeight;
     //添加到购物车按钮
@@ -171,7 +169,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_details);
-        mProductID=getIntent().getLongExtra(PARAM_PRODUCT_ID,-1);
+        mProductID = getIntent().getLongExtra(PARAM_PRODUCT_ID, -1);
         mInflater = LayoutInflater.from(this);
         initData();
         initView();
@@ -184,19 +182,19 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
 
     private void initView() {
-        mIvAddToCar = ((ImageView)findViewById(R.id.iv_goods_details_addtocar));
+        mIvAddToCar = ((ImageView) findViewById(R.id.iv_goods_details_addtocar));
         //规格
         mLLSize = ((LinearLayout) findViewById(R.id.ll_goods_detail_size));
         //抢票状态
         mLLISRushState = ((LinearLayout) findViewById(R.id.ll_is_rush_good_details));
-        mTVIsRushState= ((TextView) findViewById(R.id.tv_is_rush_good_details));
+        mTVIsRushState = ((TextView) findViewById(R.id.tv_is_rush_good_details));
         //最下方操作按钮布局
         mLLDone = ((LinearLayout) findViewById(R.id.ll_goods_detail_done));
         //网络判断相关
         mLLOnNet = findViewById(R.id.ll_goods_detail_on_net);
         mLLUnNetWork = ((LinearLayout) findViewById(R.id.ll_unnetwork));
         mTVLoading = ((TextView) findViewById(R.id.tv_data_loading));
-        mTvGetDataAgain = ((TextView)findViewById(R.id.tv_get_data_again));
+        mTvGetDataAgain = ((TextView) findViewById(R.id.tv_get_data_again));
 
         //图片轮播控制器
         mRLImageViews = ((RelativeLayout) findViewById(R.id.rl_goods_details_imgs));
@@ -213,7 +211,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         mTVSoldNum = ((TextView) findViewById(R.id.tv_goods_details_sold_num));
         mTVOldPrice = ((TextView) findViewById(R.id.tv_goods_details_oldprice));
         //为原价添加中线
-        mTVOldPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
+        mTVOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
 
         mFLModelOne = ((TagFlowLayout) findViewById(R.id.flowLayout_goods_detail_model_one));
         mFlModelTwo = ((TagFlowLayout) findViewById(R.id.flowLayout_goods_detail_model_two));
@@ -253,25 +251,25 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 setSize(position);
-                mSizePosition=position;
+                mSizePosition = position;
 
                 //添加条件保证必须有一个条目被选
 //                view.setEnabled(false);
 //                view.setClickable(true);
-                int count=parent.getChildCount();
-                LogUtils.e("count",""+count);
+                int count = parent.getChildCount();
+                LogUtils.e("count", "" + count);
 //                if (count==1){
 //                    parent.getChildAt(0).setClickable(true);
 ////                    parent.getChildAt(0).setBackground(getDrawable(R.drawable.shape_copy_button_bg_stroke_red));
 //                }else {
-                    for (int i=0;i<count;i++){
-                        if (i!=position){
+                for (int i = 0; i < count; i++) {
+                    if (i != position) {
 //                        parent.getChildAt(i).setEnabled(true);
-                            parent.getChildAt(i).setClickable(false);
-                        }else {
-                            parent.getChildAt(i).setClickable(true);
-                        }
+                        parent.getChildAt(i).setClickable(false);
+                    } else {
+                        parent.getChildAt(i).setClickable(true);
                     }
+                }
 //                }
                 return true;
             }
@@ -296,44 +294,46 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         });
 //
     }
+
     private void initData() {
-        long productID=getIntent().getLongExtra(PARAM_PRODUCT_ID,-1);
+        long productID = getIntent().getLongExtra(PARAM_PRODUCT_ID, -1);
         ClientAPI.getProductDetailsData(productID, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("goodsDetails--e",e.toString());
-                String eString=e.toString();
+                LogUtils.e("goodsDetails--e", e.toString());
+                String eString = e.toString();
                 //网络不存在
-                if (!NetStateUtils.isNetworkAvailable(getApplicationContext())){
-                    UNNetWorkUtils.isNetHaveConnect(getApplicationContext(),mTVLoading,mLLOnNet,mLLUnNetWork);
-                }else {
+                if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
+                    UNNetWorkUtils.isNetHaveConnect(getApplicationContext(), mTVLoading, mLLOnNet, mLLUnNetWork);
+                } else {
 //                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-                    ToastUtils.showException(e,getApplicationContext());
+                    ToastUtils.showException(e, getApplicationContext());
 
-                   //商品不存在
+                    //商品不存在
                     // 判断"商品不存在"在报错中是否存在，当为-1的时候报错中不存在，说明不是商品不存在报错
-                    if ("商品不存在".indexOf(eString)!=-1)
-                        Toast.makeText(getApplicationContext(),"商品详情信息暂时不存在",Toast.LENGTH_SHORT).show();
-                        mTVLoading.setVisibility(View.VISIBLE);
-                        mLLOnNet.setVisibility(View.GONE);
-                        mLLDone.setVisibility(View.GONE);
-                        mTVLoading.setText("商品详情信息暂时不存在");
+                    if ("商品不存在".indexOf(eString) != -1)
+                        Toast.makeText(getApplicationContext(), "商品详情信息暂时不存在", Toast.LENGTH_SHORT).show();
+                    mTVLoading.setVisibility(View.VISIBLE);
+                    mLLOnNet.setVisibility(View.GONE);
+                    mLLDone.setVisibility(View.GONE);
+                    mTVLoading.setText("商品详情信息暂时不存在");
                 }
             }
+
             @Override
             public void onResponse(String response, int id) {
                 mTVLoading.setVisibility(View.VISIBLE);
                 mLLOnNet.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(response.trim())){
+                if (!TextUtils.isEmpty(response.trim())) {
                     mTVLoading.setVisibility(View.GONE);
-                    UNNetWorkUtils.lvShow(mTVLoading,mLLOnNet,mLLUnNetWork);
-                    mProduct=new Gson().fromJson(response,ProductDetail.class).getProduct();
+                    UNNetWorkUtils.lvShow(mTVLoading, mLLOnNet, mLLUnNetWork);
+                    mProduct = new Gson().fromJson(response, ProductDetail.class).getProduct();
                     mLLDone.setVisibility(View.VISIBLE);
                     setData();
                 }
                 //数据为空
                 else {
-                    Toast.makeText(getApplicationContext(),"商品详情信息暂时不存在",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "商品详情信息暂时不存在", Toast.LENGTH_SHORT).show();
                     mLLDone.setVisibility(View.GONE);
                     mTVLoading.setText("商品详情信息暂时不存在");
                 }
@@ -344,57 +344,57 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void setData() {
         //商品存在
-       if (mProduct!=null){
-           mNetImages = new ArrayList<HomeAdModel>();
-           //获取轮播图片地址集合
-           List<ProductDetail.ProductBean.ImagesBean> imgList= mProduct.getImages();
-           //轮播图片不为null
-           if (imgList!=null){
-               int imgSize=imgList.size();
-               //轮播图片不存在
-               if (imgSize==0||imgList==null){
-                   mTVLoading.setText("暂无图片介绍");
-               }else {
-                   //轮播图片存在
-                   mTVLoading.setVisibility(View.GONE);
-                   ProductDetail.ProductBean.ImagesBean imagesBean;
-                   HomeAdModel homeAdModel;
-                   for (int i=0;i<imgSize;i++){
-                       imagesBean=imgList.get(i);
-                       homeAdModel=new HomeAdModel(null,imagesBean.getImage_path(),imagesBean.getImage_base_name());
-                       mNetImages.add(homeAdModel);
-                   }
-                   //实现图片轮播
-                   initImgs(mNetImages);
-               }
-           }else {
-               mTVLoading.setText("暂无图片介绍");
-           }
-           //填充数据
-           mTitleBar.setTitle(mProduct.getName());
-           mTVName.setText(mProduct.getName());
-           mTVScore.setText(mProduct.getScore()+"分");
-           //随着规格改变的，获得规格集合
-           mSizeBeans=mProduct.getSizes();
-           if (mSizeBeans!=null&&mSizeBeans.size()!=0){
-               isSizeHave=true;
-               //规格部分显示
-               mLLSize.setVisibility(View.VISIBLE);
-               //初始与规格相关的页面
-               setSize(0);
-               //处理规格显示页面
-               initSize();
-           }else {
-               isSizeHave=false;
-           }
-           mTVChooseNum.setText(""+mProductNum);
-       }
-       //数据为空，商品不存在
-       else {
-           Toast.makeText(getApplicationContext(),"商品详情信息暂时不存在",Toast.LENGTH_SHORT).show();
-           mLLDone.setVisibility(View.GONE);
-           mTVLoading.setText("商品详情信息暂时不存在");
-       }
+        if (mProduct != null) {
+            mNetImages = new ArrayList<HomeAdModel>();
+            //获取轮播图片地址集合
+            List<ProductDetail.ProductBean.ImagesBean> imgList = mProduct.getImages();
+            //轮播图片不为null
+            if (imgList != null) {
+                int imgSize = imgList.size();
+                //轮播图片不存在
+                if (imgSize == 0 || imgList == null) {
+                    mTVLoading.setText("暂无图片介绍");
+                } else {
+                    //轮播图片存在
+                    mTVLoading.setVisibility(View.GONE);
+                    ProductDetail.ProductBean.ImagesBean imagesBean;
+                    HomeAdModel homeAdModel;
+                    for (int i = 0; i < imgSize; i++) {
+                        imagesBean = imgList.get(i);
+                        homeAdModel = new HomeAdModel(null, imagesBean.getImage_path(), imagesBean.getImage_base_name());
+                        mNetImages.add(homeAdModel);
+                    }
+                    //实现图片轮播
+                    initImgs(mNetImages);
+                }
+            } else {
+                mTVLoading.setText("暂无图片介绍");
+            }
+            //填充数据
+            mTitleBar.setTitle(mProduct.getName());
+            mTVName.setText(mProduct.getName());
+            mTVScore.setText(mProduct.getScore() + "分");
+            //随着规格改变的，获得规格集合
+            mSizeBeans = mProduct.getSizes();
+            if (mSizeBeans != null && mSizeBeans.size() != 0) {
+                isSizeHave = true;
+                //规格部分显示
+                mLLSize.setVisibility(View.VISIBLE);
+                //初始与规格相关的页面
+                setSize(0);
+                //处理规格显示页面
+                initSize();
+            } else {
+                isSizeHave = false;
+            }
+            mTVChooseNum.setText("" + mProductNum);
+        }
+        //数据为空，商品不存在
+        else {
+            Toast.makeText(getApplicationContext(), "商品详情信息暂时不存在", Toast.LENGTH_SHORT).show();
+            mLLDone.setVisibility(View.GONE);
+            mTVLoading.setText("商品详情信息暂时不存在");
+        }
     }
 
     /**
@@ -430,6 +430,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         mFLModelOne.getChildAt(0).setClickable(true);
 
     }
+
     /**
      * 规格数据集合
      */
@@ -442,12 +443,13 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     /**
      * 图片无限轮播
+     *
      * @param mNetImages
      */
-    private void initImgs(List<HomeAdModel> mNetImages ) {
-        if (mNetImages.size() == 1){
+    private void initImgs(List<HomeAdModel> mNetImages) {
+        if (mNetImages.size() == 1) {
             mConvenientBanner.setCanLoop(false);
-        }else {
+        } else {
             mConvenientBanner.setCanLoop(true);
         }
 
@@ -473,42 +475,43 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     /**
      * 填充和获得size相关的数据
+     *
      * @param i
      */
     public void setSize(int i) {
-        if (mSizeBeans.size()!=0){
-            isRushing=mSizeBeans.get(i).isIf_rush_to_purchasing();
-            isRush=mSizeBeans.get(i).isIs_frame_product();
+        if (mSizeBeans.size() != 0) {
+            isRushing = mSizeBeans.get(i).isIf_rush_to_purchasing();
+            isRush = mSizeBeans.get(i).isIs_frame_product();
             //控制抢购状态的显示和隐藏
 
-            if (isRush){
+            if (isRush) {
                 mLLISRushState.setVisibility(View.VISIBLE);
-                if (isRushing){
+                if (isRushing) {
                     mTVIsRushState.setText("火爆抢购中");
-                    mMoney=Double.valueOf(mSizeBeans.get(i).getRush_price());
-                }else {
+                    mMoney = Double.valueOf(mSizeBeans.get(i).getRush_price());
+                } else {
                     mTVIsRushState.setText("不在抢购时段");
-                    mMoney=Double.valueOf(mSizeBeans.get(i).getPrice());
+                    mMoney = Double.valueOf(mSizeBeans.get(i).getPrice());
                 }
-            }else {
-                mMoney=Double.valueOf(mSizeBeans.get(i).getPrice());
+            } else {
+                mMoney = Double.valueOf(mSizeBeans.get(i).getPrice());
                 mLLISRushState.setVisibility(View.GONE);
             }
 
 
-            mTVMoney.setText(mMoney+"");
+            mTVMoney.setText(mMoney + "");
 
-            mIntegral=mSizeBeans.get(i).getIntegration_price();
-            mTVIntegral.setText(mIntegral+"");
+            mIntegral = mSizeBeans.get(i).getIntegration_price();
+            mTVIntegral.setText(mIntegral + "");
 
-            mTVSoldNum.setText("已经出售"+mSizeBeans.get(i).getSales_volume()+"件");
+            mTVSoldNum.setText("已经出售" + mSizeBeans.get(i).getSales_volume() + "件");
 
-            mGetIntegral=mSizeBeans.get(i).getPresented_gold();
-            mTVGetIntegral.setText(mGetIntegral+"");
+            mGetIntegral = mSizeBeans.get(i).getPresented_gold();
+            mTVGetIntegral.setText(mGetIntegral + "");
 
-            mTvWeight.setText(mSizeBeans.get(i).getWeight()+"kg");
+            mTvWeight.setText(mSizeBeans.get(i).getWeight() + "kg");
 
-            mSizeID=mSizeBeans.get(i).getId();
+            mSizeID = mSizeBeans.get(i).getId();
             countMoney();
         }
     }
@@ -536,7 +539,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             String imagePath = sb.toString();
 
             Glide.with(getApplicationContext())
-                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(GoodsDetailsActivity.this)/2,0))
+                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(GoodsDetailsActivity.this) / 2, 0))
                     .error(R.mipmap.list_image_loading)
                     .placeholder(R.mipmap.list_image_loading)
                     .into(imageView);
@@ -566,12 +569,13 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     /**
      * 处理点击事件
+     *
      * @param v
      */
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             //返回
             case R.id.left_layout:
                 finish();
@@ -583,7 +587,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
             //商品减少
             case R.id.iv_goods_detail_reduce:
-               reduceProduct();
+                reduceProduct();
                 break;
             //商品增加
             case R.id.iv_goods_detail_add:
@@ -591,25 +595,25 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 break;
             //添加到购物车
             case R.id.tv_goods_details_addtocar:
-                if (isSizeHave){
+                if (isSizeHave) {
                     addToCar();
-                }else {
-                    Toast.makeText(getApplicationContext(),"该商品暂不支持购买，sorry！",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "该商品暂不支持购买，sorry！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             //跳转到购物车页面
             case R.id.iv_goods_details_addtocar:
-                Intent  intent=new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra(MainActivity.PARAM_ORDER,"order");
-                jump(intent,false);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra(MainActivity.PARAM_ORDER, "order");
+                jump(intent, false);
                 break;
             //去付款
             case R.id.ll_goods_detail_pay:
 //                goTOPay();
-                if (isSizeHave){
+                if (isSizeHave) {
                     goToPay();
-                }else {
-                    Toast.makeText(getApplicationContext(),"该商品暂不支持购买，sorry！",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "该商品暂不支持购买，sorry！", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -625,14 +629,14 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      * 去付款
      */
     private void goToPay() {
-        String token=CurrentUserManager.getUserToken();
+        String token = CurrentUserManager.getUserToken();
         //存在token说明已经登录，去付款
-        if (!TextUtils.isEmpty(token)){
+        if (!TextUtils.isEmpty(token)) {
             makeOrder();
-        }else{
+        } else {
             //未登录跳转到登录页面
-            Toast.makeText(this,"请先登录，再进行操作",Toast.LENGTH_SHORT).show();
-            jump(LoginActivity.class,false);
+            Toast.makeText(this, "请先登录，再进行操作", Toast.LENGTH_SHORT).show();
+            jump(LoginActivity.class, false);
         }
     }
 
@@ -641,25 +645,26 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void goTOPay() {
 //    Toast.makeText(this,"去付款",Toast.LENGTH_SHORT).show();
-        StringBuffer sb=new StringBuffer(ClientAPI.API_POINT);
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
         sb.append("api/v1/shoppingCart/add");
         OkHttpUtils
                 .get()
                 .url(sb.toString().trim())
-                .addParams("number",mProductNum+"")
-                .addParams("product_id",mProductID+"")
-                .addParams("product_size_id",mSizeID+"")
+                .addParams("number", mProductNum + "")
+                .addParams("product_id", mProductID + "")
+                .addParams("product_size_id", mSizeID + "")
                 .addParams("token", CurrentUserManager.getUserToken())
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("addToCar--order-e:",e.toString());
-               checkError(e);
+                LogUtils.e("addToCar--order-e:", e.toString());
+                checkError(e);
 //              UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
+
             @Override
             public void onResponse(String response, int id) {
-               //提交订单
+                //提交订单
                 makeOrder();
             }
         });
@@ -679,17 +684,17 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 //        private ProductBean product; //bject{...},
 //        private ProductSizeBean product_size; //bject{...},
 //        private ProductImagesBean product_images; //bject{...}
-        long product_id=mProduct.getId();
-        long product_size_id=mProduct.getSizes().get(mSizePosition).getId();
-        int number=mProductNum;
-        String updated_at="";
+        long product_id = mProduct.getId();
+        long product_size_id = mProduct.getSizes().get(mSizePosition).getId();
+        int number = mProductNum;
+        String updated_at = "";
 
-        CartModel.ProductBean product=new CartModel.ProductBean();
+        CartModel.ProductBean product = new CartModel.ProductBean();
         product.setName(mProduct.getName());
         product.setProduct_type(mProduct.getProduct_type());
         product.setDeleted_at((String) mProduct.getDeleted_at());
 
-        CartModel.ProductSizeBean product_size=new CartModel.ProductSizeBean();
+        CartModel.ProductSizeBean product_size = new CartModel.ProductSizeBean();
         product_size.setName(mProduct.getSizes().get(mSizePosition).getName());
         product_size.setPrice(mProduct.getSizes().get(mSizePosition).getPrice());
         product_size.setIntegration_price(mProduct.getSizes().get(mSizePosition).getIntegration_price());
@@ -698,13 +703,13 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         product_size.setDeleted_at((String) mProduct.getSizes().get(mSizePosition).getDeleted_at());
 
 
-        CartModel.ProductImagesBean product_images=new CartModel.ProductImagesBean();
-        if (mProduct.getImages().size()>0){
+        CartModel.ProductImagesBean product_images = new CartModel.ProductImagesBean();
+        if (mProduct.getImages().size() > 0) {
             product_images.setImage_base_name(mProduct.getImages().get(0).getImage_base_name());
             product_images.setImage_path(mProduct.getImages().get(0).getImage_path());
             product_images.setDeleted_at((String) mProduct.getImages().get(0).getDeleted_at());
         }
-        CartModel model=new CartModel();
+        CartModel model = new CartModel();
         model.setNumber(number);
         model.setProduct(product);
         model.setProduct_id(product_id);
@@ -712,7 +717,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         model.setProduct_size(product_size);
         model.setProduct_size_id(product_size_id);
 //        model.setUpdated_at("");
-        CartItem2 item=new CartItem2();
+        CartItem2 item = new CartItem2();
         item.setCartModel(model);
         item.setChecked(true);
         goodList.add(item);
@@ -721,7 +726,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 //        // 通过MainApplication传值
 //        MainApplication ma = MainApplication.getInstance();
 //        ma.setData(goodList);
-        OrderMakeActivity.actionStart(this,goodList,1);
+        OrderMakeActivity.actionStart(this, goodList, 1);
 //        startActivity(intent);
 //        finish();
     }
@@ -730,25 +735,26 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      * 添加到购物车
      */
     private void addToCar() {
-        StringBuffer sb=new StringBuffer(ClientAPI.API_POINT);
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
         sb.append("api/v1/shoppingCart/add");
         OkHttpUtils
                 .get()
                 .url(sb.toString().trim())
-                .addParams("number",mProductNum+"")
-                .addParams("product_id",mProductID+"")
-                .addParams("product_size_id",mSizeID+"")
+                .addParams("number", mProductNum + "")
+                .addParams("product_id", mProductID + "")
+                .addParams("product_size_id", mSizeID + "")
                 .addParams("token", CurrentUserManager.getUserToken())
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("makeOrder---e:",e.toString());
-               checkError(e);
+                LogUtils.e("makeOrder---e:", e.toString());
+                checkError(e);
 //                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
+
             @Override
             public void onResponse(String response, int id) {
-                Toast.makeText(getApplicationContext(),mProductNum+"件，您的宝贝已经加入购物车了哦",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), mProductNum + "件，您的宝贝已经加入购物车了哦", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -756,17 +762,17 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     //对网络异常进行判断
     private void checkError(Exception e) {
-        String eString=e.toString().trim();
-        LogUtils.e("eString:",eString+"");
+        String eString = e.toString().trim();
+        LogUtils.e("eString:", eString + "");
 //        eString=eString.substring(eString.length()-3,eString.length())
 
-        if (eString!=null){
-            if (eString.contains("400")||eString.contains("401")){
-                Toast.makeText(getApplicationContext(),"请登录后再次操作",Toast.LENGTH_SHORT).show();
-                jump(LoginActivity.class,false);
-            }else {
+        if (eString != null) {
+            if (eString.contains("400") || eString.contains("401")) {
+                Toast.makeText(getApplicationContext(), "请登录后再次操作", Toast.LENGTH_SHORT).show();
+                jump(LoginActivity.class, false);
+            } else {
 //                Toast.makeText(context,"提交失败"+e.toString(),Toast.LENGTH_SHORT).show();
-                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
         }
     }
@@ -776,12 +782,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void addProduct() {
         //是否达到最大限购数量
-       if (mProductNum<mNumLimit){
-           ++mProductNum;
-           countMoney();
-       }else {
-           Toast.makeText(getApplicationContext(),"已达到单品购物上限，\n数量不可增加了",Toast.LENGTH_SHORT).show();
-       }
+        if (mProductNum < mNumLimit) {
+            ++mProductNum;
+            countMoney();
+        } else {
+            Toast.makeText(getApplicationContext(), "已达到单品购物上限，\n数量不可增加了", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -789,10 +795,10 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void reduceProduct() {
 
-        if (mProductNum<=1){
-            Toast.makeText(this,"亲不能再减少了哦",Toast.LENGTH_SHORT).show();
+        if (mProductNum <= 1) {
+            Toast.makeText(this, "亲不能再减少了哦", Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
             --mProductNum;
             countMoney();
         }
@@ -801,39 +807,40 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void limitNotify() {
         //商品没下架
-        if (mProduct!=null&&mProduct.getOnsell()!=0&&mProduct.getDeleted_at()==null){
+//        if (mProduct != null && mProduct.getOnsell() != 0 && mProduct.getDeleted_at() == null) {
+        if (mProduct!=null&&mProduct.getOnsell()!=0&&(mProduct.getDeleted_at()==null||mProduct.getDeleted_at()=="")){
 //        if (mProduct!=null&&mProduct.getOnsell()!=0&&TextUtils.isEmpty(mProduct.getDeleted_at().toString())){
             //超过提醒限购数量
-            if (mProductNum>=mBuyLimit){
+            if (mProductNum >= mBuyLimit) {
                 mLLOverNum.setVisibility(View.VISIBLE);
                 mTvNotify.setText("由于年前订单量激增和物流时间影响，商城重新调整如下：预售商品1月5日之后的订单、正售商品1月13日之后的订单、厂家直发商品1月16日之后的订单将于年后统一发货，退换货商品也将于年后处理，详情请咨询客服。以此给您带来的不便，我们深表歉意！数量大于10个，将10日后发货。");
                 mTvNotify.setGravity(Gravity.LEFT);
-            }else {
+            } else {
                 //未超过
                 mLLOverNum.setVisibility(View.VISIBLE);
                 mTvNotify.setText("由于年前订单量激增和物流时间影响，商城重新调整如下：预售商品1月5日之后的订单、正售商品1月13日之后的订单、厂家直发商品1月16日之后的订单将于年后统一发货，退换货商品也将于年后处理，详情请咨询客服。以此给您带来的不便，我们深表歉意！");
                 mTvNotify.setGravity(Gravity.LEFT);
             }
-        }else {
+        } else {
             //商品下架
             mLLOverNum.setVisibility(View.VISIBLE);
             mTvNotify.setText("商品已下架");
             mTvNotify.setGravity(Gravity.CENTER);
         }
-
     }
+
 
     /**
      * 计算钱数
      */
     private void countMoney() {
         limitNotify();
-        mGetIntegralAll=mGetIntegral*mProductNum;
-        mTVGetIntegral.setText(mGetIntegralAll+"UU");
-        mMoneyAll=mMoney*mProductNum;
-        mIntegralAll=mIntegral*mProductNum;
-        mTVMoneyAll.setText("总金额：￥"+mMoneyAll+"+"+mIntegralAll+"积分");
-        mTVChooseNum.setText(""+mProductNum);
+        mGetIntegralAll = mGetIntegral * mProductNum;
+        mTVGetIntegral.setText(mGetIntegralAll + "UU");
+        mMoneyAll = mMoney * mProductNum;
+        mIntegralAll = mIntegral * mProductNum;
+        mTVMoneyAll.setText("总金额：￥" + mMoneyAll + "+" + mIntegralAll + "积分");
+        mTVChooseNum.setText("" + mProductNum);
     }
 
     /**
