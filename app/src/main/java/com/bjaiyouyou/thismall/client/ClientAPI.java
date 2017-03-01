@@ -37,14 +37,9 @@ public class ClientAPI {
 
     public static final String TAG = ClientAPI.class.getSimpleName();
 
-    // 外网
-//    public static final String API_POINT = "http://139.129.167.60/";
-//    public static final String API_POINT = "https://testapi.bjaiyouyou.com/";
 //    public static final String API_POINT = "https://testapi2.bjaiyouyou.com/";
-    public static final String API_POINT = "http://api.bjaiyouyou.com/";
-
-    // 内网
-//    public static final String API_POINT = "http://192.168.1.107/laravel-5.2.31/admin/public/";
+    public static final String API_POINT = "https://testapi.bjaiyouyou.com/";
+//    public static final String API_POINT = "http://api.bjaiyouyou.com/";
 
     //抢购拼接地址
     public static final String PANICBUY = "api/v1/product/allRushToPurchase?page=";

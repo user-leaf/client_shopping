@@ -65,7 +65,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 订单列表
     private NoScrollListView mListView;
     private OrderMakeAdapter mAdapter;
-//    private List<OrderMakeItem> mData;
+    //    private List<OrderMakeItem> mData;
     private List<CartItem2> mData;
     // 统计商品集合mData中的抢购中商品
     private List<CartItem2> mInRushList = new ArrayList<>();
@@ -147,35 +147,35 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                     // 销毁本页
                     OrderMakeActivity.this.finish();
                     break;
-                case 1:
-                    // 延误提示消失 // 去掉了161229
-                    ViewWrapper wrapper = new ViewWrapper(mTvDelayTip);
-                    ObjectAnimator heightHideAnim = ObjectAnimator.ofInt(wrapper, "height", mTvDelayTip.getHeight(), 0);
-                    heightHideAnim.setDuration(1300);
-                    heightHideAnim.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            mTvDelayTip.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
-                    heightHideAnim.start();
-
-                    break;
+//                case 1:
+//                    // 延误提示消失 // 去掉了161229
+//                    ViewWrapper wrapper = new ViewWrapper(mTvDelayTip);
+//                    ObjectAnimator heightHideAnim = ObjectAnimator.ofInt(wrapper, "height", mTvDelayTip.getHeight(), 0);
+//                    heightHideAnim.setDuration(1300);
+//                    heightHideAnim.addListener(new Animator.AnimatorListener() {
+//                        @Override
+//                        public void onAnimationStart(Animator animation) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            mTvDelayTip.setVisibility(View.GONE);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animator animation) {
+//
+//                        }
+//                    });
+//                    heightHideAnim.start();
+//
+//                    break;
             }
         }
     };
@@ -296,7 +296,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
         LogUtils.d(TAG, "loadListData: " + goodList);
 
-        if (goodList.isEmpty()){
+        if (goodList.isEmpty()) {
             return;
         }
 
@@ -341,9 +341,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                                 long product_size_id = cartModel.getProduct_size_id();
 
                                 CartModel cm = nowCartMap.get("" + product_id + "+" + product_size_id);
-                                CartItem2 cartItem2 = new CartItem2();
-                                cartItem2.setCartModel(cm);
-                                chooseList.add(cartItem2);
+                                if (cm != null) {
+                                    CartItem2 cartItem2 = new CartItem2();
+                                    cartItem2.setCartModel(cm);
+                                    chooseList.add(cartItem2);
+
+                                }
                             }
                         }
 
