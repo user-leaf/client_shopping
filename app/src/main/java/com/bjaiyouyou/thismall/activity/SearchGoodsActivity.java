@@ -90,28 +90,28 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
     //跳转地址
     private String mUrl;
     //搜索关键字
-    private String  mKeyWord;
+    private String mKeyWord;
     //网络加载数据
     private List<SearchHot.SearchRecordsBean> mHotList;
     //布局填充器
-    private LayoutInflater mInflater=null;
+    private LayoutInflater mInflater = null;
 
-    private boolean isNotFrist=false;
+    private boolean isNotFrist = false;
     //历史搜索限制
-    private int mHistoryLimit=10;
+    private int mHistoryLimit = 10;
     //父布局
     private FlowLayout mCurrentParent;
-    private boolean isFristOnTagOnclick=true;
+    private boolean isFristOnTagOnclick = true;
     //用于标识控件
-    private  String  mTag="";
+    private String mTag = "";
 
-    private String historyJsonString="";
+    private String historyJsonString = "";
     private List<HistorySearchItem> historyJsonList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        historyJsonList=new ArrayList<>();
+        historyJsonList = new ArrayList<>();
 
         //注入注解
         ViewUtils.inject(this);
@@ -119,7 +119,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
         setUpView();
         //搜索记录表的布局填充器
         //获得布局填充器
-         mInflater = LayoutInflater.from(this);
+        mInflater = LayoutInflater.from(this);
         //对搜索框的处理
         infoEditText();
 
@@ -132,7 +132,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
      * 初始化历史搜索列表
      */
     private void initHistoryView() {
-        historySet=new LinkedHashSet<>();
+        historySet = new LinkedHashSet<>();
         historyList = new ArrayList<String>();
         /**
          * 获取Set
@@ -154,12 +154,13 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
          * 获取String
          */
 
-        if (SPUtils.contains(this, Constants.HISTORY_SEARCH_KEY)){
-            historyJsonString= (String)SPUtils.get(this, Constants.HISTORY_SEARCH_KEY,historyJsonString);
-            if (!historyJsonString.isEmpty()){
-                historyJsonList=new Gson().fromJson(historyJsonString, new TypeToken<List<HistorySearchItem>>(){}.getType());
-                int size=historyJsonList.size();
-                for (int i=0;i<size;i++){
+        if (SPUtils.contains(this, Constants.HISTORY_SEARCH_KEY)) {
+            historyJsonString = (String) SPUtils.get(this, Constants.HISTORY_SEARCH_KEY, historyJsonString);
+            if (!historyJsonString.isEmpty()) {
+                historyJsonList = new Gson().fromJson(historyJsonString, new TypeToken<List<HistorySearchItem>>() {
+                }.getType());
+                int size = historyJsonList.size();
+                for (int i = 0; i < size; i++) {
                     historyList.add(historyJsonList.get(i).getName().toString().trim());
                 }
             }
@@ -261,11 +262,11 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
 //                view.setClickable(true);
 
 
-                for (int i=0;i<parent.getChildCount();i++){
-                    if (i!=position){
+                for (int i = 0; i < parent.getChildCount(); i++) {
+                    if (i != position) {
 //                        parent.getChildAt(i).setEnabled(true);
                         parent.getChildAt(i).setClickable(false);
-                    }else {
+                    } else {
                         parent.getChildAt(i).setClickable(true);
                     }
                 }
@@ -301,11 +302,11 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
 //                view.setEnabled(false);
 //                view.setClickable(true);
 
-                for (int i=0;i<parent.getChildCount();i++){
-                    if (i!=position){
+                for (int i = 0; i < parent.getChildCount(); i++) {
+                    if (i != position) {
 //                        parent.getChildAt(i).setEnabled(true);
                         parent.getChildAt(i).setClickable(false);
-                    }else {
+                    } else {
                         parent.getChildAt(i).setClickable(true);
                     }
                 }
@@ -328,10 +329,10 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
      * 热门搜索的数据模拟
      */
     private void initHotSearchData(List<String> data) {
-        for (int i=0;i<mHotList.size();i++){
-            String keyWord=mHotList.get(i).getKeyword();
+        for (int i = 0; i < mHotList.size(); i++) {
+            String keyWord = mHotList.get(i).getKeyword();
 //            LogUtils.e("keyWord",keyWord);
-            if (!TextUtils.isEmpty(keyWord)){
+            if (!TextUtils.isEmpty(keyWord)) {
                 data.add(keyWord);
             }
         }
@@ -340,18 +341,19 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
     /**
      * 下载接口热门数据
      */
-    private void loadHotSearchData(){
-        mHotList=new ArrayList<>();
+    private void loadHotSearchData() {
+        mHotList = new ArrayList<>();
         ClientAPI.getSearchHotData(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
+
             @Override
             public void onResponse(String response, int id) {
-                if (!TextUtils.isEmpty(response.trim())){
-                    mHotList=new Gson().fromJson(response,SearchHot.class).getSearch_records();
-                    LogUtils.e("size",mHotList.size()+"");
+                if (!TextUtils.isEmpty(response.trim())) {
+                    mHotList = new Gson().fromJson(response, SearchHot.class).getSearch_records();
+                    LogUtils.e("size", mHotList.size() + "");
                     initSearchHot();
                 }
             }
@@ -362,8 +364,8 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
      * 热门搜索设置数据
      */
     private void initSearchHot() {
-        isNotFrist=true;
-        hotList=new ArrayList<>();
+        isNotFrist = true;
+        hotList = new ArrayList<>();
         initHotSearchData(hotList);
         //创建适配器
         hotAdapter = new TagAdapter<String>(hotList) {
@@ -416,7 +418,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.iv_search_scan:
                 //跳转到扫描界面  进行扫描
-                jump(CaptureActivity.class,300,false);
+                jump(CaptureActivity.class, 300, false);
                 break;
             //搜索
             case R.id.right_layout_search:
@@ -437,23 +439,25 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
             //添加到历史列表，并搜索
             addHistoryData(search);
         } else {
-            //热门搜索第一个
-            if (hotList.size() != 0) {
-                etSearch.setText(hotList.get(0));
-                etSearch.setSelection(hotList.get(0).length());
-                searchGoods(hotList.get(0));
-                addHistoryData(hotList.get(0));
-            } else {
-                //历史搜索中最近搜索的一条，即列表最上边的一条
-                if (historyList.size() != 0) {
-                    etSearch.setText(historyList.get(0));
-                    etSearch.setSelection(historyList.get(0).length());
-                    searchGoods(historyList.get(0));
-                    addHistoryData(historyList.get(0));
+            if (hotList != null) {
+                //热门搜索第一个
+                if (hotList.size() != 0) {
+                    etSearch.setText(hotList.get(0));
+                    etSearch.setSelection(hotList.get(0).length());
+                    searchGoods(hotList.get(0));
+                    addHistoryData(hotList.get(0));
+                } else {
+                    //历史搜索中最近搜索的一条，即列表最上边的一条
+                    if (historyList.size() != 0) {
+                        etSearch.setText(historyList.get(0));
+                        etSearch.setSelection(historyList.get(0).length());
+                        searchGoods(historyList.get(0));
+                        addHistoryData(historyList.get(0));
+                    }
+                    Toast.makeText(this, "搜索内容内容不可为空", Toast.LENGTH_SHORT).show();
                 }
-
-                Toast.makeText(this, "搜索内容内容不可为空", Toast.LENGTH_SHORT).show();
             }
+
         }
 
     }
@@ -493,21 +497,21 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
          */
         //控制历史搜索的个数是 mHistoryLimit
 
-        if (historyList.size()>=mHistoryLimit){
-            historyList.remove(size-1);
+        if (historyList.size() >= mHistoryLimit) {
+            historyList.remove(size - 1);
         }
         //最多只能保存10历史搜素
         historyList.add(0, search);
         historyAdapter.notifyDataChanged();
 
         historyJsonList.clear();
-        for (int i=0;i<historyList.size();i++){
+        for (int i = 0; i < historyList.size(); i++) {
             historyJsonList.add(new HistorySearchItem(historyList.get(i)));
         }
         //更新本地数据
-        historyJsonString=new Gson().toJson(historyJsonList);
-        LogUtils.e("historyJsonString:",historyJsonString);
-        SPUtils.put(this, Constants.HISTORY_SEARCH_KEY,historyJsonString);
+        historyJsonString = new Gson().toJson(historyJsonList);
+        LogUtils.e("historyJsonString:", historyJsonString);
+        SPUtils.put(this, Constants.HISTORY_SEARCH_KEY, historyJsonString);
         //将数据上传服务器
     }
 
@@ -515,15 +519,15 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
      * 搜索商品的方法
      */
     private void searchGoods(String key) {
-        mKeyWord=etSearch.getText().toString().trim();
-        if (!TextUtils.isEmpty(mKeyWord)){
-            Intent intent =new Intent(this,SearchResultsActivity.class);
-            intent.putExtra("title",key);
+        mKeyWord = etSearch.getText().toString().trim();
+        if (!TextUtils.isEmpty(mKeyWord)) {
+            Intent intent = new Intent(this, SearchResultsActivity.class);
+            intent.putExtra("title", key);
 //            mUrl= ClientAPI.API_POINT+ClientAPI.SEARCH+mKeyWord;
-            intent.putExtra("key",mKeyWord);
+            intent.putExtra("key", mKeyWord);
             jump(intent, false);
-        }else {
-            Toast.makeText(this,"请输入搜索关键字",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "请输入搜索关键字", Toast.LENGTH_SHORT).show();
             return;
         }
 //        jump(SearchResultsActivity.class, false);
@@ -533,6 +537,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
 
     /**
      * 收到返回的二维码结果
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -541,10 +546,10 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==300&&resultCode==RESULT_OK&&data!=null){
-            Toast.makeText(this,data.getStringExtra("result").toString(),Toast.LENGTH_SHORT).show();
+        if (requestCode == 300 && resultCode == RESULT_OK && data != null) {
+            Toast.makeText(this, data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
 //            Log.e("QRCode",data.getData().toString());
-            Log.e("QRCode",data.getStringExtra("result").toString());
+            Log.e("QRCode", data.getStringExtra("result").toString());
         }
     }
 
@@ -555,13 +560,13 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.e("onResume","onResume");
+        LogUtils.e("onResume", "onResume");
         //历史搜索处理//////////////////////////////////////////////////////////////////////////////////
         //限制历史搜索的搜索的条目个数
         initHistoryView();
         //清空搜索框
         etSearch.setText("");
-        if (isNotFrist){
+        if (isNotFrist) {
             //加载热门搜索
             loadHotSearchData();
         }
