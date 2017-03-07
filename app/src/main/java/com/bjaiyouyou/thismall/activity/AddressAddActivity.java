@@ -117,9 +117,7 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.address_add_district: //所在地区
-                /**
-                 * 选择器指向上次选择的地址，默认值为"北京市北京市东城区"
-                 */
+                // 选择器指向上次选择的地址，默认值为"北京市北京市东城区"
                 String province = mTvProvince.getText().toString();
                 String city = mTvCity.getText().toString();
                 String county = mTvCounty.getText().toString();

@@ -139,9 +139,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    /**
-     * 暂停视频
-     */
     private void pauseVideo() {
         mWebView.loadUrl("javascript:pauseVideo()");
     }

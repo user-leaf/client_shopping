@@ -97,21 +97,17 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     // 按钮group4 <已完成栏> - <删除订单、退款详情> - <已退款>
     private View mButtonGroup4;
 
-    // 订单列表
+    // 列表
     private NoScrollListView mListView;
-    // 订单列表适配器
     private OrderDetailAdapter mAdapter;
-    // 订单列表数据
     private List<OrderDetailModel.OrderBean.OrderDetailBean> mData;
     // 订单号
     private TextView mTvOrderNumber;
     // 收货地址栏
     private View mAddressView;
-    // 收货人姓名
+    // 收货人姓名、电话、地址
     private TextView mTvName;
-    // 收货人电话
     private TextView mTvTel;
-    // 收货人地址
     private TextView mTvAddress;
 
     // 数据
@@ -197,9 +193,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         }
     };
 
-    /**
-     * 运单号栏
-     */
+    // 运单号栏
     private View mExpress2View;
     private TextView mTvExpress2Number;
     private TextView mTvExpress2Content;
@@ -398,8 +392,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
                             }
 
-                            // 配送方式
-//                                    mTvExpressCompany.setText("韵达快递");
                             // 运费
                             mTvPostage.setText(order.getPostage() + "元");
 

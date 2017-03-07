@@ -38,8 +38,8 @@ public class ClientAPI {
     public static final String TAG = ClientAPI.class.getSimpleName();
 
 //    public static final String API_POINT = "https://testapi2.bjaiyouyou.com/";
-    public static final String API_POINT = "https://testapi.bjaiyouyou.com/";
-//    public static final String API_POINT = "http://api.bjaiyouyou.com/";
+//    public static final String API_POINT = "https://testapi.bjaiyouyou.com/";
+    public static final String API_POINT = "http://api.bjaiyouyou.com/";
 
     //抢购拼接地址
     public static final String PANICBUY = "api/v1/product/allRushToPurchase?page=";

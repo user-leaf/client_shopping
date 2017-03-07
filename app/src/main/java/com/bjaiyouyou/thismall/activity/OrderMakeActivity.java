@@ -325,10 +325,12 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                         CartBigModel cartBigModel = gson.fromJson(response, CartBigModel.class);
                         List<CartModel> shopping_carts = cartBigModel.getShopping_carts();
                         HashMap<String, CartModel> nowCartMap = new HashMap<String, CartModel>();
-                        for (CartModel item : shopping_carts) {
-                            long product_id = item.getProduct_id();
-                            long product_size_id = item.getProduct_size_id();
-                            nowCartMap.put("" + product_id + "+" + product_size_id, item);
+                        if (shopping_carts != null) {
+                            for (CartModel item : shopping_carts) {
+                                long product_id = item.getProduct_id();
+                                long product_size_id = item.getProduct_size_id();
+                                nowCartMap.put("" + product_id + "+" + product_size_id, item);
+                            }
                         }
 
                         // 从map中取出上一页选中的那些

@@ -85,11 +85,9 @@ public class InviteActivity extends BaseActivity implements View.OnClickListener
             RadioButton rbtn = (RadioButton) group.getChildAt(i);
             if (rbtn.getId() == checkedId) {
                 rbtn.setChecked(true);
-//                rbtn.setTextColor(getResources().getColor(R.color.app_red)); // 改为xml控制
                 changeFragment(i);
             } else {
                 rbtn.setChecked(false);
-//                rbtn.setTextColor(Color.GRAY);
             }
         }
 
