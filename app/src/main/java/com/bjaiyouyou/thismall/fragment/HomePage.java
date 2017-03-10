@@ -686,12 +686,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 每日上新数据
      */
     private void initData() {
-
-        String url = ClientAPI.API_POINT + ClientAPI.EVERYDAY_NEW + mEveryDayPage;
-//        LogUtils.e("EVERYDAY_NEW",url);
-        ClientAPI.getGoodsData(url, new StringCallback() {
+        mClientApi.getRecommendData(TAG, mEveryDayPage, new DataCallback<HomeProductModel>(getContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 if (!NetStateUtils.isNetworkAvailable(getContext())) {
                     mLLUNNetWork.setVisibility(View.VISIBLE);
 //                   mEveryDayEmpty.setVisibility(View.VISIBLE);
@@ -703,11 +700,10 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 dismissLoadingDialog();
                 mGvShow.refreshComplete();
                 mGvShow.loadMoreComplete();
-
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 mGvShow.refreshComplete();
                 mGvShow.loadMoreComplete();
                 //有网隐藏提示
@@ -720,7 +716,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                     }
                     //恢复不是刷新状态
                     isRefresh = false;
-                    mHomeProductModel = new Gson().fromJson(response.toString(), HomeProductModel.class);
+                    mHomeProductModel = (HomeProductModel) response;
                     isHaveNextNews = (mHomeProductModel.getNext_page_url() != null);
                     List<HomeProductModel.DataBean> listAdd = mHomeProductModel.getData();
                     reSetEveryDayNew(listAdd);
@@ -728,6 +724,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 dismissLoadingDialog();
             }
         });
+
 
         // 请求广告数据
         mClientApi.getHomeAdData(TAG, new DataCallback<HomeAdBigModel>(getContext()) {
