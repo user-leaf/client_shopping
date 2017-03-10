@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,15 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.OrderDetailActivity;
 import com.bjaiyouyou.thismall.adapter.MyOrderRecycleViewAdapter;
-import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4MyOrderFinishFragment;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyOrder;
-import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
-import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +42,7 @@ import okhttp3.Call;
  *
  */
 public class MyOrderFinishFragment extends BaseFragment {
+    private static final String TAG = MyOrderFinishFragment.class.getSimpleName();
     //布局
     private View layout;
     //数据为空的显示
@@ -89,6 +88,8 @@ public class MyOrderFinishFragment extends BaseFragment {
 
     private boolean isPullDown = false;
 
+    private Api4MyOrderFinishFragment mClientApi;
+
     //ListView控件的高度
 //    private int mLvHeight;
     //用于Adapter更新页面
@@ -99,6 +100,7 @@ public class MyOrderFinishFragment extends BaseFragment {
             initData();
         }
     };
+
 
 
     @Override
@@ -212,9 +214,11 @@ public class MyOrderFinishFragment extends BaseFragment {
      * 加载网络数据
      */
     private void initData() {
-        ClientAPI.getMyOrderData(CurrentUserManager.getUserToken(), mOrderstate, mPage, new StringCallback() {
+        mClientApi= (Api4MyOrderFinishFragment) ClientApiHelper.getInstance().getClientApi(Api4MyOrderFinishFragment.class);
+
+        mClientApi.getOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 //判断时候是网络不可用
                 if (NetStateUtils.isNetworkAvailable(getContext())) {
                     String eString = e.toString();
@@ -232,12 +236,13 @@ public class MyOrderFinishFragment extends BaseFragment {
                 }
                 lv.loadMoreComplete();
                 lv.refreshComplete();
+
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                if (!TextUtils.isEmpty(response)) {
-                    myOrder = new Gson().fromJson(response, MyOrder.class);
+            public void onSuccess(Object response, int id) {
+                if (response!=null) {
+                    myOrder = (MyOrder) response;
                     mLastPage = myOrder.getLast_page();
                     isHaveNextNews = (myOrder.getNext_page_url() != null);
                     lvShow();
@@ -250,7 +255,9 @@ public class MyOrderFinishFragment extends BaseFragment {
                 lv.loadMoreComplete();
                 lv.refreshComplete();
             }
+
         });
+
     }
 
 

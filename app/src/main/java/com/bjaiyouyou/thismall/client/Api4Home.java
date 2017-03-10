@@ -32,6 +32,7 @@ public class Api4Home extends BaseClientApi {
      *author Qxh
      *created at 2017/3/10 15:48
      * 获取首页为您推荐部分的信息
+     *
      * @param strTag
      * @param page
      * @param callback
@@ -42,7 +43,7 @@ public class Api4Home extends BaseClientApi {
 
         String url = ClientAPI.API_POINT + ClientAPI.EVERYDAY_NEW +page;
 
-        LogUtils.d(TAG, "getHomeAdData: " + url);
+        LogUtils.d(TAG, "getRecommendData: " + url);
 
         doGet(url, strTag, null, callback);
     }
