@@ -42,8 +42,11 @@ import com.bjaiyouyou.thismall.activity.SettingsActivity;
 import com.bjaiyouyou.thismall.activity.UpdateMineUserMessageActivity;
 import com.bjaiyouyou.thismall.activity.WithdrawActivity;
 import com.bjaiyouyou.thismall.adapter.MineAdapter;
+import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.callback.OnNoDoubleClickListener;
+import com.bjaiyouyou.thismall.client.Api4MinePage;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyMine;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.model.User;
@@ -59,7 +62,6 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.NoScrollGridView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -206,6 +208,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     //2为已升级为vip
     private int isVip;
+
+
+    //网络请求对象
+    private Api4MinePage mClientApi;
 
 
     @Nullable
@@ -355,14 +361,17 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
 
     private void initData() {
+        //初始化网路请求对象
+
+        mClientApi= (Api4MinePage) ClientApiHelper.getInstance().getClientApi(Api4MinePage.class);
+
         //模拟我的邀请好友假数据
 //        friendList=new ArrayList<>();
-
         String token = CurrentUserManager.getUserToken();
         if (token != null) {
-            ClientAPI.getUserData(token, new StringCallback() {
+            mClientApi.getUserMessage(TAG, new DataCallback<User>(getContext()) {
                 @Override
-                public void onError(Call call, Exception e, int id) {
+                public void onFail(Call call, Exception e, int id) {
                     //断网提示
                     if (!NetStateUtils.isNetworkAvailable(getContext())) {
                         mLLUnNetWork.setVisibility(View.VISIBLE);
@@ -389,18 +398,18 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     initGridViewChange();
 //                    gv.setAlpha(0.6f);
 //                    mLLNeedSafe.setAlpha(0.6f);
-
                 }
 
                 @Override
-                public void onResponse(String response, int id) {
+                public void onSuccess(Object response, int id) {
                     isLogin = true;
                     //隐藏网络请求
                     mLLUnNetWork.setVisibility(View.GONE);
                     mLoginView.setVisibility(View.VISIBLE);
                     mNotLoginView.setVisibility(View.GONE);
-                    if (!TextUtils.isEmpty(response.trim())) {
-                        mUser = new Gson().fromJson(response, User.class);
+                    if (response!=null) {
+//                        mUser = new Gson().fromJson((JsonElement) response, User.class);
+                        mUser = (User) response;
                         setData();
                         //本地存储个人信息
                         /**
@@ -412,6 +421,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         ToastUtils.showShort("数据加载错误");
                     }
                     dismissLoadingDialog();
+
                 }
             });
         } else {
