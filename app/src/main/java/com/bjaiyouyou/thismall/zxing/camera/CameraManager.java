@@ -229,7 +229,15 @@ public final class CameraManager {
       if (camera == null) {
         return null;
       }
-      int width = screenResolution.x * 3 / 4;
+
+      //空指针异常；Attempt to read from field 'int android.graphics.Point.x' on a null object reference
+//      int width = screenResolution.x * 3 / 4;
+
+      //解决
+      int width=0;
+      if (screenResolution!=null){
+        width = screenResolution.x * 3 / 4;
+      }
       if (width < MIN_FRAME_WIDTH) {
         width = MIN_FRAME_WIDTH;
       } else if (width > MAX_FRAME_WIDTH) {

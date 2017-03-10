@@ -145,7 +145,7 @@ public class UNNetWorkUtils {
         LogUtils.e("--eString:",eString);
 //        eString=eString.substring(eString.length()-3,eString.length());
         if (NetStateUtils.isNetworkAvailable(context)){
-            if (eString!=null){
+            if (eString!=null&&context!=null){
                 if (eString.contains("400")||eString.contains("401")){
                     Toast.makeText(context,"请登录后再次操作",Toast.LENGTH_SHORT).show();
                 }else {
@@ -154,7 +154,9 @@ public class UNNetWorkUtils {
                 }
             }
         }else {
-            Toast.makeText(context,"网络连接失败，请检查网络设置后再次操作",Toast.LENGTH_SHORT).show();
+            if (context!=null){
+                Toast.makeText(context,"网络连接失败，请检查网络设置后再次操作",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

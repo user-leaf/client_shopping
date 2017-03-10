@@ -35,7 +35,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:layout_marginTop="55dp">
+                android:layout_marginTop="0dp">
                 <HorizontalScrollView
                     android:id="@+id/scrl_home_panicbuying"
                     android:layout_width="match_parent"
@@ -98,7 +98,9 @@
                         />
                 </LinearLayout>
             </FrameLayout>
+            <!--切换按钮65dp-->
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/ll_home_navigation_panicbuying"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
