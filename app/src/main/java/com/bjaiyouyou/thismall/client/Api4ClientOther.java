@@ -3,6 +3,7 @@ package com.bjaiyouyou.thismall.client;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.model.HistoryBuy;
 import com.bjaiyouyou.thismall.model.MyOrder;
+import com.bjaiyouyou.thismall.model.SearchResultGoods;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 
@@ -61,6 +62,19 @@ public class Api4ClientOther extends BaseClientApi {
 
         doGet(url, strTag, null, callback);
     }
+
+    public void getSearchGoodsData(String strTag,String key, int page,DataCallback<SearchResultGoods> callback) {
+
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT + ClientAPI.SEARCH);
+        sb.append("keyword=" + key);
+        sb.append("&page=" + page);
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "getSearchGoodsData: " + url);
+
+        doGet(url, strTag, null, callback);
+    }
+
 
 
 

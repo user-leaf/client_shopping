@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.SearchResultGoodsAdapter;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
@@ -72,6 +75,9 @@ public class SearchResultsActivity extends BaseActivity implements View.OnClickL
     private ImageView mIVDataEmpty;
     private boolean isRefresh;
     private boolean isHaveNext=false;
+
+    private Api4ClientOther mClient;
+    public static final String TAG=SearchResultsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,21 +181,21 @@ public class SearchResultsActivity extends BaseActivity implements View.OnClickL
 
     private void initData() {
         if (!TextUtils.isEmpty(mKey)){
-            ClientAPI.getSearchGoodsData(mKey,mPage ,new StringCallback() {
+            mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+            mClient.getSearchGoodsData(TAG, mKey, mPage, new DataCallback<SearchResultGoods>(getApplicationContext()) {
                 @Override
-                public void onError(Call call, Exception e, int id) {
+                public void onFail(Call call, Exception e, int id) {
                     UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
                     //调用网络判断工具类
                     UNNetWorkUtils.isNetHaveConnect(getApplicationContext(),mTVEmpty,mGV,mLLUnNetWork);
                 }
+
                 @Override
-                public void onResponse(String response, int id) {
+                public void onSuccess(Object response, int id) {
                     //存在符合商品
-                    if (!TextUtils.isEmpty(response)){
-
+                    if (response!=null){
                         mIVDataEmpty.setVisibility(View.GONE);
-
-                        SearchResultGoods searchResultGoods=new Gson().fromJson(response.toString().trim(),SearchResultGoods.class);
+                        SearchResultGoods searchResultGoods= (SearchResultGoods) response;
                         mLastPage=searchResultGoods.getLast_page();
                         if (searchResultGoods.getNext_page_url()!=null){
                             isHaveNext=true;
@@ -212,6 +218,7 @@ public class SearchResultsActivity extends BaseActivity implements View.OnClickL
                     }else {
                         dataEmpty();
                     }
+
                 }
             });
         }else {
