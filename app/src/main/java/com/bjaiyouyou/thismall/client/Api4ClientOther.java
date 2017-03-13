@@ -1,6 +1,7 @@
 package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.model.HistoryBuy;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -10,7 +11,7 @@ import com.bjaiyouyou.thismall.utils.LogUtils;
  *created at 2017/3/10 13:39
  * 未完成订单页面网络请求
  */
-public class Api4MyOrder extends BaseClientApi {
+public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
@@ -24,7 +25,7 @@ public class Api4MyOrder extends BaseClientApi {
      * @param callback
      */
 
-    public void getOrderData(String strTag,  int orderState ,int page,DataCallback<MyOrder> callback) {
+    public void getMyOrderData(String strTag,  int orderState ,int page,DataCallback<MyOrder> callback) {
 
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/order/queryAllByOrderState/")
@@ -40,4 +41,27 @@ public class Api4MyOrder extends BaseClientApi {
 
         doGet(url, strTag, null, callback);
     }
+
+   /**
+    *
+    *author Qxh
+    *created at 2017/3/13 14:46
+    *获取历史购买数据
+    */
+    public void getHistoryData(String strTag, int page,DataCallback<HistoryBuy> callback) {
+
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/order/historyBuy?page=");
+        sb.append(page);
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
+        String url=sb.toString().trim();
+
+        LogUtils.d(TAG, "getHistoryData: " + url);
+
+        doGet(url, strTag, null, callback);
+    }
+
+
+
 }

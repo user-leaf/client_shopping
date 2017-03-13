@@ -20,7 +20,7 @@ import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.OrderDetailActivity;
 import com.bjaiyouyou.thismall.adapter.MyOrderRecycleViewAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
-import com.bjaiyouyou.thismall.client.Api4MyOrder;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -90,7 +90,7 @@ public class MyOrderNotFinishFragment extends BaseFragment {
     //用于打印日志，标记类
     public static  final  String TAG=MyOrderNotFinishFragment.class.getSimpleName();
 
-    private Api4MyOrder mClientApi;
+    private Api4ClientOther mClientApi;
 
 
 
@@ -217,9 +217,9 @@ public class MyOrderNotFinishFragment extends BaseFragment {
      * 加载网络数据
      */
     private void initData() {
-        mClientApi= (Api4MyOrder) ClientApiHelper.getInstance().getClientApi(Api4MyOrder.class);
+        mClientApi= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
 
-        mClientApi.getOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
+        mClientApi.getMyOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 //判断时候是网络不可用

@@ -15,17 +15,16 @@ import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.HistoryBuyRecycleViewAdapter;
-import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.HistoryBuy;
-import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +76,9 @@ public class HistoryBuyNewActivity extends BaseActivity {
     //向下滑
     private boolean isDown;
 
+    private Api4ClientOther mClient;
+    public static final String TAG = HistoryBuyNewActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +113,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //获取商品的ID
-                long productID = mData.get(position-1).getProduct_id();
+                long productID = mData.get(position - 1).getProduct_id();
 //        Toast.makeText(this,""+productID,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), GoodsDetailsActivity.class);
                 intent.putExtra("productID", productID);
@@ -123,9 +125,11 @@ public class HistoryBuyNewActivity extends BaseActivity {
 
 
     private void initData() {
-        ClientAPI.getHistoryBuyData(CurrentUserManager.getUserToken(), mPage, new StringCallback() {
+        mClient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+
+        mClient.getHistoryData(TAG, mPage, new DataCallback<HistoryBuy>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                 //判断时候是网络不可用
                 if (NetStateUtils.isNetworkAvailable(getApplicationContext())) {
@@ -142,15 +146,16 @@ public class HistoryBuyNewActivity extends BaseActivity {
                 //停止刷新
                 mGV.loadMoreComplete();
                 mGV.refreshComplete();
+
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 //停止刷新
                 mGV.loadMoreComplete();
                 mGV.refreshComplete();
-                if (!TextUtils.isEmpty(response)) {
-                    HistoryBuy historyBuy = new Gson().fromJson(response.toString().trim(), HistoryBuy.class);
+                if (response!= null) {
+                    HistoryBuy historyBuy = (HistoryBuy) response;
                     //是否含有下一页
                     isHasNextPage = !TextUtils.isEmpty(historyBuy.getNext_page_url());
                     mLastPage = historyBuy.getLast_page();
@@ -179,22 +184,22 @@ public class HistoryBuyNewActivity extends BaseActivity {
                 mGV.loadMoreComplete();
                 mGV.refreshComplete();
             }
-
         });
+
     }
 
     private void initView() {
-        GridLayoutManager manager=new GridLayoutManager(getApplicationContext(),2);
+        GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2);
         mGV = ((XRecyclerView) findViewById(R.id.gv_history_buy));
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mGV.setLayoutManager(manager);
-        mGV.addItemDecoration(new SpaceItemDecoration(0,5,5,0));
+        mGV.addItemDecoration(new SpaceItemDecoration(0, 5, 5, 0));
 
         mTVEmpty = (ImageView) findViewById(R.id.iv_data_loading);
         mGV.setEmptyView(mTVEmpty);
         mIvEmpty = ((ImageView) findViewById(R.id.iv_history_buy_empty));
 
-        footView= LayoutInflater.from(this).inflate(R.layout.fragment_home_foot,null);
+        footView = LayoutInflater.from(this).inflate(R.layout.fragment_home_foot, null);
         mGV.addFootView(footView);
 
 
@@ -243,9 +248,6 @@ public class HistoryBuyNewActivity extends BaseActivity {
     }
 
 
-
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -255,7 +257,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
             case R.id.tv_goto_login:
 //                jump(new Intent(this,LoginActivity.class),false);
 //                startActivity(new Intent(this, LoginActivity.class));
-                jump(LoginActivity.class,true);
+                jump(LoginActivity.class, true);
                 break;
             case R.id.tv_get_data_again:
                 LogUtils.e("重新加载", "重新加载");
