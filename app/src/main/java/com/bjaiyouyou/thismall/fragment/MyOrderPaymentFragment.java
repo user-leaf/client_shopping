@@ -20,7 +20,7 @@ import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.OrderDetailActivity;
 import com.bjaiyouyou.thismall.adapter.MyOrderRecycleViewAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
-import com.bjaiyouyou.thismall.client.Api4MyOrderNotPayFragment;
+import com.bjaiyouyou.thismall.client.Api4MyOrder;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -85,7 +85,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
     private TextView mTVNotLoginTitle;
 
     private boolean isPullDown = false;
-    private Api4MyOrderNotPayFragment mClientApi;
+    private Api4MyOrder mClientApi;
 
     //ListView控件的高度
 //    private int mLvHeight;
@@ -211,7 +211,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
      * 加载网络数据
      */
     private void initData() {
-        mClientApi= (Api4MyOrderNotPayFragment) ClientApiHelper.getInstance().getClientApi(Api4MyOrderNotPayFragment.class);
+        mClientApi= (Api4MyOrder) ClientApiHelper.getInstance().getClientApi(Api4MyOrder.class);
 
         mClientApi.getOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
             @Override

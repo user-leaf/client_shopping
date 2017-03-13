@@ -10,13 +10,13 @@ import com.bjaiyouyou.thismall.utils.LogUtils;
  *created at 2017/3/10 13:39
  * 未完成订单页面网络请求
  */
-public class Api4MyOrderNotFinishFragment extends BaseClientApi {
+public class Api4MyOrder extends BaseClientApi {
 
     /**
      *
      *author Qxh
      *created at 2017/3/10 15:48
-     * 获取首页为您推荐部分的信息
+     * 获取订单信息
      *
      * @param strTag
      * @param orderState
