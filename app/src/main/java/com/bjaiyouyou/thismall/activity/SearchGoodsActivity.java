@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
-import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.HistorySearchItem;
 import com.bjaiyouyou.thismall.model.SearchHot;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -28,7 +30,6 @@ import com.google.gson.reflect.TypeToken;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -107,6 +108,9 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
 
     private String historyJsonString = "";
     private List<HistorySearchItem> historyJsonList;
+
+    private Api4ClientOther mClient;
+    public static final String TAG=SearchGoodsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,19 +347,22 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
      */
     private void loadHotSearchData() {
         mHotList = new ArrayList<>();
-        ClientAPI.getSearchHotData(new StringCallback() {
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient.getHotSearchGoodsData(TAG, new DataCallback<SearchHot>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                if (!TextUtils.isEmpty(response.trim())) {
-                    mHotList = new Gson().fromJson(response, SearchHot.class).getSearch_records();
+            public void onSuccess(Object response, int id) {
+                if (response!=null) {
+                    SearchHot searchHot= (SearchHot) response;
+                    mHotList = searchHot.getSearch_records();
                     LogUtils.e("size", mHotList.size() + "");
                     initSearchHot();
                 }
+
             }
         });
     }
