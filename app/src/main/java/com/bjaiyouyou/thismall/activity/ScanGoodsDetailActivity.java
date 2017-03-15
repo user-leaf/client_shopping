@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,10 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
@@ -33,7 +35,6 @@ import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -137,6 +138,10 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     private LinearLayout mHaveDone;
     private boolean isRush=false;
     private LinearLayout mLLISRushState;
+
+    public static final String TAG=ScanGoodsDetailActivity.class.getSimpleName();
+
+    private Api4ClientOther mClient;
 
 
     @Override
@@ -244,10 +249,11 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     }
     private void initData() {
         String productScanID=getIntent().getStringExtra("productScanID");
-        ClientAPI.getScanProductDetailsData(productScanID, new StringCallback() {
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient.getScanGoodDetailData(toString(), productScanID, new DataCallback<ProductDetail>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
-//                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+            public void onFail(Call call, Exception e, int id) {
+                //                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
                 LogUtils.e("ScanGood",e.getMessage()+"");
                 if (NetStateUtils.isNetworkAvailable(getApplicationContext())){
                     mLLScanHaven.setVisibility(View.VISIBLE);
@@ -262,16 +268,19 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
                     mTVLoading.setVisibility(View.GONE);
                     mHaveDone.setVisibility(View.GONE);
                 }
+
             }
+
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 mTVLoading.setVisibility(View.VISIBLE);
                 mLLOnNet.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(response.trim())){
+                if (response!=null){
                     UNNetWorkUtils.lvShow(mTVLoading,mLLOnNet,mLLUnNetWork);
                     mLLScanHaven.setVisibility(View.GONE);
                     mHaveDone.setVisibility(View.VISIBLE);
-                    mProduct=new Gson().fromJson(response,ProductDetail.class).getProduct();
+                    ProductDetail productDetail= (ProductDetail) response;
+                    mProduct=productDetail.getProduct();
                     setData();
                 }
                 //数据为空
@@ -279,8 +288,10 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
                     mLLScanHaven.setVisibility(View.VISIBLE);
                     mHaveDone.setVisibility(View.GONE);
                 }
+
             }
         });
+
     }
 
     private void setData() {

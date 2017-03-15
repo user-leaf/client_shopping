@@ -23,7 +23,10 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
@@ -37,7 +40,6 @@ import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -60,6 +62,10 @@ import okhttp3.Call;
  */
 public class GoodsDetailsActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {
     public static final String PARAM_PRODUCT_ID = "productID";
+
+    public static final String TAG =GoodsDetailsActivity.class.getSimpleName();
+    private Api4ClientOther mClient;
+
     private IUUTitleBar mTitleBar;
 
     //图片轮播容器
@@ -163,6 +169,9 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     //商品数量过多
     private LinearLayout mLLOverNum;
     private TextView mTvNotify;
+
+
+
 
 
     @Override
@@ -297,9 +306,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void initData() {
         long productID = getIntent().getLongExtra(PARAM_PRODUCT_ID, -1);
-        ClientAPI.getProductDetailsData(productID, new StringCallback() {
+
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+
+        mClient.getGoodDetailData(TAG, productID, new DataCallback<ProductDetail>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 LogUtils.e("goodsDetails--e", e.toString());
                 String eString = e.toString();
                 //网络不存在
@@ -318,16 +330,18 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                     mLLDone.setVisibility(View.GONE);
                     mTVLoading.setText("商品详情信息暂时不存在");
                 }
+
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 mTVLoading.setVisibility(View.VISIBLE);
                 mLLOnNet.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(response.trim())) {
+                if (response!=null) {
                     mTVLoading.setVisibility(View.GONE);
                     UNNetWorkUtils.lvShow(mTVLoading, mLLOnNet, mLLUnNetWork);
-                    mProduct = new Gson().fromJson(response, ProductDetail.class).getProduct();
+                    ProductDetail productDetail= (ProductDetail) response;
+                    mProduct = productDetail.getProduct();
                     mLLDone.setVisibility(View.VISIBLE);
                     setData();
                 }
@@ -340,6 +354,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
             }
         });
+
     }
 
     private void setData() {

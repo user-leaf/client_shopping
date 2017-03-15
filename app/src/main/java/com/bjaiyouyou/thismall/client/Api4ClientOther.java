@@ -3,6 +3,7 @@ package com.bjaiyouyou.thismall.client;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.model.HistoryBuy;
 import com.bjaiyouyou.thismall.model.MyOrder;
+import com.bjaiyouyou.thismall.model.ProductDetail;
 import com.bjaiyouyou.thismall.model.SearchHot;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -110,8 +111,51 @@ public class Api4ClientOther extends BaseClientApi {
 
         doGet(url, strTag, null, callback);
     }
-    
-    
+
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/15 15:08
+     * 获得商品扫描数据
+     *
+     *
+     * @param strTag
+     * @param productScanID
+     * @param callback
+     */
+
+    public  void getScanGoodDetailData(String strTag,String  productScanID, DataCallback<ProductDetail> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/product/getDetailForBarCode/")
+                .append(productScanID);
+        String url = sb.toString();
+        LogUtils.d(TAG, "getScanGoodDetailData: " + url);
+
+        doGet(url, strTag, null, callback);
+    }
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/15 15:08
+     * 获得商品数据
+     *
+     *
+     * @param strTag
+     * @param productID
+     * @param callback
+     */
+
+    public  void getGoodDetailData(String strTag,Long  productID, DataCallback<ProductDetail> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/product/getDetail/")
+                .append(productID);
+        String url = sb.toString();
+        LogUtils.e("url", url);
+        LogUtils.d(TAG, "getGoodDetailData: " + url);
+
+        doGet(url, strTag, null, callback);
+    }
+
 
 
 
