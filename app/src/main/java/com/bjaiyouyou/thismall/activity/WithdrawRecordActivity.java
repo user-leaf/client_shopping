@@ -1,21 +1,20 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.WithdrawRecordAdapter;
-import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.WithdrawReCordModel;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,10 @@ public class WithdrawRecordActivity extends BaseActivity implements View.OnClick
     //是否存在下一页
     private boolean isHaveNextPage=false;
 
+    private Api4ClientOther mClient;
+
+    public static final String TAG=WithdrawRecordActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,31 +69,32 @@ public class WithdrawRecordActivity extends BaseActivity implements View.OnClick
     }
 
     private void initData() {
-        ClientAPI.getWithdrawRecord( mPage,new StringCallback() {
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient.getWithdrawRecord(TAG, mPage, new DataCallback<WithdrawReCordModel>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 mLv.onRefreshComplete();
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 mLv.onRefreshComplete();
-                if (!TextUtils.isEmpty(response)){
-                    mWithdrawReCordModel=new Gson().fromJson(response,WithdrawReCordModel.class);
-                     if (mWithdrawReCordModel!=null){
-                            List<WithdrawReCordModel.DataBean>  data=mWithdrawReCordModel.getData();
+                if (response!=null){
+                    mWithdrawReCordModel= (WithdrawReCordModel) response;
+                    if (mWithdrawReCordModel!=null){
+                        List<WithdrawReCordModel.DataBean>  data=mWithdrawReCordModel.getData();
                         if (mWithdrawReCordModel.getNext_page_url()!=null){
                             isHaveNextPage=true;
                         }else {
                             isHaveNextPage=false;
                         }
-                         if (data!=null){
+                        if (data!=null){
 //                             mWithdrawRecords.addAll(data);
-                             mAdapter.addAll(data);
-                             mAdapter.notifyDataSetChanged();
-                         }
-                     }
+                            mAdapter.addAll(data);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
             }
         });
@@ -130,8 +134,7 @@ public class WithdrawRecordActivity extends BaseActivity implements View.OnClick
                     mLv.onRefreshComplete();
                 }
             }, 1000);
+            ToastUtils.showLong("已经是最后一页，没有更多了");
         }
-        ToastUtils.showLong("已经是最后一页，没有更多了");
-
     }
 }

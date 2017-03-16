@@ -6,6 +6,7 @@ import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.model.ProductDetail;
 import com.bjaiyouyou.thismall.model.SearchHot;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
+import com.bjaiyouyou.thismall.model.WithdrawReCordModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 
@@ -156,8 +157,27 @@ public class Api4ClientOther extends BaseClientApi {
         doGet(url, strTag, null, callback);
     }
 
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/16 16:25
+     *
+     * 获得体现记录数据
+     *
+     * @param strTag
+     * @param page
+     * @param callback
+     */
 
+    public void getWithdrawRecord(String strTag,int   page, DataCallback<WithdrawReCordModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/memberDrawingslog/memberDetail");
+        sb.append("?page=").append(page);
+        sb.append("&token=").append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+        LogUtils.d(TAG, "getWithdrawRecord: " + url);
 
+        doGet(url, strTag, null, callback);
 
-
+    }
 }
