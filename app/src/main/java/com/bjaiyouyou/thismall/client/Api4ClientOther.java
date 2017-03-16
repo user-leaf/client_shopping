@@ -2,10 +2,12 @@ package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.model.HistoryBuy;
+import com.bjaiyouyou.thismall.model.IntegralDetailModel;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.model.ProductDetail;
 import com.bjaiyouyou.thismall.model.SearchHot;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
+import com.bjaiyouyou.thismall.model.UuDetailModel;
 import com.bjaiyouyou.thismall.model.WithdrawReCordModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -179,5 +181,55 @@ public class Api4ClientOther extends BaseClientApi {
 
         doGet(url, strTag, null, callback);
 
+    }
+
+
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/16 16:50
+     * 获得积分详情数据
+     *
+     * @param strTag
+     * @param page
+     * @param callback
+     */
+
+    public void getIntegralDetail(String strTag,int   page, DataCallback<IntegralDetailModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/member/getIntegrationUpdateDetail");
+        sb.append("?page=").append(page);
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
+        //test
+//        sb.append("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxMTEsImlzcyI6Imh0dHA6XC9cL3Rlc3RhcGkuYmphaXlvdXlvdS5jb21cL2FwaVwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDc5NDYyNTk4LCJleHAiOjE0ODIwNTQ1OTgsIm5iZiI6MTQ3OTQ2MjU5OCwianRpIjoiNzY0N2VkOTczNTE4NjMxM2Q5N2Y1ZDdmMzc0MjBlNTgifQ.1fPWO1LwXfJoH9wIiM9iIfOVxnPwSgagncUQh_P99pg");
+        String url = sb.toString();
+        LogUtils.d("getIntegerDetail url:", "" + url);
+        doGet(url, strTag, null, callback);
+    }
+
+
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/16 16:50
+     * 获得UU详情数据
+     *
+     * @param strTag
+     * @param page
+     * @param callback
+     */
+
+    public void getUuDetail(String strTag,int   page, DataCallback<UuDetailModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/member/getUUupdateDetail");
+        sb.append("?page=").append(page);
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
+        //test
+//        sb.append("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxMTEsImlzcyI6Imh0dHA6XC9cL3Rlc3RhcGkuYmphaXlvdXlvdS5jb21cL2FwaVwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDc5NDYyNTk4LCJleHAiOjE0ODIwNTQ1OTgsIm5iZiI6MTQ3OTQ2MjU5OCwianRpIjoiNzY0N2VkOTczNTE4NjMxM2Q5N2Y1ZDdmMzc0MjBlNTgifQ.1fPWO1LwXfJoH9wIiM9iIfOVxnPwSgagncUQh_P99pg");
+        String url = sb.toString();
+        LogUtils.e("getUuDetail url:", "" + url);
+        doGet(url, strTag, null, callback);
     }
 }

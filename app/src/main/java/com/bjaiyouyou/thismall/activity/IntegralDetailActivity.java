@@ -1,20 +1,19 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.IntegralDetailAdapter;
-import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.IntegralDetailModel;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,9 @@ public class IntegralDetailActivity extends BaseActivity implements View.OnClick
     //是否存在下一页
     private boolean isHaveNextPage=false;
 
+    private Api4ClientOther mClient;
+    public static final String TAG=IntegralDetailActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,18 +66,19 @@ public class IntegralDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void initData() {
-        ClientAPI.getIntegralDetail( mPage,new StringCallback() {
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient.getIntegralDetail(TAG, mPage, new DataCallback<IntegralDetailModel>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 mLv.onRefreshComplete();
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 mLv.onRefreshComplete();
-                if (!TextUtils.isEmpty(response)){
-                    mIntegralDetailModel=new Gson().fromJson(response,IntegralDetailModel.class);
+                if (response!=null){
+                    mIntegralDetailModel= (IntegralDetailModel) response;
                     if (mIntegralDetailModel!=null){
                         List<IntegralDetailModel.DataBean>  data=mIntegralDetailModel.getData();
                         if (mIntegralDetailModel.getNext_page_url()!=null){
@@ -127,8 +130,10 @@ public class IntegralDetailActivity extends BaseActivity implements View.OnClick
                     mLv.onRefreshComplete();
                 }
             }, 1000);
+            ToastUtils.showLong("已经是最后一页，没有更多了");
+
         }
-        ToastUtils.showLong("已经是最后一页，没有更多了");
+
 
     }
 }

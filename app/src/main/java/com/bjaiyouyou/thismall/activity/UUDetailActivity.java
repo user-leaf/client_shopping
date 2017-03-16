@@ -1,20 +1,19 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.UuDetailAdapter;
-import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.UuDetailModel;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,9 @@ public class UUDetailActivity extends BaseActivity implements View.OnClickListen
     private int mPage=1;
     //是否存在下一页
     private boolean isHaveNextPage=false;
+
+    private Api4ClientOther mClient;
+    public static final String TAG=UUDetailActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,18 +63,19 @@ public class UUDetailActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initData() {
-        ClientAPI.getUuDetail( mPage,new StringCallback() {
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient.getUuDetail(TAG, mPage, new DataCallback<UuDetailModel>(getApplicationContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 mLv.onRefreshComplete();
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
 
             @Override
-            public void onResponse(String response, int id) {
+            public void onSuccess(Object response, int id) {
                 mLv.onRefreshComplete();
-                if (!TextUtils.isEmpty(response)){
-                    mUuDetailModel=new Gson().fromJson(response,UuDetailModel.class);
+                if (response!=null){
+                    mUuDetailModel= (UuDetailModel) response;
                     if (mUuDetailModel!=null){
                         List<UuDetailModel.DataBean>  data=mUuDetailModel.getData();
                         if (mUuDetailModel.getNext_page_url()!=null){
@@ -86,8 +89,10 @@ public class UUDetailActivity extends BaseActivity implements View.OnClickListen
                         }
                     }
                 }
+
             }
         });
+
     }
 
     private void initCtrl() {
@@ -124,8 +129,9 @@ public class UUDetailActivity extends BaseActivity implements View.OnClickListen
                     mLv.onRefreshComplete();
                 }
             }, 1000);
+            ToastUtils.showLong("已经是最后一页，没有更多了");
         }
-        ToastUtils.showLong("已经是最后一页，没有更多了");
+
 
     }
 }
