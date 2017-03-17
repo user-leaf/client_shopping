@@ -62,7 +62,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
     private static final String TAG = OrderReturnActivity.class.getSimpleName();
     public static final String PARAM_ORDER_NUMBER = "orderNumber";
 
-    // 标题栏
     private IUUTitleBar mTitleBar;
     // 问题描述
     private EditText mEtProblem;
@@ -72,20 +71,16 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
     private RadioGroup mRgServiceType;
     // 上传图片按钮
     private ImageView mIvUpload;
-    // 展示要上传的图片
+    // 上传图片列表
     private RecyclerView mRecyclerView;
-    // 选择的图片集
     private ArrayList<String> mPath = new ArrayList<>();
-    // 图片预览RecyclerView的适配器
     private OrderReturnImageUploadAdapter mAdapter;
     // 提交
     private Button mBtnCommit;
 
     // 退货商品列表
     private NoScrollListView mListView;
-    // 退货商品列表适配器
     private OrderDetailAdapter mOrderAdapter;
-    // 退货商品列表数据
     private List<OrderDetailModel.OrderBean.OrderDetailBean> mData;
 
     // 退款类型
@@ -224,10 +219,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
         }
     }
 
-
-    /**
-     * 选择照片
-     */
     private void pickPhoto() {
 
         ImageConfig imageConfig
@@ -279,9 +270,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
         }
     }
 
-    /**
-     * 提交
-     */
     private void doCommit() {
 
         if (TextUtils.isEmpty(mEtProblem.getText().toString())) {
@@ -365,7 +353,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
         postFormBuilder.build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                // 关闭进度条
                 if (pd != null && pd.isShowing()) {
                     pd.dismiss();
                 }
@@ -382,7 +369,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
 
             @Override
             public void onResponse(String response, int id) {
-                // 关闭进度条
                 if (pd != null && pd.isShowing()) {
                     pd.dismiss();
                 }

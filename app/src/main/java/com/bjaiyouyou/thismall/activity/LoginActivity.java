@@ -231,8 +231,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void avoidHintColor(View view) {
-        if (view instanceof TextView)
+        if (view instanceof TextView) {
             ((TextView) view).setHighlightColor(getResources().getColor(android.R.color.transparent));
+        }
     }
 
     /**

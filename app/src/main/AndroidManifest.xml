@@ -266,11 +266,6 @@
             android:launchMode="singleTop"
             >
         </activity>
-        <!-- 临时用的登录页 -->
-        <activity
-            android:name=".activity.LoginTempActivity"
-            android:screenOrientation="portrait">
-        </activity>
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"

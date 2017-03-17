@@ -1146,7 +1146,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             return mTarget.getLayoutParams().height;
         }
 
-        public void setHeight(int height) {
+        public void setHeight(int  height) {
             mTarget.getLayoutParams().height = height;
             mTarget.requestLayout();
         }

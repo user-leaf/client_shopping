@@ -85,10 +85,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
 
         initView();
         setupView();
-
         loadData();
-
-
     }
 
     private void initView() {

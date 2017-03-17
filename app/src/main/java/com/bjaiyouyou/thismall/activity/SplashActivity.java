@@ -32,9 +32,8 @@ public class SplashActivity extends BaseActivity {
 
         // 是否是首次加载
 //        int isFirst = (int) SPUtils.get(this, PARAM_GUIDE, 0);
-        /**
-         * 判断versionName或者版本号，升级之后可以再次出现引导页
-         */
+
+        // 判断versionName或者版本号，升级之后可以再次出现引导页
         String versionName = AppUtils.getVersionName(this);
         boolean isFirst = !versionName.equals(SPUtils.get(this, PARAM_GUIDE, ""));
         LogUtils.d("isFirst: " + isFirst);
