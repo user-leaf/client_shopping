@@ -229,7 +229,25 @@ public class Api4ClientOther extends BaseClientApi {
         //test
 //        sb.append("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxMTEsImlzcyI6Imh0dHA6XC9cL3Rlc3RhcGkuYmphaXlvdXlvdS5jb21cL2FwaVwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDc5NDYyNTk4LCJleHAiOjE0ODIwNTQ1OTgsIm5iZiI6MTQ3OTQ2MjU5OCwianRpIjoiNzY0N2VkOTczNTE4NjMxM2Q5N2Y1ZDdmMzc0MjBlNTgifQ.1fPWO1LwXfJoH9wIiM9iIfOVxnPwSgagncUQh_P99pg");
         String url = sb.toString();
-        LogUtils.e("getUuDetail url:", "" + url);
+        LogUtils.d("getUuDetail url:", "" + url);
+        doGet(url, strTag, null, callback);
+    }
+
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/17 15:34
+     * 修改个人信息，获取验证码
+     *
+     */
+
+    public void getUpdateUserVerification(String strTag,String phone, DataCallback<String> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/auth/sendVerification");
+        sb.append("?phone=");
+        sb.append(phone);
+        String url = sb.toString();
+        LogUtils.d("url", url);
         doGet(url, strTag, null, callback);
     }
 }

@@ -422,12 +422,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 public void onError(Call call, Exception e, int id) {
                     LogUtils.e("getUpdateUserVerification", "--------------" + e.toString());
                     UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
-//                    String eString=e.toString();
-//                    while (eString.contains(":")){
-//                        eString=eString.substring(eString.indexOf(":")+1,eString.length());
-//                    }
-//
-//                    Toast.makeText(getApplicationContext(),eString,Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
