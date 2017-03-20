@@ -828,12 +828,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             //超过提醒限购数量
             if (mProductNum >= mBuyLimit) {
                 mLLOverNum.setVisibility(View.VISIBLE);
-                mTvNotify.setText("由于年前订单量激增和物流时间影响，商城重新调整如下：预售商品1月5日之后的订单、正售商品1月13日之后的订单、厂家直发商品1月16日之后的订单将于年后统一发货，退换货商品也将于年后处理，详情请咨询客服。以此给您带来的不便，我们深表歉意！数量大于10个，将10日后发货。");
+                mTvNotify.setText("数量大于10个，将10日后发货。");
                 mTvNotify.setGravity(Gravity.LEFT);
             } else {
                 //未超过
-                mLLOverNum.setVisibility(View.VISIBLE);
-                mTvNotify.setText("由于年前订单量激增和物流时间影响，商城重新调整如下：预售商品1月5日之后的订单、正售商品1月13日之后的订单、厂家直发商品1月16日之后的订单将于年后统一发货，退换货商品也将于年后处理，详情请咨询客服。以此给您带来的不便，我们深表歉意！");
+                mLLOverNum.setVisibility(View.GONE);
+//                mTvNotify.setText("");
                 mTvNotify.setGravity(Gravity.LEFT);
             }
         } else {
