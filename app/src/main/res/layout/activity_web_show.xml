@@ -26,8 +26,8 @@
         android:id="@+id/web_show_progress_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:progressDrawable="@drawable/webview_progressbar_bg"
+        android:layout_height="2dp"
+        android:progressDrawable="@color/webview_progressbar_bg"
         android:layout_below="@id/web_show_title_bar"
         />
 

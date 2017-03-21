@@ -201,7 +201,7 @@
                 android:id="@+id/cart_item_rl_off_sale"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <!-- 用TextView的话点击就穿透了-->
