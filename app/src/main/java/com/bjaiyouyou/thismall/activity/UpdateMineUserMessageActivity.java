@@ -23,7 +23,10 @@ import android.widget.Toast;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -133,16 +136,28 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     //用户头像全路径
     private String mUserImgUrl;
 
+    public static final String TAG=UpdateMineUserMessageActivity.class.getSimpleName();
+
+    private Api4ClientOther mclient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_mine_user_message);
         mUser = (User) getIntent().getSerializableExtra("mUser");
+        initVariables();
         initView();
         setView();
         initCtrl();
 
+    }
+
+    /**
+     * 初始化变量
+     */
+    private void initVariables() {
+        mclient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
     }
 
     private void initView() {
@@ -417,20 +432,37 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
         mPnone = mEtPhone.getText().toString().trim();
         if (mPnone.length() == mMaxPhone) {
             //网络获取验证码
-            ClientAPI.getUpdateUserVerification(mPnone, new StringCallback() {
+            mclient.getUpdateUserVerification(TAG, mPnone, new DataCallback<String>(getApplicationContext()) {
                 @Override
-                public void onError(Call call, Exception e, int id) {
+                public void onFail(Call call, Exception e, int id) {
                     LogUtils.e("getUpdateUserVerification", "--------------" + e.toString());
                     UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                 }
 
                 @Override
-                public void onResponse(String response, int id) {
+                public void onSuccess(Object response, int id) {
                     Toast.makeText(getApplicationContext(), "验证码已经发送到您的手机上请注意查收", Toast.LENGTH_SHORT).show();
                     initTimer();
                     mPhoneTimer.schedule(mPhoneTimeTask, 0L, 1000); //延时1000ms后执行，1000ms执行一次
+
                 }
             });
+
+
+//            ClientAPI.getUpdateUserVerification(mPnone, new StringCallback() {
+//                @Override
+//                public void onError(Call call, Exception e, int id) {
+//                    LogUtils.e("getUpdateUserVerification", "--------------" + e.toString());
+//                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+//                }
+//
+//                @Override
+//                public void onResponse(String response, int id) {
+//                    Toast.makeText(getApplicationContext(), "验证码已经发送到您的手机上请注意查收", Toast.LENGTH_SHORT).show();
+//                    initTimer();
+//                    mPhoneTimer.schedule(mPhoneTimeTask, 0L, 1000); //延时1000ms后执行，1000ms执行一次
+//                }
+//            });
 
         } else {
             Toast.makeText(getApplicationContext(), "请输入正确的11位手机号", Toast.LENGTH_SHORT).show();
