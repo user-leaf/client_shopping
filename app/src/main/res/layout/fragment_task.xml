@@ -32,6 +32,7 @@
     <View
         style="@style/entry_divider_fine_line_style"
         />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -49,8 +50,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:background="@color/white"
+                android:orientation="vertical"
                 >
 
                 <RelativeLayout
@@ -67,28 +68,28 @@
                         android:id="@+id/task_iv_note"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/list_note"
                         android:layout_centerVertical="true"
+                        android:src="@mipmap/list_note"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天签到赚UU"
-                        android:layout_toRightOf="@id/task_iv_note"
                         android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/task_iv_note"
+                        android:text="每天签到赚UU"
                         />
 
                     <TextView
                         android:id="@+id/task_tv_login"
                         android:layout_width="87dp"
                         android:layout_height="30dp"
-                        android:text="去登录"
-                        android:textColor="@color/white"
-                        android:background="@drawable/shape_task_button"
-                        android:gravity="center"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:background="@drawable/shape_task_button"
+                        android:gravity="center"
+                        android:text="去登录"
+                        android:textColor="@color/white"
                         />
                 </RelativeLayout>
 
@@ -148,20 +149,21 @@
                             android:id="@+id/task_get_gold_today"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/task_tv_get_gold"
+                            android:layout_toRightOf="@id/task_tv_get_gold"
                             android:text="0UU"
                             android:textColor="@color/app_red"
-                            android:layout_toRightOf="@id/task_tv_get_gold"
-                            android:layout_alignTop="@id/task_tv_get_gold"
                             />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_toRightOf="@id/task_get_gold_today"
                             android:layout_alignTop="@id/task_get_gold_today"
                             android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/task_get_gold_today"
+                            android:orientation="horizontal"
                             >
+
                             <TextView
                                 android:id="@+id/task_tv3"
                                 android:layout_width="wrap_content"
@@ -213,8 +215,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:gravity="center_vertical"
                     android:background="@color/white"
+                    android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     >
 
@@ -230,45 +232,32 @@
                     android:layout_height="3.5dp"
                     />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/task_tv_vip_tip"
                     android:layout_width="match_parent"
                     android:layout_height="66dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:gravity="center_vertical"
                     android:background="@color/white"
-                    >
-
-                    <ImageView
-                        android:layout_width="66dp"
-                        android:layout_height="match_parent"
-                        android:src="@mipmap/list_icon_member_litle"
-                        android:layout_marginRight="10dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/task_tv_vip_tip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="200元开通会员特权"
-                        android:textColor="@color/app_red"
-                        android:textSize="@dimen/text_size_medium"
-                        />
-
-                </LinearLayout>
+                    android:drawableLeft="@mipmap/list_icon_member_litle"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="200元开通会员特权"
+                    android:textColor="@color/app_red"
+                    android:textSize="@dimen/text_size_medium"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/layer_list_task_notice_bg"
                     android:orientation="vertical"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:background="@drawable/layer_list_task_notice_bg"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="15dp"
                     >
 
                     <LinearLayout
@@ -282,14 +271,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/list_icon_member_a"
                             android:layout_marginRight="20dp"
+                            android:src="@mipmap/list_icon_member_a"
                             />
 
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical"
                             >
 
@@ -303,8 +292,8 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="9dp"
+                                android:orientation="horizontal"
                                 >
 
                                 <TextView
@@ -325,8 +314,8 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="9dp"
+                                android:orientation="horizontal"
                                 >
 
                                 <TextView
@@ -347,9 +336,9 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="10dp"
                                 android:gravity="center_vertical"
+                                android:orientation="horizontal"
                                 >
 
                                 <TextView
@@ -369,28 +358,28 @@
                                     android:id="@+id/task_ll_sync"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
+                                    android:layout_marginLeft="5dp"
                                     android:background="@drawable/selector_task_button_sync"
                                     android:gravity="center_vertical"
+                                    android:orientation="horizontal"
                                     android:padding="8dp"
-                                    android:layout_marginLeft="5dp"
                                     >
 
                                     <ImageView
                                         android:id="@+id/task_iv_sync"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:src="@drawable/selector_task_button_sync_icon"
                                         android:layout_marginRight="3dp"
+                                        android:src="@drawable/selector_task_button_sync_icon"
                                         />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:ellipsize="end"
+                                        android:singleLine="true"
                                         android:text="同步积分"
                                         android:textColor="@color/app_gray_6b6b6b"
-                                        android:singleLine="true"
-                                        android:ellipsize="end"
                                         />
                                 </LinearLayout>
                             </LinearLayout>
@@ -401,29 +390,29 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/list_line_dashed"
                         android:scaleType="centerInside"
+                        android:src="@mipmap/list_line_dashed"
                         />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="25dp"
                         android:orientation="horizontal"
                         android:paddingTop="15dp"
-                        android:layout_marginBottom="25dp"
                         >
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/list_icon_member_b"
                             android:layout_marginRight="20dp"
+                            android:src="@mipmap/list_icon_member_b"
                             />
 
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical"
                             >
 
@@ -437,8 +426,8 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="9dp"
+                                android:orientation="horizontal"
                                 >
 
                                 <TextView
@@ -463,11 +452,11 @@
                         android:id="@+id/task_tv_recharge"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="25dp"
+                        android:background="@drawable/shape_task_button"
+                        android:gravity="center"
                         android:text="激活会员权益"
                         android:textColor="@color/white"
-                        android:background="@drawable/shape_task_button"
-                        android:layout_marginBottom="25dp"
-                        android:gravity="center"
                         />
 
                 </LinearLayout>
@@ -475,20 +464,14 @@
                 <View
                     style="@style/entry_divider_fine_line_style"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="#ffffff"
-                    android:paddingLeft="10dp"
-                    >
-
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
                         android:text="点击广告获得UU"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
                         />
-                </RelativeLayout>
 
                 <View
                     style="@style/entry_divider_fine_line_style"
@@ -499,8 +482,8 @@
                     android:id="@+id/task_gridview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:numColumns="2"
                     android:horizontalSpacing="1dp"
+                    android:numColumns="2"
                     android:verticalSpacing="1dp"
                     >
 
@@ -513,10 +496,10 @@
             android:id="@+id/task_tv_sync_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="+5万积分"
             android:textColor="@color/app_red"
             android:textSize="35sp"
-            android:layout_gravity="center"
             android:visibility="gone"
             />
     </FrameLayout>
