@@ -479,6 +479,10 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
      * @param list
      */
     private void checkReach10(List<CartItem2> list) {
+        if (!Constants.showTip){
+            return;
+        }
+
         boolean isReach = false;
         for (CartItem2 item : list) {
             if (item != null) {

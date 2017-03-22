@@ -379,6 +379,10 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
      * @param list
      */
     private void showTopTip(List<CartItem2> list) {
+        if (!Constants.showTip){
+            return;
+        }
+
         // 是否复合显示条件
         boolean isReach = false;
         for (CartItem2 item : list) {

@@ -78,6 +78,6 @@ public class Constants {
 
     public static final String PACKAGE_NAME_WECHAT = "com.tencent.mm";
 
-    // 是否显示公告
-    public static final boolean showTip = false;
+    // 是否显示公告(购物车页、确认订单页)
+    public static final boolean showTip = true;
 }
