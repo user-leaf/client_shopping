@@ -47,9 +47,7 @@ public class Constants {
 
     //==============[Ping++ end]==============
 
-    /**
-     * 确认订单页，不包邮时的邮费
-     */
+    // 确认订单页，不包邮时的邮费
     public static final int ORDER_MAKE_POSTAGE = 20;
 
 
@@ -77,4 +75,6 @@ public class Constants {
     public static final String  HISTORY_SEARCH_KEY= "historySearch";
     //用户信息
     public static final String  USER= "userMessage";
+
+    public static final String PACKAGE_NAME_WECHAT = "com.tencent.mm";
 }

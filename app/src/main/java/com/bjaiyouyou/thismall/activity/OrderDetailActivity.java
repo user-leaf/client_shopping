@@ -323,9 +323,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void loadData() {
-//        /**
-//         * 订单失效时间
-//         */
+
+//        // 订单失效时间
 //        hour = 3;
 //        minute = 0;
 //        second = 0;
@@ -827,7 +826,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         switch (position) {
             case 0: // 微信支付
 //                channel = Constants.CHANNEL_WECHAT;
-                AppPackageChecked.AppPageChecked(this, "com.tencent.mm", this, new AppPackageChecked.appPackCheckedHaveCallBack() {
+                AppPackageChecked.AppPageChecked(this, Constants.PACKAGE_NAME_WECHAT, this, new AppPackageChecked.appPackCheckedHaveCallBack() {
                     @Override
                     public void isHave() {
                         new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, Constants.CHANNEL_WECHAT, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));

@@ -57,7 +57,7 @@ public class AppPackageChecked {
         }
         //未安装，跳转至market下载该程序
         else {
-            Toast.makeText(context,"本机缺少功能操作的必要软件\n请先下载后再继续操作",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"本机缺少支付操作必要的软件\n请下载安装后再试",Toast.LENGTH_SHORT).show();
             //下载安装必要软件
             Uri uri = Uri.parse("market://details?id="+packageName);//id为包名
             Intent it = new Intent(Intent.ACTION_VIEW, uri);

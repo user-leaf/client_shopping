@@ -3,7 +3,6 @@ package com.bjaiyouyou.thismall.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -11,13 +10,10 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.AddressAdapter2;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.AddressInfo2;
-import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
-import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
@@ -40,16 +36,13 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
     private static final String TAG = AddressManagerNewActivity.class.getSimpleName();
     public static final String EXTRA_PAGE_NAME = "pageName";
 
-    // 地址数据列表
-    private ListView mListView;
-    // 数据集
-    private List<AddressInfo2.MemberAddressesBean> mDataList;
-    // 添加地址
-    private TextView mTvAdd;
-    // 地址列表适配器
-    private AddressAdapter2 mAdapter;
-    // 标题栏
     private IUUTitleBar mTitleBar;
+
+    private ListView mListView;
+    private AddressAdapter2 mAdapter;
+    private List<AddressInfo2.MemberAddressesBean> mDataList;
+
+    private TextView mTvAddAddr;
 
     // 断网提示 未登录提示
     private View mNoNetView;
@@ -71,9 +64,8 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
-
-        // 请求数据 更新列表
         loadData();
+
     }
 
     private void initVariables() {
@@ -84,7 +76,7 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.address_title_bar);
         mListView = (ListView) findViewById(R.id.address_listview);
-        mTvAdd = (TextView) findViewById(R.id.address_add);
+        mTvAddAddr = (TextView) findViewById(R.id.address_add);
 
         mNoNetView = findViewById(R.id.net_fail);
         mBodyView = findViewById(R.id.body);
@@ -93,7 +85,7 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
 
     private void setupView() {
         mTitleBar.setLeftLayoutClickListener(this);
-        mTvAdd.setOnClickListener(this);
+        mTvAddAddr.setOnClickListener(this);
 
     }
 
@@ -108,6 +100,7 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
             case R.id.left_layout:
                 finish();
                 break;
+
             case R.id.address_add: // 添加地址页
                 jump(AddressAddActivity.class, false);
                 break;
