@@ -186,10 +186,9 @@
                         />
                 </RelativeLayout>
 
-                <View
-                    style="@style/entry_divider_fine_line_style"
-                    android:layout_height="3.5dp"
-                    />
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="3.5dp"/>
 
                 <RelativeLayout
                     android:id="@+id/order_confirm_rl_postage_tip"
@@ -234,10 +233,9 @@
 
                 </com.bjaiyouyou.thismall.widget.NoScrollListView>
 
-                <View
-                    style="@style/entry_divider_fine_line_style"
-                    android:layout_height="3.5dp"
-                    />
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="3.5dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -389,10 +387,9 @@
 
                 </LinearLayout>
 
-                <View
-                    style="@style/entry_divider_fine_line_style"
-                    android:layout_height="3.5dp"
-                    />
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="3.5dp"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
