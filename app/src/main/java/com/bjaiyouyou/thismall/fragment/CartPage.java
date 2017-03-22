@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
@@ -187,11 +188,12 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         mNoLoginGoto = layout.findViewById(R.id.no_login_goto);
 
         // 头部提示
-        View tipView = LayoutInflater.from(getContext()).inflate(R.layout.layout_cart_tip, null);
-        mTvTipSendDelay = (TextView) tipView.findViewById(R.id.cart_tv_tip_send_delay);
-        ListView listView = mRefreshListView.getRefreshableView();
-        listView.addHeaderView(tipView);
-
+        View tipView = LayoutInflater.from(getContext()).inflate(R.layout.layout_tip, null);
+        mTvTipSendDelay = (TextView) tipView.findViewById(R.id.tip_tv_content);
+        if (Constants.showTip) {
+            ListView listView = mRefreshListView.getRefreshableView();
+            listView.addHeaderView(tipView);
+        }
     }
 
     private void setupView() {

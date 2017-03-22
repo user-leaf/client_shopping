@@ -38,30 +38,11 @@
             >
 
             <LinearLayout
+                android:id="@+id/order_make_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 >
-
-                <TextView
-                    android:id="@+id/order_make_delay_tip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#f4e8cd"
-                    android:lineSpacingExtra="3.5dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:text=""
-                    android:textColor="#dc9600"
-                    android:textSize="@dimen/text_size_tiny"
-                    />
-
-                <View
-                    style="@style/entry_divider_fine_line_style"
-                    android:background="#dc9600"
-                    />
 
                 <LinearLayout
                     android:id="@+id/order_make_ll_no_address"
@@ -90,28 +71,28 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/list_edit"
-                            android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/list_edit"
                             />
 
                         <ImageView
                             android:id="@+id/order_make_iv2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:layout_gravity="center_horizontal"
                             android:src="@mipmap/list_choice_adress"
-                            android:layout_centerHorizontal="true"
                             />
 
                         <TextView
                             android:id="@+id/order_make_tv_add_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="请选择您的收货地址"
-                            android:layout_gravity="center_horizontal"
                             android:layout_below="@id/order_make_iv2"
                             android:layout_centerHorizontal="true"
+                            android:layout_gravity="center_horizontal"
+                            android:text="请选择您的收货地址"
                             />
                     </RelativeLayout>
 
@@ -266,52 +247,52 @@
                     >
 
                     <!--<RelativeLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:paddingBottom="15dp"-->
-                        <!--android:paddingLeft="10dp"-->
-                        <!--android:paddingRight="10dp"-->
-                        <!--android:paddingTop="15dp"-->
-                        <!--&gt;-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingBottom="15dp"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:paddingTop="15dp"-->
+                    <!--&gt;-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="超过9kg增加运费(超出部分增收运费)"-->
-                            <!--/>-->
+                    <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="超过9kg增加运费(超出部分增收运费)"-->
+                    <!--/>-->
 
                     <!--</RelativeLayout>-->
 
                     <!--<View-->
-                        <!--style="@style/entry_divider_fine_line_style"/>-->
+                    <!--style="@style/entry_divider_fine_line_style"/>-->
 
                     <!--<RelativeLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:paddingBottom="15dp"-->
-                        <!--android:paddingLeft="10dp"-->
-                        <!--android:paddingRight="10dp"-->
-                        <!--android:paddingTop="15dp"-->
-                        <!--&gt;-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingBottom="15dp"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:paddingTop="15dp"-->
+                    <!--&gt;-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="配送方式"-->
-                            <!--/>-->
+                    <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="配送方式"-->
+                    <!--/>-->
 
-                        <!--<TextView-->
-                            <!--android:id="@+id/order_make_tv_express_way"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_alignParentRight="true"-->
-                            <!--android:layout_centerVertical="true"-->
-                            <!--/>-->
+                    <!--<TextView-->
+                    <!--android:id="@+id/order_make_tv_express_way"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--/>-->
 
                     <!--</RelativeLayout>-->
 
                     <!--<View-->
-                        <!--style="@style/entry_divider_fine_line_style"/>-->
+                    <!--style="@style/entry_divider_fine_line_style"/>-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"

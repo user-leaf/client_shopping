@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -35,8 +38,6 @@ import com.bjaiyouyou.thismall.widget.NoScrollListView;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.google.gson.Gson;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.pingplusplus.android.Pingpp;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -60,6 +61,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     public static final int REQUEST_CODE = 0;
 
     private IUUTitleBar mTitleBar;
+    private LinearLayout mLlView;
     // 延误提示
     private TextView mTvDelayTip;
     // 订单列表
@@ -89,10 +91,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private TextView mTvPostage;
     // 增收运费
     private TextView mTvPostageExtra;
-    // 邮费金额
-//    private int mPostage = 0;
-    // 增收运费
-//    private int mPostageExtra;
     // 重量
     private TextView mTvWeight;
     // 商品总重量
@@ -147,6 +145,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                     // 销毁本页
                     OrderMakeActivity.this.finish();
                     break;
+
 //                case 1:
 //                    // 延误提示消失 // 去掉了161229
 //                    ViewWrapper wrapper = new ViewWrapper(mTvDelayTip);
@@ -182,7 +181,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     // 上一页页面类型，0购物车页，1商品详情页
     private int mPageType;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,7 +235,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.order_make_title_bar);
-        mTvDelayTip = (TextView) findViewById(R.id.order_make_delay_tip);
+        mLlView = (LinearLayout) findViewById(R.id.order_make_ll);
+//        mTvDelayTip = (TextView) findViewById(R.id.order_make_delay_tip);
 
         mListView = (NoScrollListView) findViewById(R.id.order_make_listview);
         mAddressView = findViewById(R.id.order_make_address);
@@ -261,6 +260,13 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         mTvTotalPoints = (TextView) findViewById(R.id.order_confirm_tv_total_points);
 
         mNoAddressView = findViewById(R.id.order_make_ll_no_address);
+
+        // 头部提示
+        View tipView = LayoutInflater.from(this).inflate(R.layout.layout_tip, null);
+        mTvDelayTip = (TextView) tipView.findViewById(R.id.tip_tv_content);
+        if (Constants.showTip) {
+            mLlView.addView(tipView, 0);
+        }
     }
 
     private void setupView() {
@@ -458,29 +464,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         mTvPointsSum.setText("+" + totalPoints + "积分");
         // 本次消费可得UU
         mTvGoldSum.setText((int) sumMoney / 10 + "UU");
-        // 配送方式
-//        mTvExpressCompany.setText("韵达快递");
 
-//        // 判断是否包邮
-//        if (sumMoney >= 150.0) {
-//            // 包邮
-//            mPostage = Constants.ORDER_MAKE_POSTAGE - 10;
-//            mTvPostageTipView.setVisibility(View.GONE);
-//        } else {
-//            // 不包邮
-//            mPostage = Constants.ORDER_MAKE_POSTAGE;
-//            mTvPostageTipView.setVisibility(View.VISIBLE);
-//        }
-//        mTvPostage.setText("¥" + mPostage);
-//
-//        // 增收运费
-//        if (sumWeight > Constants.ORDER_MAKE_POSTAGE_WEIGHT_BASE) {
-//            double zeroFlag = sumWeight - (int) sumWeight;
-//            mPostageExtra = ((int) (sumWeight - Constants.ORDER_MAKE_POSTAGE_WEIGHT_BASE) + (zeroFlag == 0.0 ? 0 : 1)) * 3;
-//            mTvPostageExtra.setText("+" + mPostageExtra + "(超出部分增收运费)");
-//        }
-
-//        double finalPay = sumMoney + mPostage + mPostageExtra;
         double finalPay = sumMoney;
         // 底部实付金额
         mTvTotalPay.setText("¥" + finalPay);
@@ -895,7 +879,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             case 0: // 微信
 //                channel = Constants.CHANNEL_WECHAT;
 
-                AppPackageChecked.AppPageChecked(OrderMakeActivity.this, "com.tencent.mm", OrderMakeActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
+                AppPackageChecked.AppPageChecked(OrderMakeActivity.this, Constants.PACKAGE_NAME_WECHAT, OrderMakeActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
                     @Override
                     public void isHave() {
                         new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mTvPay, TAG)
