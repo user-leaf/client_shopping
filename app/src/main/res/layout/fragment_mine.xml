@@ -397,7 +397,7 @@
                 />
 
             <LinearLayout
-                android:id="@+id/ll_mine_supply_the_phone"
+                android:id="@+id/ll_mine_service_the_phone"
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginTop="10dp"
@@ -412,18 +412,47 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="供货电话"
+                    android:text="客服电话"
                     android:textColor="#6b6b6b"
                     android:textSize="14sp"/>
-                <!--乐姐电话-->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="13701121718"
+                    android:text="（上班时间：9:00-18:00）400-1599586"
+                    android:textColor="#6b6b6b"
+                    android:textSize="14sp"
+                    android:singleLine="true"
+                    android:ellipsize="start"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_mine_supply_the_phone"
+                android:layout_width="match_parent"
+                android:layout_height="51dp"
+
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="18.5dp"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="供货电话"
+                    android:textColor="#6b6b6b"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="010-53654225"
                     android:textColor="#6b6b6b"
                     android:textSize="14sp"
                     />
-
             </LinearLayout>
         </LinearLayout>
 

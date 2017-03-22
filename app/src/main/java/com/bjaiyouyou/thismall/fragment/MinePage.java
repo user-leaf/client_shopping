@@ -212,6 +212,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     //网络请求对象
     private Api4MinePage mClientApi;
+    //拨打客服电话
+    private LinearLayout mLLServicePhone;
 
 
     @Nullable
@@ -326,6 +328,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //供货电话
         mLLSupplyPhone = ((LinearLayout) layout.findViewById(R.id.ll_mine_supply_the_phone));
+        //供货电话
+        mLLServicePhone = ((LinearLayout) layout.findViewById(R.id.ll_mine_service_the_phone));
         //邮箱
         mTVEmail = ((TextView) layout.findViewById(R.id.tv_mine_email));
 
@@ -354,6 +358,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         });
 
         mLLSupplyPhone.setOnClickListener(this);
+        mLLServicePhone.setOnClickListener(this);
     }
 
     /**
@@ -733,6 +738,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                ToastUtils.showShort("拨打供货电话");
 //                callCustomerServerPhone();
                 DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
+                break;
+            case R.id.ll_mine_service_the_phone: //拨打供货电话
+//                ToastUtils.showShort("拨打供货电话");
+//                callCustomerServerPhone();
+                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
                 break;
 
         }

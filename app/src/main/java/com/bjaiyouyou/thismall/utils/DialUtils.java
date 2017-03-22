@@ -23,7 +23,7 @@ public class DialUtils {
     /**
      * 供货电话
      */
-    public static String SUPPLY_PHONE="13701221718";
+    public static String SUPPLY_PHONE="01053654225";
     //test
 //    public static String SUPPLY_PHONE = "18333618642";
 
