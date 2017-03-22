@@ -54,12 +54,6 @@ import okhttp3.Call;
  * 6种订单状态（-1数据错误、0待付款、1未发货、2已发货、3申请退款、4已退款、5已收货）都用这个订单详情页，
  * 根据type不同来区分
  */
-
-/**
- * @author QuXinhang
- *         Creare 2016/9/10 15:01
- *         添加支付失败跳转
- */
 public class OrderDetailActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, OnItemClickListener {
 
     public static final String TAG = OrderDetailActivity.class.getSimpleName();
@@ -551,9 +545,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             case R.id.order_detail_tv_pay_now:
                 // 调用ping++付款
                 doPayByPingpp();
-
-                //test支付失败
-//                orderPayFail();
                 break;
 
             //=============【未发货|已发货状态】=========================
@@ -818,7 +809,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    //  第三方控件所需：https://github.com/saiwu-bigkoo/Android-AlertView
+    // https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
         final int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
@@ -946,26 +937,12 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
                 }
 
-//                /**
-//                 * 测试
-//                 */
-//                Intent intent = new Intent(OrderDetailActivity.this, OrderPayFailActivity.class);
-//                intent.putExtra("mOrderNumber", mOrderNumber);
-//                startActivity(intent);
-//
-//                // 销毁页面
-//                mHandler.sendEmptyMessage(0);
-
             }
 
 
         }
 
     }
-
-    /**
-     *
-     */
 
     private void orderPayFail() {
         Intent intent = new Intent(OrderDetailActivity.this, OrderPayFailActivity.class);

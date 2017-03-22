@@ -108,32 +108,12 @@ public class AddressManagerNewActivity extends BaseActivity implements View.OnCl
     }
 
     public void loadData() {
-        /**
-         * 测试数据
-         */
-//        mDataList.clear();
-//        for (int i = 0; i < 15; i++) {
-//            AddressInfo addressInfo = new AddressInfo();
-//            addressInfo.setName("某某" + i);
-//            addressInfo.setTel("1316121142" + i);
-//            addressInfo.setAddress("东贸国际写字楼" + i);
-//            if (i == 3) {
-//                addressInfo.setDefault(true);
-//            } else {
-//                addressInfo.setDefault(false);
-//            }
-//            mDataList.add(addressInfo);
-//        }
-//
-//        mAdapter.setData(mDataList);
-
         showLoadingDialog();
 
         ClientAPI.getAddressList(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 e.printStackTrace();
-//                        ToastUtils.showShort("请求失败");
                 checkNet();
                 dismissLoadingDialog();
             }

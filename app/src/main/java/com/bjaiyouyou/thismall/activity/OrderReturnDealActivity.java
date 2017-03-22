@@ -38,9 +38,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class OrderReturnDealActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
     private static final java.lang.String TAG = OrderReturnDealActivity.class.getSimpleName();
-    // intent传递参数名称
     public static final String PARAM_ORDER_NUMBER = "mOrderNumber";
-    // 标题栏
     private IUUTitleBar mTitleBar;
     // 退款信息标题栏
     private TextView mTvSheetTitle;
@@ -123,7 +121,6 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.order_return_deal_rl_kefu: // 联系客服
-//                ToastUtils.showShort("建设中");
 //                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
 
                 if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {

@@ -156,7 +156,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
         mAdapter = new OrderReturnImageUploadAdapter(this, mPath);
         mRecyclerView.setAdapter(mAdapter);
 
-
         // 获取上一页传过来的商品数据集合
         List<OrderDetailModel.OrderBean.OrderDetailBean> thing = (List<OrderDetailModel.OrderBean.OrderDetailBean>) MainApplication.getInstance().getData();
         if (thing != null) {
@@ -207,14 +206,10 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
                     EasyPermissions.requestPermissions(this, "需要开启一些权限",
                             RC_CAMERA_PERM, perms);
                 }
-
                 break;
 
             case R.id.order_return_btn_commit: // 提交
-//                jump(OrderReturnDealActivity.class, true);
-
                 doCommit();
-
                 break;
         }
     }

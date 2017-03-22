@@ -117,7 +117,6 @@ public class InviteActivity extends BaseActivity implements View.OnClickListener
 
     }
 
-
     public void getContactPermissionsResult(int requestCode,int resultCode) {
         LogUtils.e("order","授权结果");
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行

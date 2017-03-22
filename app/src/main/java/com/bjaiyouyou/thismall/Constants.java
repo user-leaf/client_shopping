@@ -4,6 +4,7 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 
 /**
  * APP中大部分的常量定义
+ *
  * @author kanbin
  * @date 2016/6/1
  */
@@ -15,7 +16,7 @@ public class Constants {
     public static final int ADDRESS_ADD = 0;
     public static final int ADDRESS_EDIT = 1;
 
-    //==============[Ping++ begin]==============
+    //==============【Ping++】=====================
 
     // Ping++支付
     public static final String PingppURL = ClientAPI.API_POINT+"api/v1/pay";
@@ -45,7 +46,7 @@ public class Constants {
      */
     public static final String CHANNEL_JDPAY_WAP = "jdpay_wap";
 
-    //==============[Ping++ end]==============
+    //=============================================
 
     // 确认订单页，不包邮时的邮费
     public static final int ORDER_MAKE_POSTAGE = 20;

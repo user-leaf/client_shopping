@@ -158,6 +158,7 @@ public class OrderMakeAdapter extends BaseAdapter {
             }
         }
 
+            // 不用了吧，原因忘了
 //            // 是否是抢购商品
 //            boolean isRushGood = false;
 //

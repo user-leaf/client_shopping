@@ -102,7 +102,6 @@
                     android:id="@+id/order_pay_success_tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="某某"
                     android:textColor="@color/black"
                     />
 
@@ -110,7 +109,6 @@
                     android:id="@+id/order_pay_success_tv_tel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="123"
                     android:textColor="@color/black"
                     android:layout_alignParentRight="true"
                     />
@@ -127,7 +125,6 @@
                     android:id="@+id/order_pay_success_tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1816"
                     android:layout_toRightOf="@id/order_pay_success_tv3"
                     android:layout_alignBaseline="@id/order_pay_success_tv3"
                     />

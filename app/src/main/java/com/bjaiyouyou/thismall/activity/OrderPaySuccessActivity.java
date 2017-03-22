@@ -100,17 +100,15 @@ public class OrderPaySuccessActivity extends BaseActivity implements AdapterView
 
         mOrderNumber = intent.getStringExtra("orderNumber");
 
-        /**
-         * 测试数据
-         */
-        for (int i = 0; i < 5; i++) {
-            OrderPaySuccessProductInfo productInfo = new OrderPaySuccessProductInfo();
-            productInfo.setImageUrl("http://pic.58pic.com/58pic/14/00/69/66858PICNfJ_1024.jpg");
-            productInfo.setTitle("四件套"+i);
-            productInfo.setPrice(i+"00.00");
-            productInfo.setPoints(""+i*10);
-            mList.add(productInfo);
-        }
+        // 测试数据
+//        for (int i = 0; i < 5; i++) {
+//            OrderPaySuccessProductInfo productInfo = new OrderPaySuccessProductInfo();
+//            productInfo.setImageUrl("http://pic.58pic.com/58pic/14/00/69/66858PICNfJ_1024.jpg");
+//            productInfo.setTitle("四件套"+i);
+//            productInfo.setPrice(i+"00.00");
+//            productInfo.setPoints(""+i*10);
+//            mList.add(productInfo);
+//        }
 
     }
 
