@@ -642,6 +642,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         if (detailBeani.getProduct_image() != null && detailBeani.getProduct_image().getImage_path() != null && detailBeani.getProduct_image().getImage_base_name() != null) {
                             String imgUrl = detailBeani.getProduct_image().getImage_path() + "/" + detailBeani.getProduct_image().getImage_base_name();
                             //获取缩略图地址
+                            //传入的款高度要求是px值
 //                            imgUrl=ImageUtils.getThumb(imgUrl, holder.iv.getWidth(), 0);
                             Glide.with(context)
                                     .load(imgUrl)
