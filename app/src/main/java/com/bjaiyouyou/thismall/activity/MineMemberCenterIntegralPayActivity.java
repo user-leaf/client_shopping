@@ -231,24 +231,39 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 
     private void initControl() {
         mTvHavenIntegral.setText(mHavenIntegral + "");
+
+        final int width = ScreenUtils.getScreenWidth(getApplicationContext());
+        final int textWidth = width / 4;
+        final int textSpace = textWidth / 10;
+        int mTFLSpace=textWidth*3+textSpace*6;
+        final RelativeLayout.LayoutParams  paramsTFL=new RelativeLayout.LayoutParams(mTFLSpace, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+//        mTFL.setLayoutParams(paramsTFL);
+
         mTagAdapter = new TagAdapter<String>(mIntegrals) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
                 TextView textView = (TextView) LayoutInflater.from(getApplicationContext())
                         .inflate(R.layout.member_center_tv, mTFL, false);
-                int width = ScreenUtils.getScreenWidth(getApplicationContext());
-                int textWidth = width / 4;
+
+
 
                 textView.setText(s);
 
                 LogUtils.e("width", "" + width);
                 LogUtils.e("textHeight", textView.getHeight() + "");
-                int textSpace = textWidth / 10;
+
+//                parent.setLayoutParams(paramsTFL);
+
 
                 ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(textWidth, textWidth / 2);
-                textView.setPadding(0, 10, 0, 10);
+                textView.setPadding(0, 0, 0, 0);
+
+//                params.setMargins(5, 0, 5, 5);
                 params.setMargins(textSpace, 0, textSpace, textSpace);
+//                params.setMargins(0, 0, 0, 0);
                 textView.setLayoutParams(params);
+
                 return textView;
             }
         };

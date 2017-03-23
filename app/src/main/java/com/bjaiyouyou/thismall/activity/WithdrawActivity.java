@@ -69,7 +69,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
     //输入金额
     private long mInPutBalance;
     //是否可提取
-    private boolean isCanWithDraw = true;
+    private boolean isCanWithDraw = false;
     //提现是否为输入值
     private boolean isEtChange = false;
     //可输入长度
@@ -237,7 +237,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 //获得输入金额
-                String string = s.toString();
+                String string = s.toString().trim();
 
                 //限制开头输入不能是“0”
                 while (string.startsWith("0")) {
@@ -258,8 +258,12 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 }
                 if (!TextUtils.isEmpty(string)) {
                     mInPutBalance = Long.valueOf(string);
-                    //根据输入判断是否可提现
-                    etChange(mInPutBalance);
+                    if (mInPutBalance!=0L){
+                        //根据输入判断是否可提现
+                        etChange(mInPutBalance);
+                    }else {
+                        isEtChange=false;
+                }
                 } else {
                     //去掉所有的超限提示背景
                     mTvWeekMax.setEnabled(true);
@@ -304,7 +308,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
         //提现额是输入值
         isEtChange = true;
         //判断
-        isCanWithDraw = ((inPutBalance <= mLimitBalance) && (inPutBalance <= mCoinBalance) && (inPutBalance <= mPayBalance)) ? true : false;
+        isCanWithDraw = ((inPutBalance <= mLimitBalance) && (inPutBalance <= mCoinBalance) && (inPutBalance <= mPayBalance))&&inPutBalance!=0L ? true : false;
         //判断处理
         if (!isCanWithDraw) {
             //将最小限额设置为背景可见
@@ -353,17 +357,19 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.btn_withdraw://提现
                 //test
-//                jump(WithDrawSucceedActivity.class,false);
+                // jump(WithDrawSucceedActivity.class,false);
 
-                if (!isCanWithDraw) {
-                    Toast.makeText(this, "输入金额不符合提取条件，请确认后重新输入", Toast.LENGTH_SHORT).show();
-                    return;
+                if (!isEtChange){
+                    Toast.makeText(this, "请输入提现金额", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (!isCanWithDraw) {
+                        Toast.makeText(this, "输入金额不符合提取条件，请确认后重新输入", Toast.LENGTH_SHORT).show();
+                        return;
+                    }else {
+                        getWithdraw();
+                    }
                 }
-                //最后提现mCanWithDrawBalance
-                if (isEtChange) {
-                    mCanWithDrawBalance = mInPutBalance;
-                    getWithdraw();
-                }
+
 //                Toast.makeText(this,"提取成功"+mCanWithDrawBalance,Toast.LENGTH_SHORT).show();
 //                getPermission();
 
@@ -450,6 +456,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
      * 提现
      */
     public void getWithdraw() {
+        mCanWithDrawBalance = mInPutBalance;
         String safeCode = mEtSafeCodeInput.getText().toString().trim();
         if (TextUtils.isEmpty(safeCode)) {
             ToastUtils.showShort("安全码不可为空");

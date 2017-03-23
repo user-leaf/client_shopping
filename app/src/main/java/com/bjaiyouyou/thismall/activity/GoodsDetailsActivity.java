@@ -827,7 +827,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 //        if (mProduct!=null&&mProduct.getOnsell()!=0&&TextUtils.isEmpty(mProduct.getDeleted_at().toString())){
             //超过提醒限购数量
             if (mProductNum >= mBuyLimit) {
-                mLLOverNum.setVisibility(View.VISIBLE);
+                mLLOverNum.setVisibility(View.GONE);
                 mTvNotify.setText("数量大于10个，将10日后发货。");
                 mTvNotify.setGravity(Gravity.LEFT);
             } else {
