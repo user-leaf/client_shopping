@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.MyOrderRecycleViewAdapter;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.fragment.MyOrderFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderNotFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
@@ -199,8 +200,24 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         //电话授权检测
         callPermissionsResult(requestCode,resultCode);
 
-        //拨打电话
-        orderPayResult(requestCode,resultCode,data);
+
+
+        //处理adapter立即支付处理
+//        orderPayResult(requestCode,resultCode,data);
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+
+            }
+
+            @Override
+            public void onPayFail() {
+                //跳转到支付失败页面,传递订单号
+                orderPayFail();
+
+            }
+        });
+
     }
 
     /**

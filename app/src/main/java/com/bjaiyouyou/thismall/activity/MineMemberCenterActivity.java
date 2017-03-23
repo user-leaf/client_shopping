@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,19 +32,17 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.PayOrderNum;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.AppPackageChecked;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
-import com.pingplusplus.android.Pingpp;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -656,14 +653,14 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         switch (position) {
             case 0: // 微信支付
 //                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_WECHAT, amount));
-                AppPackageChecked.AppPageChecked(getApplicationContext(), "com.tencent.mm", MineMemberCenterActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
-                    @Override
-                    public void isHave() {
+//                AppPackageChecked.AppPageChecked(getApplicationContext(), "com.tencent.mm", MineMemberCenterActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
+//                    @Override
+//                    public void isHave() {
 //                        doPayByPingpp();
                         new PaymentTask(MineMemberCenterActivity.this, MineMemberCenterActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mBtnNext, TAG)
                                 .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-                    }
-                });
+//                    }
+//                });
                 break;
 //            case 1: // 支付宝支付
 //                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));
@@ -737,37 +734,55 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         mBtnNext.setOnClickListener(MineMemberCenterActivity.this);
 
         //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
-
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-                    //跳转到支付成功页面
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+                //跳转到支付成功页面
 //                    mPaySucceedIntent=new Intent(getApplicationContext(),MineRechargeSuccessActivity.class);
 //                    mPaySucceedIntent.putExtra("coin",mGetCoin+mHavenCoin);
 //                    jump(mPaySucceedIntent,false);
 
-                    MineRechargeSuccessActivity.actionStart(MineMemberCenterActivity.this, 0);
-                    finish();
-                } else if ("fail".equals(result)) {
-                    ToastUtils.showShort("支付失败");
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("失效");
-                }
+                MineRechargeSuccessActivity.actionStart(MineMemberCenterActivity.this, 0);
+                finish();
             }
-        }
+
+            @Override
+            public void onPayFail() {
+
+            }
+        });
+        //支付页面返回处理
+//        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                String result = data.getExtras().getString("pay_result");
+//                /* 处理返回值
+//                 * "success" - payment succeed
+//                 * "fail"    - payment failed
+//                 * "cancel"  - user canceld
+//                 * "invalid" - payment plugin not installed
+//                 */
+//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+////                showMsg(result, errorMsg, extraMsg);
+//
+//                if ("success".equals(result)) {
+//                    ToastUtils.showShort("支付成功");
+//                    //跳转到支付成功页面
+////                    mPaySucceedIntent=new Intent(getApplicationContext(),MineRechargeSuccessActivity.class);
+////                    mPaySucceedIntent.putExtra("coin",mGetCoin+mHavenCoin);
+////                    jump(mPaySucceedIntent,false);
+//
+//                    MineRechargeSuccessActivity.actionStart(MineMemberCenterActivity.this, 0);
+//                    finish();
+//                } else if ("fail".equals(result)) {
+//                    ToastUtils.showShort("支付失败");
+//                } else if ("cancel".equals(result)) {
+//                    ToastUtils.showShort("用户取消");
+//                } else if ("invalid".equals(result)) {
+//                    ToastUtils.showShort("失效");
+//                }
+//            }
+//        }
     }
 
     public void showMsg(String title, String msg1, String msg2) {

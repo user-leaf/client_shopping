@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,18 +23,16 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.PayOrderNum;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.AppPackageChecked;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
-import com.pingplusplus.android.Pingpp;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -444,14 +441,14 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 //                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_WECHAT, amount));
 //                mChannel=Constants.CHANNEL_WECHAT;
                 //判断微信是否存在；存在吊起支付；不存在下载吊起支付
-                AppPackageChecked.AppPageChecked(getApplicationContext(), "com.tencent.mm", MineMemberCenterIntegralPayActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
-                    @Override
-                    public void isHave() {
+//                AppPackageChecked.AppPageChecked(getApplicationContext(), "com.tencent.mm", MineMemberCenterIntegralPayActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
+//                    @Override
+//                    public void isHave() {
 //                        doPayByPingpp();
                         new PaymentTask(MineMemberCenterIntegralPayActivity.this, MineMemberCenterIntegralPayActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mBtnPay, TAG)
                                 .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-                    }
-                });
+//                    }
+//                });
 
 
                 break;
@@ -528,36 +525,51 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
         mBtnPay.setOnClickListener(MineMemberCenterIntegralPayActivity.this);
 
         //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
 
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-
-                    //支付成功后跳转页
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+                //支付成功后跳转页
 //                    jump(MineRechargeSuccessActivity.class,false);
-                    MineRechargeSuccessActivity.actionStart(MineMemberCenterIntegralPayActivity.this, 1);
-                    finish();
-
-                } else if ("fail".equals(result)) {
-                    ToastUtils.showShort("支付失败");
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("失效");
-                }
+                MineRechargeSuccessActivity.actionStart(MineMemberCenterIntegralPayActivity.this, 1);
+                finish();
             }
-        }
+
+            @Override
+            public void onPayFail() {
+
+            }
+        });
+//        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                String result = data.getExtras().getString("pay_result");
+//                /* 处理返回值
+//                 * "success" - payment succeed
+//                 * "fail"    - payment failed
+//                 * "cancel"  - user canceld
+//                 * "invalid" - payment plugin not installed
+//                 */
+//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+////                showMsg(result, errorMsg, extraMsg);
+//
+//                if ("success".equals(result)) {
+//                    ToastUtils.showShort("支付成功");
+//
+//                    //支付成功后跳转页
+////                    jump(MineRechargeSuccessActivity.class,false);
+//                    MineRechargeSuccessActivity.actionStart(MineMemberCenterIntegralPayActivity.this, 1);
+//                    finish();
+//
+//                } else if ("fail".equals(result)) {
+//                    ToastUtils.showShort("支付失败");
+//                } else if ("cancel".equals(result)) {
+//                    ToastUtils.showShort("用户取消");
+//                } else if ("invalid".equals(result)) {
+//                    ToastUtils.showShort("失效");
+//                }
+//            }
+//        }
     }
 
     public void showMsg(String title, String msg1, String msg2) {

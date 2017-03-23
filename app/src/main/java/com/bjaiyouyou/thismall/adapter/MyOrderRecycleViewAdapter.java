@@ -41,7 +41,6 @@ import com.bjaiyouyou.thismall.model.AddAllToCart;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.AppPackageChecked;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
@@ -1011,16 +1010,16 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
         switch (position) {
             case 0: // 微信支付
                 //test
-                AppPackageChecked.AppPageChecked(context, "com.tencent.mm", activity, new AppPackageChecked.appPackCheckedHaveCallBack() {
-                    @Override
-                    public void isHave() {
-//                        new PaymentTask(mOrderNumber).execute(new PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-//                        channel = Constants.CHANNEL_WECHAT;
+//                AppPackageChecked.AppPageChecked(context, "com.tencent.mm", activity, new AppPackageChecked.appPackCheckedHaveCallBack() {
+//                    @Override
+//                    public void isHave() {
+////                        new PaymentTask(mOrderNumber).execute(new PaymentRequest(Constants.CHANNEL_WECHAT, 1));
+////                        channel = Constants.CHANNEL_WECHAT;
 
                         new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber, Constants.CHANNEL_WECHAT, holder.btPay, MyOrderPaymentFragment.TAG)
                                 .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-                    }
-                });
+//                    }
+//                });
 
                 break;
 //            case 1: // 支付宝支付
