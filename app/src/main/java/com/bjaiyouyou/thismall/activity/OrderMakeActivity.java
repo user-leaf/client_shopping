@@ -477,7 +477,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
      * @param list
      */
     private void checkReach10(List<CartItem2> list) {
-        if (!Constants.showTip){
+        if (!Constants.showTip) {
             return;
         }
 
@@ -880,14 +880,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         switch (payType) {
             case 0: // 微信
 //                channel = Constants.CHANNEL_WECHAT;
+                new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mTvPay, TAG)
+                        .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
 
-                AppPackageChecked.AppPageChecked(OrderMakeActivity.this, Constants.PACKAGE_NAME_WECHAT, OrderMakeActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
-                    @Override
-                    public void isHave() {
-                        new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mTvPay, TAG)
-                                .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
-                    }
-                });
                 break;
 
             case 1: // 支付宝
@@ -968,16 +963,16 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
             @Override
             public void onPaySuccess() {
-                    OrderPaySuccessActivity.actionStart(OrderMakeActivity.this, mName, mPhone, mAddress, mOrder_number);
-                    mHandler.sendEmptyMessage(0); // 销毁页面
+                OrderPaySuccessActivity.actionStart(OrderMakeActivity.this, mName, mPhone, mAddress, mOrder_number);
+                mHandler.sendEmptyMessage(0); // 销毁页面
 
             }
 
             @Override
             public void onPayFail() {
-                    Intent intent = new Intent(OrderMakeActivity.this, OrderPayFailActivity.class);
-                    intent.putExtra("mOrderNumber", mOrder_number);
-                    startActivity(intent);
+                Intent intent = new Intent(OrderMakeActivity.this, OrderPayFailActivity.class);
+                intent.putExtra("mOrderNumber", mOrder_number);
+                startActivity(intent);
 
             }
         });
@@ -1149,7 +1144,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             return mTarget.getLayoutParams().height;
         }
 
-        public void setHeight(int  height) {
+        public void setHeight(int height) {
             mTarget.getLayoutParams().height = height;
             mTarget.requestLayout();
         }
