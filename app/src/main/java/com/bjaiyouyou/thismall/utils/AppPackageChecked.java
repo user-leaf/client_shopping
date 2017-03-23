@@ -49,20 +49,28 @@ public class AppPackageChecked {
      * @param callback
      */
     public static void AppPageChecked(Context context, String packageName, Activity activity, appPackCheckedHaveCallBack callback){
-        //判断后的逻辑：
-        //已安装，打开程序，需传入参数包名："com.skype.android.verizon"
-        if(isExist(context,packageName)){
-           //软件存在吊起支付
-            callback.isHave();
-        }
-        //未安装，跳转至market下载该程序
-        else {
-            Toast.makeText(context,"本机缺少支付操作必要的软件\n请下载安装后再试",Toast.LENGTH_SHORT).show();
-            //下载安装必要软件
-            Uri uri = Uri.parse("market://details?id="+packageName);//id为包名
-            Intent it = new Intent(Intent.ACTION_VIEW, uri);
-            activity.startActivity(it);
-        }
+        /**
+         * 1、根据线上反馈，判断方法在有的机型会出问题，微信已经安装但是检测不到
+         * 2、如果微信未安装，Ping++的返回结果中pay_result会返回invalid，可据此处理，此处判断没有必要
+         *
+         * Created by kanbin on 2017/3/23.
+         */
+        throw new UnsupportedOperationException("请直接调用支付方法，无需判断，如果支付APP未安装，pay_result会返回invalid，可据此处理");
+
+//        //判断后的逻辑：
+//        //已安装，打开程序，需传入参数包名："com.skype.android.verizon"
+//        if(isExist(context,packageName)){
+//           //软件存在吊起支付
+//            callback.isHave();
+//        }
+//        //未安装，跳转至market下载该程序
+//        else {
+//            Toast.makeText(context,"本机缺少支付操作必要的软件\n请下载安装后再试",Toast.LENGTH_SHORT).show();
+//            //下载安装必要软件
+//            Uri uri = Uri.parse("market://details?id="+packageName);//id为包名
+//            Intent it = new Intent(Intent.ACTION_VIEW, uri);
+//            activity.startActivity(it);
+//        }
     }
 
     public interface appPackCheckedHaveCallBack{

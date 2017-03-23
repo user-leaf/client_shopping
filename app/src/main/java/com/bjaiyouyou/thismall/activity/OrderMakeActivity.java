@@ -1,7 +1,6 @@
 package com.bjaiyouyou.thismall.activity;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -18,6 +16,7 @@ import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.OrderMakeAdapter;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.fragment.CartPage;
 import com.bjaiyouyou.thismall.model.AddressInfo2;
@@ -38,7 +37,6 @@ import com.bjaiyouyou.thismall.widget.NoScrollListView;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.google.gson.Gson;
-import com.pingplusplus.android.Pingpp;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -967,47 +965,64 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 //        loadingDialog.dismiss();
         mTvPay.setOnClickListener(OrderMakeActivity.this);
 
-        //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+                    OrderPaySuccessActivity.actionStart(OrderMakeActivity.this, mName, mPhone, mAddress, mOrder_number);
+                    mHandler.sendEmptyMessage(0); // 销毁页面
 
-                LogUtils.d(TAG, "errorMsg: " + errorMsg + ", extraMsg: " + extraMsg);
+            }
 
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-
-                    // 跳转到支付成功页
-                    OrderPaySuccessActivity.actionStart(this, mName, mPhone, mAddress, mOrder_number);
-
-                    // 销毁页面
-                    mHandler.sendEmptyMessage(0);
-
-                } else if ("fail".equals(result)) {
-
+            @Override
+            public void onPayFail() {
                     Intent intent = new Intent(OrderMakeActivity.this, OrderPayFailActivity.class);
                     intent.putExtra("mOrderNumber", mOrder_number);
                     startActivity(intent);
 
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("失效");
-
-                }
-
             }
-        }
+        });
+
+//        //支付页面返回处理
+//        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                String result = data.getExtras().getString("pay_result");
+//                /* 处理返回值
+//                 * "success" - payment succeed
+//                 * "fail"    - payment failed
+//                 * "cancel"  - user canceld
+//                 * "invalid" - payment plugin not installed
+//                 */
+//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+////                showMsg(result, errorMsg, extraMsg);
+//
+//                LogUtils.d(TAG, "errorMsg: " + errorMsg + ", extraMsg: " + extraMsg);
+//
+//                if ("success".equals(result)) {
+//                    ToastUtils.showShort(getString(R.string.pingpp_pay_success));
+//
+//                    // 跳转到支付成功页
+//                    OrderPaySuccessActivity.actionStart(this, mName, mPhone, mAddress, mOrder_number);
+//
+//                    // 销毁页面
+//                    mHandler.sendEmptyMessage(0);
+//
+//                } else if ("fail".equals(result)) {
+//
+//                    Intent intent = new Intent(OrderMakeActivity.this, OrderPayFailActivity.class);
+//                    intent.putExtra("mOrderNumber", mOrder_number);
+//                    startActivity(intent);
+//
+//                } else if ("cancel".equals(result)) {
+//                    ToastUtils.showShort(getString(R.string.pingpp_pay_cancel));
+//
+//                } else if ("invalid".equals(result)) {
+//                    ToastUtils.showShort(getString(R.string.pingpp_pay_invalid));
+//
+//                }
+//
+//            }
+//        }
 
         if (requestCode == REQUEST_CODE) {
             switch (resultCode) {

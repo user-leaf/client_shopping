@@ -18,6 +18,7 @@ import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.OrderDetailAdapter;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.AddAlltoCartNew;
 import com.bjaiyouyou.thismall.model.ExpressDetailModel;
@@ -817,12 +818,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         switch (position) {
             case 0: // 微信支付
 //                channel = Constants.CHANNEL_WECHAT;
-                AppPackageChecked.AppPageChecked(this, Constants.PACKAGE_NAME_WECHAT, this, new AppPackageChecked.appPackCheckedHaveCallBack() {
-                    @Override
-                    public void isHave() {
-                        new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, Constants.CHANNEL_WECHAT, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
-                    }
-                });
+                new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, Constants.CHANNEL_WECHAT, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
                 break;
 
             case 1: // 支付宝支付
@@ -899,55 +895,24 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 //        loadingDialog.dismiss();
         mTvPayNow.setOnClickListener(OrderDetailActivity.this);
 
-        //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
-
-                LogUtils.d(TAG, "errorMsg: " + errorMsg + ", extraMsg: " + extraMsg);
-
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-                    OrderPaySuccessActivity.actionStart(this, mName, mTel, mAddress, mOrderNumber);
-
-                    // 销毁页面
-                    mHandler.sendEmptyMessage(0);
-
-                } else if ("fail".equals(result)) {
-                    //支付失败跳转
-                    orderPayFail();
-
-                    // 销毁页面
-                    mHandler.sendEmptyMessage(0);
-
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("无效");
-
-                }
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+                OrderPaySuccessActivity.actionStart(OrderDetailActivity.this, mName, mTel, mAddress, mOrderNumber);
+                mHandler.sendEmptyMessage(0);
 
             }
 
+            @Override
+            public void onPayFail() {
+                Intent intent = new Intent(OrderDetailActivity.this, OrderPayFailActivity.class);
+                intent.putExtra(OrderPayFailActivity.PARAM_ORDER_NUMBER, mOrderNumber);
+                startActivity(intent);
+                mHandler.sendEmptyMessage(0);
 
-        }
+            }
+        });
 
-    }
-
-    private void orderPayFail() {
-        Intent intent = new Intent(OrderDetailActivity.this, OrderPayFailActivity.class);
-        intent.putExtra(OrderPayFailActivity.PARAM_ORDER_NUMBER, mOrderNumber);
-        startActivity(intent);
     }
 
 //    public void showMsg(String title, String msg1, String msg2) {
