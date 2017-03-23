@@ -283,30 +283,6 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                 }
         );
         dialog.show();
-//        mDialog = new AlertDialog.Builder(context);
-////        mDialog.setTitle(null);
-//        mDialog.setMessage("取消订单后不能恢复，是否取消？");
-//
-//        mDialog.setNegativeButton("是", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (!TextUtils.isEmpty(mOrderNumber)) {
-//                    //通知服务器取消订单
-//                    cancleOrder();
-//                } else {
-//                    Toast.makeText(context, "订单取消处理中，不可重复取消", Toast.LENGTH_SHORT).show();
-//                }
-//                //取消对话框
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        mDialog.setPositiveButton("否", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
 
     }
 
@@ -336,32 +312,6 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
         );
         dialog.show();
 
-
-//        mConfirmDialog = new AlertDialog.Builder(context);
-////        mConfirmDialog.setTitle(null);
-//        mConfirmDialog.setMessage("确认收货后不能恢复，是否继续？");
-//
-//        mConfirmDialog.setNegativeButton("确认", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (!TextUtils.isEmpty(mOrderNumber)) {
-//                    //通知服务器确认收货
-//                    confirmReceipt();
-//                } else {
-//                    Toast.makeText(context, "订单确认收货处理中，不可重复确认", Toast.LENGTH_SHORT).show();
-//                }
-//                //取消对话框
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        mConfirmDialog.setPositiveButton("返回", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-
     }
 
     //    定义对话框--删除订单
@@ -389,32 +339,6 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                 }
         );
         dialog.show();
-
-
-//        mDeleteDialog = new AlertDialog.Builder(context);
-////        mDeleteDialog.setTitle(null);
-//        mDeleteDialog.setMessage("删除订单后不能恢复，是否删除？");
-//
-//        mDeleteDialog.setNegativeButton("删除", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (!TextUtils.isEmpty(mOrderNumber)) {
-//                    //通知服务删除
-//                    deleteOrder();
-//                } else {
-//                    Toast.makeText(context, "订单删除处理中，不可重复删除", Toast.LENGTH_SHORT).show();
-//                }
-//                //取消对话框
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        mDeleteDialog.setPositiveButton("返回", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
 
     }
 
@@ -717,9 +641,12 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                     if (detailBeani != null) {
                         if (detailBeani.getProduct_image() != null && detailBeani.getProduct_image().getImage_path() != null && detailBeani.getProduct_image().getImage_base_name() != null) {
                             String imgUrl = detailBeani.getProduct_image().getImage_path() + "/" + detailBeani.getProduct_image().getImage_base_name();
+                            //获取缩略图地址
+//                            imgUrl=ImageUtils.getThumb(imgUrl, holder.iv.getWidth(), 0);
                             Glide.with(context)
-                                    .load(ImageUtils.getThumb(imgUrl, holder.iv.getWidth(), 0))
-                                    .placeholder(R.mipmap.list_image_loading)
+                                    .load(imgUrl)
+                                    .load(ImageUtils.getThumb(imgUrl, (int) context.getResources().getDimension(R.dimen.width_top_barLarge), 0))
+//                                    .placeholder(R.mipmap.list_image_loading)
                                     .error(R.mipmap.list_image_loading)
                                     .into(holder.iv);
                         }
@@ -1009,18 +936,8 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
         switch (position) {
             case 0: // 微信支付
-                //test
-//                AppPackageChecked.AppPageChecked(context, "com.tencent.mm", activity, new AppPackageChecked.appPackCheckedHaveCallBack() {
-//                    @Override
-//                    public void isHave() {
-////                        new PaymentTask(mOrderNumber).execute(new PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-////                        channel = Constants.CHANNEL_WECHAT;
-
                         new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber, Constants.CHANNEL_WECHAT, holder.btPay, MyOrderPaymentFragment.TAG)
                                 .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-//                    }
-//                });
-
                 break;
 //            case 1: // 支付宝支付
 //                new PaymentTask(mOrderNumber).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));

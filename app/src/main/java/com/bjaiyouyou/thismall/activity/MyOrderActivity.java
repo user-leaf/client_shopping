@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,9 +24,7 @@ import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.pingplusplus.android.Pingpp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,10 +197,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         //电话授权检测
         callPermissionsResult(requestCode,resultCode);
 
-
-
         //处理adapter立即支付处理
-//        orderPayResult(requestCode,resultCode,data);
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
             @Override
             public void onPaySuccess() {
@@ -235,47 +229,9 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
             DialUtils.callCentre(this,DialUtils.CENTER_NUM);
         }
     }
-    /**
-     * 在OnActivityResult()方法中调用，检查MyOrderAdapter中授权结果
-     * @param requestCode
-     * @param resultCode
-     */
-    public void orderPayResult(int requestCode,int resultCode, Intent data) {
-        //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                LogUtils.e("order：","支付结果");
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//
-                LogUtils.e("errorMsg:",errorMsg);
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-                } else if ("fail".equals(result)) {
-                    ToastUtils.showShort("支付失败");
-                    //跳转到支付失败页面,传递订单号
-                    orderPayFail();
 
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("失效");
-                }
-            }
-        }
-
-        //Test
-//        orderPayFail();
-    }
     /**
-     * 支付失败
+     * 支付失败调用的跳转方法
      */
     private void orderPayFail() {
         Intent intentPayFail = new Intent(this, OrderPayFailActivity.class);

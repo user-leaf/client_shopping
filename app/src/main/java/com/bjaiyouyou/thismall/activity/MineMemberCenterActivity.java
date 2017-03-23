@@ -652,15 +652,9 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
         switch (position) {
             case 0: // 微信支付
-//                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_WECHAT, amount));
-//                AppPackageChecked.AppPageChecked(getApplicationContext(), "com.tencent.mm", MineMemberCenterActivity.this, new AppPackageChecked.appPackCheckedHaveCallBack() {
-//                    @Override
-//                    public void isHave() {
-//                        doPayByPingpp();
                         new PaymentTask(MineMemberCenterActivity.this, MineMemberCenterActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mBtnNext, TAG)
                                 .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-//                    }
-//                });
+
                 break;
 //            case 1: // 支付宝支付
 //                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));
@@ -670,62 +664,6 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     }
 
 
-//    class PaymentTask extends AsyncTask<PaymentRequest, Void, String> {
-//
-//        private String orderNo;
-//
-//        public PaymentTask(String orderNo) {
-//            this.orderNo = orderNo;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            //按键点击之后的禁用，防止重复点击
-//            mBtnNext.setOnClickListener(null);
-//        }
-//
-//        @Override
-//        protected String doInBackground(PaymentRequest... pr) {
-//
-//            PaymentRequest paymentRequest = pr[0];
-//            String data = null;
-//            String json = new Gson().toJson(paymentRequest);
-//            try {
-//                //向Your Ping++ Server SDK请求数据
-////                String URL = Constants.PingppURL+"?token="+CurrentUserManager.getUserToken() + "&orderNo=" + orderNo;
-//
-//                StringBuilder sb = new StringBuilder(Constants.PingppURL);
-//                sb.append("?token=").append(CurrentUserManager.getUserToken());
-//                sb.append("&orderNo=").append(orderNo);
-//                sb.append("&rechargeType=").append("gold");
-//                sb.append("&channel=").append(mChannel);
-//                String URL = sb.toString();
-//
-//                data = postJson(URL, json);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return data;
-//        }
-//
-//        /**
-//         * 获得服务端的charge，调用ping++ sdk。
-//         */
-//        @Override
-//        protected void onPostExecute(String data) {
-//            if (null == data) {
-//                showMsg("请求出错", "请检查URL", "URL无法获取charge");
-//                return;
-//            }
-//            Log.d("charge", data);
-////            Pingpp.createPayment(ClientSDKActivity.this, data);
-//            //QQ钱包调起支付方式  “qwalletXXXXXXX”需与AndroidManifest.xml中的data值一致
-//            //建议填写规则:qwallet + APP_ID
-//            Pingpp.createPayment(MineMemberCenterActivity.this, data, "qwalletXXXXXXX");
-//        }
-//
-//    }
 
 
     @Override
@@ -751,38 +689,6 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 
             }
         });
-        //支付页面返回处理
-//        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                String result = data.getExtras().getString("pay_result");
-//                /* 处理返回值
-//                 * "success" - payment succeed
-//                 * "fail"    - payment failed
-//                 * "cancel"  - user canceld
-//                 * "invalid" - payment plugin not installed
-//                 */
-//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-////                showMsg(result, errorMsg, extraMsg);
-//
-//                if ("success".equals(result)) {
-//                    ToastUtils.showShort("支付成功");
-//                    //跳转到支付成功页面
-////                    mPaySucceedIntent=new Intent(getApplicationContext(),MineRechargeSuccessActivity.class);
-////                    mPaySucceedIntent.putExtra("coin",mGetCoin+mHavenCoin);
-////                    jump(mPaySucceedIntent,false);
-//
-//                    MineRechargeSuccessActivity.actionStart(MineMemberCenterActivity.this, 0);
-//                    finish();
-//                } else if ("fail".equals(result)) {
-//                    ToastUtils.showShort("支付失败");
-//                } else if ("cancel".equals(result)) {
-//                    ToastUtils.showShort("用户取消");
-//                } else if ("invalid".equals(result)) {
-//                    ToastUtils.showShort("失效");
-//                }
-//            }
-//        }
     }
 
     public void showMsg(String title, String msg1, String msg2) {
