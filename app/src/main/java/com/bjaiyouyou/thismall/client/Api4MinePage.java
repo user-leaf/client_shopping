@@ -25,6 +25,7 @@ public class Api4MinePage extends BaseClientApi {
         String url = sb.toString();
 
         LogUtils.d(TAG, "getUserMessage: " + url);
+        LogUtils.e(TAG, "getUserMessage: " + url);
 
         doGet(url, strTag, null, callback);
     }

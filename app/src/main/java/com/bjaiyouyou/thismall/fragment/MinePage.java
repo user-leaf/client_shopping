@@ -494,15 +494,19 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
             String inCome=memberBean.getPush_money();
+
             int inComeNum=0;
             if (!TextUtils.isEmpty(inCome)){
                 inComeNum=Integer.valueOf(inCome);
             }
+
             String canDraw=memberBean.getCan_drawings_amount();
+
             double canDrawNum=0;
             if (!TextUtils.isEmpty(canDraw)){
                 canDrawNum=Double.valueOf(canDraw);
             }
+
             LogUtils.e("inCome",""+inCome);
             LogUtils.e("canDraw",""+canDraw);
 
