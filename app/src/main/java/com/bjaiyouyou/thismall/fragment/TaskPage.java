@@ -515,20 +515,14 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             case 0: // 微信支付
                 channel = Constants.CHANNEL_WECHAT;
 
-                AppPackageChecked.AppPageChecked(getContext(), "com.tencent.mm", getActivity(), new AppPackageChecked.appPackCheckedHaveCallBack() {
-                    @Override
-                    public void isHave() {
-
-                        new PaymentTask(
-                                getActivity(),
-                                TaskPage.this,
-                                null,
-                                Constants.CHANNEL_WECHAT,
-                                mTvVipRecharge,
-                                TAG
-                        ).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
-                    }
-                });
+                new PaymentTask(
+                        getActivity(),
+                        TaskPage.this,
+                        null,
+                        Constants.CHANNEL_WECHAT,
+                        mTvVipRecharge,
+                        TAG
+                ).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
                 break;
 
             case 1: // 支付宝支付
