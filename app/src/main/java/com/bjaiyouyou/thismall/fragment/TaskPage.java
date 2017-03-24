@@ -136,6 +136,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         super.onResume();
 //        loadData(); // 从详情页返回会再次加载列表数据 pageno == 2
 //        loadPageData(); // 从广告详情页返回会有会员开通按钮隐藏的过程，效果不太好。从登录页返回刷新改为startactivityforresult的onactivityresult
+
+        pageno = 1;
+        loadData();
     }
 
     @Override
