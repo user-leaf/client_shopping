@@ -1,12 +1,16 @@
 package com.bjaiyouyou.thismall.activity;
 
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -68,6 +72,11 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         webSettings.setDatabaseEnabled(true);
         webSettings.setDatabasePath(WebShowActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
 
+        // 设置Android5.0以上版本支持同时加载Https和Http混合模式
+        if(Build.VERSION.SDK_INT >= 21){
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         //设置网页在WebView中打开，而不是跳转到浏览器
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -78,9 +87,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        /**
-         * 弹出窗体的设置
-         */
+        // 弹出窗体的设置
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
