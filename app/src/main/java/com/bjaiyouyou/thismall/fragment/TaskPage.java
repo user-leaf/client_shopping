@@ -29,6 +29,7 @@ import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.TaskGridViewAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.Api4Task;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
@@ -539,38 +540,21 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         loadingDialog.dismiss();
         mTvVipRecharge.setOnClickListener(TaskPage.this);
 
-        //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
+        final String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+        String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
 
-                LogUtils.d(TAG, "errorMsg: " + errorMsg + ", extraMsg: " + extraMsg);
-
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-                    // 刷新页面
-                    loadPageData();
-                } else if ("fail".equals(result)) {
-                    ToastUtils.showShort(errorMsg);
-
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("失效");
-
-                }
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+                // 刷新页面
+                loadPageData();
             }
-        }
+
+            @Override
+            public void onPayFail() {
+                ToastUtils.showShort(errorMsg);
+            }
+        });
 
         // 从登录页返回
         if (requestCode == REQUEST_CODE) {
