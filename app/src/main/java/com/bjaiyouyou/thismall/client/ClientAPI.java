@@ -37,7 +37,7 @@ public class ClientAPI {
 
     public static final String TAG = ClientAPI.class.getSimpleName();
 
-//    public static final String API_POINT = "https://testapi2.bjaiyouyou.com/";
+//    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
 //    public static final String API_POINT = "https://testapi.bjaiyouyou.com/";
     public static final String API_POINT = "http://api.bjaiyouyou.com/";
 
@@ -54,6 +54,10 @@ public class ClientAPI {
     public static final String EVERYDAY_NEW = "api/v1/product/allNow?page=";
     //提现规则地址
     public static final String WITHDRAW_RULE = "http://wxweb.bjaiyouyou.com/tixianstep.html";
+
+    // 任务页视频播放地址
+//    public static final String URL_WX_H5 = "http://wxweb.bjaiyouyou.com/";
+    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com";
 
     private ClientAPI() {
     }

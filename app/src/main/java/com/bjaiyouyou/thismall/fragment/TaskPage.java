@@ -258,7 +258,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             Intent intent = new Intent(getActivity(), WebShowActivity.class);
             intent.putExtra(
                     WebShowActivity.PARAM_URLPATH,
-                    "http://wxweb.bjaiyouyou.com/" + "task-detail.html?id=" + dataBean.getId() + "&token=" + CurrentUserManager.getUserToken() + "&type=android");
+                    ClientAPI.URL_WX_H5 + "task-detail.html?id=" + dataBean.getId() + "&token=" + CurrentUserManager.getUserToken() + "&type=android");
             getActivity().startActivity(intent);
         }
 
