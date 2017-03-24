@@ -47,4 +47,18 @@ public class Api4Home extends BaseClientApi {
 
         doGet(url, strTag, null, callback);
     }
+    /**
+     *
+     *author Qxh
+     *created at 2017/3/24 10:47
+     *
+     * 获取抢购信息
+     *
+     */
+    public void getNavigation(String strTag,DataCallback<HomeProductModel> callback){
+        String url =ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW;
+        LogUtils.d(TAG, "getNavigation: " + url);
+        doGet(url, strTag, null, callback);
+    }
+
 }

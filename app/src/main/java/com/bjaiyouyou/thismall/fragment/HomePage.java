@@ -61,9 +61,7 @@ import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.zxing.activity.CaptureActivity;
 import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
-import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -339,18 +337,21 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     private void initNavigationDataNew(final String url) {
         LogUtils.e("抢购数据:", url);
-        ClientAPI.getGoodsData(url, new StringCallback() {
+
+        mClientApi.getNavigation(TAG, new DataCallback<HomeProductModel>(getContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
                 if (NetStateUtils.isNetworkAvailable(getContext())) {
                     UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                 }
+
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                if (!TextUtils.isEmpty(response.toString().trim())) {
-                    mTimeFrameBeans = new Gson().fromJson(response, HomeNavigationItemNew.class).getRush_to_purchase_time_frame();
+            public void onSuccess(Object response, int id) {
+                if (response!=null) {
+                    HomeNavigationItemNew homeNavigationItemNew= (HomeNavigationItemNew) response;
+                    mTimeFrameBeans = homeNavigationItemNew.getRush_to_purchase_time_frame();
                     //是否显示更多按钮
                     mNavigationDataNew = mTimeFrameBeans.get(mCurrentIndex).getDetail();
                     checkGetMore();
@@ -367,6 +368,34 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
             }
         });
+
+//        ClientAPI.getGoodsData(url, new StringCallback() {
+//            @Override
+//            public void onError(Call call, Exception e, int id) {
+//                if (NetStateUtils.isNetworkAvailable(getContext())) {
+//                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+//                }
+//            }
+//
+//            @Override
+//            public void onResponse(String response, int id) {
+//                if (!TextUtils.isEmpty(response.toString().trim())) {
+//                    mTimeFrameBeans = new Gson().fromJson(response, HomeNavigationItemNew.class).getRush_to_purchase_time_frame();
+//                    //是否显示更多按钮
+//                    mNavigationDataNew = mTimeFrameBeans.get(mCurrentIndex).getDetail();
+//                    checkGetMore();
+//                    //test
+////                    mNavigationDataNew.clear();
+//                    LogUtils.e("mNavigationDataNew:", mNavigationDataNew.size() + "");
+////                    moreChange(mNavigationDataNew);
+//                    mNavigationAdapterNew.clear();
+////                    mNavigationAdapterNew.notifyDataSetChanged();
+//                    mNavigationAdapterNew.addAll(mNavigationDataNew);
+////                    mNavigationAdapterNew.notifyDataSetChanged();
+//                    initControlNavigation();
+//                }
+//            }
+//        });
     }
 
     /**
