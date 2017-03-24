@@ -117,6 +117,7 @@ dependencies {
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     //    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
 
     //    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
@@ -132,7 +133,7 @@ dependencies {
     compile project(':lib:bdwallet_pay_sdk')
     compile project(':lib:pingpp')
     compile project(':lib:pingpp_one')
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile 'com.squareup.okhttp:okhttp:2.7.5' // 貌似ping++用到了
     compile 'com.bigkoo:alertview:1.0.3'
     // 权限检查
     compile 'pub.devrel:easypermissions:0.2.0'
