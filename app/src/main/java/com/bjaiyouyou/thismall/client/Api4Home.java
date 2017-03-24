@@ -2,6 +2,7 @@ package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.model.HomeAdBigModel;
+import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 
@@ -54,8 +55,10 @@ public class Api4Home extends BaseClientApi {
      *
      * 获取抢购信息
      *
+     * @param strTag
+     * @param callback
      */
-    public void getNavigation(String strTag,DataCallback<HomeProductModel> callback){
+    public void getNavigation(String strTag,DataCallback<HomeNavigationItemNew> callback){
         String url =ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW;
         LogUtils.d(TAG, "getNavigation: " + url);
         doGet(url, strTag, null, callback);

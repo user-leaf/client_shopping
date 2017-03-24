@@ -338,7 +338,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private void initNavigationDataNew(final String url) {
         LogUtils.e("抢购数据:", url);
 
-        mClientApi.getNavigation(TAG, new DataCallback<HomeProductModel>(getContext()) {
+        mClientApi.getNavigation(TAG, new DataCallback<HomeNavigationItemNew>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 if (NetStateUtils.isNetworkAvailable(getContext())) {
@@ -738,7 +738,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 //有网隐藏提示
                 mLLUNNetWork.setVisibility(View.GONE);
                 //获得数据
-                if (!TextUtils.isEmpty(response.toString().trim())) {
+                if (response!=null) {
                     //是刷新清空数据
                     if (isRefresh) {
                         mHomeGoodGridAdapter.clear();
@@ -958,9 +958,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 300 && resultCode == getActivity().RESULT_OK && data != null) {
-            Toast.makeText(getContext(), "Home----" + data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
+            if (data.getStringExtra("result")!=null){
+                Toast.makeText(getContext(), "Home----" + data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
 //            Log.e("QRCode",data.getData().toString());
-            Log.e("QRCode", data.getStringExtra("result").toString());
+                Log.e("QRCode", data.getStringExtra("result").toString());
+            }
         }
     }
 
