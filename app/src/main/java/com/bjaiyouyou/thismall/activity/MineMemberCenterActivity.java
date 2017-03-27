@@ -340,7 +340,8 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     }
 
     @Override
-    public void onClick(View v) {
+    public void widgetClick(View v) {
+        super.widgetClick(v);
         switch (v.getId()) {
             case R.id.left_layout: // 返回
                 finish();
@@ -393,8 +394,64 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                 jump(UUDetailActivity.class, false);
                 break;
         }
-
     }
+
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.left_layout: // 返回
+//                finish();
+//                break;
+//            case R.id.member_center_btn_next: // 充值
+////                //处理充值
+////                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认充值？", "确认", "取消",
+////                        new DialogInterface.OnClickListener() {
+////                            @Override
+////                            public void onClick(DialogInterface dialog, int which) {
+////                                dialog.dismiss();
+//                pay();
+////                            }
+////                        },
+////                        new DialogInterface.OnClickListener() {
+////                            @Override
+////                            public void onClick(DialogInterface dialog, int which) {
+////                                dialog.dismiss();
+////                            }
+////                        }
+////                );
+////                dialog.show();
+//
+//                //                jump(MineRechargeSuccessActivity.class,false);
+//                break;
+//            case R.id.member_center_tv_withdraw: // 提现入口
+//                mClass = WithdrawRecordActivity.class;
+//                mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
+//                mIntentWithDraw.putExtra("havenCoin", mHavenCoin);
+//                mIntentWithDraw.putExtra("safeCode", mSafeCode);
+//                goToGetMoney();
+////                jump(intentWithdraw,false);
+//                break;
+//
+//            case R.id.tv_goto_login: // 登录入口
+//
+//                jump(new Intent(getApplicationContext(), LoginActivity.class), false);
+//                finish();
+//                break;
+////            case R.id.tv_member_center_title_bar_withdraw_record: // 提现详请入口
+////                jump(WithdrawRecordActivity.class,false);
+////                break;
+//            case R.id.ll__member_center_coin_income: // 我的收益入口
+//                mClass = UserIncomeActivity.class;
+//                mIntentWithDraw = new Intent(getApplicationContext(), UserIncomeActivity.class);
+////                jump(UserIncomeActivity.class,false);
+//                goToGetMoney();
+//                break;
+//            case R.id.tv_uu_detail: // UU详情入口
+//                jump(UUDetailActivity.class, false);
+//                break;
+//        }
+//
+//    }
 
     /**
      * 处理收益和提现页面的跳转

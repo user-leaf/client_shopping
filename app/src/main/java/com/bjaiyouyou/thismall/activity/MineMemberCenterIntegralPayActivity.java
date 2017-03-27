@@ -344,7 +344,8 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void widgetClick(View v) {
+        super.widgetClick(v);
         switch (v.getId()) {
             case R.id.left_layout://返回
                 finish();
@@ -363,6 +364,27 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 
         }
     }
+
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.left_layout://返回
+//                finish();
+//                break;
+//            case R.id.btn_pay_member_center_integral://充值支付
+//                LogUtils.e("mPayMoney", "" + mPayMoney);
+//                pay();
+//                break;
+//            case R.id.tv_goto_login: // 登录入口
+//                jump(new Intent(getApplicationContext(), LoginActivity.class), false);
+//                finish();
+//                break;
+//            case R.id.tv_integral_detail: // 积分详情入口
+//                jump(IntegralDetailActivity.class, false);
+//                break;
+//
+//        }
+//    }
 
     /**
      * 积分充值支付
