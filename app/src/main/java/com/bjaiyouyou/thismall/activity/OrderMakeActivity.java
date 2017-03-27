@@ -1,7 +1,9 @@
 package com.bjaiyouyou.thismall.activity;
 
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -28,9 +30,11 @@ import com.bjaiyouyou.thismall.model.OrderMakeUploadModel;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.AppPackageChecked;
+import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
+import com.bjaiyouyou.thismall.utils.StringUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
@@ -515,7 +519,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onError(Call call, Exception e, int id) {
                 resetAddress();
-                // 检查地址栏是否为空
                 checkAddressEmpty();
                 dismissLoadingDialog();
             }
@@ -523,11 +526,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onResponse(String response, int id) {
                 dismissLoadingDialog();
-
-//                        // 无网、未登录页及body页的显示与隐藏
-//                        mNoNetView.setVisibility(View.GONE);
-//                        mNoLoginView.setVisibility(View.GONE);
-//                        mBodyView.setVisibility(View.VISIBLE);
 
                 hasDefaultAddress = false;
                 if (response != null && !"[]".equals(response)) {
@@ -850,7 +848,14 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            ToastUtils.showException(e);
+//                            ToastUtils.showException(e);
+                            Dialog dialog = DialogUtils.createMessageDialog(OrderMakeActivity.this, null, StringUtils.getExceptionMessage(e.getMessage()), "确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
                         }
 
                         @Override
