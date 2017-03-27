@@ -17,9 +17,11 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 /**
  * BaseActivity
+ *
  * @author kanbin
  * @date 2016/5/31
  */
+
 /**
  *
  * @author QuXinhang
@@ -27,7 +29,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
  * 添加startActivityForResult()的跳转方式
  *
  */
-public class BaseActivity extends AppCompatActivity implements View.OnClickListener{
+public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
     /** 是否禁止旋转屏幕 **/
     private boolean isAllowScreenRotate = false;
     /** 日志输出标志 **/
@@ -54,10 +56,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * @param cls 要填转到的页面
      * @param isFinish 是否关闭本页
      */
-    public void jump(Class<?> cls,boolean isFinish){
-        Intent intent = new Intent(this,cls);
+    public void jump(Class<?> cls, boolean isFinish) {
+        Intent intent = new Intent(this, cls);
         startActivity(intent);
-        if (isFinish){
+        if (isFinish) {
             this.finish();
         }
     }
@@ -68,13 +70,14 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * @param requestCode 请求码
      * @param isFinish 是否关闭本页
      */
-    public void jump(Class<?> cls,int requestCode,boolean isFinish){
-        Intent intent = new Intent(this,cls);
-        startActivityForResult(intent,requestCode);
-        if (isFinish){
+    public void jump(Class<?> cls, int requestCode, boolean isFinish) {
+        Intent intent = new Intent(this, cls);
+        startActivityForResult(intent, requestCode);
+        if (isFinish) {
             this.finish();
         }
     }
+
     /**
      *
      * @author QuXinhang
@@ -84,12 +87,13 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * @param requestCode 请求码
      * @param isFinish 是否关闭本页
      */
-    public void jump( int requestCode,Intent intent, boolean isFinish){
-        startActivityForResult(intent,requestCode);
-        if (isFinish){
+    public void jump(int requestCode, Intent intent, boolean isFinish) {
+        startActivityForResult(intent, requestCode);
+        if (isFinish) {
             this.finish();
         }
     }
+
     /**
      *  带值跳转
      * @author QuXinhang
@@ -97,9 +101,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * @param intent 意图
      * @param isFinish 是否关闭本页
      */
-    public void jump( Intent intent, boolean isFinish){
+    public void jump(Intent intent, boolean isFinish) {
         startActivity(intent);
-        if (isFinish){
+        if (isFinish) {
             this.finish();
         }
     }
@@ -122,6 +126,13 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         LogUtils.d(TAG, "-->" + this);
         OkHttpUtils.getInstance().cancelTag(this);
         ActivityCollector.removeActivity(this);
+
+        // 销毁前dismissLoadingDialog
+        if (loadingCount >= 1) {
+            loadingCount = 1;
+            dismissLoadingDialog();
+        }
+
         super.onDestroy();
     }
 
@@ -135,9 +146,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     /** View点击 **/
-    public void widgetClick(View v){
+    public void widgetClick(View v) {
 
     }
 
@@ -158,6 +168,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void showLoadingDialog() {
+        // 如果页面已经销毁就不再显示
+        if (!ActivityCollector.sActivities.contains(this)){
+            return;
+        }
+
         if (loadingCount <= 0) {
             loadingDialog.show();
         }
@@ -172,7 +187,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
         loadingCount--;
     }
-
 
 //    /**
 //     * [防止快速点击]

@@ -569,18 +569,16 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                         ToastUtils.showShort(errorMsg);
                     }
                 });
+            }
+        }
+
+        // 从登录页返回
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == LoginActivity.RESULT_OK) {
+                loadData();
+                loadPageData();
 
             }
-
-            // 从登录页返回
-            if (requestCode == REQUEST_CODE) {
-                if (resultCode == LoginActivity.RESULT_OK) {
-                    loadData();
-                    loadPageData();
-
-                }
-            }
-
         }
     }
 
