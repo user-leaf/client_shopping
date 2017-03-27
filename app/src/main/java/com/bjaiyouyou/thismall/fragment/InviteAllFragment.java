@@ -20,7 +20,10 @@ import android.widget.TextView;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.adapter.SortAdapter;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.ContactModel;
 import com.bjaiyouyou.thismall.pinyin.CharacterParser;
@@ -37,7 +40,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -95,6 +100,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
     // 主页面
     private View mBodyView;
     private View mEmptyView;
+    private Api4Mine mApi4Mine;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,6 +121,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
         initView();
         setupView();
 
+        mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
     @Override
@@ -291,58 +298,51 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
                     Gson gson = new Gson();
                     String jsonList = gson.toJson(list);
 
-                    LogUtils.d(TAG, "jsonList= " + jsonList);
-
-                    String userToken = CurrentUserManager.getUserToken();
-                    String url = ClientAPI.API_POINT + "api/v1/auth/isMemberByContacts"
-                            + "?token=" + userToken;
-
                     if (!"[]".equals(jsonList)) {
-                        OkHttpUtils.post()
-                                .url(url)
-                                .addParams("contacts", jsonList)
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        checkNet();
-                                        mHandler.sendMessage(Message.obtain());
 
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("contacts", jsonList);
+
+                        mApi4Mine.getContactsInfo(TAG, params, new DataCallback<ContactMemberModel>(getContext()) {
+
+                            @Override
+                            public void onFail(Call call, Exception e, int id) {
+                                checkNet();
+                                mHandler.sendMessage(Message.obtain());
+
+                            }
+
+                            @Override
+                            public void onSuccess(Object response, int id) {
+                                LogUtils.d(TAG, "onResponse: " + response);
+
+                                mNoNetView.setVisibility(View.GONE);
+                                mNoLoginView.setVisibility(View.GONE);
+                                mBodyView.setVisibility(View.VISIBLE);
+
+                                ContactMemberModel contactMemberModel = (ContactMemberModel) response;
+
+                                if (contactMemberModel != null) {
+                                    List<ContactMemberModel.DataBean> data = contactMemberModel.getData();
+
+                                    LogUtils.d(TAG, "data.size() = " + data.size());
+
+                                    // 给数据集赋值，赋是否是会员这个值
+                                    for (int i = 0; i < data.size(); i++) {
+                                        boolean isRegister = data.get(i).isIsRegister();
+                                        mSourceDateList.get(i).setRegister(isRegister);
                                     }
 
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        LogUtils.d(TAG, "onResponse: " + response);
+                                    LogUtils.d(TAG, "mSourceDateList = " + mSourceDateList.toString());
 
-                                        mNoNetView.setVisibility(View.GONE);
-                                        mNoLoginView.setVisibility(View.GONE);
-                                        mBodyView.setVisibility(View.VISIBLE);
+                                }
+                                // 放在这儿，防止异步请求导致的顺序颠倒
+                                mHandler.sendMessage(Message.obtain());
 
-                                        if (response != null && !"[]".equals(response)) {
-                                            Gson gson = new Gson();
-                                            ContactMemberModel contactMemberModel = gson.fromJson(response, ContactMemberModel.class);
+                            }
+                        });
 
-                                            if (contactMemberModel != null) {
-                                                List<ContactMemberModel.DataBean> data = contactMemberModel.getData();
-
-                                                LogUtils.d(TAG, "data.size() = " + data.size());
-
-                                                // 给数据集赋值，赋是否是会员这个值
-                                                for (int i = 0; i < data.size(); i++) {
-                                                    boolean isRegister = data.get(i).isIsRegister();
-                                                    mSourceDateList.get(i).setRegister(isRegister);
-                                                }
-
-                                                LogUtils.d(TAG, "mSourceDateList = " + mSourceDateList.toString());
-
-                                            }
-                                        }
-                                        // 放在这儿，防止异步请求导致的顺序颠倒
-                                        mHandler.sendMessage(Message.obtain());
-
-                                    }
-                                });
-                    }else {
+                    } else {
                         mHandler.sendMessage(Message.obtain());
                     }
                 } else {

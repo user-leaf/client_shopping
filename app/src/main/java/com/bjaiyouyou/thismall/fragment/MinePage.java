@@ -44,7 +44,7 @@ import com.bjaiyouyou.thismall.activity.WithdrawActivity;
 import com.bjaiyouyou.thismall.adapter.MineAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.callback.OnNoDoubleClickListener;
-import com.bjaiyouyou.thismall.client.Api4MinePage;
+import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyMine;
@@ -211,7 +211,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     //网络请求对象
-    private Api4MinePage mClientApi;
+    private Api4Mine mClientApi;
     //拨打客服电话
     private LinearLayout mLLServicePhone;
 
@@ -368,7 +368,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private void initData() {
         //初始化网路请求对象
 
-        mClientApi= (Api4MinePage) ClientApiHelper.getInstance().getClientApi(Api4MinePage.class);
+        mClientApi= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
 
         //模拟我的邀请好友假数据
 //        friendList=new ArrayList<>();
