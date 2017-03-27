@@ -427,7 +427,7 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
     private void doPayByPingpp() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付"}, this, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付","支付宝"}, this, AlertView.Style.ActionSheet, this).show();
 
     }
 
@@ -443,7 +443,10 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 
 
                 break;
-//            case 1: // 支付宝支付
+            case 1: // 支付宝支付
+                new PaymentTask(MineMemberCenterIntegralPayActivity.this, MineMemberCenterIntegralPayActivity.this, mOrder_number, Constants.CHANNEL_ALIPAY, mBtnPay, TAG)
+                        .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_ALIPAY, 1));
+
 //                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));
 //                mChannel=Constants.CHANNEL_ALIPAY;
 //                break;

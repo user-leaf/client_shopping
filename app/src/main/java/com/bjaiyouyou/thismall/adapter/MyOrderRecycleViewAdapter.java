@@ -926,7 +926,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     private void doPayByPingpp() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付"}, activity, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付","支付宝"}, activity, AlertView.Style.ActionSheet, this).show();
 
     }
 
@@ -940,10 +940,12 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber, Constants.CHANNEL_WECHAT, holder.btPay, MyOrderPaymentFragment.TAG)
                                 .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
                 break;
-//            case 1: // 支付宝支付
+            case 1: // 支付宝支付
+                new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber,Constants.CHANNEL_ALIPAY, holder.btPay, MyOrderPaymentFragment.TAG)
+                        .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(Constants.CHANNEL_ALIPAY, 1));
 //                new PaymentTask(mOrderNumber).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));
 //                channel = Constants.CHANNEL_ALIPAY;
-//                break;
+                break;
         }
     }
 

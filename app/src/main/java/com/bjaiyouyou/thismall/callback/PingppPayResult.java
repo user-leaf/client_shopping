@@ -2,7 +2,9 @@ package com.bjaiyouyou.thismall.callback;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.TextUtils;
 
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.pingplusplus.android.Pingpp;
 
@@ -37,8 +39,15 @@ public class PingppPayResult {
                     callback.onPaySuccess();
 
                 } else if ("fail".equals(result)) {
-                    ToastUtils.showShort("支付失败");
+//                    if ("invalid_charge_no_credential".contains(errorMsg)){
+                    //无效的交易证书
+                    if (!TextUtils.isEmpty(errorMsg)&&errorMsg.contains("invalid_charge_no_credential")){
+                        ToastUtils.showLong("支付功能正在升级，暂停支付功能，给您造成不便，敬请谅解");
+                    }else {
+                        ToastUtils.showShort("支付失败");
+                    }
                     callback.onPayFail();
+                    LogUtils.e("errorMsg", errorMsg+" **********resultCode:"+resultCode+ "extraMsg" + extraMsg);
 
                 } else if ("cancel".equals(result)) {
                     ToastUtils.showShort("已取消支付");
