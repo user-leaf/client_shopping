@@ -957,7 +957,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        loadingDialog.dismiss();
+
         mTvPay.setOnClickListener(OrderMakeActivity.this);
 
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
