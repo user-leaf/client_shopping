@@ -752,7 +752,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private void doCommitAndPay() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付"}, this, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, this, AlertView.Style.ActionSheet, this).show();
 
     }
 
@@ -884,9 +884,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         String channel = "";
         switch (payType) {
             case 0: // 微信
-//                channel = Constants.CHANNEL_WECHAT;
-                new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mTvPay, TAG)
-                        .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
+                channel = Constants.CHANNEL_WECHAT;
 
                 break;
 
@@ -894,7 +892,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 channel = Constants.CHANNEL_ALIPAY;
                 break;
         }
-//        new PaymentTask(this, this, mOrder_number, channel, mTvPay, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));
+
+        new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, channel, mTvPay, TAG)
+                .execute(new PaymentTask.PaymentRequest(channel, amount));
 
     }
 

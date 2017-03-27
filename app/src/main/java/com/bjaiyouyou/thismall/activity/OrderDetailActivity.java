@@ -806,7 +806,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
 //        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付", "支付宝支付"}, this, AlertView.Style.ActionSheet, this).show();
-        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付"}, this, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, this, AlertView.Style.ActionSheet, this).show();
 
     }
 
@@ -817,14 +817,16 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         String channel = "";
         switch (position) {
             case 0: // 微信支付
-//                channel = Constants.CHANNEL_WECHAT;
-                new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, Constants.CHANNEL_WECHAT, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
+                channel = Constants.CHANNEL_WECHAT;
                 break;
 
             case 1: // 支付宝支付
                 channel = Constants.CHANNEL_ALIPAY;
                 break;
         }
+
+        new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, channel, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));
+
     }
 
 //    class PaymentTask extends AsyncTask<PaymentRequest, Void, String> {

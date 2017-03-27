@@ -463,7 +463,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                                     return;
                                 }
 
-                                new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付"}, getContext(), AlertView.Style.ActionSheet, TaskPage.this).show();
+                                new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, getContext(), AlertView.Style.ActionSheet, TaskPage.this).show();
 
                             }
                         })
@@ -521,20 +521,21 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             case 0: // 微信支付
                 channel = Constants.CHANNEL_WECHAT;
 
-                new PaymentTask(
-                        getActivity(),
-                        TaskPage.this,
-                        null,
-                        Constants.CHANNEL_WECHAT,
-                        mTvVipRecharge,
-                        TAG
-                ).execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, amount));
                 break;
 
             case 1: // 支付宝支付
                 channel = Constants.CHANNEL_ALIPAY;
                 break;
         }
+
+        new PaymentTask(
+                getActivity(),
+                TaskPage.this,
+                null,
+                channel,
+                mTvVipRecharge,
+                TAG
+        ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
     }
 
