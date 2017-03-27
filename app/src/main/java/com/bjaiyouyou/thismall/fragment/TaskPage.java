@@ -30,7 +30,9 @@ import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.TaskGridViewAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.callback.PingppPayResult;
+import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.Api4Task;
+import com.bjaiyouyou.thismall.client.BaseClientApi;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.SignInInfo;
@@ -106,6 +108,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private TaskInitReceiver mTaskInitReceiver;
 
     private Api4Task mApi4Task;
+    private Api4Mine mApi4Mine;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +123,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         super.onActivityCreated(savedInstanceState);
 
         mApi4Task = (Api4Task) ClientApiHelper.getInstance().getClientApi(Api4Task.class);
+        mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
 
         initView();
         setupView();
@@ -299,27 +303,24 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         });
 
         // 获取用户信息
-        ClientAPI.getUserData(CurrentUserManager.getUserToken(), new StringCallback() {
+        mApi4Mine.getUserMessage(TAG, new DataCallback<User>(getContext()) {
             @Override
-            public void onError(Call call, Exception e, int id) {
+            public void onFail(Call call, Exception e, int id) {
 
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                if (response != null && !"[]".equals(response)) {
-                    Gson gson = new Gson();
-                    User user = gson.fromJson(response, User.class);
+            public void onSuccess(Object response, int id) {
 
-                    if (user == null) {
-                        return;
-                    }
+                if (response != null) {
+                    User user = (User) response;
                     User.MemberBean member = user.getMember();
 
                     if (member == null) {
                         return;
                     }
-                    boolean isVip = (member.getIs_vip() == 2 ? true : false);
+
+                    boolean isVip = (member.getIs_vip() == 2);
                     if (isVip) { // 如果是会员
                         mTvVipTip.setText("您已成为我们尊贵的会员");
                         mVipSyncView.setClickable(true);
@@ -336,6 +337,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                 }
             }
         });
+
     }
 
     // 断网提示
