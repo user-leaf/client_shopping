@@ -461,14 +461,20 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
         switch (position) {
             case 0: // 微信支付
                 mChannel=Constants.CHANNEL_WECHAT;
+                toPay();
                 break;
             case 1: // 支付宝支付
                 mChannel=Constants.CHANNEL_ALIPAY;
+                toPay();
                 break;
         }
+
+
+    }
+
+    private void toPay() {
         new PaymentTask(MineMemberCenterIntegralPayActivity.this, MineMemberCenterIntegralPayActivity.this, mOrder_number, mChannel, mBtnPay, TAG)
                 .execute(new PaymentTask.PaymentRequest(mChannel, 1));
-
     }
 
 

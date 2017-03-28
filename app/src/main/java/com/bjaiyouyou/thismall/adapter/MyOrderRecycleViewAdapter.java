@@ -90,7 +90,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     //获得布局
     private ViewHolder holder = null;
     //支付参数
-    private String channel;
+    private String mChannel;
 
     //用于启动Activity
     private Activity activity;
@@ -924,9 +924,8 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     ///////////////////////////////////ping++支付
     // 调用ping++去付款
     private void doPayByPingpp() {
-
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付","支付宝"}, activity, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{context.getString(R.string.pay_wx),context.getString(R.string.pay_alipay)}, activity, AlertView.Style.ActionSheet, this).show();
 
     }
 
@@ -937,16 +936,20 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
         switch (position) {
             case 0: // 微信支付
-                        new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber, Constants.CHANNEL_WECHAT, holder.btPay, MyOrderPaymentFragment.TAG)
-                                .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
+                mChannel = Constants.CHANNEL_WECHAT;
+                toPay();
                 break;
             case 1: // 支付宝支付
-                new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber,Constants.CHANNEL_ALIPAY, holder.btPay, MyOrderPaymentFragment.TAG)
-                        .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(Constants.CHANNEL_ALIPAY, 1));
-//                new PaymentTask(mOrderNumber).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));
-//                channel = Constants.CHANNEL_ALIPAY;
+                mChannel = Constants.CHANNEL_ALIPAY;
+                toPay();
                 break;
         }
+
+    }
+
+    private void toPay() {
+        new com.bjaiyouyou.thismall.task.PaymentTask(context, mFragment, mOrderNumber, mChannel, holder.btPay, MyOrderPaymentFragment.TAG)
+                .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(mChannel, 1));
     }
 
 
@@ -977,7 +980,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                 StringBuilder sb = new StringBuilder(Constants.PingppURL);
                 sb.append("?token=").append(CurrentUserManager.getUserToken());
                 sb.append("&orderNo=").append(orderNo);
-                sb.append("&channel=").append(channel);
+                sb.append("&channel=").append(mChannel);
                 String URL = sb.toString();
 
                 data = postJson(URL, json);

@@ -693,16 +693,20 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         switch (position) {
             case 0: // 微信支付
                 mChannel= Constants.CHANNEL_WECHAT;
+                toPay();
                 break;
             case 1: // 支付宝支付
                 mChannel=Constants.CHANNEL_ALIPAY;
+                toPay();
                 break;
         }
+
+    }
+
+    private void toPay() {
         new PaymentTask(MineMemberCenterActivity.this, MineMemberCenterActivity.this, mOrder_number, Constants.CHANNEL_ALIPAY, mBtnNext, TAG)
                 .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_ALIPAY, 1));
     }
-
-
 
 
     @Override
