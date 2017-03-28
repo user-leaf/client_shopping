@@ -388,7 +388,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:gravity="center"
-                   android:text=" *用户每周可提现总消费额的百分之5，超过周提现额度将延期至下一周直至全额返现。 "
+                   android:text=""
                    android:textColor="@color/app_red"
                    android:layout_marginTop="20dp"
                    android:layout_marginBottom="20dp"

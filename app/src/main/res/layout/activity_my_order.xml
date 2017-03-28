@@ -23,7 +23,7 @@
         android:paddingBottom="12.5dp"
         android:background="#F4E8CE"
         android:textColor="#dc9600"
-        android:text="快递送达后请您确认货品包装完整后签收，如果有破损，请及时拍照留证，并拒收，第一时间联系客服。一旦确认收货，货款即刻进入返现冻结期，将无法退换。"
+        android:text="快递送达后请您确认货品包装完整后签收，如果有破损，请及时拍照留证，并拒收，第一时间联系客服。一旦确认收货，将无法退换。"
         />
     <RadioGroup
         android:id="@+id/rg_MyOrder"
