@@ -16,10 +16,13 @@
     <color name="top_bar_normal_bg">#E10C28</color> <!--00acff--> <!--FF6666-->
     <color name="app_red">#E10C28</color>
     <color name="app_gray">#b5b5b5</color>
+    <color name="app_gray_222222">#222222</color>
     <color name="app_gray_dcdcdc">#dcdcdc</color>
     <color name="app_gray_6b6b6b">#6b6b6b</color>
     <color name="app_dark_gray">#6b6b6b</color>
+    <color name="app_gray_999999">#999999</color>
     <color name="app_gray_bbbbbb">#BBBBBB</color>
+    <color name="app_gray_dddddd">#dddddd</color>
     <color name="app_orange">#FF7800</color>
     <color name="app_blue">#0A92DC</color>
 

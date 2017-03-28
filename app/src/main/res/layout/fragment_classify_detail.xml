@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/white"
+              tools:context="com.bjaiyouyou.thismall.fragment.ClassifyDetailFragment">
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/classify_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+</LinearLayout>
