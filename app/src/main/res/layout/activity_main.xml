@@ -38,12 +38,42 @@
                 style="@style/controller_style"
                 android:checked="true"
                 android:drawableTop="@drawable/selector_controller_one"
-                android:text="@string/controller_one"
+                android:text="@string/controller_zero"
                 android:onClick="onTabClicked"
                 />
 
             <TextView
                 android:id="@+id/unread_msg_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/app_unread_count_bg"
+                android:gravity="center"
+                android:text="7"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_container_classify"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <RadioButton
+                android:id="@+id/controller_one"
+                style="@style/controller_style"
+                android:checked="false"
+                android:drawableTop="@drawable/selector_controller_one"
+                android:text="@string/controller_one"
+                android:onClick="onTabClicked"
+                />
+
+            <TextView
+                android:id="@+id/unread_clsf_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -64,7 +94,7 @@
             android:layout_weight="1" >
 
             <RadioButton
-                android:id="@+id/controller_one"
+                android:id="@+id/controller_two"
                 style="@style/controller_style"
                 android:drawableTop="@drawable/selector_controller_two"
                 android:text="@string/controller_two"
@@ -88,7 +118,7 @@
             android:layout_weight="1" >
 
             <RadioButton
-                android:id="@+id/controller_two"
+                android:id="@+id/controller_three"
                 style="@style/controller_style"
                 android:drawableTop="@drawable/selector_controller_three"
                 android:text="@string/controller_three"
@@ -103,7 +133,7 @@
             android:layout_weight="1" >
 
             <RadioButton
-                android:id="@+id/controller_three"
+                android:id="@+id/controller_four"
                 style="@style/controller_style"
                 android:drawableTop="@drawable/selector_controller_four"
                 android:text="@string/controller_four"

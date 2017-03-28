@@ -16,6 +16,7 @@ import com.bjaiyouyou.thismall.activity.BaseActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.fragment.BaseFragment;
 import com.bjaiyouyou.thismall.fragment.CartPage;
+import com.bjaiyouyou.thismall.fragment.ClassifyPage;
 import com.bjaiyouyou.thismall.fragment.HomePage;
 import com.bjaiyouyou.thismall.fragment.MinePage;
 import com.bjaiyouyou.thismall.fragment.TaskPage;
@@ -35,6 +36,7 @@ public class MainActivity extends BaseActivity {
     private RadioButton mController1;
     private RadioButton mController2;
     private RadioButton mController3;
+    private RadioButton mController4;
 
     private FragmentManager fm;
     private BaseFragment cacheFragment;
@@ -47,6 +49,8 @@ public class MainActivity extends BaseActivity {
     private CartPage mCartPage;
     /** 第3页：个人页 */
     private MinePage mMinePage;
+    /** 分类页 **/
+    private ClassifyPage mClassifyPage;
 
     RadioButton[] mTabs;
     private int index;
@@ -77,12 +81,14 @@ public class MainActivity extends BaseActivity {
         mController1 = (RadioButton) findViewById(R.id.controller_one);
         mController2 = (RadioButton) findViewById(R.id.controller_two);
         mController3 = (RadioButton) findViewById(R.id.controller_three);
+        mController4 = (RadioButton) findViewById(R.id.controller_four);
 
-        mTabs = new RadioButton[4];
+        mTabs = new RadioButton[5];
         mTabs[0] = mController0;
         mTabs[1] = mController1;
         mTabs[2] = mController2;
         mTabs[3] = mController3;
+        mTabs[4] = mController4;
 //        mTabs[0].setSelected(true);
     }
 
@@ -94,13 +100,15 @@ public class MainActivity extends BaseActivity {
 
         // 将四个页面加入到栈中，并持有第一个页面的引用
         mHomePage = new HomePage();
+        mClassifyPage = new ClassifyPage();
         mTaskPage = new TaskPage();
         mCartPage = new CartPage();
         mMinePage = new MinePage();
 
-        fragments = new android.support.v4.app.Fragment[]{mHomePage, mTaskPage, mCartPage, mMinePage};
+        fragments = new android.support.v4.app.Fragment[]{mHomePage, mClassifyPage, mTaskPage, mCartPage, mMinePage};
         getSupportFragmentManager().beginTransaction().add(R.id.container, mHomePage, mHomePage.TAG)
-                .add(R.id.container, mTaskPage, mTaskPage.TAG).hide(mTaskPage)
+                .add(R.id.container, mClassifyPage, mClassifyPage.TAG).hide(mClassifyPage)
+//                .add(R.id.container, mTaskPage, mTaskPage.TAG).hide(mTaskPage)
 //                .add(R.id.container,mCartPage, mCartPage.TAG).hide(mCartPage)
 //                .add(R.id.container, mMinePage, mMinePage.TAG).hide(mMinePage)
                 .show(mHomePage)
@@ -125,6 +133,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.controller_three:
                 index = 3;
+                break;
+            case R.id.controller_four:
+                index = 4;
                 break;
         }
 
