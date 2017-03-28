@@ -526,6 +526,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             case 1: // 支付宝支付
                 channel = Constants.CHANNEL_ALIPAY;
                 break;
+
+            default:
+                return;
         }
 
         new PaymentTask(

@@ -823,6 +823,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             case 1: // 支付宝支付
                 channel = Constants.CHANNEL_ALIPAY;
                 break;
+
+            default:
+                return;
         }
 
         new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, channel, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));

@@ -772,6 +772,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 // 提交订单拿到订单号+去支付
                 gotoPay(1);
                 break;
+
+            default:
+                return;
         }
     }
 
