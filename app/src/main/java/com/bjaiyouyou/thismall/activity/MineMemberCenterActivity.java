@@ -579,23 +579,6 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             mGetCoin = 260 * bs + 10 * (bs - 1) + ((long) mPayMoney % mBound) * 5;
         }
         mBtnNext.setText("充值（" + mGetCoin + "UU)");
-        //积分优先支付
-//        if (isIntegral){
-//            if (!isIntegralLack){
-//                //积分够用,直接向服务器提交减少积分
-////                LogUtils.e("UU充值","积分支付优先支付"+mPayMoney+"还剩积分"+(mIntegral-mPayMoney));
-//                mBtnNext.setText("充值（"+mPayMoney+"积分)");
-//            }else {
-//                //积分不够用,向服务器提交积分，带需要支付人民数值跳转到支付选择页面
-////                LogUtils.e("UU充值","积分支付优先支付"+mIntegral+"积分"+mPayRMB+"人民币");
-//                mBtnNext.setText("充值（"+mIntegral+"积分+"+mPayRMB+"人民币)");
-//            }
-//        }else {
-//            //直接现金支付，带着值跳转到选择支付方式
-//            mPayRMB=mPayMoney;
-//            mBtnNext.setText("充值（"+mPayRMB+"人民币)");
-////            LogUtils.e("现金支付"+mPayRMB);
-//        }
     }
 
 
@@ -699,7 +682,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     // 去付款2之调用ping++去付款
     private void doPayByPingpp() {
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付","支付宝"}, this, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, this, AlertView.Style.ActionSheet, this).show();
     }
 
     //  https://github.com/saiwu-bigkoo/Android-AlertView
@@ -709,18 +692,14 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
         switch (position) {
             case 0: // 微信支付
-                        new PaymentTask(MineMemberCenterActivity.this, MineMemberCenterActivity.this, mOrder_number, Constants.CHANNEL_WECHAT, mBtnNext, TAG)
-                                .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_WECHAT, 1));
-
+                mChannel= Constants.CHANNEL_WECHAT;
                 break;
-
             case 1: // 支付宝支付
-            new PaymentTask(MineMemberCenterActivity.this, MineMemberCenterActivity.this, mOrder_number, Constants.CHANNEL_ALIPAY, mBtnNext, TAG)
-                    .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_ALIPAY, 1));
-//                new PaymentTask(mOrder_number).execute(new PaymentRequest(Constants.CHANNEL_ALIPAY, amount));
-//                mChannel=Constants.CHANNEL_ALIPAY;
-//                break;
+                mChannel=Constants.CHANNEL_ALIPAY;
+                break;
         }
+        new PaymentTask(MineMemberCenterActivity.this, MineMemberCenterActivity.this, mOrder_number, Constants.CHANNEL_ALIPAY, mBtnNext, TAG)
+                .execute(new PaymentTask.PaymentRequest(Constants.CHANNEL_ALIPAY, 1));
     }
 
 
