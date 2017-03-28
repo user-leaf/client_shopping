@@ -344,6 +344,12 @@ public class MyOrderPaymentFragment extends BaseFragment {
         refreshData();
     }
 
+    /**
+     * 处理支付结果
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -352,14 +358,12 @@ public class MyOrderPaymentFragment extends BaseFragment {
             @Override
             public void onPaySuccess() {
                 refreshData();
-
             }
 
             @Override
             public void onPayFail() {
                 //跳转到支付失败页面,传递订单号
                 orderPayFail();
-
             }
         });
     }
