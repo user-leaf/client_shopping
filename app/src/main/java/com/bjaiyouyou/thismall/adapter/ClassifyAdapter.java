@@ -46,6 +46,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
         }
         String productName = dataBean.getName();
         viewHolder.mTvTitle.setText(String.valueOf(!TextUtils.isEmpty(productName) ? productName : ""));
+        viewHolder.mTvTag.setVisibility(dataBean.getRecommend() == 1 ? View.VISIBLE : View.INVISIBLE);
 
         ClassifyProductModel.DataBean.SizeBean sizeBean = dataBean.getSize();
         if (sizeBean != null) {
@@ -83,6 +84,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mIvImage;
         private TextView mTvTitle;
+        private TextView mTvTag;
         private TextView mTvContent;
         private TextView mTvPrice;
         private TextView mTvJifen;
@@ -91,6 +93,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
             super(view);
             mIvImage = (ImageView) view.findViewById(R.id.classify_recyclerview_item_iv_image);
             mTvTitle = (TextView) view.findViewById(R.id.classify_recyclerview_item_tv_title);
+            mTvTag = (TextView) view.findViewById(+R.id.classify_recyclerview_item_tv_tag);
             mTvContent = (TextView) view.findViewById(R.id.classify_recyclerview_item_tv_content);
             mTvPrice = (TextView) view.findViewById(R.id.classify_recyclerview_item_tv_price);
             mTvJifen = (TextView) view.findViewById(R.id.classify_recyclerview_item_tv_jifen);

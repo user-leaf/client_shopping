@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,8 +14,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -33,6 +30,7 @@ import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ClassifyCateAdModel;
 import com.bjaiyouyou.thismall.model.ClassifyProductModel;
 import com.bjaiyouyou.thismall.model.ClassifyTwoCateModel;
+import com.bjaiyouyou.thismall.other.GlideRoundTransform;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
@@ -44,7 +42,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import okhttp3.Call;
 
@@ -57,6 +54,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
 
     private View layout;
+    // 层级（推荐、一级、二级）
+    private int level = -1;
     // 一级分类id
     private int oneCateId = -1;
     // 分页页码
@@ -131,13 +130,12 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
         mPopupViews = new ArrayList<>();
         classifies = new ArrayList<>();
-        // 测试数据
-//        classifies.add("不限");
-//        classifies.add("北京");
-//        classifies.add("上海");
-//        classifies.add("广州");
-//        classifies.add("深圳");
         classifyIds = new ArrayList<>();
+
+        Bundle bundle = getArguments();
+        oneCateId = bundle.getInt(ClassifyPage.INTENT_PARAM);
+        level = 1;
+
     }
 
     private void initView() {
@@ -152,14 +150,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         View mHeader = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
         mAdContainer = (LinearLayout) mHeader.findViewById(R.id.classify_header_container);
         ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
-//        if (layoutParams != null) {
-//            LogUtils.d(TAG, "-1-height: " + layoutParams.height + ", width: " + layoutParams.width);
-//            layoutParams.height = layoutParams.width / 3;
-//            LogUtils.d(TAG, "not null");
-//            LogUtils.d(TAG, "-2-height: " + layoutParams.height + ", width: " + layoutParams.width);
-//        }
-        // TODO: 2017/3/29 广告高度
         layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 3;
+        LogUtils.d(TAG, "ad height: " + layoutParams.height);
 
         // 广告控件
         mConvenientBanner = new ConvenientBanner(getActivity());
@@ -167,6 +159,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mConvenientBanner.setLayoutParams(adParams);
 
         mRecyclerView.addHeaderView(mHeader);
+        mRecyclerView.setRefreshing(false);
 
         // 筛选菜单
         // init classify menu
@@ -191,7 +184,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             }
         });
 
-        // 排序去掉了
+        // 排序菜单去掉了
 //        // init rank menu
 //        final ListView rankView = new ListView(getContext());
 //        rankView.setDividerHeight(0);
@@ -283,7 +276,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private void loadData() {
 
         // 根据一级分类获取广告
-        mApi4Classify.getCateAd(2, new DataCallback<ClassifyCateAdModel>(getContext()) {
+        mApi4Classify.getCateAd(-1, new DataCallback<ClassifyCateAdModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 
@@ -304,26 +297,27 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 mAdModels.addAll(productCateAds);
 
                 // 测试数据
-//                // https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg
-//                ClassifyCateAdModel.ProductCateAdsBean item1 = new ClassifyCateAdModel.ProductCateAdsBean();
-//                item1.setImage_path("https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item");
-//                item1.setImage_base_name("d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg");
-//                item1.setLink("https://www.baidu.com");
-//                mAdModels.add(item1);
-//
-//                // https://a-ssl.duitang.com/uploads/item/201607/14/20160714220705_MXRBw.jpeg
-//                ClassifyCateAdModel.ProductCateAdsBean item2 = new ClassifyCateAdModel.ProductCateAdsBean();
-//                item2.setImage_path("https://a-ssl.duitang.com/uploads/item/201607/14");
-//                item2.setImage_base_name("20160714220705_MXRBw.jpeg");
-//                item2.setLink("https://www.duitang.com/");
-//                mAdModels.add(item2);
-//
-//                // https://img3.doubanio.com/view/photo/photo/public/p2447889764.webp
-//                ClassifyCateAdModel.ProductCateAdsBean item3 = new ClassifyCateAdModel.ProductCateAdsBean();
-//                item3.setImage_path("https://img3.doubanio.com/view/photo/photo/public");
-//                item3.setImage_base_name("p2447889764.webp");
-////                item3.setLink("https://www.douban.com");
-//                mAdModels.add(item3);
+                mAdModels.clear();
+                // https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg
+                ClassifyCateAdModel.ProductCateAdsBean item1 = new ClassifyCateAdModel.ProductCateAdsBean();
+                item1.setImage_path("https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item");
+                item1.setImage_base_name("d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg");
+                item1.setLink("https://www.baidu.com");
+                mAdModels.add(item1);
+
+                // https://a-ssl.duitang.com/uploads/item/201607/14/20160714220705_MXRBw.jpeg
+                ClassifyCateAdModel.ProductCateAdsBean item2 = new ClassifyCateAdModel.ProductCateAdsBean();
+                item2.setImage_path("https://a-ssl.duitang.com/uploads/item/201607/14");
+                item2.setImage_base_name("20160714220705_MXRBw.jpeg");
+                item2.setLink("https://www.duitang.com/");
+                mAdModels.add(item2);
+
+                // https://img3.doubanio.com/view/photo/photo/public/p2447889764.webp
+                ClassifyCateAdModel.ProductCateAdsBean item3 = new ClassifyCateAdModel.ProductCateAdsBean();
+                item3.setImage_path("https://img3.doubanio.com/view/photo/photo/public");
+                item3.setImage_base_name("p2447889764.webp");
+//                item3.setLink("https://www.douban.com");
+                mAdModels.add(item3);
 
                 int adNum = mAdModels.size();
                 if (adNum == 1) {
@@ -357,7 +351,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         });
 
         // 根据一级分类获取二级分类项列表
-        mApi4Classify.getTwoLevelCate(1, new DataCallback<ClassifyTwoCateModel>(getContext()) {
+        mApi4Classify.getTwoLevelCate(oneCateId, new DataCallback<ClassifyTwoCateModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 
@@ -391,7 +385,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         });
 
         // 根据一级分类请求商品数据
-        mApi4Classify.getProductsData(-1, pageNo, new DataCallback<ClassifyProductModel>(getContext()) {
+        mApi4Classify.getProductsData(-1, oneCateId, pageNo, new DataCallback<ClassifyProductModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 mRecyclerView.refreshComplete();
@@ -454,10 +448,13 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     public class LocalImageHolderView implements Holder<ClassifyCateAdModel.ProductCateAdsBean> {
+//        private ImageView imageView;
         private ImageView imageView;
+        private GlideRoundTransform mGlideRoundTransform;
 
         @Override
         public View createView(Context context) {
+            mGlideRoundTransform = new GlideRoundTransform(getContext(), 5);
             imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             return imageView;
@@ -476,6 +473,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             Glide.with(getActivity())
 //                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(getContext()), 0))
                     .load(imagePath)
+//                    .transform(mGlideRoundTransform)
                     .into(imageView);
 
         }

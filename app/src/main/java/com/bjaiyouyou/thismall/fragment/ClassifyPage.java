@@ -42,6 +42,7 @@ import okhttp3.Call;
  */
 public class ClassifyPage extends BaseFragment {
     public static final String TAG = ClassifyPage.class.getSimpleName();
+    public static final String INTENT_PARAM = "OneCateId";
 
     //布局填充器
     private LayoutInflater inflater;
@@ -295,7 +296,7 @@ public class ClassifyPage extends BaseFragment {
         public Fragment getItem(int index) {
             Fragment fragment = new ClassifyDetailFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("OneCateId", mOneCateId);
+            bundle.putInt(INTENT_PARAM, mOneCateId);
             fragment.setArguments(bundle);
             return fragment;
         }
