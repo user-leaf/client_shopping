@@ -98,6 +98,14 @@ public class ClassifyPage extends BaseFragment {
         LogUtils.e("onHiddenChanged","onHiddenChanged");
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (list.size()==0){
+            loadData();
+        }
+    }
+
     private void initView() {
         viewpager = (ViewPager) layout.findViewById(R.id.viewpager_goods_classify);
         scrollView = (ScrollView)layout.findViewById(R.id.scrollview_level_one_classify);
