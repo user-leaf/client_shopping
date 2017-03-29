@@ -4,7 +4,6 @@ package com.bjaiyouyou.thismall.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,9 +28,9 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Classify;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ClassifyCateAdModel;
+import com.bjaiyouyou.thismall.model.ClassifyProductModel;
 import com.bjaiyouyou.thismall.model.ClassifyTwoCateModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
@@ -54,10 +53,12 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private View layout;
     // 一级分类id
     private int oneCateId = -1;
+    // 分页页码
+    private int pageNo = 1;
 
     private XRecyclerView mRecyclerView;
     private ClassifyAdapter mAdapter;
-    private ArrayList<String> listData;
+    private ArrayList<ClassifyProductModel.DataBean> mListData;
 
     private int refreshTime = 0;
     private int times = 0;
@@ -78,8 +79,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private ConvenientBanner mConvenientBanner;
 
     private Api4Classify mApi4Classify;
-    private View mHeader;
-
 
     public ClassifyDetailFragment() {
         // Required empty public constructor
@@ -121,13 +120,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private void initVariable() {
         mApi4Classify = (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
         mAdModels = new ArrayList<>();
+        mListData = new ArrayList<>();
 
         classifies = new ArrayList<>();
-        classifies.add("不限");
-        classifies.add("北京");
-        classifies.add("上海");
-        classifies.add("广州");
-        classifies.add("深圳");
+        // 测试数据
+//        classifies.add("不限");
+//        classifies.add("北京");
+//        classifies.add("上海");
+//        classifies.add("广州");
+//        classifies.add("深圳");
         classifyIds = new ArrayList<>();
     }
 
@@ -140,7 +141,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        View mHeader =  LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
+        View mHeader = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
         mAdContainer = (LinearLayout) mHeader.findViewById(R.id.classify_header_container);
         ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
 //        if (layoutParams != null) {
@@ -203,58 +204,63 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                refreshTime++;
-                times = 0;
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
+//                refreshTime++;
+//                times = 0;
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//
+//                        mListData.clear();
+//                        for (int i = 0; i < 15; i++) {
+//                            mListData.add("item" + i + "after " + refreshTime + " times of refresh");
+//                        }
+//                        mAdapter.notifyDataSetChanged();
+//                        mRecyclerView.refreshComplete();
+//                    }
+//
+//                }, 1000);            //refresh data here
 
-                        listData.clear();
-                        for (int i = 0; i < 15; i++) {
-                            listData.add("item" + i + "after " + refreshTime + " times of refresh");
-                        }
-                        mAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplete();
-                    }
-
-                }, 1000);            //refresh data here
+                pageNo = 1;
+                loadData();
             }
 
             @Override
             public void onLoadMore() {
-                if (times < 2) {
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            for (int i = 0; i < 15; i++) {
-                                listData.add("item" + (1 + listData.size()));
-                            }
-                            mRecyclerView.loadMoreComplete();
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }, 1000);
-                } else {
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            for (int i = 0; i < 9; i++) {
-                                listData.add("item" + (1 + listData.size()));
-                            }
-                            mRecyclerView.setIsnomore(true);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }, 1000);
-                }
-                times++;
+//                if (times < 2) {
+//                    new Handler().postDelayed(new Runnable() {
+//                        public void run() {
+//                            for (int i = 0; i < 15; i++) {
+//                                mListData.add("item" + (1 + mListData.size()));
+//                            }
+//                            mRecyclerView.loadMoreComplete();
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//                    }, 1000);
+//                } else {
+//                    new Handler().postDelayed(new Runnable() {
+//                        public void run() {
+//                            for (int i = 0; i < 9; i++) {
+//                                mListData.add("item" + (1 + mListData.size()));
+//                            }
+//                            mRecyclerView.setIsnomore(true);
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//                    }, 1000);
+//                }
+//                times++;
+                pageNo++;
+                loadData();
             }
         });
 
-        listData = new ArrayList<String>();
-        for (int i = 0; i < 15; i++) {
-            listData.add("item" + i);
-        }
+//        mListData = new ArrayList<String>();
+//        for (int i = 0; i < 15; i++) {
+//            mListData.add("item" + i);
+//        }
 
     }
 
     private void initCtrl() {
-        mAdapter = new ClassifyAdapter(listData);
+        mAdapter = new ClassifyAdapter(getContext(), mListData);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setRefreshing(true);
     }
@@ -309,7 +315,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                     mConvenientBanner.setPageIndicator(new int[]{android.R.color.transparent, android.R.color.transparent});
                     mConvenientBanner.setCanLoop(false);
 
-                } else if (adNum > 1){
+                } else if (adNum > 1) {
 //                    mConvenientBanner.setPageIndicator(new int[]{R.mipmap.default_icon_black, R.mipmap.ic_launcher});
                     mConvenientBanner.setPageIndicator(new int[]{R.mipmap.list_indicate_nor, R.mipmap.list_indicate_sel});
                     mConvenientBanner.setCanLoop(true);
@@ -367,6 +373,45 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 }
 
                 mClassifyAdapter.notifyDataSetChanged();
+            }
+        });
+
+        // 根据一级分类请求商品数据
+        mApi4Classify.getProductsData(-1, pageNo, new DataCallback<ClassifyProductModel>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                mRecyclerView.refreshComplete();
+                mRecyclerView.loadMoreComplete();
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                mRecyclerView.refreshComplete();
+
+                if (response == null) {
+                    return;
+                }
+
+                ClassifyProductModel model = (ClassifyProductModel) response;
+                List<ClassifyProductModel.DataBean> data = model.getData();
+                if (data != null) {
+                    if (pageNo <= 1) {
+                        mListData.clear();
+                    }
+                    mListData.addAll(data);
+                }
+
+                mRecyclerView.refreshComplete();
+                mRecyclerView.loadMoreComplete();
+
+                // 最后一页
+                if (pageNo >= model.getLast_page()) {
+                    mRecyclerView.setIsnomore(true);
+                }else {
+                    mRecyclerView.setIsnomore(false);
+                }
+
+                mAdapter.notifyDataSetChanged();
             }
         });
 

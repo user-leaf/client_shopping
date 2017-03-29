@@ -4,6 +4,7 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.fragment.ClassifyDetailFragment;
 import com.bjaiyouyou.thismall.fragment.ClassifyPage;
 import com.bjaiyouyou.thismall.model.ClassifyCateAdModel;
+import com.bjaiyouyou.thismall.model.ClassifyProductModel;
 import com.bjaiyouyou.thismall.model.ClassifyOneCateModel;
 import com.bjaiyouyou.thismall.model.ClassifyTwoCateModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -39,6 +40,29 @@ public class Api4Classify extends BaseClientApi {
         String url = ClientAPI.API_POINT + "api/v1/category/getProductCateAd/" + oneLevelCateId;
 
         LogUtils.d(TAG, "getCateAd: " + url);
+
+        doGet(url, ClassifyDetailFragment.TAG, null, callback);
+    }
+
+    /**
+     * 根据一级分类获取商品列表数据
+     *
+     * @param oneLevelCateId 一级分类id
+     * @param callback
+     */
+    public void getProductsData(int oneLevelCateId, int pageNo, DataCallback<ClassifyProductModel> callback) {
+        StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
+        if (oneLevelCateId == -1) { // 推荐
+            stringBuilder.append("api/v1/product/recommendProduct")
+                    .append("?page=").append(pageNo);
+
+        } else { // 一级分类
+
+        }
+
+        String url = stringBuilder.toString();
+
+        LogUtils.d(TAG, "getProductsData: " + url);
 
         doGet(url, ClassifyDetailFragment.TAG, null, callback);
     }
