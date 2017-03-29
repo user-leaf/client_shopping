@@ -775,9 +775,13 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
                                 mNetImages.addAll(model.getBanners());
 
-                                if (mNetImages.size() == 1) {
+                                int adNum = mNetImages.size();
+                                if (adNum == 1) {
+                                    mConvenientBanner.setPageIndicator(new int[]{android.R.color.transparent, android.R.color.transparent});
                                     mConvenientBanner.setCanLoop(false);
-                                } else {
+
+                                } else if (adNum > 1){
+                                    mConvenientBanner.setPageIndicator(new int[]{R.mipmap.list_indicate_nor, R.mipmap.list_indicate_sel});
                                     mConvenientBanner.setCanLoop(true);
                                 }
 
@@ -879,11 +883,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                     public LocalImageHolderView createHolder() {
                         return new LocalImageHolderView();
                     }
-                }, mNetImages)
-                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-                .setPageIndicator(new int[]{R.mipmap.list_indicate_nor, R.mipmap.list_indicate_sel})
-                //设置指示器的位置
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+                }, mNetImages);
+//                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+//                .setPageIndicator(new int[]{R.mipmap.list_indicate_nor, R.mipmap.list_indicate_sel})
+//                //设置指示器的位置
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
 
         // 为广告轮播设置条目点击监听
         mConvenientBanner.setOnItemClickListener(this);
@@ -929,7 +933,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      */
     @Override
     public void onItemClick(int position) {
-        String link = mNetImages.get(position).getLink().trim();
+        String link = mNetImages.get(position).getLink();
         // 广告link不为空则跳转，为空不跳转
         if (!TextUtils.isEmpty(link) && !"#".equals(link) && (link.startsWith("http://") || link.startsWith("https://"))) {
             //带值跳转到广告页面
