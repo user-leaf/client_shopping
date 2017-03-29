@@ -116,20 +116,25 @@ public class ClassifyPage extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//
-//        if (!isFristStart&&list.size()==0&&listAll.size()==1){
-//            loadData();
-//        }
+        reLoadData();
         LogUtils.e("ClassifyPage-onHiddenChanged","onHiddenChanged");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if (list.size()==0){
-//            loadData();
-//        }
+        reLoadData();
         LogUtils.e("ClassifyPage-onResume","onResume");
+    }
+
+    /**
+     * 重新加载一级分类数据
+     */
+    private void reLoadData() {
+        if (list!=null&&listAll!=null&&list.size()==0&&listAll.size()==1){
+            loadData();
+            LogUtils.e("reLoadData","重新加载一级菜单数据");
+        }
     }
 
     private void initView() {
