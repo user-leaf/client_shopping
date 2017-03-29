@@ -151,4 +151,5 @@ dependencies {
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
     compile project(':library:Common')
     compile project(':library:WheelPicker')
+    compile 'com.github.dongjunkun:DropDownMenu:1.0.3'
 }
