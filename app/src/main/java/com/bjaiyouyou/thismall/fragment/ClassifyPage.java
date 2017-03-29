@@ -56,6 +56,9 @@ public class ClassifyPage extends BaseFragment {
 
     //一级菜单栏的数据
     private List<ClassifyOneCateModel.OneCateListBean> list;
+
+    private List<ClassifyOneCateModel.OneCateListBean> listAll;
+    public static final int RECOMMEND_ID_CLASSIFY=-100;
     //当前选中的一级菜单项
     private int currentItem = 0;
     //菜单选项对应的内容容器
@@ -70,6 +73,8 @@ public class ClassifyPage extends BaseFragment {
     private  int mOneCateId=-1;
     //搜索框
     private EditText mEtSearch;
+
+    private boolean isFristStart=true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,22 +93,43 @@ public class ClassifyPage extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+        setupView();
+        initVariable();
         loadData();
+        initCtrl();
     }
+
+    private void initVariable() {
+        if (isFristStart){
+            //网络加载数据
+            list=new ArrayList<>();
+            //初试列表第一项
+            listAll=new ArrayList<>();
+            ClassifyOneCateModel.OneCateListBean one=new ClassifyOneCateModel.OneCateListBean();
+            one.setCate_name("推荐");
+            one.setId(RECOMMEND_ID_CLASSIFY);
+            listAll.add(one);
+            showToolsView();
+        }
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        //引起报错
-//        loadData();
-        LogUtils.e("onHiddenChanged","onHiddenChanged");
+//
+//        if (!isFristStart&&list.size()==0&&listAll.size()==1){
+//            loadData();
+//        }
+        LogUtils.e("ClassifyPage-onHiddenChanged","onHiddenChanged");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (list.size()==0){
-            loadData();
-        }
+//        if (list.size()==0){
+//            loadData();
+//        }
+        LogUtils.e("ClassifyPage-onResume","onResume");
     }
 
     private void initView() {
@@ -124,11 +150,12 @@ public class ClassifyPage extends BaseFragment {
     }
 
     private void loadData() {
+        isFristStart=false;
         //https://testapi2.bjaiyouyou.com/api/v1/product/getProductCount  获取商品数量  搜索栏
         mApi4Client= (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
 
         /////////////////////////获取一级菜单数据/////////////////////////////////////////////
-        list=new ArrayList<>();
+
         mApi4Client.getOneLevelCate(new DataCallback<ClassifyOneCateModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
@@ -140,13 +167,19 @@ public class ClassifyPage extends BaseFragment {
                 if (response!=null){
                     ClassifyOneCateModel classifyOneCateModel= (ClassifyOneCateModel) response;
                     list=classifyOneCateModel.getOneCateList();
-                    LogUtils.e("一级标题的数目",list.size()+"");
+                    if (listAll.size()==1){
+                        listAll.addAll(list);
+                        shopAdapter.notifyDataSetChanged();
+                    }
+                    //Viewpager的数据源数目改变，及时通知否则报错
+                    //java.lang.IllegalStateException: The application's PagerAdapter changed the adapter's contents without calling PagerAdapter#notifyDataSetChanged! Expected adapter item count: 4, found: 0 Pager id: com.bjaiyouyou.thismall:id/viewpager_goods_classify Pager class: class android.support.v4.view.ViewPager Problematic adapter: class com.bjaiyouyou.thismall.fragment.ClassifyPage$ShopAdapter
+                    //at android.support.v4.view.ViewPager.populate(ViewPager.java:1139)
+                    LogUtils.e("一级标题的数目",listAll.size()+"");
                     showToolsView();
-                    setupView();
-                    initCtrl();
                 }
             }
         });
+
 
         /////////////////////////获得可搜索商品数目//////////////////////////////////////////////////////
         mApi4Client.getClassifyGoodsNumber(new DataCallback<String>(getContext()) {
@@ -171,24 +204,26 @@ public class ClassifyPage extends BaseFragment {
         //获取一级菜单数据
 //        list = Model.toolsList;
         LinearLayout toolsLayout = (LinearLayout)layout.findViewById(R.id.ll_level_one_classify);
-        if (list!=null&&list.size()!=0){
-            tvList = new TextView[list.size()];
-            ivList =new ImageView[list.size()];
-            views = new View[list.size()];
+        toolsLayout.removeAllViews();
 
-            for (int i = 0; i < list.size(); i++) {
+        if (listAll!=null&&listAll.size()!=0){
+            tvList = new TextView[listAll.size()];
+            ivList =new ImageView[listAll.size()];
+            views = new View[listAll.size()];
+
+            for (int i = 0; i < listAll.size(); i++) {
                 View view = inflater.inflate(R.layout.item_level_one_classify, null);
                 view.setId(i);
                 view.setOnClickListener(toolsItemListener);
                 TextView textView = (TextView) view.findViewById(R.id.text_level_one_classify);
                 ImageView imageView= (ImageView) view.findViewById(R.id.line);
-                ClassifyOneCateModel.OneCateListBean oneCateListBean=list.get(i);
+                ClassifyOneCateModel.OneCateListBean oneCateListBean=listAll.get(i);
                 if (oneCateListBean!=null){
                     String cateName=oneCateListBean.getCate_name();
                     if (!TextUtils.isEmpty(cateName)){
                         textView.setText(cateName);
                         toolsLayout.addView(view);
-                        LogUtils.e("oneCateName",""+cateName);
+//                        LogUtils.e("oneCateName",""+cateName);
                         tvList[i] = textView;
                         ivList[i]=imageView;
                         views[i] = view;
@@ -221,8 +256,10 @@ public class ClassifyPage extends BaseFragment {
             if (viewpager.getCurrentItem() != arg0)
                 viewpager.setCurrentItem(arg0);
             if (currentItem != arg0) {
+                //改变选中条目状态
                 changeTextColor(arg0);
-                changeTextLocation(arg0);
+                //改变选中条目滚动位置
+//                changeTextLocation(arg0);
             }
             currentItem = arg0;
         }
@@ -260,7 +297,7 @@ public class ClassifyPage extends BaseFragment {
 
         @Override
         public int getCount() {
-            return list==null?0:list.size();
+            return listAll==null?0:listAll.size();
         }
     }
 
@@ -276,8 +313,6 @@ public class ClassifyPage extends BaseFragment {
                 tvList[i].setBackgroundColor(0x00000000);
 //                tvList[i].setTextColor(0xFF000000);
                 tvList[i].setTextColor(0xFF222222);
-                String name=tvList[i].getText().toString();
-                LogUtils.e("getText",+i+"******"+name);
                 tvList[i].setTextSize(14);
                 ivList[i].setVisibility(View.INVISIBLE);
             }
@@ -288,7 +323,9 @@ public class ClassifyPage extends BaseFragment {
 //        tvList[id].setTextColor(0xFFFF5D5E);
         tvList[id].setTextSize(17);
         ivList[id].setVisibility(View.VISIBLE);
-        mOneCateId=list.get(id).getId();
+        mOneCateId=listAll.get(id).getId();
+        String name=tvList[id].getText().toString();
+        LogUtils.e("选中的是第",+id+"条*****"+name);
     }
 
     /**
@@ -298,6 +335,7 @@ public class ClassifyPage extends BaseFragment {
      */
     private void changeTextLocation(int clickPosition) {
         int x = (views[clickPosition].getTop());
+        //置顶
         scrollView.smoothScrollTo(0, x);
     }
 

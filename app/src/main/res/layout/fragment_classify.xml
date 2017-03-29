@@ -42,6 +42,11 @@
             android:visibility="gone"
             />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,6 +65,11 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical" />
         </ScrollView>
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#e2e1e3"
+            />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_goods_classify"
