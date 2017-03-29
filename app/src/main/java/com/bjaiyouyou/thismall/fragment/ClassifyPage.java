@@ -21,7 +21,6 @@ import com.bjaiyouyou.thismall.client.Api4Classify;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ClassifyOneCateModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 
 import java.util.ArrayList;
@@ -84,9 +83,12 @@ public class ClassifyPage extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         loadData();
-
-
     }
 
     private void initView() {
@@ -106,6 +108,8 @@ public class ClassifyPage extends BaseFragment {
     }
 
     private void loadData() {
+        //https://testapi2.bjaiyouyou.com/api/v1/product/getProductCount  获取商品数量  搜索栏
+
         list=new ArrayList<>();
         mApi4Client= (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
         mApi4Client.getOneLevelCate(new DataCallback<ClassifyOneCateModel>(getContext()) {
@@ -128,13 +132,13 @@ public class ClassifyPage extends BaseFragment {
         });
     }
     /**
-     * 动态生成显示items中的textview
+     * 动态生成显示items中的textview和imageView
      */
     private void showToolsView() {
         //获取一级菜单数据
 //        list = Model.toolsList;
         LinearLayout toolsLayout = (LinearLayout)layout.findViewById(R.id.ll_level_one_classify);
-        if (list!=null){
+        if (list!=null&&list.size()!=0){
             tvList = new TextView[list.size()];
             ivList =new ImageView[list.size()];
             views = new View[list.size()];
@@ -143,19 +147,19 @@ public class ClassifyPage extends BaseFragment {
                 View view = inflater.inflate(R.layout.item_level_one_classify, null);
                 view.setId(i);
                 view.setOnClickListener(toolsItemListener);
-                TextView textView = (TextView) view.findViewById(R.id.text);
+                TextView textView = (TextView) view.findViewById(R.id.text_level_one_classify);
                 ImageView imageView= (ImageView) view.findViewById(R.id.line);
                 ClassifyOneCateModel.OneCateListBean oneCateListBean=list.get(i);
                 if (oneCateListBean!=null){
                     String cateName=oneCateListBean.getCate_name();
-                    if (TextUtils.isEmpty(cateName))
-                    textView.setText(cateName);
-
-                    toolsLayout.addView(view);
-                    LogUtils.e("oneCateName",""+cateName);
-                    tvList[i] = textView;
-                    ivList[i]=imageView;
-                    views[i] = view;
+                    if (!TextUtils.isEmpty(cateName)){
+                        textView.setText(cateName);
+                        toolsLayout.addView(view);
+                        LogUtils.e("oneCateName",""+cateName);
+                        tvList[i] = textView;
+                        ivList[i]=imageView;
+                        views[i] = view;
+                    }
                     mOneCateId=oneCateListBean.getId();
                 }
             }
@@ -170,7 +174,7 @@ public class ClassifyPage extends BaseFragment {
         @Override
         public void onClick(View v) {
             viewpager.setCurrentItem(v.getId());
-            ToastUtils.showLong(""+list.get(v.getId()).getCate_name());
+//            ToastUtils.showLong(""+list.get(v.getId()).getCate_name());
         }
     };
 
@@ -230,24 +234,26 @@ public class ClassifyPage extends BaseFragment {
     /**
      * 改变textView的颜色
      *
-     * @param id
+     * @param id    t
      */
     private void changeTextColor(int id) {
         for (int i = 0; i < tvList.length; i++) {
             //非选中条目
             if (i != id) {
                 tvList[i].setBackgroundColor(0x00000000);
-//                tvList[i].setTextColor(0x222222);
-                tvList[i].setTextColor(0xFF000000);
-//                tvList[i].setTextSize(14);
+//                tvList[i].setTextColor(0xFF000000);
+                tvList[i].setTextColor(0xFF222222);
+                String name=tvList[i].getText().toString();
+                LogUtils.e("getText",+i+"******"+name);
+                tvList[i].setTextSize(14);
                 ivList[i].setVisibility(View.INVISIBLE);
             }
         }
         //选中条目
         tvList[id].setBackgroundColor(0xFFFFFFFF);
-//        tvList[id].setTextColor(0xe10c28);
-        tvList[id].setTextColor(0xFFFF5D5E);
-//        tvList[id].setTextSize(17);
+        tvList[id].setTextColor(0xFFe10c28);
+//        tvList[id].setTextColor(0xFFFF5D5E);
+        tvList[id].setTextSize(17);
         ivList[id].setVisibility(View.VISIBLE);
         mOneCateId=list.get(id).getId();
     }

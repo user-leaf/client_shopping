@@ -69,7 +69,7 @@ public class Api4Classify extends BaseClientApi {
 
 
     /**
-     * 根据一级分类获取二级分类项列表
+     * 类获取一级分类项列表
      *
      * @param callback
      */
