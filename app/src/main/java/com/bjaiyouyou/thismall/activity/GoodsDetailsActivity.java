@@ -22,6 +22,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.MainActivity;
+import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4ClientOther;
@@ -185,10 +186,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         setUpView();
     }
 
-
-    /**
-     * 获得控件
-     */
+    public static void actionStart(Context context, long productID) {
+        Intent intent = new Intent(context, GoodsDetailsActivity.class);
+        intent.putExtra(GoodsDetailsActivity.PARAM_PRODUCT_ID, productID);
+        context.startActivity(intent);
+    }
 
     private void initView() {
         mIvAddToCar = ((ImageView) findViewById(R.id.iv_goods_details_addtocar));

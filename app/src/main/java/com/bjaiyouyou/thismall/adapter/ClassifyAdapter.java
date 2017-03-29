@@ -21,9 +21,10 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2017/3/28.
  */
-public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHolder> {
+public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHolder> implements View.OnClickListener {
     private Context mContext;
     private ArrayList<ClassifyProductModel.DataBean> mDatas = null;
+    private OnItemClickListener mOnItemClickListener = null;
 
     public ClassifyAdapter(Context context, ArrayList<ClassifyProductModel.DataBean> datas) {
         this.mContext = context;
@@ -34,12 +35,15 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_classify_recyclerview, viewGroup, false);
+        view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        viewHolder.itemView.setTag(position);
+
         ClassifyProductModel.DataBean dataBean = mDatas.get(position);
         if (dataBean == null) {
             return;
@@ -78,6 +82,23 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
     @Override
     public int getItemCount() {
         return mDatas.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+            //注意这里使用getTag方法获取数据
+            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+        }
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素

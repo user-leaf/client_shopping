@@ -20,6 +20,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.activity.GoodsDetailsActivity;
 import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.ClassifyAdapter;
 import com.bjaiyouyou.thismall.adapter.ClassifyGridDropDownAdapter;
@@ -34,6 +35,7 @@ import com.bjaiyouyou.thismall.other.GlideRoundTransform;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyydjk.library.DropDownMenu;
@@ -50,7 +52,7 @@ import okhttp3.Call;
  *
  * Created by kanbin on 2017/3/28.
  */
-public class ClassifyDetailFragment extends BaseFragment implements OnItemClickListener {
+public class ClassifyDetailFragment extends BaseFragment implements OnItemClickListener, ClassifyAdapter.OnItemClickListener {
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
 
     private View layout;
@@ -60,6 +62,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private int oneCateId = -1;
     // 分页页码
     private int pageNo = 1;
+    private String strDefaultSort = "不限";
 
     private XRecyclerView mRecyclerView;
     private ClassifyAdapter mAdapter;
@@ -73,7 +76,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private String headers[] = {"全部分类"};
     private List<String> classifies;
     private List<Integer> classifyIds;
-    private String ranks[] = {"不限", "销量最高", "上架时间"};
+    private String ranks[] = {strDefaultSort, "销量最高", "上架时间"};
     private List<View> mPopupViews;
 //    private ClassifyListDropDownAdapter mClassifyAdapter;
     private ClassifyGridDropDownAdapter mClassifyAdapter;
@@ -136,6 +139,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         oneCateId = bundle.getInt(ClassifyPage.INTENT_PARAM);
         level = 1;
 
+        classifies.add(strDefaultSort);
+        classifyIds.add(oneCateId);
+
     }
 
     private void initView() {
@@ -159,7 +165,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mConvenientBanner.setLayoutParams(adParams);
 
         mRecyclerView.addHeaderView(mHeader);
-        mRecyclerView.setRefreshing(false);
 
         // 筛选菜单
         // init classify menu
@@ -270,7 +275,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private void initCtrl() {
         mAdapter = new ClassifyAdapter(getContext(), mListData);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.setRefreshing(false);
+
+        mAdapter.setOnItemClickListener(this);
     }
 
     private void loadData() {
@@ -372,7 +379,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 classifies.clear();
                 classifyIds.clear();
 
-                classifies.add("不限");
+                classifies.add(strDefaultSort);
                 classifyIds.add(oneCateId);
 
                 for (ClassifyTwoCateModel.TwoCateListBean item : twoCateList) {
@@ -447,6 +454,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        ClassifyProductModel.DataBean dataBean = mListData.get(position);
+        if (dataBean == null) {
+            return;
+        }
+        GoodsDetailsActivity.actionStart(getContext(), dataBean.getId());
+    }
+
     public class LocalImageHolderView implements Holder<ClassifyCateAdModel.ProductCateAdsBean> {
 //        private ImageView imageView;
         private ImageView imageView;
@@ -454,7 +470,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
         @Override
         public View createView(Context context) {
-            mGlideRoundTransform = new GlideRoundTransform(getContext(), 5);
+            mGlideRoundTransform = new GlideRoundTransform(getContext(), 8);
             imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             return imageView;
@@ -473,7 +489,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             Glide.with(getActivity())
 //                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(getContext()), 0))
                     .load(imagePath)
-//                    .transform(mGlideRoundTransform)
+                    .transform(mGlideRoundTransform)
                     .into(imageView);
 
         }
