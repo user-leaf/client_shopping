@@ -69,7 +69,7 @@ public class Api4Classify extends BaseClientApi {
 
 
     /**
-     * 类获取一级分类项列表
+     * 获取一级分类项列表
      *
      * @param callback
      */
@@ -83,5 +83,19 @@ public class Api4Classify extends BaseClientApi {
 
         doGet(url, ClassifyPage.TAG, null, callback);
     }
+    /**
+     *获取可搜索商品数量
+     * @param callback
+     */
+    public void getClassifyGoodsNumber(DataCallback<String> callback) {
+        //https://testapi2.bjaiyouyou.com/api/v1/product/getProductCount  获取商品数量  搜索栏
+
+        String url = ClientAPI.API_POINT + "api/v1/product/getProductCount" ;
+
+        LogUtils.d(TAG, "getClassifyGoodsNumber: " + url);
+
+        doGet(url, ClassifyPage.TAG, null, callback);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.bjaiyouyou.thismall.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,12 +11,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.activity.SearchGoodsActivity;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Classify;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
@@ -65,6 +68,8 @@ public class ClassifyPage extends BaseFragment {
     private Api4Classify mApi4Client;
 
     private  int mOneCateId=-1;
+    //搜索框
+    private EditText mEtSearch;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,22 +88,25 @@ public class ClassifyPage extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         loadData();
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        //引起报错
+//        loadData();
+        LogUtils.e("onHiddenChanged","onHiddenChanged");
     }
 
     private void initView() {
         viewpager = (ViewPager) layout.findViewById(R.id.viewpager_goods_classify);
         scrollView = (ScrollView)layout.findViewById(R.id.scrollview_level_one_classify);
-
+        mEtSearch = ((EditText) layout.findViewById(R.id.editText_search_classify));
     }
 
     private void setupView() {
         viewpager.setOnPageChangeListener(onPageChangeListener);
+        mEtSearch.setOnClickListener(this);
 
     }
 
@@ -109,9 +117,10 @@ public class ClassifyPage extends BaseFragment {
 
     private void loadData() {
         //https://testapi2.bjaiyouyou.com/api/v1/product/getProductCount  获取商品数量  搜索栏
-
-        list=new ArrayList<>();
         mApi4Client= (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
+
+        /////////////////////////获取一级菜单数据/////////////////////////////////////////////
+        list=new ArrayList<>();
         mApi4Client.getOneLevelCate(new DataCallback<ClassifyOneCateModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
@@ -127,6 +136,22 @@ public class ClassifyPage extends BaseFragment {
                     showToolsView();
                     setupView();
                     initCtrl();
+                }
+            }
+        });
+
+        /////////////////////////获得可搜索商品数目//////////////////////////////////////////////////////
+        mApi4Client.getClassifyGoodsNumber(new DataCallback<String>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response!=null){
+                    String canSearchGoodsNum= (String) response;
+                    mEtSearch.setHint("搜索商品，共"+canSearchGoodsNum+"款好物");
                 }
             }
         });
@@ -268,4 +293,13 @@ public class ClassifyPage extends BaseFragment {
         scrollView.smoothScrollTo(0, x);
     }
 
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        switch (v.getId()){
+            case  R.id.editText_search_classify:
+                startActivity(new Intent(getActivity(), SearchGoodsActivity.class));
+                break;
+        }
+    }
 }

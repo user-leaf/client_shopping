@@ -26,8 +26,11 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="3dp"
+            android:textColorHint="#999"
+            android:textSize="12sp"
             android:hint="搜索商品"
             android:gravity="center"
+            android:singleLine="true"
             android:drawableLeft="@mipmap/nav_icon_seach"
             />
         <com.bjaiyouyou.thismall.widget.IconCenterEditText
