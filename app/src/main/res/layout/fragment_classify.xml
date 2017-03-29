@@ -1,13 +1,68 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.bjaiyouyou.thismall.fragment.ClassifyPage">
+             tools:context="com.bjaiyouyou.thismall.fragment.ClassifyPage"
+              android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/app_red"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+        <EditText
+            android:id="@+id/editText_search_classify"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_home_top_bar_et_bg"
+            android:focusable="false"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:hint="搜索商品"
+            android:gravity="center"
+            android:drawableLeft="@mipmap/nav_icon_seach"
+            />
+        <com.bjaiyouyou.thismall.widget.IconCenterEditText
+            android:id="@+id/icon_center_editText_search_classify"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            style="@style/StyleEditText" 
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:orientation="horizontal">
+        <ScrollView
+            android:id="@+id/scrollview_level_one_classify"
+            android:layout_width="85dp"
+            android:layout_height="fill_parent"
+            android:fadingEdge="none"
+            android:scrollbars="none" >
+            <LinearLayout
+                android:id="@+id/ll_level_one_classify"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" />
+        </ScrollView>
 
-</FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_goods_classify"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>
