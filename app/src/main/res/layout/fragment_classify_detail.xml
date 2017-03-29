@@ -17,7 +17,7 @@
         app:ddmenuSelectedIcon="@mipmap/nav_drop_up"
         app:ddmenuTextSize="14sp"
         app:ddmenuUnselectedIcon="@mipmap/nav_drop_down"
-        app:ddtextSelectedColor="@color/drop_down_selected"
+        app:ddtextSelectedColor="@color/app_red"
         app:ddtextUnselectedColor="@color/drop_down_unselected"
         app:ddunderlineColor="@color/gray"
         />

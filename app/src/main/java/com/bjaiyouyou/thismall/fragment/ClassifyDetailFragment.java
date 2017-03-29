@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -23,6 +25,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.ClassifyAdapter;
+import com.bjaiyouyou.thismall.adapter.ClassifyGridDropDownAdapter;
 import com.bjaiyouyou.thismall.adapter.ClassifyListDropDownAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Classify;
@@ -41,11 +44,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import okhttp3.Call;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 分类详情页
+ *
+ * Created by kanbin on 2017/3/28.
  */
 public class ClassifyDetailFragment extends BaseFragment implements OnItemClickListener {
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
@@ -65,12 +71,13 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     // 筛选菜单
     private DropDownMenu mDropDownMenu;
-    private String headers[] = {"全部分类", "综合排序"};
+    private String headers[] = {"全部分类"};
     private List<String> classifies;
     private List<Integer> classifyIds;
     private String ranks[] = {"不限", "销量最高", "上架时间"};
-    private List<View> mPopupViews = new ArrayList<>();
-    private ClassifyListDropDownAdapter mClassifyAdapter;
+    private List<View> mPopupViews;
+//    private ClassifyListDropDownAdapter mClassifyAdapter;
+    private ClassifyGridDropDownAdapter mClassifyAdapter;
     private ClassifyListDropDownAdapter mRankAdapter;
 
     // 广告
@@ -122,6 +129,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mAdModels = new ArrayList<>();
         mListData = new ArrayList<>();
 
+        mPopupViews = new ArrayList<>();
         classifies = new ArrayList<>();
         // 测试数据
 //        classifies.add("不限");
@@ -157,25 +165,22 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mConvenientBanner = new ConvenientBanner(getActivity());
         ViewGroup.LayoutParams adParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mConvenientBanner.setLayoutParams(adParams);
-//        mAdContainer.addView(mConvenientBanner, 0);
 
         mRecyclerView.addHeaderView(mHeader);
 
         // 筛选菜单
         // init classify menu
-        final ListView classifyView = new ListView(getContext());
-        classifyView.setDividerHeight(0);
-        mClassifyAdapter = new ClassifyListDropDownAdapter(getContext(), classifies);
+        // 列表样式
+//        final ListView classifyView = new ListView(getContext());
+//        classifyView.setDividerHeight(0);
+//        mClassifyAdapter = new ClassifyListDropDownAdapter(getContext(), classifies);
+//        classifyView.setAdapter(mClassifyAdapter);
+
+        // 网格样式
+        final View classifyGridView = LayoutInflater.from(getContext()).inflate(R.layout.layout_twocate_classify, null);
+        GridView classifyView = (GridView) classifyGridView.findViewById(R.id.classify_two_classify_gridview);
+        mClassifyAdapter = new ClassifyGridDropDownAdapter(getContext(), classifies);
         classifyView.setAdapter(mClassifyAdapter);
-
-        // init rank menu
-        final ListView rankView = new ListView(getContext());
-        rankView.setDividerHeight(0);
-        mRankAdapter = new ClassifyListDropDownAdapter(getContext(), Arrays.asList(ranks));
-        rankView.setAdapter(mRankAdapter);
-
-        mPopupViews.add(classifyView);
-        mPopupViews.add(rankView);
 
         classifyView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -186,14 +191,24 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             }
         });
 
-        rankView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mRankAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[0] : ranks[position]);
-                mDropDownMenu.closeMenu();
-            }
-        });
+        // 排序去掉了
+//        // init rank menu
+//        final ListView rankView = new ListView(getContext());
+//        rankView.setDividerHeight(0);
+//        mRankAdapter = new ClassifyListDropDownAdapter(getContext(), Arrays.asList(ranks));
+//        rankView.setAdapter(mRankAdapter);
+//
+//        rankView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                mRankAdapter.setCheckItem(position);
+//                mDropDownMenu.setTabText(position == 0 ? headers[1] : ranks[position]);
+//                mDropDownMenu.closeMenu();
+//            }
+//        });
+
+        mPopupViews.add(classifyGridView);
+//        mPopupViews.add(rankView);
 
         //init dropdownview
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), mPopupViews, mRecyclerView);
@@ -316,7 +331,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                     mConvenientBanner.setCanLoop(false);
 
                 } else if (adNum > 1) {
-//                    mConvenientBanner.setPageIndicator(new int[]{R.mipmap.default_icon_black, R.mipmap.ic_launcher});
                     mConvenientBanner.setPageIndicator(new int[]{R.mipmap.list_indicate_nor, R.mipmap.list_indicate_sel});
                     mConvenientBanner.setCanLoop(true);
                 }

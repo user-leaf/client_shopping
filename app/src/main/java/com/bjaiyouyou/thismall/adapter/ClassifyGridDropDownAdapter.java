@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/3/29.
  */
-public class ClassifyListDropDownAdapter extends BaseAdapter{
+public class ClassifyGridDropDownAdapter extends BaseAdapter {
     private Context mContext;
     private List<String> mList;
     private int checkItemPosition = 0;
@@ -23,7 +23,8 @@ public class ClassifyListDropDownAdapter extends BaseAdapter{
         checkItemPosition = position;
         notifyDataSetChanged();
     }
-    public ClassifyListDropDownAdapter(Context context, List<String> list) {
+
+    public ClassifyGridDropDownAdapter(Context context, List<String> list) {
         this.mContext = context;
         this.mList = list;
     }
@@ -49,27 +50,27 @@ public class ClassifyListDropDownAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        ClassifyListDropDownAdapter.ViewHolder viewHolder;
         if (convertView != null) {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ClassifyListDropDownAdapter.ViewHolder) convertView.getTag();
         } else {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_classify_default_drop_down, null);
-            viewHolder = new ViewHolder(convertView);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_classify_grid_drop_down, null);
+            viewHolder = new ClassifyListDropDownAdapter.ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
         fillValue(position, viewHolder);
         return convertView;
     }
 
-    private void fillValue(int position, ViewHolder viewHolder) {
+    private void fillValue(int position, ClassifyListDropDownAdapter.ViewHolder viewHolder) {
         viewHolder.mText.setText(mList.get(position));
         if (checkItemPosition != -1) {
             if (checkItemPosition == position) {
                 viewHolder.mText.setTextColor(mContext.getResources().getColor(R.color.app_red));
-                viewHolder.mText.setBackgroundResource(R.color.check_bg);
+                viewHolder.mText.setBackgroundResource(R.drawable.shape_classify_twocate_check_bg);
             } else {
                 viewHolder.mText.setTextColor(mContext.getResources().getColor(R.color.drop_down_unselected));
-                viewHolder.mText.setBackgroundResource(R.color.white);
+                viewHolder.mText.setBackgroundResource(R.drawable.shape_classify_twocate_uncheck_bg);
             }
         }
     }
