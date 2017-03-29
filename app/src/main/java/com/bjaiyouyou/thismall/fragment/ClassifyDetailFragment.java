@@ -6,27 +6,30 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.ClassifyAdapter;
 import com.bjaiyouyou.thismall.adapter.ClassifyListDropDownAdapter;
-import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4Classify;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.model.ClassifyTwoCateModel;
+import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyydjk.library.DropDownMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,14 +45,18 @@ public class ClassifyDetailFragment extends BaseFragment {
 
     private int refreshTime = 0;
     private int times = 0;
-    private DropDownMenu mDropDownMenu;
 
+    // 筛选菜单
+    private DropDownMenu mDropDownMenu;
     private String headers[] = {"全部分类", "综合排序"};
-    private String classifies[] = {"不限", "武汉", "北京", "上海", "成都", "广州", "南京", "杭州"};
-    private String ranks[] = {"不限", "18岁以下", "18-22岁", "23-26岁", "27-35岁", "35岁以上"};
+    private List<String> classifies;
+    private List<Integer> classifyIds;
+    private String ranks[] = {"不限", "销量最高", "上架时间"};
     private List<View> mPopupViews = new ArrayList<>();
     private ClassifyListDropDownAdapter mClassifyAdapter;
     private ClassifyListDropDownAdapter mRankAdapter;
+
+    private Api4Classify mApi4Classify;
 
     public ClassifyDetailFragment() {
         // Required empty public constructor
@@ -58,7 +65,6 @@ public class ClassifyDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_classify_detail, container, false);
         return layout;
     }
@@ -67,10 +73,22 @@ public class ClassifyDetailFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        initVariable();
         initView();
         setupView();
         initCtrl();
         loadData();
+    }
+
+    private void initVariable() {
+        mApi4Classify = (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
+        classifies = new ArrayList<>();
+        classifies.add("不限");
+        classifies.add("北京");
+        classifies.add("上海");
+        classifies.add("广州");
+        classifies.add("深圳");
+        classifyIds = new ArrayList<>();
     }
 
     private void initView() {
@@ -85,12 +103,14 @@ public class ClassifyDetailFragment extends BaseFragment {
         View header = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
         LinearLayout AdContainer = (LinearLayout) header.findViewById(R.id.classify_header_container);
         ViewGroup.LayoutParams layoutParams = AdContainer.getLayoutParams();
-        if (layoutParams != null) {
-            LogUtils.d(TAG, "-1-height: " + layoutParams.height + ", width: " + layoutParams.width);
-            layoutParams.height = layoutParams.width / 3;
-            LogUtils.d(TAG, "not null");
-            LogUtils.d(TAG, "-2-height: " + layoutParams.height + ", width: " + layoutParams.width);
-        }
+//        if (layoutParams != null) {
+//            LogUtils.d(TAG, "-1-height: " + layoutParams.height + ", width: " + layoutParams.width);
+//            layoutParams.height = layoutParams.width / 3;
+//            LogUtils.d(TAG, "not null");
+//            LogUtils.d(TAG, "-2-height: " + layoutParams.height + ", width: " + layoutParams.width);
+//        }
+        // TODO: 2017/3/29 广告高度
+        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 3;
 
         // 广告控件
         mConvenientBanner = new ConvenientBanner(getActivity());
@@ -103,7 +123,7 @@ public class ClassifyDetailFragment extends BaseFragment {
         // init classify menu
         final ListView classifyView = new ListView(getContext());
         classifyView.setDividerHeight(0);
-        mClassifyAdapter = new ClassifyListDropDownAdapter(getContext(), Arrays.asList(classifies));
+        mClassifyAdapter = new ClassifyListDropDownAdapter(getContext(), classifies);
         classifyView.setAdapter(mClassifyAdapter);
 
         // init rank menu
@@ -119,7 +139,7 @@ public class ClassifyDetailFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mClassifyAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies[position]);
+                mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
             }
         });
@@ -198,10 +218,42 @@ public class ClassifyDetailFragment extends BaseFragment {
     }
 
     private void loadData() {
+        // 根据一级分类获取广告
+
+        // 根据一级分类获取二级分类项列表
+        mApi4Classify.getTwoLevelCate(1, new DataCallback<ClassifyTwoCateModel>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response == null) {
+                    return;
+                }
+
+                ClassifyTwoCateModel model = (ClassifyTwoCateModel) response;
+                List<ClassifyTwoCateModel.TwoCateListBean> twoCateList = model.getTwoCateList();
+                if (twoCateList == null) {
+                    return;
+                }
+
+                classifies.clear();
+                classifyIds.clear();
+
+                for (ClassifyTwoCateModel.TwoCateListBean item : twoCateList) {
+                    classifies.add(item.getCate_name());
+                    classifyIds.add(item.getId());
+                }
+
+                mClassifyAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 
-    // TODO: 2017/3/29 没起作用
+    // TODO: 2017/3/29 没起作用，以后再说
     @Override
     public void onBackPressed() {
         //退出activity前关闭菜单
