@@ -57,7 +57,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
     private View layout;
 
-    private int currentCategoryType;    // 分类项级别（推荐、一级、二级）
+    private int currentCategoryType;    // 分类项级别（1/2）
     private int currentCategoryId;      // 当前选中的分类id
     private int firstCateId;            // 一级分类id(用于获取二级分类项请求、不限分类的id等，有必要保存)
     private int currentPageNum;         // 当前商品分页页码
@@ -245,14 +245,16 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mClassifyAdapter.setCheckItem(position);
                 // 网络请求
-                currentCategoryId = classifyIds.get(position);
-                currentCategoryType = 2; // 二级分类
                 currentPageNum = 1;
-                loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
-                // 点击筛选中的“全部”时请求广告数据
+                currentCategoryId = classifyIds.get(position);
+                // 点击筛选中的“全部”时
                 if (position == 0) {
-                    loadData4Ad(firstCateId);
+                    loadData4Ad(firstCateId);   // 请求广告数据
+                    currentCategoryType = 1;    // 属于一级分类
+                } else {
+                    currentCategoryType = 2; // 二级分类
                 }
+                loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
 
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
@@ -270,11 +272,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                mRankAdapter.setCheckItem(position);
-//        // 网络请求
-//        currentCategoryId = classifyIds.get(position);
-//        currentCategoryType = 2; // 二级分类
-//        currentPageNum = 1;
-//        loadData(currentCategoryType);
 //                mDropDownMenu.setTabText(position == 0 ? headers[1] : ranks[position]);
 //                mDropDownMenu.closeMenu();
 //            }
