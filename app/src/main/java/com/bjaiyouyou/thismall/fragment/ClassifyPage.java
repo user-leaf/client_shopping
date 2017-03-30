@@ -59,7 +59,7 @@ public class ClassifyPage extends BaseFragment {
     private List<ClassifyOneCateModel.OneCateListBean> list;
 
     private List<ClassifyOneCateModel.OneCateListBean> listAll;
-    public static final int RECOMMEND_ID_CLASSIFY=-100;
+    public static final int RECOMMEND_ID_CLASSIFY=-1;
     //当前选中的一级菜单项
     private int currentItem = 0;
     //菜单选项对应的内容容器
