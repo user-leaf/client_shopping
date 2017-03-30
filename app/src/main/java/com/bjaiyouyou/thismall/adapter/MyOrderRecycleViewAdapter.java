@@ -806,32 +806,36 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
      * 确认收货
      */
     private void confirmReceipt() {
-        final String orderNum = orders.get(nowPosition).getOrder_number();
-        final String url = ClientAPI.API_POINT + "api/v1/order/confirm/"
-                + orderNum
-                + "?token="
-                + CurrentUserManager.getUserToken();
-        LogUtils.e("url", url);
-        OkHttpUtils.get()
-                .url(url)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        UNNetWorkUtils.unNetWorkOnlyNotify(context, e);
-                    }
+        //添加判断解决数组溢出异常IndexOutOfBoundsException: Invalid index 0, size is 0
+        if (orders.size()!=0&&orders.size()>nowPosition){
+            final String orderNum = orders.get(nowPosition).getOrder_number();
+            final String url = ClientAPI.API_POINT + "api/v1/order/confirm/"
+                    + orderNum
+                    + "?token="
+                    + CurrentUserManager.getUserToken();
+            LogUtils.e("url", url);
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtils.e("confirmReceipt", "confirmReceipt--" + orderNum);
-                        //页面移除
-                        orders.remove(nowPosition);
-                        notifyDataSetChanged();
-                        if (getItemCount() == 0) {
-                            mHandler.sendEmptyMessage(1);
+            OkHttpUtils.get()
+                    .url(url)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            UNNetWorkUtils.unNetWorkOnlyNotify(context, e);
                         }
-                    }
-                });
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            LogUtils.e("confirmReceipt", "confirmReceipt--" + orderNum);
+                            //页面移除
+                            orders.remove(nowPosition);
+                            notifyDataSetChanged();
+                            if (getItemCount() == 0) {
+                                mHandler.sendEmptyMessage(1);
+                            }
+                        }
+                    });
+        }
     }
 
     /**
