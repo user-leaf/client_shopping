@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -35,7 +36,6 @@ import com.bjaiyouyou.thismall.other.GlideRoundTransform;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyydjk.library.DropDownMenu;
@@ -56,9 +56,11 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
 
     private View layout;
-    // 层级（推荐、一级、二级）
-    private int level = -1;
-    // 一级分类id
+    // 分类项级别（推荐、一级、二级）
+    private int cateType = -1;
+    // 网络请求用到的（一级或二级）分类项id
+    private int pid;
+    // 一级分类id(用于获取二级分类项请求，不限分类的id等，有必要保存)
     private int oneCateId = -1;
     // 分页页码
     private int pageNo = 1;
@@ -67,9 +69,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private XRecyclerView mRecyclerView;
     private ClassifyAdapter mAdapter;
     private ArrayList<ClassifyProductModel.DataBean> mListData;
-
-    private int refreshTime = 0;
-    private int times = 0;
 
     // 筛选菜单
     private DropDownMenu mDropDownMenu;
@@ -88,6 +87,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private ConvenientBanner mConvenientBanner;
 
     private Api4Classify mApi4Classify;
+
+    private int requestTime = 0;
+    private int printTime = 0;
+    private TextView mTvShow;
 
     public ClassifyDetailFragment() {
         // Required empty public constructor
@@ -108,7 +111,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         initView();
         setupView();
         initCtrl();
-        loadData();
+        loadData(pid, cateType);
     }
 
     @Override
@@ -117,7 +120,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         //广告停止翻页
         mConvenientBanner.stopTurning();
     }
-
 
     @Override
     public void onResume() {
@@ -137,7 +139,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
         Bundle bundle = getArguments();
         oneCateId = bundle.getInt(ClassifyPage.INTENT_PARAM);
-        level = 1;
+
+        pid = oneCateId;
+        cateType = 1; // 一级分类
 
         classifies.add(strDefaultSort);
         classifyIds.add(oneCateId);
@@ -155,6 +159,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
         View mHeader = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
         mAdContainer = (LinearLayout) mHeader.findViewById(R.id.classify_header_container);
+        mTvShow = (TextView) mHeader.findViewById(R.id.classify_header_show);
+        printInfo();
         ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
         layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 3;
         LogUtils.d(TAG, "ad height: " + layoutParams.height);
@@ -184,6 +190,11 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mClassifyAdapter.setCheckItem(position);
+                // 网络请求
+                pid = classifyIds.get(position);
+                cateType = 2; // 二级分类
+                loadData(pid, cateType);
+
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
             }
@@ -200,6 +211,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                mRankAdapter.setCheckItem(position);
+//        // 网络请求
+//        pid = classifyIds.get(position);
+//        cateType = 2; // 二级分类
+//        loadData(cateType);
 //                mDropDownMenu.setTabText(position == 0 ? headers[1] : ranks[position]);
 //                mDropDownMenu.closeMenu();
 //            }
@@ -212,63 +227,27 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), mPopupViews, mRecyclerView);
     }
 
+    private void printInfo() {
+        printTime ++;
+        mTvShow.setText("requestTime:" + requestTime + ", printTime: " + printTime + ", \nclass: " + this.getId() + ", \npid: " + pid + ", cateType: " + cateType);
+
+    }
+
     private void setupView() {
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-//                refreshTime++;
-//                times = 0;
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-//
-//                        mListData.clear();
-//                        for (int i = 0; i < 15; i++) {
-//                            mListData.add("item" + i + "after " + refreshTime + " times of refresh");
-//                        }
-//                        mAdapter.notifyDataSetChanged();
-//                        mRecyclerView.refreshComplete();
-//                    }
-//
-//                }, 1000);            //refresh data here
-
                 pageNo = 1;
-                loadData();
+                loadData(pid, cateType);
             }
 
             @Override
             public void onLoadMore() {
-//                if (times < 2) {
-//                    new Handler().postDelayed(new Runnable() {
-//                        public void run() {
-//                            for (int i = 0; i < 15; i++) {
-//                                mListData.add("item" + (1 + mListData.size()));
-//                            }
-//                            mRecyclerView.loadMoreComplete();
-//                            mAdapter.notifyDataSetChanged();
-//                        }
-//                    }, 1000);
-//                } else {
-//                    new Handler().postDelayed(new Runnable() {
-//                        public void run() {
-//                            for (int i = 0; i < 9; i++) {
-//                                mListData.add("item" + (1 + mListData.size()));
-//                            }
-//                            mRecyclerView.setIsnomore(true);
-//                            mAdapter.notifyDataSetChanged();
-//                        }
-//                    }, 1000);
-//                }
-//                times++;
                 pageNo++;
-                loadData();
+                loadData(pid, cateType);
             }
         });
-
-//        mListData = new ArrayList<String>();
-//        for (int i = 0; i < 15; i++) {
-//            mListData.add("item" + i);
-//        }
 
     }
 
@@ -280,7 +259,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mAdapter.setOnItemClickListener(this);
     }
 
-    private void loadData() {
+    private void loadData(int pid, int cateType) {
+        requestTime ++;
+        printInfo();
 
         // 根据一级分类获取广告
         mApi4Classify.getCateAd(-1, new DataCallback<ClassifyCateAdModel>(getContext()) {
@@ -391,8 +372,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             }
         });
 
-        // 根据一级分类请求商品数据
-        mApi4Classify.getProductsData(-1, oneCateId, pageNo, new DataCallback<ClassifyProductModel>(getContext()) {
+        LogUtils.d("@@@", "ClassifyDetailFragment pid: " + pid + ", cateType: " + cateType);
+        // 请求商品数据
+        mApi4Classify.getProductsData(pid, cateType, pageNo, new DataCallback<ClassifyProductModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 mRecyclerView.refreshComplete();
@@ -464,7 +446,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     public class LocalImageHolderView implements Holder<ClassifyCateAdModel.ProductCateAdsBean> {
-//        private ImageView imageView;
         private ImageView imageView;
         private GlideRoundTransform mGlideRoundTransform;
 

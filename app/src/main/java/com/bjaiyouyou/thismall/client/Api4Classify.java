@@ -47,30 +47,39 @@ public class Api4Classify extends BaseClientApi {
     /**
      * 根据层级分类获取商品列表数据
      *
-     * @param pid      分类id
+     * @param pid  分类项id
+     * @param cateType 分类项级别
+     * @param pageNo  页码
      * @param callback
      */
-    public void getProductsData(int level, int pid, int pageNo, DataCallback<ClassifyProductModel> callback) {
+    public void getProductsData(int pid, int cateType, int pageNo, DataCallback<ClassifyProductModel> callback) {
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
-        if (level == -1) { // 推荐
+//        if (cateType == -1) { // 推荐
+//            stringBuilder.append("api/v1/product/recommendProduct")
+//                    .append("?page=").append(pageNo);
+//
+//        } else if (cateType == 1) { // 一级分类
+//            stringBuilder.append("api/v1/product/getOneCateProducts/")
+//                    .append(pid);
+//        } else { // 二级分类
+//            stringBuilder.append("api/v1/product/getTwoCateProducts/")
+//            .append(pid);
+//        }
+
+        if (pid == ClassifyPage.RECOMMEND_ID_CLASSIFY){ // 推荐
             stringBuilder.append("api/v1/product/recommendProduct")
                     .append("?page=").append(pageNo);
-
-        } else if (level == 1) { // 一级分类
-            stringBuilder.append("api/v1/product/getOneCateProducts/")
-                    .append(pid);
-        } else { // 二级分类
-            stringBuilder.append("api/v1/product/getTwoCateProducts/")
-            .append(pid);
+        }else { // 其它
+            stringBuilder.append("api/v1/product/getCateProducts/")
+                    .append(pid).append("/").append(cateType)
+                    .append("?page=").append(pageNo);
         }
-
         String url = stringBuilder.toString();
 
-        LogUtils.d(TAG, "getProductsData: " + url);
+        LogUtils.d("@@@", "pid: " + pid + ", cateType: " + cateType + "\ngetProductsData: " + url);
 
         doGet(url, ClassifyDetailFragment.TAG, null, callback);
     }
-
 
     /**
      * 获取一级分类项列表

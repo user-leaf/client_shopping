@@ -48,9 +48,13 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
         if (dataBean == null) {
             return;
         }
-        String productName = dataBean.getName();
-        viewHolder.mTvTitle.setText(String.valueOf(!TextUtils.isEmpty(productName) ? productName : ""));
-        viewHolder.mTvTag.setVisibility(dataBean.getRecommend() == 1 ? View.VISIBLE : View.INVISIBLE);
+
+        ClassifyProductModel.DataBean.ProductBean productBean = dataBean.getProduct();
+        if (productBean != null) {
+            String productName = productBean.getName();
+            viewHolder.mTvTitle.setText(String.valueOf(!TextUtils.isEmpty(productName) ? productName : ""));
+            viewHolder.mTvTag.setVisibility(dataBean.getRecommend() == 1 ? View.VISIBLE : View.INVISIBLE);
+        }
 
         ClassifyProductModel.DataBean.SizeBean sizeBean = dataBean.getSize();
         if (sizeBean != null) {

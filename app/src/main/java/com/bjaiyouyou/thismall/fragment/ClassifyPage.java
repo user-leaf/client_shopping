@@ -312,6 +312,16 @@ public class ClassifyPage extends BaseFragment {
         public int getCount() {
             return listAll==null?0:listAll.size();
         }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+//            super.destroyItem(container, position, object);
+        }
     }
 
     /**
