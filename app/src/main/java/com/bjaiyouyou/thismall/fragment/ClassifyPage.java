@@ -71,7 +71,7 @@ public class ClassifyPage extends BaseFragment {
 
     private Api4Classify mApi4Client;
 
-    private  int mOneCateId=-1;
+    private  int mOneCateId=RECOMMEND_ID_CLASSIFY;
     //搜索框
     private EditText mEtSearch;
 
@@ -234,7 +234,7 @@ public class ClassifyPage extends BaseFragment {
                         ivList[i]=imageView;
                         views[i] = view;
                     }
-                    mOneCateId=oneCateListBean.getId();
+//                    mOneCateId=oneCateListBean.getId();
                 }
             }
             changeTextColor(0);
@@ -296,8 +296,15 @@ public class ClassifyPage extends BaseFragment {
         public Fragment getItem(int index) {
             Fragment fragment = new ClassifyDetailFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(INTENT_PARAM, mOneCateId);
-            fragment.setArguments(bundle);
+            if (listAll!=null){
+                ClassifyOneCateModel.OneCateListBean oneCateListBean=listAll.get(index);
+                if (oneCateListBean!=null){
+                    mOneCateId=listAll.get(index).getId();
+                    LogUtils.e("mOneCateId传递值","*********"+mOneCateId);
+                    bundle.putInt(INTENT_PARAM, mOneCateId);
+                    fragment.setArguments(bundle);
+                }
+            }
             return fragment;
         }
 
@@ -329,9 +336,9 @@ public class ClassifyPage extends BaseFragment {
 //        tvList[id].setTextColor(0xFFFF5D5E);
         tvList[id].setTextSize(17);
         ivList[id].setVisibility(View.VISIBLE);
-        mOneCateId=listAll.get(id).getId();
+        int Id=listAll.get(id).getId();
         String name=tvList[id].getText().toString();
-        LogUtils.e("选中的是第",+id+"条*****"+name);
+        LogUtils.e("选中的是第",+id+"条*****"+name+"*******Id:"+Id);
     }
 
     /**
