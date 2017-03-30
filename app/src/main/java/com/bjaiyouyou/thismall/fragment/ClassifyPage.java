@@ -336,7 +336,7 @@ public class ClassifyPage extends BaseFragment {
                 tvList[i].setBackgroundColor(0x00000000);
 //                tvList[i].setTextColor(0xFF000000);
                 tvList[i].setTextColor(0xFF222222);
-                tvList[i].setTextSize(14);
+//                tvList[i].setTextSize(14);
                 ivList[i].setVisibility(View.INVISIBLE);
             }
         }
@@ -344,7 +344,7 @@ public class ClassifyPage extends BaseFragment {
         tvList[id].setBackgroundColor(0xFFFFFFFF);
         tvList[id].setTextColor(0xFFe10c28);
 //        tvList[id].setTextColor(0xFFFF5D5E);
-        tvList[id].setTextSize(17);
+//        tvList[id].setTextSize(17);
         ivList[id].setVisibility(View.VISIBLE);
         int Id=listAll.get(id).getId();
         String name=tvList[id].getText().toString();
