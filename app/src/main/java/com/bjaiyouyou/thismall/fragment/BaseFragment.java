@@ -26,7 +26,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected IUUTitleBar titleBar;
     protected InputMethodManager inputMethodManager;
     protected View layout;
-    // 加载中dialog
+
     public LoadingDialog loadingDialog;
     private int loadingCount = 0;
     private long lastClick = 0;
@@ -225,9 +225,15 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        OkHttpUtils.getInstance().cancelTag(this);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        RequestManager.cancelAll(this);
+//        RequestManager.cancelAll(this);
         OkHttpUtils.getInstance().cancelTag(this);
     }
 

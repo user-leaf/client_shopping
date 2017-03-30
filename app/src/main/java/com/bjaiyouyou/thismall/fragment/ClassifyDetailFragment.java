@@ -34,6 +34,7 @@ import com.bjaiyouyou.thismall.model.ClassifyProductModel;
 import com.bjaiyouyou.thismall.model.ClassifyTwoCateModel;
 import com.bjaiyouyou.thismall.other.GlideRoundTransform;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
@@ -49,22 +50,19 @@ import okhttp3.Call;
 
 /**
  * 分类详情页
- *
+ * <p>
  * Created by kanbin on 2017/3/28.
  */
 public class ClassifyDetailFragment extends BaseFragment implements OnItemClickListener, ClassifyAdapter.OnItemClickListener {
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
-
     private View layout;
-    // 分类项级别（推荐、一级、二级）
-    private int cateType = -1;
-    // 网络请求用到的（一级或二级）分类项id
-    private int pid;
-    // 一级分类id(用于获取二级分类项请求，不限分类的id等，有必要保存)
-    private int oneCateId = -1;
-    // 分页页码
-    private int pageNo = 1;
-    private String strDefaultSort = "不限";
+
+    private int currentCategoryType;    // 分类项级别（推荐、一级、二级）
+    private int currentCategoryId;      // 当前选中的分类id
+    private int firstCateId;            // 一级分类id(用于获取二级分类项请求、不限分类的id等，有必要保存)
+    private int currentPageNum;         // 当前商品分页页码
+    private String strDefaultSort = "全部分类";
+    private boolean isSecondCategoryLoadSuccess;    // 二级分类项数据是否请求成功
 
     private XRecyclerView mRecyclerView;
     private ClassifyAdapter mAdapter;
@@ -77,7 +75,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private List<Integer> classifyIds;
     private String ranks[] = {strDefaultSort, "销量最高", "上架时间"};
     private List<View> mPopupViews;
-//    private ClassifyListDropDownAdapter mClassifyAdapter;
+    //    private ClassifyListDropDownAdapter mClassifyAdapter;
     private ClassifyGridDropDownAdapter mClassifyAdapter;
     private ClassifyListDropDownAdapter mRankAdapter;
 
@@ -88,6 +86,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     private Api4Classify mApi4Classify;
 
+    // debug
+    private int classTag;
+    private boolean debug = false;
     private int requestTime = 0;
     private int printTime = 0;
     private TextView mTvShow;
@@ -99,6 +100,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        LogUtils.d("====", "Fragment " + classTag + ": onCreateView");
+
         layout = inflater.inflate(R.layout.fragment_classify_detail, container, false);
         return layout;
     }
@@ -111,12 +114,56 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         initView();
         setupView();
         initCtrl();
-        loadData(pid, cateType);
+
+        loadData4Ad(firstCateId);
+        loadData4SecondCategory(firstCateId);
+        loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
+
+        LogUtils.d("====", "Fragment " + classTag + ": onActivityCreated");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtils.d("====", "Fragment " + classTag + ": onCreate");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LogUtils.d("====", "Fragment " + classTag + ": onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LogUtils.d("====", "Fragment " + classTag + ": onDestroyView");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        classTag = getArguments().getInt(ClassifyPage.INTENT_PARAM);
+
+        LogUtils.d("====", "Fragment " + classTag + ": onAttach");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LogUtils.d("====", "Fragment " + classTag + ": onDetach");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtils.d("====", "Fragment " + classTag + ": onStart");
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        LogUtils.d("====", "Fragment " + classTag + ": onPause");
         //广告停止翻页
         mConvenientBanner.stopTurning();
     }
@@ -124,11 +171,17 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onResume() {
         super.onResume();
+        LogUtils.d("====", "Fragment " + classTag + ": onResume");
         //广告开始自动翻页
         mConvenientBanner.startTurning(5000);
     }
 
     private void initVariable() {
+        currentCategoryType = -1;
+        firstCateId = -1;
+        currentPageNum = 1;
+        isSecondCategoryLoadSuccess = false;
+
         mApi4Classify = (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
         mAdModels = new ArrayList<>();
         mListData = new ArrayList<>();
@@ -138,13 +191,13 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         classifyIds = new ArrayList<>();
 
         Bundle bundle = getArguments();
-        oneCateId = bundle.getInt(ClassifyPage.INTENT_PARAM);
+        firstCateId = bundle.getInt(ClassifyPage.INTENT_PARAM);
 
-        pid = oneCateId;
-        cateType = 1; // 一级分类
+        currentCategoryId = firstCateId;
+        currentCategoryType = 1; // 一级分类
 
         classifies.add(strDefaultSort);
-        classifyIds.add(oneCateId);
+        classifyIds.add(firstCateId);
 
     }
 
@@ -162,7 +215,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mTvShow = (TextView) mHeader.findViewById(R.id.classify_header_show);
         printInfo();
         ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
-        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 3;
+        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 4;
         LogUtils.d(TAG, "ad height: " + layoutParams.height);
 
         // 广告控件
@@ -191,9 +244,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mClassifyAdapter.setCheckItem(position);
                 // 网络请求
-                pid = classifyIds.get(position);
-                cateType = 2; // 二级分类
-                loadData(pid, cateType);
+                currentCategoryId = classifyIds.get(position);
+                currentCategoryType = 2; // 二级分类
+                currentPageNum = 1;
+                loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
 
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
@@ -212,9 +266,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                mRankAdapter.setCheckItem(position);
 //        // 网络请求
-//        pid = classifyIds.get(position);
-//        cateType = 2; // 二级分类
-//        loadData(cateType);
+//        currentCategoryId = classifyIds.get(position);
+//        currentCategoryType = 2; // 二级分类
+//        currentPageNum = 1;
+//        loadData(currentCategoryType);
 //                mDropDownMenu.setTabText(position == 0 ? headers[1] : ranks[position]);
 //                mDropDownMenu.closeMenu();
 //            }
@@ -227,10 +282,14 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), mPopupViews, mRecyclerView);
     }
 
+    /**
+     * 调试，先把XR的headerView中的textView设为可见
+     */
     private void printInfo() {
-        printTime ++;
-        mTvShow.setText("requestTime:" + requestTime + ", printTime: " + printTime + ", \nclass: " + this.getId() + ", \npid: " + pid + ", cateType: " + cateType);
-
+        if (debug) {
+            printTime++;
+            mTvShow.setText("requestTime:" + requestTime + ", printTime: " + printTime + ", \nclass: " + this.getId() + ", \ncurrentCategoryId: " + currentCategoryId + ", currentCategoryType: " + currentCategoryType);
+        }
     }
 
     private void setupView() {
@@ -238,14 +297,27 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                pageNo = 1;
-                loadData(pid, cateType);
+
+                currentPageNum = 1;
+
+                // 请求商品数据
+                loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
+
+                // 如果目前没有广告，则请求
+                if (mAdModels.isEmpty()) {
+                    loadData4Ad(firstCateId);
+                }
+
+                // 筛选菜单中只有一项，则请求数据??
+                if (!isSecondCategoryLoadSuccess) {
+                    loadData4SecondCategory(firstCateId);
+                }
             }
 
             @Override
             public void onLoadMore() {
-                pageNo++;
-                loadData(pid, cateType);
+                currentPageNum++;
+                loadData4Products(false, currentPageNum, currentCategoryId, currentCategoryType);
             }
         });
 
@@ -259,12 +331,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mAdapter.setOnItemClickListener(this);
     }
 
-    private void loadData(int pid, int cateType) {
-        requestTime ++;
-        printInfo();
+    /**
+     * 请求分类下的广告数据
+     *
+     * @param firstCategoryId 一级分类id
+     */
+    private void loadData4Ad(int firstCategoryId) {
 
         // 根据一级分类获取广告
-        mApi4Classify.getCateAd(-1, new DataCallback<ClassifyCateAdModel>(getContext()) {
+        mApi4Classify.getCategoryAd(firstCategoryId, new DataCallback<ClassifyCateAdModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 
@@ -284,28 +359,28 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 mAdModels.clear();
                 mAdModels.addAll(productCateAds);
 
-                // 测试数据
-                mAdModels.clear();
-                // https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg
-                ClassifyCateAdModel.ProductCateAdsBean item1 = new ClassifyCateAdModel.ProductCateAdsBean();
-                item1.setImage_path("https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item");
-                item1.setImage_base_name("d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg");
-                item1.setLink("https://www.baidu.com");
-                mAdModels.add(item1);
-
-                // https://a-ssl.duitang.com/uploads/item/201607/14/20160714220705_MXRBw.jpeg
-                ClassifyCateAdModel.ProductCateAdsBean item2 = new ClassifyCateAdModel.ProductCateAdsBean();
-                item2.setImage_path("https://a-ssl.duitang.com/uploads/item/201607/14");
-                item2.setImage_base_name("20160714220705_MXRBw.jpeg");
-                item2.setLink("https://www.duitang.com/");
-                mAdModels.add(item2);
-
-                // https://img3.doubanio.com/view/photo/photo/public/p2447889764.webp
-                ClassifyCateAdModel.ProductCateAdsBean item3 = new ClassifyCateAdModel.ProductCateAdsBean();
-                item3.setImage_path("https://img3.doubanio.com/view/photo/photo/public");
-                item3.setImage_base_name("p2447889764.webp");
-//                item3.setLink("https://www.douban.com");
-                mAdModels.add(item3);
+                // 测试数据  要glide加载原图而非缩略图
+//                mAdModels.clear();
+//                // https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg
+//                ClassifyCateAdModel.ProductCateAdsBean item1 = new ClassifyCateAdModel.ProductCateAdsBean();
+//                item1.setImage_path("https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item");
+//                item1.setImage_base_name("d6ca7bcb0a46f21f3c2ad100fe246b600c33ae43.jpg");
+//                item1.setLink("https://www.baidu.com");
+//                mAdModels.add(item1);
+//
+//                // https://a-ssl.duitang.com/uploads/item/201607/14/20160714220705_MXRBw.jpeg
+//                ClassifyCateAdModel.ProductCateAdsBean item2 = new ClassifyCateAdModel.ProductCateAdsBean();
+//                item2.setImage_path("https://a-ssl.duitang.com/uploads/item/201607/14");
+//                item2.setImage_base_name("20160714220705_MXRBw.jpeg");
+//                item2.setLink("https://www.duitang.com/");
+//                mAdModels.add(item2);
+//
+//                // https://img3.doubanio.com/view/photo/photo/public/p2447889764.webp
+//                ClassifyCateAdModel.ProductCateAdsBean item3 = new ClassifyCateAdModel.ProductCateAdsBean();
+//                item3.setImage_path("https://img3.doubanio.com/view/photo/photo/public");
+//                item3.setImage_base_name("p2447889764.webp");
+////                item3.setLink("https://www.douban.com");
+//                mAdModels.add(item3);
 
                 int adNum = mAdModels.size();
                 if (adNum == 1) {
@@ -338,8 +413,17 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
         });
 
+    }
+
+    /**
+     * 请求二级分类项数据（筛选框信息）
+     *
+     * @param firstCateId 一级分类id
+     */
+    private void loadData4SecondCategory(final int firstCateId) {
+
         // 根据一级分类获取二级分类项列表
-        mApi4Classify.getTwoLevelCate(oneCateId, new DataCallback<ClassifyTwoCateModel>(getContext()) {
+        mApi4Classify.getTwoLevelCate(firstCateId, new DataCallback<ClassifyTwoCateModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 
@@ -347,6 +431,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
             @Override
             public void onSuccess(Object response, int id) {
+                isSecondCategoryLoadSuccess = true;
+
                 if (response == null) {
                     return;
                 }
@@ -361,7 +447,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 classifyIds.clear();
 
                 classifies.add(strDefaultSort);
-                classifyIds.add(oneCateId);
+                classifyIds.add(firstCateId);
 
                 for (ClassifyTwoCateModel.TwoCateListBean item : twoCateList) {
                     classifies.add(item.getCate_name());
@@ -372,9 +458,27 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             }
         });
 
-        LogUtils.d("@@@", "ClassifyDetailFragment pid: " + pid + ", cateType: " + cateType);
+    }
+
+    /**
+     * 请求推荐或分类下的商品数据
+     *
+     * @param pageNum      页码
+     * @param resetPageNo  是否重设页码
+     * @param categoryId   分类id
+     * @param categoryType 分类级别
+     */
+    private void loadData4Products(boolean resetPageNo, final int pageNum, int categoryId, int categoryType) {
+
+//        requestTime ++;
+//        printInfo();
+
+        if (resetPageNo) {
+            currentPageNum = 1;
+        }
+
         // 请求商品数据
-        mApi4Classify.getProductsData(pid, cateType, pageNo, new DataCallback<ClassifyProductModel>(getContext()) {
+        mApi4Classify.getProductsData(categoryId, categoryType, pageNum, new DataCallback<ClassifyProductModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 mRecyclerView.refreshComplete();
@@ -392,7 +496,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 ClassifyProductModel model = (ClassifyProductModel) response;
                 List<ClassifyProductModel.DataBean> data = model.getData();
                 if (data != null) {
-                    if (pageNo <= 1) {
+                    if (pageNum <= 1) {
                         mListData.clear();
                     }
                     mListData.addAll(data);
@@ -402,13 +506,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 mRecyclerView.loadMoreComplete();
 
                 // 最后一页
-                if (pageNo >= model.getLast_page()) {
+                if (currentPageNum >= model.getLast_page()) {
                     mRecyclerView.setIsnomore(true);
-                }else {
+                } else {
                     mRecyclerView.setIsnomore(false);
                 }
 
                 mAdapter.notifyDataSetChanged();
+
+                currentPageNum++;
             }
         });
 
@@ -468,8 +574,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             LogUtils.d(TAG, "adimage url: " + imagePath);
 
             Glide.with(getActivity())
-//                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(getContext()), 0))
-                    .load(imagePath)
+                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(getContext()), 0))
+//                    .load(imagePath)
                     .transform(mGlideRoundTransform)
                     .into(imageView);
 
@@ -478,7 +584,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     /**
-     * 广告轮播条目点击监听
+     * 广告轮播条目点击
      *
      * @param position
      */

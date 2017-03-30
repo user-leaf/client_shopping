@@ -17,12 +17,12 @@ public class Api4Classify extends BaseClientApi {
     /**
      * 根据一级分类获取二级分类项列表
      *
-     * @param oneLevelCateId 一级分类id
+     * @param firstCategoryId   一级分类id
      * @param callback
      */
-    public void getTwoLevelCate(int oneLevelCateId, DataCallback<ClassifyTwoCateModel> callback) {
+    public void getTwoLevelCate(int firstCategoryId, DataCallback<ClassifyTwoCateModel> callback) {
 
-        String url = ClientAPI.API_POINT + "api/v1/category/getTwoLevelCate/" + oneLevelCateId;
+        String url = ClientAPI.API_POINT + "api/v1/category/getTwoLevelCate/" + firstCategoryId;
 
         LogUtils.d(TAG, "getTwoLevelCate: " + url);
 
@@ -32,14 +32,14 @@ public class Api4Classify extends BaseClientApi {
     /**
      * 根据一级分类获取广告数据
      *
-     * @param oneLevelCateId 一级分类id
+     * @param firstCategoryId   一级分类id
      * @param callback
      */
-    public void getCateAd(int oneLevelCateId, DataCallback<ClassifyCateAdModel> callback) {
+    public void getCategoryAd(int firstCategoryId, DataCallback<ClassifyCateAdModel> callback) {
 
-        String url = ClientAPI.API_POINT + "api/v1/category/getProductCateAd/" + oneLevelCateId;
+        String url = ClientAPI.API_POINT + "api/v1/category/getProductCateAd/" + firstCategoryId;
 
-        LogUtils.d(TAG, "getCateAd: " + url);
+        LogUtils.d(TAG, "getCategoryAd: " + url);
 
         doGet(url, ClassifyDetailFragment.TAG, null, callback);
     }
@@ -47,36 +47,28 @@ public class Api4Classify extends BaseClientApi {
     /**
      * 根据层级分类获取商品列表数据
      *
-     * @param pid  分类项id
-     * @param cateType 分类项级别
-     * @param pageNo  页码
+     * @param categoryId    分类id
+     * @param categoryType  分类级别
+     * @param pageNum       页码
      * @param callback
      */
-    public void getProductsData(int pid, int cateType, int pageNo, DataCallback<ClassifyProductModel> callback) {
+    public void getProductsData(int categoryId, int categoryType, int pageNum, DataCallback<ClassifyProductModel> callback) {
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
-//        if (cateType == -1) { // 推荐
-//            stringBuilder.append("api/v1/product/recommendProduct")
-//                    .append("?page=").append(pageNo);
-//
-//        } else if (cateType == 1) { // 一级分类
-//            stringBuilder.append("api/v1/product/getOneCateProducts/")
-//                    .append(pid);
-//        } else { // 二级分类
-//            stringBuilder.append("api/v1/product/getTwoCateProducts/")
-//            .append(pid);
-//        }
 
-        if (pid == ClassifyPage.RECOMMEND_ID_CLASSIFY){ // 推荐
+//        stringBuilder.append("api/v1/product/recommendProduct")
+//                .append("?page=").append(pageNum);
+
+        if (categoryId == ClassifyPage.RECOMMEND_ID_CLASSIFY){ // 推荐
             stringBuilder.append("api/v1/product/recommendProduct")
-                    .append("?page=").append(pageNo);
-        }else { // 其它
+                    .append("?page=").append(pageNum);
+        }else { // 分类
             stringBuilder.append("api/v1/product/getCateProducts/")
-                    .append(pid).append("/").append(cateType)
-                    .append("?page=").append(pageNo);
+                    .append(categoryId).append("/").append(categoryType)
+                    .append("?page=").append(pageNum);
         }
         String url = stringBuilder.toString();
 
-        LogUtils.d("@@@", "pid: " + pid + ", cateType: " + cateType + "\ngetProductsData: " + url);
+        LogUtils.d("@@@", "categoryId: " + categoryId + ", categoryType: " + categoryType + "\ngetProductsData: " + url);
 
         doGet(url, ClassifyDetailFragment.TAG, null, callback);
     }
