@@ -247,7 +247,10 @@ public class ClassifyPage extends BaseFragment {
     private View.OnClickListener toolsItemListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            viewpager.setCurrentItem(v.getId());
+            //默认有切换动画
+//            viewpager.setCurrentItem(v.getId());
+            //去掉切换动画
+            viewpager.setCurrentItem(v.getId(),false);
 //            ToastUtils.showLong(""+list.get(v.getId()).getCate_name());
         }
     };
