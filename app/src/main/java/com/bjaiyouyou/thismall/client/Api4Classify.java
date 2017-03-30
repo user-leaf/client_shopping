@@ -39,7 +39,7 @@ public class Api4Classify extends BaseClientApi {
 
         String url = ClientAPI.API_POINT + "api/v1/category/getProductCateAd/" + firstCategoryId;
 
-        LogUtils.d(TAG, "getCategoryAd: " + url);
+        LogUtils.d(ClassifyDetailFragment.TAG, "getCategoryAd: " + url);
 
         doGet(url, ClassifyDetailFragment.TAG, null, callback);
     }
@@ -68,7 +68,10 @@ public class Api4Classify extends BaseClientApi {
         }
         String url = stringBuilder.toString();
 
-        LogUtils.d("@@@", "categoryId: " + categoryId + ", categoryType: " + categoryType + "\ngetProductsData: " + url);
+        LogUtils.d(ClassifyDetailFragment.TAG, "categoryId: " + categoryId
+                + ", \ncategoryType: " + categoryType
+                + ", \npageNum: " + pageNum
+                + "\ngetProductsData: " + url);
 
         doGet(url, ClassifyDetailFragment.TAG, null, callback);
     }

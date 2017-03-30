@@ -62,6 +62,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private int firstCateId;            // 一级分类id(用于获取二级分类项请求、不限分类的id等，有必要保存)
     private int currentPageNum;         // 当前商品分页页码
     private String strDefaultSort = "全部分类";
+    // flag
     private boolean isSecondCategoryLoadSuccess;    // 二级分类项数据是否请求成功
 
     private XRecyclerView mRecyclerView;
@@ -248,6 +249,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 currentCategoryType = 2; // 二级分类
                 currentPageNum = 1;
                 loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
+                // 点击筛选中的“全部”时请求广告数据
+                if (position == 0) {
+                    loadData4Ad(firstCateId);
+                }
 
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
@@ -303,12 +308,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 // 请求商品数据
                 loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
 
-                // 如果目前没有广告，则请求
-                if (mAdModels.isEmpty()) {
-                    loadData4Ad(firstCateId);
-                }
+                // 请求广告数据
+                loadData4Ad(firstCateId);
 
-                // 筛选菜单中只有一项，则请求数据??
+                // 上次请求成功则不再请求
                 if (!isSecondCategoryLoadSuccess) {
                     loadData4SecondCategory(firstCateId);
                 }
@@ -316,7 +319,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
             @Override
             public void onLoadMore() {
-                currentPageNum++;
                 loadData4Products(false, currentPageNum, currentCategoryId, currentCategoryType);
             }
         });
@@ -468,7 +470,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
      * @param categoryId   分类id
      * @param categoryType 分类级别
      */
-    private void loadData4Products(boolean resetPageNo, final int pageNum, int categoryId, int categoryType) {
+    private void loadData4Products(boolean resetPageNo, final int pageNum, final int categoryId, int categoryType) {
 
 //        requestTime ++;
 //        printInfo();
@@ -488,6 +490,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             @Override
             public void onSuccess(Object response, int id) {
                 mRecyclerView.refreshComplete();
+                mRecyclerView.loadMoreComplete();
 
                 if (response == null) {
                     return;
@@ -501,9 +504,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                     }
                     mListData.addAll(data);
                 }
-
-                mRecyclerView.refreshComplete();
-                mRecyclerView.loadMoreComplete();
 
                 // 最后一页
                 if (currentPageNum >= model.getLast_page()) {
@@ -549,6 +549,23 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             return;
         }
         GoodsDetailsActivity.actionStart(getContext(), dataBean.getId());
+    }
+
+    /**
+     * 设置广告栏是否显示
+     *
+     * @param isShow
+     */
+    public void setAdViewVisible(boolean isShow) {
+        if (isShow) {
+            if (mAdContainer.getVisibility() == View.GONE) {
+                mAdContainer.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (mAdContainer.getVisibility() == View.VISIBLE) {
+                mAdContainer.setVisibility(View.GONE);
+            }
+        }
     }
 
     public class LocalImageHolderView implements Holder<ClassifyCateAdModel.ProductCateAdsBean> {

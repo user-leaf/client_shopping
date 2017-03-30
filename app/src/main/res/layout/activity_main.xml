@@ -37,7 +37,7 @@
                 android:id="@+id/controller_zero"
                 style="@style/controller_style"
                 android:checked="true"
-                android:drawableTop="@drawable/selector_controller_one"
+                android:drawableTop="@drawable/selector_tab_home"
                 android:text="@string/controller_zero"
                 android:onClick="onTabClicked"
                 />
@@ -67,7 +67,7 @@
                 android:id="@+id/controller_one"
                 style="@style/controller_style"
                 android:checked="false"
-                android:drawableTop="@drawable/selector_controller_one"
+                android:drawableTop="@drawable/selector_tab_classification"
                 android:text="@string/controller_one"
                 android:onClick="onTabClicked"
                 />
@@ -96,7 +96,7 @@
             <RadioButton
                 android:id="@+id/controller_two"
                 style="@style/controller_style"
-                android:drawableTop="@drawable/selector_controller_two"
+                android:drawableTop="@drawable/selector_tab_task"
                 android:text="@string/controller_two"
                 android:onClick="onTabClicked"
                 />
@@ -120,7 +120,7 @@
             <RadioButton
                 android:id="@+id/controller_three"
                 style="@style/controller_style"
-                android:drawableTop="@drawable/selector_controller_three"
+                android:drawableTop="@drawable/selector_tab_shoppingcart"
                 android:text="@string/controller_three"
                 android:onClick="onTabClicked"
                 />
@@ -135,7 +135,7 @@
             <RadioButton
                 android:id="@+id/controller_four"
                 style="@style/controller_style"
-                android:drawableTop="@drawable/selector_controller_four"
+                android:drawableTop="@drawable/selector_tab_profile"
                 android:text="@string/controller_four"
                 android:onClick="onTabClicked"
                 />
