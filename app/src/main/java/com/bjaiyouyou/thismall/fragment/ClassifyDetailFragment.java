@@ -599,7 +599,13 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         if (dataBean == null) {
             return;
         }
-        GoodsDetailsActivity.actionStart(getContext(), dataBean.getId());
+
+        ClassifyProductModel.DataBean.ProductBean productBean = dataBean.getProduct();
+        if (productBean == null) {
+            return;
+        }
+
+        GoodsDetailsActivity.actionStart(getContext(), productBean.getId());
     }
 
     /**
