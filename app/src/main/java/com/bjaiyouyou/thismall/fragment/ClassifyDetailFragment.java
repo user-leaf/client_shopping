@@ -437,14 +437,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
                 if (mAdModels.isEmpty()) { // mConvenientBanner貌似不支持数据减为空时的刷新
                     mAdContainer.removeView(mConvenientBanner);
-//                    if (mAdContainer.getVisibility() == View.VISIBLE) {
-//                        mAdContainer.setVisibility(View.GONE);
-//                    }
                     setAdViewVisible(false);
                 } else {
-//                    if (mAdContainer.getVisibility() == View.GONE) {
-//                        mAdContainer.setVisibility(View.VISIBLE);
-//                    }
                     setAdViewVisible(true);
                     mConvenientBanner.notifyDataSetChanged();
                 }
@@ -545,9 +539,11 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
                 // 最后一页
                 if (currentPageNum >= model.getLast_page()) {
-                    mRecyclerView.setIsnomore(true);
+//                    mRecyclerView.setIsnomore(true);
+                    mRecyclerView.setLoadingMoreEnabled(false);
                 } else {
-                    mRecyclerView.setIsnomore(false);
+//                    mRecyclerView.setIsnomore(false);
+                    mRecyclerView.setLoadingMoreEnabled(true);
                 }
 
                 mAdapter.notifyDataSetChanged();
