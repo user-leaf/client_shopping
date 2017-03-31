@@ -179,11 +179,21 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         super.setUserVisibleHint(isVisibleToUser);
         LogUtils.d("====", "Fragment " + classTag + ": setUserVisibleHint， isVisibleToUser: " + isVisibleToUser);
 
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             if (mRecyclerView != null) {
                 mRecyclerView.smoothScrollToPosition(0);
             }
+        } else {
+            if (mDropDownMenu != null && mDropDownMenu.isShowing()) {
+                mDropDownMenu.closeMenu();
+            }
         }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        LogUtils.d("====", "Fragment " + classTag + ": onHiddenChanged， hidden: " + hidden);
     }
 
     public ClassifyDetailFragment() {
