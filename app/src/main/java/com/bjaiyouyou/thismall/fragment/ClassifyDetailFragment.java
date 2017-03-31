@@ -38,6 +38,7 @@ import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyydjk.library.DropDownMenu;
 
@@ -55,7 +56,13 @@ import okhttp3.Call;
  */
 public class ClassifyDetailFragment extends BaseFragment implements OnItemClickListener, ClassifyAdapter.OnItemClickListener {
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
-    private View layout;
+
+    // debug
+    private int classTag;
+    private boolean debug = false;
+    private int requestTime = 0;
+    private int printTime = 0;
+    private TextView mTvShow;
 
     private int currentCategoryType;    // 分类项级别（1/2）
     private int currentCategoryId;      // 当前选中的分类id
@@ -65,6 +72,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     // flag
     private boolean isSecondCategoryLoadSuccess;    // 二级分类项数据是否请求成功
 
+    private View layout;
     private XRecyclerView mRecyclerView;
     private ClassifyAdapter mAdapter;
     private ArrayList<ClassifyProductModel.DataBean> mListData;
@@ -87,15 +95,18 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     private Api4Classify mApi4Classify;
 
-    // debug
-    private int classTag;
-    private boolean debug = false;
-    private int requestTime = 0;
-    private int printTime = 0;
-    private TextView mTvShow;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        classTag = getArguments().getInt(ClassifyPage.INTENT_PARAM);
 
-    public ClassifyDetailFragment() {
-        // Required empty public constructor
+        LogUtils.d("====", "Fragment " + classTag + ": onAttach");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtils.d("====", "Fragment " + classTag + ": onCreate");
     }
 
     @Override
@@ -124,9 +135,25 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LogUtils.d("====", "Fragment " + classTag + ": onCreate");
+    public void onStart() {
+        super.onStart();
+        LogUtils.d("====", "Fragment " + classTag + ": onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.d("====", "Fragment " + classTag + ": onResume");
+        //广告开始自动翻页
+        mConvenientBanner.startTurning(5000);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtils.d("====", "Fragment " + classTag + ": onPause");
+        //广告停止翻页
+        mConvenientBanner.stopTurning();
     }
 
     @Override
@@ -142,39 +169,25 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        classTag = getArguments().getInt(ClassifyPage.INTENT_PARAM);
-
-        LogUtils.d("====", "Fragment " + classTag + ": onAttach");
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         LogUtils.d("====", "Fragment " + classTag + ": onDetach");
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        LogUtils.d("====", "Fragment " + classTag + ": onStart");
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtils.d("====", "Fragment " + classTag + ": setUserVisibleHint， isVisibleToUser: " + isVisibleToUser);
+
+        if (isVisibleToUser){
+            if (mRecyclerView != null) {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        LogUtils.d("====", "Fragment " + classTag + ": onPause");
-        //广告停止翻页
-        mConvenientBanner.stopTurning();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtils.d("====", "Fragment " + classTag + ": onResume");
-        //广告开始自动翻页
-        mConvenientBanner.startTurning(5000);
+    public ClassifyDetailFragment() {
+        // Required empty public constructor
     }
 
     private void initVariable() {
@@ -203,28 +216,36 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     private void initView() {
-        mDropDownMenu = (DropDownMenu) layout.findViewById(R.id.classify_dropdown_menu);
+
 //        mRecyclerView = (XRecyclerView) layout.findViewById(R.id.classify_recyclerview);
         mRecyclerView = new XRecyclerView(getContext());
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mRecyclerView.setLayoutParams(lp);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-
-        View mHeader = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
-        mAdContainer = (LinearLayout) mHeader.findViewById(R.id.classify_header_container);
-        mTvShow = (TextView) mHeader.findViewById(R.id.classify_header_show);
-        printInfo();
-        ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
-        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 4;
-        LogUtils.d(TAG, "ad height: " + layoutParams.height);
 
         // 广告控件
         mConvenientBanner = new ConvenientBanner(getActivity());
         ViewGroup.LayoutParams adParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mConvenientBanner.setLayoutParams(adParams);
 
+        // headerView1
+        View mHeader = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
+        mAdContainer = (LinearLayout) mHeader.findViewById(R.id.classify_header_container);
+        ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
+        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 4;
+        LogUtils.d(TAG, "ad height: " + layoutParams.height);
         mRecyclerView.addHeaderView(mHeader);
+
+        // headerView2
+        mTvShow = new TextView(getContext());
+        if (debug) {
+            mTvShow.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+            mRecyclerView.addHeaderView(mTvShow);
+        }
+        printInfo();
 
         // 筛选菜单
         // init classify menu
@@ -256,10 +277,13 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 }
                 loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
 
+                mRecyclerView.smoothScrollToPosition(0);  // 解决有时不从第1条开始显示的问题
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
             }
         });
+
+        mPopupViews.add(classifyGridView);
 
         // 排序菜单去掉了
 //        // init rank menu
@@ -276,11 +300,10 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 //                mDropDownMenu.closeMenu();
 //            }
 //        });
-
-        mPopupViews.add(classifyGridView);
 //        mPopupViews.add(rankView);
 
         //init dropdownview
+        mDropDownMenu = (DropDownMenu) layout.findViewById(R.id.classify_dropdown_menu);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), mPopupViews, mRecyclerView);
     }
 
@@ -290,12 +313,12 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private void printInfo() {
         if (debug) {
             printTime++;
-            mTvShow.setText("requestTime:" + requestTime + ", printTime: " + printTime + ", \nclass: " + this.getId() + ", \ncurrentCategoryId: " + currentCategoryId + ", currentCategoryType: " + currentCategoryType);
+            mTvShow.setText("requestTime:" + requestTime + ", printTime: " + printTime + ", \nfirstCateId: " + firstCateId + ", \ncurrentCategoryId: " + currentCategoryId + ", currentCategoryType: " + currentCategoryType);
         }
     }
 
     private void setupView() {
-
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.CubeTransition);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
