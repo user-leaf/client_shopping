@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private ConvenientBanner mConvenientBanner;
 
     private Api4Classify mApi4Classify;
+    private TextView mTvNoMoreView;
 
     @Override
     public void onAttach(Context context) {
@@ -258,6 +260,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             mRecyclerView.addHeaderView(mTvShow);
         }
         printInfo();
+
+        // 在setLoadingMoreEnable(true)的时候，会把所有footview都显示出来，nomoreview会闪一下，效果不好
+//        mTvNoMoreView = new TextView(getContext());
+//        ViewGroup.LayoutParams lpNoMore = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        mTvNoMoreView.setLayoutParams(lpNoMore);
+//        mTvNoMoreView.setGravity(Gravity.CENTER);
+//        mTvNoMoreView.setText("已经全部加载完毕");
+//        mTvNoMoreView.setVisibility(View.GONE);
+//        mRecyclerView.addFootView(mTvNoMoreView);
 
         // 筛选菜单
         // init classify menu
@@ -541,9 +552,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 if (currentPageNum >= model.getLast_page()) {
 //                    mRecyclerView.setIsnomore(true);
                     mRecyclerView.setLoadingMoreEnabled(false);
+//                    if (mTvNoMoreView.getVisibility() == View.GONE) {
+//                        mTvNoMoreView.setVisibility(View.VISIBLE);
+//                    }
                 } else {
 //                    mRecyclerView.setIsnomore(false);
                     mRecyclerView.setLoadingMoreEnabled(true);
+//                    if (mTvNoMoreView.getVisibility() == View.VISIBLE) {
+//                        mTvNoMoreView.setVisibility(View.GONE);
+//                    }
                 }
 
                 mAdapter.notifyDataSetChanged();
@@ -637,7 +654,6 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     /**
      * 广告轮播条目点击
-     *
      * @param position
      */
     @Override

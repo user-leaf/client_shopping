@@ -61,6 +61,7 @@ import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.zxing.activity.CaptureActivity;
 import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.io.File;
@@ -651,7 +652,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             mLLPanicBuys.get(i).setOnClickListener(this);
         }
 
-
+        mGvShow.setLoadingMoreProgressStyle(ProgressStyle.CubeTransition);
         mGvShow.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
