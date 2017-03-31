@@ -20,7 +20,6 @@ import com.bjaiyouyou.thismall.fragment.ClassifyPage;
 import com.bjaiyouyou.thismall.fragment.HomePage;
 import com.bjaiyouyou.thismall.fragment.MinePage;
 import com.bjaiyouyou.thismall.fragment.TaskPage;
-import com.bjaiyouyou.thismall.utils.AppUtils;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.UpdateUtils;
@@ -198,7 +197,7 @@ public class MainActivity extends BaseActivity {
 
     ////////////////////////处理我的订单返回跳转+商品详情直接跳转到购物车
     public void goToBuyCar() {
-        index = 2;
+        index = 3;
         if (currentTabIndex != index) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
             trx.hide(fragments[currentTabIndex]);
