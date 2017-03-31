@@ -71,6 +71,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private String strDefaultSort = "全部分类";
     // flag
     private boolean isSecondCategoryLoadSuccess;    // 二级分类项数据是否请求成功
+    private boolean canShowAd;          // 是否可以显示广告栏
 
     private View layout;
     private XRecyclerView mRecyclerView;
@@ -205,6 +206,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         firstCateId = -1;
         currentPageNum = 1;
         isSecondCategoryLoadSuccess = false;
+        canShowAd = true;
 
         mApi4Classify = (Api4Classify) ClientApiHelper.getInstance().getClientApi(Api4Classify.class);
         mAdModels = new ArrayList<>();
@@ -275,19 +277,24 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mClassifyAdapter.setCheckItem(position);
+
                 // 网络请求
                 currentPageNum = 1;
                 currentCategoryId = classifyIds.get(position);
                 // 点击筛选中的“全部”时
                 if (position == 0) {
+                    canShowAd = true;
                     loadData4Ad(firstCateId);   // 请求广告数据
                     currentCategoryType = 1;    // 属于一级分类
                 } else {
+                    canShowAd = false;
+                    setAdViewVisible(false);
                     currentCategoryType = 2; // 二级分类
                 }
                 loadData4Products(true, currentPageNum, currentCategoryId, currentCategoryType);
 
                 mRecyclerView.smoothScrollToPosition(0);  // 解决有时不从第1条开始显示的问题
+
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
             }
@@ -430,14 +437,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
                 if (mAdModels.isEmpty()) { // mConvenientBanner貌似不支持数据减为空时的刷新
                     mAdContainer.removeView(mConvenientBanner);
-                    if (mAdContainer.getVisibility() == View.VISIBLE) {
-                        mAdContainer.setVisibility(View.GONE);
-                    }
-
+//                    if (mAdContainer.getVisibility() == View.VISIBLE) {
+//                        mAdContainer.setVisibility(View.GONE);
+//                    }
+                    setAdViewVisible(false);
                 } else {
-                    if (mAdContainer.getVisibility() == View.GONE) {
-                        mAdContainer.setVisibility(View.VISIBLE);
-                    }
+//                    if (mAdContainer.getVisibility() == View.GONE) {
+//                        mAdContainer.setVisibility(View.VISIBLE);
+//                    }
+                    setAdViewVisible(true);
                     mConvenientBanner.notifyDataSetChanged();
                 }
 
@@ -587,10 +595,11 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
      * @param isShow
      */
     public void setAdViewVisible(boolean isShow) {
-        if (isShow) {
-            if (mAdContainer.getVisibility() == View.GONE) {
-                mAdContainer.setVisibility(View.VISIBLE);
-            }
+        if (isShow && canShowAd) {
+                if (mAdContainer.getVisibility() == View.GONE) {
+                    mAdContainer.setVisibility(View.VISIBLE);
+                }
+
         } else {
             if (mAdContainer.getVisibility() == View.VISIBLE) {
                 mAdContainer.setVisibility(View.GONE);
