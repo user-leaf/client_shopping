@@ -232,8 +232,8 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
         final int width = ScreenUtils.getScreenWidth(getApplicationContext());
         final int textWidth = width / 4;
         final int textSpace = textWidth / 10;
-        int mTFLSpace=textWidth*3+textSpace*6;
-        final RelativeLayout.LayoutParams  paramsTFL=new RelativeLayout.LayoutParams(mTFLSpace, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int mTFLSpace = textWidth * 3 + textSpace * 6;
+        final RelativeLayout.LayoutParams paramsTFL = new RelativeLayout.LayoutParams(mTFLSpace, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 //        mTFL.setLayoutParams(paramsTFL);
 
@@ -242,7 +242,6 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
             public View getView(FlowLayout parent, int position, String s) {
                 TextView textView = (TextView) LayoutInflater.from(getApplicationContext())
                         .inflate(R.layout.member_center_tv, mTFL, false);
-
 
 
                 textView.setText(s);
@@ -449,28 +448,32 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
     private void doPayByPingpp() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, this, AlertView.Style.ActionSheet, this).show();
-
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)
+        }, this, AlertView.Style.ActionSheet, this).show();
     }
 
     //  https://github.com/saiwu-bigkoo/Android-AlertView
     // 所需
     @Override
     public void onItemClick(Object o, int position) {
+        super.onItemClick(o, position);
         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
         switch (position) {
-            case 0: // 微信支付
-                mChannel=Constants.CHANNEL_WECHAT;
+            case 0: // 支付宝支付
+                mChannel = Constants.CHANNEL_ALIPAY;
                 toPay();
                 break;
-            case 1: // 支付宝支付
-                mChannel=Constants.CHANNEL_ALIPAY;
-                toPay();
+            case 1: // 余额支付
+
                 break;
+            case 2: // 环迅支付
+
+                break;
+            default:
+                return;
         }
-
-
     }
+
 
     private void toPay() {
         new PaymentTask(MineMemberCenterIntegralPayActivity.this, MineMemberCenterIntegralPayActivity.this, mOrder_number, mChannel, mBtnPay, TAG)
@@ -501,39 +504,4 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
         });
     }
 
-    public void showMsg(String title, String msg1, String msg2) {
-        String str = title;
-        if (null != msg1 && msg1.length() != 0) {
-            str += "\n" + msg1;
-        }
-        if (null != msg2 && msg2.length() != 0) {
-            str += "\n" + msg2;
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(MineMemberCenterIntegralPayActivity.this);
-        builder.setMessage(str);
-        builder.setTitle("提示");
-        builder.setPositiveButton("OK", null);
-        builder.create().show();
-    }
-
-    private static String postJson(String url, String json) throws IOException {
-        MediaType type = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(type, json);
-        Request request = new Request.Builder().url(url).post(body).build();
-
-        OkHttpClient client = new OkHttpClient();
-        Response response = client.newCall(request).execute();
-
-        return response.body().string();
-    }
-
-    class PaymentRequest {
-        String channel;
-        int amount;
-
-        public PaymentRequest(String channel, int amount) {
-            this.channel = channel;
-            this.amount = amount;
-        }
-    }
 }
