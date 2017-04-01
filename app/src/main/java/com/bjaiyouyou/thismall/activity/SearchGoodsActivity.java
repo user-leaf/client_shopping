@@ -554,7 +554,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 300 && resultCode == RESULT_OK && data != null) {
-            Toast.makeText(this, data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
 //            Log.e("QRCode",data.getData().toString());
             Log.e("QRCode", data.getStringExtra("result").toString());
         }
