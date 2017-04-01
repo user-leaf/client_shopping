@@ -167,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/white"
-                    android:hint="微信钱包实名认证姓名"
+                    android:hint="@string/mine_user_income_name"
                     android:singleLine="true"
                     android:textSize="@dimen/text_size_small"
                     />

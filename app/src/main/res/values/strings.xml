@@ -29,4 +29,9 @@
     <string name="pay_balance">余额支付</string>
     <string name="pay_hx">环迅支付</string>
 
+    <!-- 个人中心 -->
+    <string name="mine_user_income_name">支付宝实名认证姓名</string>
+
+
+
 </resources>
