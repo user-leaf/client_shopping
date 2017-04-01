@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +87,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     private List<View> mPopupViews;
     //    private ClassifyListDropDownAdapter mClassifyAdapter;
     private ClassifyGridDropDownAdapter mClassifyAdapter;
+    private AdapterView.OnItemClickListener mClassifyClickListener;
     private ClassifyListDropDownAdapter mRankAdapter;
 
     // 广告
@@ -148,7 +148,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         super.onResume();
         LogUtils.d("====", "Fragment " + classTag + ": onResume");
         //广告开始自动翻页
-        mConvenientBanner.startTurning(5000);
+        if (mConvenientBanner.isCanLoop()) {
+            mConvenientBanner.startTurning(5000);
+        }
     }
 
     @Override
@@ -156,7 +158,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         super.onPause();
         LogUtils.d("====", "Fragment " + classTag + ": onPause");
         //广告停止翻页
-        mConvenientBanner.stopTurning();
+        if (mConvenientBanner.isCanLoop()) {
+            mConvenientBanner.stopTurning();
+        }
     }
 
     @Override
@@ -182,13 +186,26 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         super.setUserVisibleHint(isVisibleToUser);
         LogUtils.d("====", "Fragment " + classTag + ": setUserVisibleHint， isVisibleToUser: " + isVisibleToUser);
 
-        if (isVisibleToUser) {
+        if (isVisibleToUser) {  // 可见时
             if (mRecyclerView != null) {
                 mRecyclerView.smoothScrollToPosition(0);
             }
-        } else {
-            if (mDropDownMenu != null && mDropDownMenu.isShowing()) {
-                mDropDownMenu.closeMenu();
+        } else {  // 不可见时
+            if (mDropDownMenu != null) {
+                if (mDropDownMenu.isShowing()) {
+                    mDropDownMenu.closeMenu();
+                }
+
+                /**
+                 * 设置不可见时就还原为“全部分类”
+                 *
+                 * 临时解决切换回来要显示全部分类的需求（耗流量）
+                 * 不用担心mDropDownMenu为null，如果==null，说明第一次创建，是会走网络请求的
+                 */
+                ((TextView) ((LinearLayout) mDropDownMenu.getChildAt(0)).getChildAt(0)).setText(strDefaultSort);
+                if (mClassifyClickListener != null) {
+                    mClassifyClickListener.onItemClick(null, null, 0, 0);
+                }
             }
         }
     }
@@ -284,7 +301,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         mClassifyAdapter = new ClassifyGridDropDownAdapter(getContext(), classifies);
         classifyView.setAdapter(mClassifyAdapter);
 
-        classifyView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mClassifyClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mClassifyAdapter.setCheckItem(position);
@@ -309,7 +326,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 mDropDownMenu.setTabText(position == 0 ? headers[0] : classifies.get(position));
                 mDropDownMenu.closeMenu();
             }
-        });
+        };
+        classifyView.setOnItemClickListener(mClassifyClickListener);
 
         mPopupViews.add(classifyGridView);
 
@@ -514,6 +532,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
      * @param categoryType 分类级别
      */
     private void loadData4Products(boolean resetPageNo, final int pageNum, final int categoryId, int categoryType) {
+        LogUtils.d("@@@", classTag + " : loadData4Products");
 
 //        requestTime ++;
 //        printInfo();
@@ -615,9 +634,9 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
      */
     public void setAdViewVisible(boolean isShow) {
         if (isShow && canShowAd) {
-                if (mAdContainer.getVisibility() == View.GONE) {
-                    mAdContainer.setVisibility(View.VISIBLE);
-                }
+            if (mAdContainer.getVisibility() == View.GONE) {
+                mAdContainer.setVisibility(View.VISIBLE);
+            }
 
         } else {
             if (mAdContainer.getVisibility() == View.VISIBLE) {
@@ -660,6 +679,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     /**
      * 广告轮播条目点击
+     *
      * @param position
      */
     @Override
