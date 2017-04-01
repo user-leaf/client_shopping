@@ -40,6 +40,7 @@ public class WithdrawRecordAdapter extends MyBaseAdapter<WithdrawReCordModel.Dat
         }
         WithdrawReCordModel.DataBean dataBean=datas.get(position);
         if (dataBean!=null){
+            holder.tvType.setText(dataBean.getOrder_number());
             holder.tvMoney.setText(dataBean.getDrawings());
             holder.tvTime.setText(dataBean.getCreated_at());
         }

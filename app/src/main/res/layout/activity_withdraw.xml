@@ -277,7 +277,7 @@
                            android:id="@+id/et_withdraw_beneficiary_name"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content"
-                           android:hint="微信钱包实名认证姓名"
+                           android:hint="支付宝实名认证姓名"
                            android:textColorHint="#bbb"
                            android:background="@android:color/white"
                            android:ellipsize="end"

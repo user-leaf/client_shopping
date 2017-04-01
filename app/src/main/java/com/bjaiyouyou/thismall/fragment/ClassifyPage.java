@@ -188,20 +188,20 @@ public class ClassifyPage extends BaseFragment {
 
 
         /////////////////////////获得可搜索商品数目//////////////////////////////////////////////////////
-        mApi4Client.getClassifyGoodsNumber(new DataCallback<String>(getContext()) {
-            @Override
-            public void onFail(Call call, Exception e, int id) {
-                UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
-            }
-
-            @Override
-            public void onSuccess(Object response, int id) {
-                if (response!=null){
-                    String canSearchGoodsNum= (String) response;
-                    mEtSearch.setHint("搜索商品，共"+canSearchGoodsNum+"款好物");
-                }
-            }
-        });
+//        mApi4Client.getClassifyGoodsNumber(new DataCallback<String>(getContext()) {
+//            @Override
+//            public void onFail(Call call, Exception e, int id) {
+//                UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+//            }
+//
+//            @Override
+//            public void onSuccess(Object response, int id) {
+//                if (response!=null){
+//                    String canSearchGoodsNum= (String) response;
+//                    mEtSearch.setHint("搜索商品，共"+canSearchGoodsNum+"款好物");
+//                }
+//            }
+//        });
     }
     /**
      * 动态生成显示items中的textview和imageView
