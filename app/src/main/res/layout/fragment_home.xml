@@ -29,13 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/shape_home_top_bar_et_bg"
+            android:drawableRight="@mipmap/nav_icon_seach"
             android:focusable="false"
             android:paddingBottom="3dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="3dp"
-            android:drawableRight="@mipmap/nav_icon_seach"
             />
+
         <TextView
             android:id="@+id/home_tv_purchase_history"
             android:layout_width="wrap_content"
@@ -45,60 +46,66 @@
             android:textColor="#ffffff"
             />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <!--断网判断-->
         <LinearLayout
+            android:id="@+id/ll_home_un_network"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
             android:orientation="vertical"
-            >
-            <!--断网判断-->
-            <LinearLayout
-                android:id="@+id/ll_home_un_network"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/white"
-                android:visibility="gone">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:background="#FFDFE0"
-                    android:text="当前网络不可用，请检查网络设置"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-            </LinearLayout>
+                android:background="#FFDFE0"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="当前网络不可用，请检查网络设置"/>
 
-            <View
-                style="@style/entry_divider_fine_line_style"
-                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+        </LinearLayout>
 
-            <FrameLayout
+        <View
+            style="@style/entry_divider_fine_line_style"
+            android:visibility="gone"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/rv_everyday_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"/>
+
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/home_gv_show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:visibility="visible"
-                    android:id="@+id/rv_everyday_empty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                android:horizontalSpacing="3.5dp"
+                android:numColumns="2"
+                android:verticalSpacing="3.5dp"/>
+        </FrameLayout>
 
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/home_gv_show"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:numColumns="2"
-                    android:horizontalSpacing="3.5dp"
-                    android:verticalSpacing="3.5dp"/>
-            </FrameLayout>
-
-        </LinearLayout>
+    </LinearLayout>
 
 
     <WebView

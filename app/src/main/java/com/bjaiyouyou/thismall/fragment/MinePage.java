@@ -228,7 +228,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     //是否绑定支付宝
-    private boolean isBindingAlipay=false;
+    private boolean isBindingAlipay = false;
 
 
     private static final int SDK_AUTH_FLAG = 2;
@@ -248,10 +248,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
                         // 获取alipay_open_id，调支付时作为参数extern_token 的value
                         // 传入，则支付账户为该授权账户
-                        String userId=authResult.getUserId();
+                        String userId = authResult.getUserId();
                         bindingAlipay(userId);
-                        Log.e("authResult",""+authResult.getResult().toString());
-                        Log.e("userId",""+authResult.getUserId());
+                        Log.e("authResult", "" + authResult.getResult().toString());
+                        Log.e("userId", "" + authResult.getUserId());
                     } else {
                         // 其他状态值则为授权失败
                         ToastUtils.showShort("授权失败重新授权");
@@ -261,9 +261,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 default:
                     break;
             }
-        };
-    };
+        }
 
+        ;
+    };
 
 
     @Nullable
@@ -418,7 +419,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private void initData() {
         //初始化网路请求对象
 
-        mClientApi= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
+        mClientApi = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
 
         //模拟我的邀请好友假数据
 //        friendList=new ArrayList<>();
@@ -462,7 +463,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     mLLUnNetWork.setVisibility(View.GONE);
                     mLoginView.setVisibility(View.VISIBLE);
                     mNotLoginView.setVisibility(View.GONE);
-                    if (response!=null) {
+                    if (response != null) {
 //                        mUser = new Gson().fromJson((JsonElement) response, User.class);
                         mUser = (User) response;
                         setData();
@@ -471,8 +472,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                          * 频繁报错
                          */
 //                        SPUtils.put(getContext(), Constants.USER, response+"");
-                        SPUtils.put(MainApplication.getContext(), Constants.USER, response+"");
-                    }else {
+                        SPUtils.put(MainApplication.getContext(), Constants.USER, response + "");
+                    } else {
                         ToastUtils.showShort("数据加载错误");
                     }
                     dismissLoadingDialog();
@@ -535,7 +536,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             mCoin = memberBean.getMoney_quantity();
             mMember_type = memberBean.getMember_type();
-            isVip=memberBean.getIs_vip();
+            isVip = memberBean.getIs_vip();
             isInTestUser = memberBean.getIs_in_test_user();
             mTVGoldCoinNum.setText(mCoin + "");
             mIntegral = memberBean.getIntegration();
@@ -543,26 +544,26 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             mOpenId = memberBean.getOpen_id();
 
 
-            String inCome=memberBean.getPush_money();
+            String inCome = memberBean.getPush_money();
 
-            int inComeNum=0;
-            if (!TextUtils.isEmpty(inCome)){
-                inComeNum=Integer.valueOf(inCome);
+            int inComeNum = 0;
+            if (!TextUtils.isEmpty(inCome)) {
+                inComeNum = Integer.valueOf(inCome);
             }
 
-            String canDraw=memberBean.getCan_drawings_amount();
+            String canDraw = memberBean.getCan_drawings_amount();
 
-            double canDrawNum=0;
-            if (!TextUtils.isEmpty(canDraw)){
-                canDrawNum=Double.valueOf(canDraw);
+            double canDrawNum = 0;
+            if (!TextUtils.isEmpty(canDraw)) {
+                canDrawNum = Double.valueOf(canDraw);
             }
 
-            LogUtils.e("inCome",""+inCome);
-            LogUtils.e("canDraw",""+canDraw);
+            LogUtils.e("inCome", "" + inCome);
+            LogUtils.e("canDraw", "" + canDraw);
 
             //可提现数
-            int money= (int) (inComeNum+canDrawNum);
-            mTvWithdrawNum.setText(""+money);
+            int money = (int) (inComeNum + canDrawNum);
+            mTvWithdrawNum.setText("" + money);
 
             mImgUrl = memberBean.getAvatar_path();
             mImgName = memberBean.getAvatar_name();
@@ -699,114 +700,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_mine_login: // 登录
-                jump(LoginActivity.class, false);
-
-                break;
-            case R.id.rl_mine_integral: // 积分
-                mClassJump = MineMemberCenterIntegralPayActivity.class;
-//                Toast.makeText(getActivity(), "积分", Toast.LENGTH_SHORT).show();
-                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
-                mIntentSafeCode.putExtra("mIntegral", mIntegral);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
-                if (isLogin) {
-//                    showSafeCodePopWin();
-                    createSafeCodeDialog();
-                } else {
-                    startActivity(mIntentSafeCode);
-                }
-//                startActivity(intentMIntegral);
-                break;
-            case R.id.rl_mine_goldcoin: // UU
-                mClassJump = MineMemberCenterActivity.class;
-//                Toast.makeText(getActivity(), "UU", Toast.LENGTH_SHORT).show();
-                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
-                mIntentSafeCode.putExtra("coin", mCoin);
-                mIntentSafeCode.putExtra("integral", mIntegral);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
-                mIntentSafeCode.putExtra("member_type", mMember_type);
-                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
-                mIntentSafeCode.putExtra("openId", mOpenId);
-                mIntentSafeCode.putExtra("safeCode", mSafeCode);
-
-                if (isLogin) {
-//                    showSafeCodePopWin();
-                    createSafeCodeDialog();
-                } else {
-                    startActivity(mIntentSafeCode);
-                }
-//                startActivity(intentMCoin);
-
-                break;
-            case R.id.rl_mine_withdraw: //提现
-                mIntentSafeCode = new Intent(getActivity(), WithdrawActivity.class);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
-                mIntentSafeCode.putExtra("safeCode", mSafeCode);
-                mIntentSafeCode.putExtra("coin", mCoin);
-                mIntentSafeCode.putExtra("member_type", mMember_type);
-                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
-                mIntentSafeCode.putExtra("isVip", isVip);
-                mClassJump = WithdrawActivity.class;
-                /**
-                 * 根据mOpenId判断是否绑定微信
-                 * 没绑定弹框提示绑定
-                 * 绑定直接跳转
-                 */
-                //已经绑定的
-                //test
-//                mOpenId=null;
-//                isLogin=false;
-                //没设置安全码
-                if (TextUtils.isEmpty(mSafeCode)){
-                    createSafeCodeDialog();
-                    //设置安全码
-                }else {
-//                    //绑定微信
-//                    if (!TextUtils.isEmpty(mOpenId)) {
-//                        //登录
-//                        if (isLogin) {
-//                            createSafeCodeDialog();
-//                            //没登录
-//                        } else {
-//                            startActivity(mIntentSafeCode);
-//                        }
-//                    } else {
-//                        //没绑定微信的，显示弹出框
-//                        showBindingWeChatDialog();
-//                    }
-                    getIfBindingAlipay();
-                }
-
-
-                //////////////////////////////////处理微信授权/////////////////////////
-
-
-                break;
-
-            case R.id.rl_mine_head_login: //带值跳转到安全码页面，然后再修改信息页面
-                updateMineUserMessage();
-                break;
-            case R.id.iv_mine_head: //带值跳转到安全码页面，然后再修改信息页面
-                updateMineUserMessage();
-                break;
-
-            case R.id.ll_mine_supply_the_phone: //拨打供货电话
-//                ToastUtils.showShort("拨打供货电话");
-//                callCustomerServerPhone();
-                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
-                break;
-            case R.id.ll_mine_service_the_phone: //拨打供货电话
-//                ToastUtils.showShort("拨打供货电话");
-//                callCustomerServerPhone();
-                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
-                break;
-
-        }
-    }
-
     ////////////////////////////////////////提现处理支付宝/////////////////////////////////////////
 
     /**
@@ -817,7 +710,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mClientApi.getIfBindingAlipay(new DataCallback<CheckIfBindingAlipayModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-                ToastUtils.exceptionToast(e,getContext());
+//                ToastUtils.exceptionToast(e, getContext());
             }
 
             @Override
@@ -837,37 +730,38 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                             startActivity(mIntentSafeCode);
                         }
                     } else {
-                            Dialog  dialog= DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号，账号一经绑定不能修改，是否继续？", "绑定", "取消",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            getAuthorizationParameters();
-                                            dialog.dismiss();
-                                        }
-                                    },
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
+                        Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号，账号一经绑定不能修改，是否继续？", "绑定", "取消",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        getAuthorizationParameters();
+                                        dialog.dismiss();
                                     }
-                            );
-                            dialog.show();
-                        }
-
+                                },
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                        );
+                        dialog.show();
                     }
+
                 }
-            });
-        }
+            }
+        });
+    }
 
 
     ///////////////////////////////支付宝授权////////////////////////////////////////////
+
     /**
-     *获得支付宝的授权参数
+     * 获得支付宝的授权参数
      * 成功授权，AlipayAuthorization()
      * 不成功提示
      */
-    private void   getAuthorizationParameters() {
+    private void getAuthorizationParameters() {
         //DataCallback<String>(getContext())不能识别接口返回的数据
 
 //        mClientApi.getAuthorizationParameters(new DataCallback<String>(getContext()) {
@@ -889,7 +783,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mClientApi.getAuthorizationParameters(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.exceptionToast(e,getContext());
+//                ToastUtils.exceptionToast(e, getContext());
                 //test
 //                String authorizationParameters= "";
 //                authV2(authorizationParameters);
@@ -898,10 +792,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             @Override
             public void onResponse(String response, int id) {
-                if (!TextUtils.isEmpty(response)){
-                    String authorizationParameters=  response.toString().trim();
+                if (!TextUtils.isEmpty(response)) {
+                    String authorizationParameters = response.toString().trim();
                     authV2(authorizationParameters);
-                }else {
+                } else {
                     ToastUtils.showShort("服务器处理中");
                 }
 
@@ -916,11 +810,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 成功提现
      * 不成功提示
      */
-    private void   bindingAlipay(String userId){
+    private void bindingAlipay(String userId) {
         mClientApi.bindingAlipay(userId, new DataCallback<String>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-                ToastUtils.exceptionToast(e,getContext());
+//                ToastUtils.exceptionToast(e, getContext());
 //                ToastUtils.showShort("绑定支付宝失败");
             }
 
@@ -940,8 +834,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 支付宝登录授期权,获得UserId，
      * 绑定支付宝
      * 成功绑定
-     *不成功提示
-     *
+     * 不成功提示
+     * <p/>
      * 获得了授权参数的时候调用
      * 支付宝账户授权业务
      *
@@ -952,7 +846,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         //test
 //        authInfo  = "apiname=com.alipay.account.auth&app_id=2017032106317944&app_name=mc&auth_type=AUTHACCOUNT&biz_type=openservice&pid=2088421738853841&product_id=APP_FAST_LOGIN&scope=kuaijie&sign_type=RSA2&target_id=2088421738853841&sign=ehOEhQjCUOLCNdJVtzQWioGS%2Btt1u9yuS4ShuqHoLZdtEbqZAkt3uTi9ohV2IXCfesVHKbAwQMkHrNlHZje5bozT0JLpU0rpHIi1wTgsGjbAuq45XTI7GoefqmGpfn1T5Z1y4s0H2JRQ3mKEFSJjrfhCtMq3%2B07S5HlKXdJX7fXq1pS2EP%2F%2FUB%2FFv5IEkmvZalaHkUtWLqjB2pVd0vucvReH6Y9531xe8Hn4lYgZ3OuPtrxlIpOhLSs5Rt6fuox9gisPhaHiLWBjxCKUZy%2B4E65B05KZg2Jbgt8V%2BaxNZTIRvcBK7DxEeKPPBqBPyDRQoDitSR2SULDSKlQUJxB1uA%3D%3D";
 
-        LogUtils.e("authInfo",authInfo);
+        LogUtils.e("authInfo", authInfo);
         final String finalAuthInfo = authInfo;
         Runnable authRunnable = new Runnable() {
 
@@ -974,9 +868,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         Thread authThread = new Thread(authRunnable);
         authThread.start();
     }
-
-
-
 
 
     /**
@@ -1109,7 +1000,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private LinearLayout mLLSetEmail;
 
     private void createSafeCodeDialog() {
-        if (mSafeCodeDialog!=null){
+        if (mSafeCodeDialog != null) {
             mSafeCodeDialog.dismiss();
         }
         mSafeCodeDialog = new MaterialDialog.Builder(getContext())
@@ -1239,6 +1130,118 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             case R.id.iv_email_send_succeed:
                 dialogDismiss(mEmailSendSucceedDialog);
                 break;
+            //////////////////////////////////个人中心重复点击/////////////////////////
+
+            case R.id.bt_mine_login: // 登录
+                jump(LoginActivity.class, false);
+
+                break;
+            case R.id.rl_mine_integral: // 积分
+                mClassJump = MineMemberCenterIntegralPayActivity.class;
+//                Toast.makeText(getActivity(), "积分", Toast.LENGTH_SHORT).show();
+                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
+                mIntentSafeCode.putExtra("mIntegral", mIntegral);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+                if (isLogin) {
+//                    showSafeCodePopWin();
+                    createSafeCodeDialog();
+                } else {
+                    startActivity(mIntentSafeCode);
+                }
+//                startActivity(intentMIntegral);
+                break;
+            case R.id.rl_mine_goldcoin: // UU
+                mClassJump = MineMemberCenterActivity.class;
+//                Toast.makeText(getActivity(), "UU", Toast.LENGTH_SHORT).show();
+                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
+                mIntentSafeCode.putExtra("coin", mCoin);
+                mIntentSafeCode.putExtra("integral", mIntegral);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+                mIntentSafeCode.putExtra("member_type", mMember_type);
+                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
+                mIntentSafeCode.putExtra("openId", mOpenId);
+                mIntentSafeCode.putExtra("safeCode", mSafeCode);
+
+                if (isLogin) {
+//                    showSafeCodePopWin();
+                    createSafeCodeDialog();
+                } else {
+                    startActivity(mIntentSafeCode);
+                }
+//                startActivity(intentMCoin);
+
+                break;
+            case R.id.rl_mine_withdraw: //提现
+                //没登录去登录页
+                if (!isLogin){
+                    mIntentSafeCode=new Intent(getActivity(),LoginActivity.class);
+                    startActivity(mIntentSafeCode);
+                    return;
+                }
+                //已经登录做登录处理
+                mIntentSafeCode = new Intent(getActivity(), WithdrawActivity.class);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+                mIntentSafeCode.putExtra("safeCode", mSafeCode);
+                mIntentSafeCode.putExtra("coin", mCoin);
+                mIntentSafeCode.putExtra("member_type", mMember_type);
+                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
+                mIntentSafeCode.putExtra("isVip", isVip);
+                mClassJump = WithdrawActivity.class;
+                /**
+                 * 根据mOpenId判断是否绑定微信
+                 * 没绑定弹框提示绑定
+                 * 绑定直接跳转
+                 */
+                //已经绑定的
+                //test
+//                mOpenId=null;
+//                isLogin=false;
+                //没设置安全码
+                if (TextUtils.isEmpty(mSafeCode)) {
+                    createSafeCodeDialog();
+                    //设置安全码
+                } else {
+//                    //绑定微信
+//                    if (!TextUtils.isEmpty(mOpenId)) {
+//                        //登录
+//                        if (isLogin) {
+//                            createSafeCodeDialog();
+//                            //没登录
+//                        } else {
+//                            startActivity(mIntentSafeCode);
+//                        }
+//                    } else {
+//                        //没绑定微信的，显示弹出框
+//                        showBindingWeChatDialog();
+//                    }
+                    getIfBindingAlipay();
+                }
+
+
+                //////////////////////////////////处理微信授权/////////////////////////
+
+
+                break;
+
+            case R.id.rl_mine_head_login: //带值跳转到安全码页面，然后再修改信息页面
+                updateMineUserMessage();
+                break;
+            case R.id.iv_mine_head: //带值跳转到安全码页面，然后再修改信息页面
+                updateMineUserMessage();
+                break;
+
+            case R.id.ll_mine_supply_the_phone: //拨打供货电话
+//                ToastUtils.showShort("拨打供货电话");
+//                callCustomerServerPhone();
+                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
+                break;
+            case R.id.ll_mine_service_the_phone: //拨打供货电话
+//                ToastUtils.showShort("拨打供货电话");
+//                callCustomerServerPhone();
+                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                break;
+
+
         }
 
     }
@@ -1443,7 +1446,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private ImageView ivSateCodeFindClose;
 
     private void createFindSafeCodeDialog() {
-        if (mFindSafeCodeDialog!=null){
+        if (mFindSafeCodeDialog != null) {
             mFindSafeCodeDialog.dismiss();
         }
 
@@ -1518,7 +1521,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private ImageView ivEmailSendSucceedClose;
 
     private void createEmailSendSucceedDialog() {
-        if (mEmailSendSucceedDialog!=null){
+        if (mEmailSendSucceedDialog != null) {
             mEmailSendSucceedDialog.dismiss();
         }
         mEmailSendSucceedDialog = new MaterialDialog.Builder(getContext())
