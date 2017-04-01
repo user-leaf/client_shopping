@@ -941,11 +941,11 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                 toPay();
                 break;
             case 1: // 余额支付
-                ToastUtils.showShort("正在开发中...");
+                ToastUtils.showShort("正在开通中...");
                 break;
 
             case 2: // 环迅支付
-                ToastUtils.showShort("正在开发中...");
+                ToastUtils.showShort("正在开通中...");
                 break;
             default:
                 return;

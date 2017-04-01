@@ -2,6 +2,7 @@ package com.bjaiyouyou.thismall.callback;
 
 import android.content.Context;
 
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.umeng.analytics.MobclickAgent;
@@ -55,6 +56,7 @@ public abstract class DataCallback<T> extends Callback {
                                 + "\n[gson] " + e.getMessage()
                                 + "\n[json] " + str
                 );
+                LogUtils.e(TAG, e.getMessage());
                 return null;
             }
         }

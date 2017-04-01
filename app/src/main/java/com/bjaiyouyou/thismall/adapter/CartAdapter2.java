@@ -414,7 +414,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                     int count = cartItem.getCartModel().getNumber();
                     count++;
 //                    if (count <= cartItem.getCartModel().getProduct_size().getStock()) { // 如果有库存
-                    if (count <= 99) { // 如果有库存
+                    if (count <= 99) {
                         cartItem.getCartModel().setNumber(count);
                         // 网络请求
                         dealNumberChange(count, cartItem, 1);

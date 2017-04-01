@@ -251,11 +251,11 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
                 break;
 
             case 1: // 余额支付
-                ToastUtils.showShort("正在开发中");
+                ToastUtils.showShort("正在开通中");
                 break;
 
             case 2: // 环迅支付
-                ToastUtils.showShort("正在开发中");
+                ToastUtils.showShort("正在开通中");
                 break;
 
             default:

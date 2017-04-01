@@ -79,7 +79,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private View mSigninHasLoginView;   // 签到页已登录
     private View mTvLogin;              // 去登录按钮
 
-    // 会员展示栏
+    // 会员展示栏标题
     private TextView mTvVipTip;         // 标题
     private View mVipSyncView;          // 同步积分
     private ImageView mIvVipSync;       // 同步积分按钮图标
@@ -213,6 +213,69 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     }
 
     /**
+     * 加载视频广告列表数据
+     *
+     * @param pageNum   页码
+     */
+    private void loadData4Ad(final int pageNum) {
+
+        mApi4Task.getTaskAd(pageNum, new DataCallback<TaskModel>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                closeRefresh();
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+
+                TaskModel taskModel = (TaskModel) response;
+                if (taskModel != null) {
+
+                    if (pageNum == 1) {
+                        mList.clear();
+                    }
+                    mList.addAll(taskModel.getData());
+                    mAdapter.notifyDataSetChanged();
+
+                }
+                closeRefresh();
+
+                currentPageNum++;
+            }
+        });
+
+    }
+
+
+    private void closeRefresh() {
+        // 加载完成，关闭刷新
+        if (mScrollView.isRefreshing()) {
+            mScrollView.onRefreshComplete();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TaskModel.DataBean dataBean = mList.get(position);
+        if (dataBean != null) {
+            Intent intent = new Intent(getActivity(), WebShowActivity.class);
+            StringBuilder stringBuilder = new StringBuilder(ClientAPI.URL_WX_H5);
+            stringBuilder.append("task-detail.html?id=")
+                    .append(dataBean.getId())
+                    .append("&token=")
+                    .append(CurrentUserManager.getUserToken())
+                    .append("&type=android");
+            String strVideoH5Url = stringBuilder.toString();
+
+            intent.putExtra(
+                    WebShowActivity.PARAM_URLPATH,
+                    strVideoH5Url);
+            getActivity().startActivity(intent);
+        }
+
+    }
+
+    /**
      * 加载签到信息和会员开通信息
      */
     private void loadData4Page() {
@@ -278,70 +341,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                 }
             }
         });
-
-    }
-
-    /**
-     * 加载视频广告列表数据
-     *
-     * @param pageNum   页码
-     */
-    private void loadData4Ad(final int pageNum) {
-
-        mApi4Task.getTaskAd(pageNum, new DataCallback<TaskModel>(getContext()) {
-            @Override
-            public void onFail(Call call, Exception e, int id) {
-                closeRefresh();
-            }
-
-            @Override
-            public void onSuccess(Object response, int id) {
-
-                TaskModel taskModel = (TaskModel) response;
-                if (taskModel != null) {
-
-                    if (pageNum == 1) {
-                        mList.clear();
-                    }
-                    mList.addAll(taskModel.getData());
-                    mAdapter.notifyDataSetChanged();
-
-                }
-                closeRefresh();
-
-                currentPageNum++;
-            }
-        });
-
-    }
-
-    /**
-     * 完成刷新
-     */
-    private void closeRefresh() {
-        if (mScrollView.isRefreshing()) {
-            mScrollView.onRefreshComplete();
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TaskModel.DataBean dataBean = mList.get(position);
-        if (dataBean != null) {
-            Intent intent = new Intent(getActivity(), WebShowActivity.class);
-            StringBuilder stringBuilder = new StringBuilder(ClientAPI.URL_WX_H5);
-            stringBuilder.append("task-detail.html?id=")
-                    .append(dataBean.getId())
-                    .append("&token=")
-                    .append(CurrentUserManager.getUserToken())
-                    .append("&type=android");
-            String strVideoH5Url = stringBuilder.toString();
-
-            intent.putExtra(
-                    WebShowActivity.PARAM_URLPATH,
-                    strVideoH5Url);
-            getActivity().startActivity(intent);
-        }
 
     }
 

@@ -202,11 +202,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case 1: // 余额支付
-                ToastUtils.showShort("正在开发中...");
+                ToastUtils.showShort("正在开通中...");
                 break;
 
             case 2: // 环迅支付
-                ToastUtils.showShort("正在开发中...");
+                ToastUtils.showShort("正在开通中...");
                 break;
 
             default:
