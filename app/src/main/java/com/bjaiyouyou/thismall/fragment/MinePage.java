@@ -1,14 +1,20 @@
 package com.bjaiyouyou.thismall.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.alipay.sdk.app.AuthTask;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
@@ -47,11 +54,14 @@ import com.bjaiyouyou.thismall.callback.OnNoDoubleClickListener;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
 import com.bjaiyouyou.thismall.model.MyMine;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.model.User;
+import com.bjaiyouyou.thismall.pay.AuthResult;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DialUtils;
+import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SPUtils;
@@ -68,6 +78,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
@@ -214,6 +225,46 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private Api4Mine mClientApi;
     //拨打客服电话
     private LinearLayout mLLServicePhone;
+
+
+    //是否绑定支付宝
+    private boolean isBindingAlipay=false;
+
+
+    private static final int SDK_AUTH_FLAG = 2;
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_AUTH_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    AuthResult authResult = new AuthResult((Map<String, String>) msg.obj, true);
+                    String resultStatus = authResult.getResultStatus();
+                    // 判断resultStatus 为“9000”且result_code
+                    // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
+                    if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
+                        // 获取alipay_open_id，调支付时作为参数extern_token 的value
+                        // 传入，则支付账户为该授权账户
+                        String userId=authResult.getUserId();
+                        bindingAlipay(userId);
+                        Log.e("authResult",""+authResult.getResult().toString());
+                        Log.e("userId",""+authResult.getUserId());
+                    } else {
+                        // 其他状态值则为授权失败
+                        ToastUtils.showShort("授权失败重新授权");
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        };
+    };
+
+
 
 
     @Nullable
@@ -538,7 +589,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             mLevel = memberBean.getMember_level();
             //test
-            mLevel = 2;
+//            mLevel = 2;
             //修改会员等级的进度
             if (mLevel != 0) {
                 if (mLevel == 1) {
@@ -714,20 +765,25 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     createSafeCodeDialog();
                     //设置安全码
                 }else {
-                    //绑定微信
-                    if (!TextUtils.isEmpty(mOpenId)) {
-                        //登录
-                        if (isLogin) {
-                            createSafeCodeDialog();
-                            //没登录
-                        } else {
-                            startActivity(mIntentSafeCode);
-                        }
-                    } else {
-                        //没绑定微信的，显示弹出框
-                        showBindingWeChatDialog();
-                    }
+//                    //绑定微信
+//                    if (!TextUtils.isEmpty(mOpenId)) {
+//                        //登录
+//                        if (isLogin) {
+//                            createSafeCodeDialog();
+//                            //没登录
+//                        } else {
+//                            startActivity(mIntentSafeCode);
+//                        }
+//                    } else {
+//                        //没绑定微信的，显示弹出框
+//                        showBindingWeChatDialog();
+//                    }
+                    getIfBindingAlipay();
                 }
+
+
+                //////////////////////////////////处理微信授权/////////////////////////
+
 
                 break;
 
@@ -751,6 +807,155 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         }
     }
+
+    ////////////////////////////////////////提现处理支付宝/////////////////////////////////////////
+
+    /**
+     * 判断是否绑定支付宝
+     */
+    private void getIfBindingAlipay() {
+
+        mClientApi.getIfBindingAlipay(new DataCallback<CheckIfBindingAlipayModel>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                ToastUtils.exceptionToast(e,getContext());
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response!=null){
+                    CheckIfBindingAlipayModel model= (CheckIfBindingAlipayModel) response;
+                    isBindingAlipay= model.isIs_bound_alipay();
+
+                    //绑定支付宝
+                    if (isBindingAlipay) {
+                        //登录
+                        if (isLogin) {
+                            createSafeCodeDialog();
+                            //没登录
+                        } else {
+                            //绑定直接跳转到提现页面
+                            startActivity(mIntentSafeCode);
+                        }
+                    } else {
+                        Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号用于提现，账号一经绑定不能修好，是否继续？", "绑定", "取消",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        getAuthorizationParameters();
+                                        //取消对话框
+                                        dialog.dismiss();
+                                    }
+                                },
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                        );
+                        dialog.show();
+                    }
+
+                }
+            }
+        });
+
+    }
+
+
+    ///////////////////////////////支付宝授权////////////////////////////////////////////
+    /**
+     *获得支付宝的授权参数
+     * 成功授权，AlipayAuthorization()
+     * 不成功提示
+     */
+    private void   getAuthorizationParameters() {
+        mClientApi.getAuthorizationParameters(new DataCallback<String>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                ToastUtils.exceptionToast(e,getContext());
+
+                //test
+//                String authorizationParameters= "";
+//                authV2(authorizationParameters);
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response!=null){
+                    String authorizationParameters= (String) response;
+                    authV2(authorizationParameters);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 绑定支付宝
+     * 成功提现
+     * 不成功提示
+     */
+    private void   bindingAlipay(String userId){
+        mClientApi.bindingAlipay(userId, new DataCallback<String>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                ToastUtils.exceptionToast(e,getContext());
+                ToastUtils.showShort("绑定支付宝失败");
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                //绑定直接跳转到提现页面
+                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
+                startActivity(mIntentSafeCode);
+            }
+        });
+    }
+
+
+    /**
+     * 支付宝登录授期权,获得UserId，
+     * 绑定支付宝
+     * 成功绑定
+     *不成功提示
+     *
+     * 获得了授权参数的时候调用
+     * 支付宝账户授权业务
+     *
+     * @param authInfo
+     */
+    public void authV2(String authInfo) {
+
+//    public void alipayAuthorization(String authInfo) {
+        //test
+//        authInfo  = "apiname=com.alipay.account.auth&app_id=2017032106317944&app_name=mc&auth_type=AUTHACCOUNT&biz_type=openservice&pid=2088421738853841&product_id=APP_FAST_LOGIN&scope=kuaijie&sign_type=RSA2&target_id=2088421738853841&sign=ehOEhQjCUOLCNdJVtzQWioGS%2Btt1u9yuS4ShuqHoLZdtEbqZAkt3uTi9ohV2IXCfesVHKbAwQMkHrNlHZje5bozT0JLpU0rpHIi1wTgsGjbAuq45XTI7GoefqmGpfn1T5Z1y4s0H2JRQ3mKEFSJjrfhCtMq3%2B07S5HlKXdJX7fXq1pS2EP%2F%2FUB%2FFv5IEkmvZalaHkUtWLqjB2pVd0vucvReH6Y9531xe8Hn4lYgZ3OuPtrxlIpOhLSs5Rt6fuox9gisPhaHiLWBjxCKUZy%2B4E65B05KZg2Jbgt8V%2BaxNZTIRvcBK7DxEeKPPBqBPyDRQoDitSR2SULDSKlQUJxB1uA%3D%3D";
+
+        final String finalAuthInfo = authInfo;
+        Runnable authRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                // 构造AuthTask 对象
+                AuthTask authTask = new AuthTask(getActivity());
+                // 调用授权接口，获取授权结果
+                Map<String, String> result = authTask.authV2(finalAuthInfo, true);
+
+                Message msg = new Message();
+                msg.what = SDK_AUTH_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+
+        // 必须异步调用
+        Thread authThread = new Thread(authRunnable);
+        authThread.start();
+    }
+
+
+
 
 
     /**

@@ -288,12 +288,6 @@
             android:screenOrientation="portrait">
         </activity>
         <!-- 提现 -->
-        <activity
-            android:name=".activity.WithdrawActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
 
         <!-- 微信分享回调 -->
         <activity
@@ -397,6 +391,14 @@
             android:name=".activity.ImagePagerActivity"
             android:screenOrientation="portrait"
             >
+        </activity>
+
+        <!-- 提现 -->
+        <activity
+            android:name=".activity.WithdrawActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <!-- 提现详请页面 -->
         <activity

@@ -1,6 +1,8 @@
 package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.fragment.MinePage;
+import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -46,5 +48,60 @@ public class Api4Mine extends BaseClientApi {
 
         doPost(url, strTag, params, callback);
     }
+
+
+
+    /**
+     * 判断是否绑定支付宝
+     *author Qxh
+     *created at 2017/3/31 21:59
+     */
+    public void getIfBindingAlipay(DataCallback<CheckIfBindingAlipayModel> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/member/checkIsBoundAlipay");
+        sb.append("?token=");
+        sb.append(CurrentUserManager.getUserToken());
+
+        String url = sb.toString();
+        LogUtils.d("url", url);
+        doGet(url, MinePage.TAG, null, callback);
+
+    }
+
+    /**
+     * 获得支付宝参数
+     *author Qxh
+     *created at 2017/3/31 21:59
+     */
+    public void getAuthorizationParameters(DataCallback<String> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/ali/appAuthInfo");
+
+        String url = sb.toString();
+        LogUtils.d("url", url);
+        doGet(url, MinePage.TAG, null, callback);
+
+    }
+    /**
+     * 绑定支付宝
+     *author Qxh
+     *created at 2017/3/31 21:59
+     */
+    public void bindingAlipay(String userId,DataCallback<String> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/member/boundAlipay");
+        sb.append("?alipay_id=");
+        sb.append(userId);
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
+
+        String url = sb.toString();
+        LogUtils.e("绑定支付宝地址",url);
+        LogUtils.d("url", url);
+        doGet(url, MinePage.TAG, null, callback);
+
+    }
+
+
 
 }

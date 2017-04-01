@@ -250,4 +250,56 @@ public class Api4ClientOther extends BaseClientApi {
         LogUtils.d("url", url);
         doGet(url, strTag, null, callback);
     }
+//
+//
+//    /**
+//     * 判断是否绑定支付宝
+//     *author Qxh
+//     *created at 2017/3/31 21:59
+//     */
+//    public void getIfBindingAlipay(DataCallback<Boolean> callback){
+//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+//        sb.append("api/v1/member/checkIsBoundAlipay");
+//        sb.append("?token=");
+//        sb.append(CurrentUserManager.getUserToken());
+//
+//        String url = sb.toString();
+//        LogUtils.d("url", url);
+//        doGet(url, WithdrawActivity.TAG, null, callback);
+//
+//    }
+//
+//    /**
+//     * 获得支付宝参数
+//     *author Qxh
+//     *created at 2017/3/31 21:59
+//     */
+//    public void getAuthorizationParameters(DataCallback<String> callback){
+//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+//        sb.append("api/v1/ali/appAuthInfo");
+//
+//        String url = sb.toString();
+//        LogUtils.d("url", url);
+//        doGet(url, WithdrawActivity.TAG, null, callback);
+//
+//    }
+//    /**
+//     * 绑定支付宝
+//     *author Qxh
+//     *created at 2017/3/31 21:59
+//     */
+//    public void bindingAlipay(String userId,DataCallback<String> callback){
+//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+//        sb.append("api/v1/member/boundAlipay");
+//        sb.append("?alipay_id=");
+//        sb.append(userId);
+//
+//        String url = sb.toString();
+//        LogUtils.d("url", url);
+//        doGet(url, WithdrawActivity.TAG, null, callback);
+//
+//    }
+
+
+
 }
