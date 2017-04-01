@@ -12,7 +12,7 @@
         android:id="@+id/title_withdraw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="余额"
+        app:iuuTitleBarTitle="我的兑换券"
         app:iuuTitleBarRightImage="@mipmap/list_information_white"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"/>
    <FrameLayout
@@ -92,7 +92,7 @@
                           android:layout_height="wrap_content"
                           android:gravity="center"
                           android:padding="10dp"
-                          android:text="本周还可提取"
+                          android:text="本周还可兑换"
                           android:layout_centerInParent="true"
                           />
                       <TextView
@@ -100,7 +100,7 @@
                           android:layout_marginLeft="5dp"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:text="提取记录"
+                          android:text="兑换记录"
                           android:textColor="#bbb"
                           android:textSize="12sp"
                           android:layout_alignParentRight="true"
@@ -139,7 +139,7 @@
                            android:layout_width="110dp"
                            android:layout_height="wrap_content"
                            android:textColor="#6b6b6b"
-                           android:text="可取总金额"/>
+                           android:text="可消费兑换券"/>
 
                        <TextView
                            android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
                            android:layout_width="110dp"
                            android:layout_height="wrap_content"
                            android:textColor="#6b6b6b"
-                           android:text="剩余UU"/>
+                           android:text="我的UU"/>
                        <TextView
                            android:id="@+id/tv_withdraw_coin_all"
                            android:background="@drawable/selector_if_can_withdraw_bg"
@@ -199,7 +199,7 @@
                        android:paddingRight="10dp"
                        android:paddingLeft="10dp"
                        android:textColor="#6b6b6b"
-                       android:text="本次可提取金额"
+                       android:text="本次可换取兑换券"
                        android:background="@android:color/white"
                        />
                    <EditText
@@ -338,6 +338,15 @@
                    android:padding="10dp"
                    >
                    <TextView
+                       android:id="@+id/tv_withdraw_change_rules"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="@android:color/holo_red_dark"
+                       android:layout_gravity="left"
+                       android:text="换取规则"
+                       android:visibility="gone"
+                       />
+                   <TextView
                        android:id="@+id/tv_withdraw_over_notification"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
@@ -353,6 +362,7 @@
                        android:layout_gravity="end"
                        android:gravity="center"
                        android:orientation="horizontal"
+                       android:visibility="gone"
                        >
                        <TextView
                            android:layout_width="wrap_content"
@@ -374,7 +384,7 @@
                    android:id="@+id/btn_withdraw"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:text="提取"
+                   android:text="换取"
                    android:textColor="@android:color/white"
                    android:layout_margin="10dp"
                    android:background="@drawable/shape_copy_button_bg_red"

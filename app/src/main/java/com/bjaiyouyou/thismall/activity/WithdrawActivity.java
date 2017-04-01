@@ -108,6 +108,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
     private TextView mTvWeekMaxText;
     //为已升级为vip
     private int isVip;
+    private TextView mTvChangeRule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +184,12 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
+    /**
+     *
+     */
     private void initView() {
+
+        mTvChangeRule = ((TextView) findViewById(R.id.tv_withdraw_change_rules));
         //根据是否是第五季会员控制显示
         mLLIsFive = ((LinearLayout) findViewById(R.id.ll_withdraw_income));
         if (mMember_type==5||isInTestUser==1||isVip==2){
@@ -221,6 +227,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setUpView() {
+        mTvChangeRule.setOnClickListener(this);
         mLLIsFive.setOnClickListener(this);
         mTvWithdrawDetail.setOnClickListener(this);
         mTitleBar.setRightLayoutClickListener(this);
@@ -343,7 +350,8 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
 
 
     @Override
-    public void onClick(View v) {
+    public void widgetClick(View v) {
+        super.widgetClick(v);
         switch (v.getId()) {
             case R.id.left_layout:
                 finish();
@@ -384,6 +392,11 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
 //                finish();
                 break;
             case R.id.tv_withdraw_detail: // 提现记录
+                jump(WithdrawRecordActivity.class,false);
+//                finish();
+                break;
+            case R.id.tv_withdraw_change_rules: // 兑换规则,下划线
+
                 jump(WithdrawRecordActivity.class,false);
 //                finish();
                 break;

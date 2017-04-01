@@ -376,7 +376,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:gravity="center"
-                            android:text="我的余额"
+                            android:text="我的兑换券"
                             android:textSize="10sp"
                             android:textColor="#6b6b6b"
                             />
