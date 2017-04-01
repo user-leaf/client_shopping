@@ -29,9 +29,11 @@
     <string name="pay_balance">余额支付</string>
     <string name="pay_hx">环迅支付</string>
 
-    <!-- 个人中心 -->
+    <!--任务-->
+    <string name="task_vip_no">200元开通会员特权</string>
+    <string name="task_vip_yes">您已成为我们尊贵的会员</string>
+    <!--个人中心-->
     <string name="mine_user_income_name">支付宝实名认证姓名</string>
-
 
 
 </resources>

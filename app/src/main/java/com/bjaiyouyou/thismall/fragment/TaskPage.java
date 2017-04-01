@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.fragment;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,7 +31,6 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.Api4Task;
-import com.bjaiyouyou.thismall.client.BaseClientApi;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.SignInInfo;
@@ -40,15 +38,12 @@ import com.bjaiyouyou.thismall.model.TaskModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.AppPackageChecked;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.NoScrollGridView;
-import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
-import com.pingplusplus.android.Pingpp;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -68,44 +63,34 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     public static final int REQUEST_CODE = 100;
     public static final String INTENT_BROADCAST = "com.bjaiyouyou.thismall.fragment.TaskPage.action.INIT";
 
-    private PullToRefreshScrollView mScrollView;
-    // 广告栏GridView
-    private NoScrollGridView mGridView;
-    // 广告栏GridView适配器
-    private TaskGridViewAdapter mAdapter;
-    // 广告任务数据集
-    private List<TaskModel.DataBean> mList;
-
-    // 页码
-    private int pageno = 1;
-    // 签到按钮
-    private TextView mBtnSignIn;
-    // 累计签到天数
-    private TextView mTvSignInTotalNum;
-    // 签到可领UU
-    private TextView mTvGetGoldToday;
-    // 连续签到天数
-    private TextView mTvSignInContCount;
-    // 无网提示
-    private TextView mTvNoNet;
-    // 是否已签到
-    private boolean haveSigned;
-    // 会员展示栏标题
-    private TextView mTvVipTip;
-    // 会员 同步积分
-    private View mVipSyncView;
-    // 会员 同步积分按钮内图标
-    private ImageView mIvVipSync;
-    // 会员 同步积分文字
-    private TextView mTvVipSyncShow;
-    // 会员 去激活
-    private TextView mTvVipRecharge;
-    private View mTvLogin;
-    // 签到栏未登录
-    private View mSigninNologinView;
-    // 签到页已登录
-    private View mSigninHasLoginView;
     private TaskInitReceiver mTaskInitReceiver;
+
+    private int currentPageNum; // 当前页码
+    private boolean haveSigned; // 是否已签到
+
+    private TextView mTvNoNet;  // 无网提示
+
+    // 签到栏
+    private TextView mBtnSignIn;        // 签到按钮
+    private TextView mTvSignInTotalNum; // 累计签到天数
+    private TextView mTvGetGoldToday;   // 签到可领UU
+    private TextView mTvSignInContCount;    // 连续签到天数
+    private View mSigninNologinView;    // 签到栏未登录
+    private View mSigninHasLoginView;   // 签到页已登录
+    private View mTvLogin;              // 去登录按钮
+
+    // 会员展示栏标题
+    private TextView mTvVipTip;         // 标题
+    private View mVipSyncView;          // 同步积分
+    private ImageView mIvVipSync;       // 同步积分按钮图标
+    private TextView mTvVipSyncShow;    // 同步积分文字
+    private TextView mTvVipRecharge;    // 去激活按钮
+
+    // 视频广告列表
+    private PullToRefreshScrollView mScrollView;
+    private NoScrollGridView mGridView;
+    private TaskGridViewAdapter mAdapter;
+    private List<TaskModel.DataBean> mList;
 
     private Api4Task mApi4Task;
     private Api4Mine mApi4Mine;
@@ -125,24 +110,30 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         mApi4Task = (Api4Task) ClientApiHelper.getInstance().getClientApi(Api4Task.class);
         mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
 
+        initVariable();
         initView();
         setupView();
         initCtrl();
-        loadData();
+        loadData4Ad(currentPageNum);
 
         IntentFilter filter = new IntentFilter(INTENT_BROADCAST);
         mTaskInitReceiver = new TaskInitReceiver();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTaskInitReceiver, filter);
+
+    }
+
+    private void initVariable() {
+        currentPageNum = 1;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        loadData(); // 从详情页返回会再次加载列表数据 pageno == 2
-//        loadPageData(); // 从广告详情页返回会有会员开通按钮隐藏的过程，效果不太好。从登录页返回刷新改为startactivityforresult的onactivityresult
+//        loadData4Ad(); // 从详情页返回会再次加载列表数据 currentPageNum == 2
+//        loadData4Page(); // 从广告详情页返回会有会员开通按钮隐藏的过程，效果不太好。从登录页返回刷新改为startactivityforresult的onactivityresult
 
-        pageno = 1;
-        loadData();
+        currentPageNum = 1;
+        loadData4Ad(currentPageNum);
     }
 
     @Override
@@ -156,7 +147,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         super.onHiddenChanged(hidden);
 
         if (!hidden) {
-            loadPageData();
+            loadData4Page();
         }
     }
 
@@ -191,18 +182,17 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 // 下拉刷新
-                pageno = 1;
-                loadData();
-                loadPageData();
+                currentPageNum = 1;
+                loadData4Ad(currentPageNum);
+                loadData4Page();
                 checkNet();
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 // 上拉加载
-                pageno++;
-                loadData();
-                LogUtils.d(TAG, "pageno: " + pageno);
+                loadData4Ad(currentPageNum);
+                LogUtils.d(TAG, "currentPageNum: " + currentPageNum);
             }
         });
 
@@ -222,59 +212,10 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         mGridView.setAdapter(mAdapter);
     }
 
-    private void loadData() {
-
-        // 请求广告数据
-        mApi4Task.getTaskAd(pageno, new DataCallback<TaskModel>(getContext()) {
-            @Override
-            public void onFail(Call call, Exception e, int id) {
-                closeRefresh();
-            }
-
-            @Override
-            public void onSuccess(Object response, int id) {
-
-                TaskModel taskModel = (TaskModel) response;
-                if (taskModel != null) {
-
-                    if (pageno == 1) {
-                        mList.clear();
-                    }
-                    mList.addAll(taskModel.getData());
-                    mAdapter.notifyDataSetChanged();
-
-                }
-                closeRefresh();
-
-            }
-        });
-
-    }
-
-    private void closeRefresh() {
-        // 加载完成，关闭刷新
-        if (mScrollView.isRefreshing()) {
-            mScrollView.onRefreshComplete();
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TaskModel.DataBean dataBean = mList.get(position);
-        if (dataBean != null) {
-            Intent intent = new Intent(getActivity(), WebShowActivity.class);
-            intent.putExtra(
-                    WebShowActivity.PARAM_URLPATH,
-                    ClientAPI.URL_WX_H5 + "task-detail.html?id=" + dataBean.getId() + "&token=" + CurrentUserManager.getUserToken() + "&type=android");
-            getActivity().startActivity(intent);
-        }
-
-    }
-
     /**
      * 加载签到信息和会员开通信息
      */
-    private void loadPageData() {
+    private void loadData4Page() {
         checkLogin();
 
         haveSigned = false;
@@ -322,13 +263,13 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
                     boolean isVip = (member.getIs_vip() == 2);
                     if (isVip) { // 如果是会员
-                        mTvVipTip.setText("您已成为我们尊贵的会员");
+                        mTvVipTip.setText(R.string.task_vip_yes);
                         mVipSyncView.setClickable(true);
                         mVipSyncView.setSelected(true);
                         mIvVipSync.setSelected(true);
                         mTvVipRecharge.setVisibility(View.GONE);
                     } else { // 非会员
-                        mTvVipTip.setText("200元开通会员特权");
+                        mTvVipTip.setText(R.string.task_vip_no);
                         mVipSyncView.setClickable(false);
                         mVipSyncView.setSelected(false);
                         mIvVipSync.setSelected(false);
@@ -340,15 +281,76 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
     }
 
+    /**
+     * 加载视频广告列表数据
+     *
+     * @param pageNum   页码
+     */
+    private void loadData4Ad(final int pageNum) {
+
+        mApi4Task.getTaskAd(pageNum, new DataCallback<TaskModel>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                closeRefresh();
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+
+                TaskModel taskModel = (TaskModel) response;
+                if (taskModel != null) {
+
+                    if (pageNum == 1) {
+                        mList.clear();
+                    }
+                    mList.addAll(taskModel.getData());
+                    mAdapter.notifyDataSetChanged();
+
+                }
+                closeRefresh();
+
+                currentPageNum++;
+            }
+        });
+
+    }
+
+    /**
+     * 完成刷新
+     */
+    private void closeRefresh() {
+        if (mScrollView.isRefreshing()) {
+            mScrollView.onRefreshComplete();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TaskModel.DataBean dataBean = mList.get(position);
+        if (dataBean != null) {
+            Intent intent = new Intent(getActivity(), WebShowActivity.class);
+            StringBuilder stringBuilder = new StringBuilder(ClientAPI.URL_WX_H5);
+            stringBuilder.append("task-detail.html?id=")
+                    .append(dataBean.getId())
+                    .append("&token=")
+                    .append(CurrentUserManager.getUserToken())
+                    .append("&type=android");
+            String strVideoH5Url = stringBuilder.toString();
+
+            intent.putExtra(
+                    WebShowActivity.PARAM_URLPATH,
+                    strVideoH5Url);
+            getActivity().startActivity(intent);
+        }
+
+    }
+
     // 断网提示
     private void checkNet() {
 
-        if (!NetStateUtils.isNetworkAvailable(getContext())) {
-
-            LogUtils.d(TAG, "checkNet  无网");
+        if (!NetStateUtils.isNetworkAvailable(getContext())) { // 无网
             mTvNoNet.setVisibility(View.VISIBLE);
-        } else {
-            LogUtils.d(TAG, "checkNet  有网");
+        } else { // 有网
             mTvNoNet.setVisibility(View.GONE);
         }
 
@@ -418,7 +420,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                                 mBtnSignIn.setSelected(true);
 //                                mBtnSignIn.setClickable(false); // 改为：如果已签到，则在签到操作之前return掉
 
-                                loadPageData();
+                                loadData4Page();
 
                                 dismissLoadingDialog();
                             }
@@ -510,7 +512,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         mTvVipSyncShow.startAnimation(asyncAnim);
     }
 
-    // https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
         super.onItemClick(o, position);
@@ -556,7 +557,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             @Override
             public void onPaySuccess() {
                 // 刷新页面
-                loadPageData();
+                loadData4Page();
             }
 
             @Override
@@ -570,8 +571,9 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         // 从登录页返回
         if (requestCode == REQUEST_CODE) {
             if (resultCode == LoginActivity.RESULT_OK) {
-                loadData();
-                loadPageData();
+                currentPageNum = 1;
+                loadData4Ad(currentPageNum);
+                loadData4Page();
 
             }
         }
@@ -586,14 +588,14 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             mTvGetGoldToday.setText("0UU");
             mTvSignInContCount.setText("0");
             mBtnSignIn.setSelected(false);
-            mTvVipTip.setText("200元开通会员特权");
+            mTvVipTip.setText(R.string.task_vip_no);
             mVipSyncView.setClickable(false);
             mVipSyncView.setSelected(false);
             mIvVipSync.setSelected(false);
             mTvVipRecharge.setVisibility(View.VISIBLE);
 
-            pageno = 1;
-            loadData();
+            currentPageNum = 1;
+            loadData4Ad(currentPageNum);
         }
     }
 }
