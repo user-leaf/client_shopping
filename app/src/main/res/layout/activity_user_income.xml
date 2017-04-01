@@ -234,7 +234,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/shape_copy_button_bg_red"
-            android:text="提现"
+            android:text="提取"
             android:textColor="@android:color/white"
             />
 

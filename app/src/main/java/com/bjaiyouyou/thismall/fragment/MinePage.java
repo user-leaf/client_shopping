@@ -266,7 +266,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -823,9 +822,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null){
-                    CheckIfBindingAlipayModel model= (CheckIfBindingAlipayModel) response;
-                    isBindingAlipay= model.isIs_bound_alipay();
+                if (response != null) {
+                    CheckIfBindingAlipayModel model = (CheckIfBindingAlipayModel) response;
+                    isBindingAlipay = model.isIs_bound_alipay();
 
                     //绑定支付宝
                     if (isBindingAlipay) {
@@ -838,30 +837,28 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                             startActivity(mIntentSafeCode);
                         }
                     } else {
-                        Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号用于提现，账号一经绑定不能修好，是否继续？", "绑定", "取消",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        getAuthorizationParameters();
-                                        //取消对话框
-                                        dialog.dismiss();
+                            Dialog  dialog= DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号，账号一经绑定不能修改，是否继续？", "绑定", "取消",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            getAuthorizationParameters();
+                                            dialog.dismiss();
+                                        }
+                                    },
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
                                     }
-                                },
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }
-                        );
-                        dialog.show();
+                            );
+                            dialog.show();
+                        }
+
                     }
-
                 }
-            }
-        });
-
-    }
+            });
+        }
 
 
     ///////////////////////////////支付宝授权////////////////////////////////////////////
@@ -871,22 +868,44 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 不成功提示
      */
     private void   getAuthorizationParameters() {
-        mClientApi.getAuthorizationParameters(new DataCallback<String>(getContext()) {
-            @Override
-            public void onFail(Call call, Exception e, int id) {
-                ToastUtils.exceptionToast(e,getContext());
+        //DataCallback<String>(getContext())不能识别接口返回的数据
 
+//        mClientApi.getAuthorizationParameters(new DataCallback<String>(getContext()) {
+//            @Override
+//            public void onFail(Call call, Exception e, int id) {
+//                ToastUtils.exceptionToast(e,getContext());
+//                //test
+////                String authorizationParameters= "";
+////                authV2(authorizationParameters);
+//            }
+//
+//            @Override
+//            public void onSuccess(Object response, int id) {
+//                    String authorizationParameters= (String) response.toString().trim();
+//                    authV2(authorizationParameters);
+//
+//            }
+//        });
+        mClientApi.getAuthorizationParameters(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.exceptionToast(e,getContext());
                 //test
 //                String authorizationParameters= "";
 //                authV2(authorizationParameters);
+
             }
 
             @Override
-            public void onSuccess(Object response, int id) {
-                if (response!=null){
-                    String authorizationParameters= (String) response;
+            public void onResponse(String response, int id) {
+                if (!TextUtils.isEmpty(response)){
+                    String authorizationParameters=  response.toString().trim();
                     authV2(authorizationParameters);
+                }else {
+                    ToastUtils.showShort("服务器处理中");
                 }
+
+
             }
         });
 
@@ -902,14 +921,16 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             @Override
             public void onFail(Call call, Exception e, int id) {
                 ToastUtils.exceptionToast(e,getContext());
-                ToastUtils.showShort("绑定支付宝失败");
+//                ToastUtils.showShort("绑定支付宝失败");
             }
 
             @Override
             public void onSuccess(Object response, int id) {
                 //绑定直接跳转到提现页面
-                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
+//                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
                 startActivity(mIntentSafeCode);
+                //取消对话框
+//                mBindingAlipayDialog.dismiss();
             }
         });
     }
@@ -927,11 +948,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * @param authInfo
      */
     public void authV2(String authInfo) {
-
 //    public void alipayAuthorization(String authInfo) {
         //test
 //        authInfo  = "apiname=com.alipay.account.auth&app_id=2017032106317944&app_name=mc&auth_type=AUTHACCOUNT&biz_type=openservice&pid=2088421738853841&product_id=APP_FAST_LOGIN&scope=kuaijie&sign_type=RSA2&target_id=2088421738853841&sign=ehOEhQjCUOLCNdJVtzQWioGS%2Btt1u9yuS4ShuqHoLZdtEbqZAkt3uTi9ohV2IXCfesVHKbAwQMkHrNlHZje5bozT0JLpU0rpHIi1wTgsGjbAuq45XTI7GoefqmGpfn1T5Z1y4s0H2JRQ3mKEFSJjrfhCtMq3%2B07S5HlKXdJX7fXq1pS2EP%2F%2FUB%2FFv5IEkmvZalaHkUtWLqjB2pVd0vucvReH6Y9531xe8Hn4lYgZ3OuPtrxlIpOhLSs5Rt6fuox9gisPhaHiLWBjxCKUZy%2B4E65B05KZg2Jbgt8V%2BaxNZTIRvcBK7DxEeKPPBqBPyDRQoDitSR2SULDSKlQUJxB1uA%3D%3D";
 
+        LogUtils.e("authInfo",authInfo);
         final String finalAuthInfo = authInfo;
         Runnable authRunnable = new Runnable() {
 

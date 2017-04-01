@@ -7,6 +7,7 @@ import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class Api4Mine extends BaseClientApi {
      *author Qxh
      *created at 2017/3/31 21:59
      */
-    public void getAuthorizationParameters(DataCallback<String> callback){
+    public void getAuthorizationParameters( StringCallback callback){
         StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
         sb.append("api/v1/ali/appAuthInfo");
 
@@ -82,6 +83,20 @@ public class Api4Mine extends BaseClientApi {
         doGet(url, MinePage.TAG, null, callback);
 
     }
+//    /**
+//     * 获得支付宝参数
+//     *author Qxh
+//     *created at 2017/3/31 21:59
+//     */
+//    public void getAuthorizationParameters(DataCallback<String> callback){
+//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+//        sb.append("api/v1/ali/appAuthInfo");
+//
+//        String url = sb.toString();
+//        LogUtils.d("url", url);
+//        doGet(url, MinePage.TAG, null, callback);
+//
+//    }
     /**
      * 绑定支付宝
      *author Qxh
