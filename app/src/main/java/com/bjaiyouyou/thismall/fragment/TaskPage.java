@@ -115,6 +115,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         setupView();
         initCtrl();
         loadData4Ad(currentPageNum);
+        loadData4Page();
 
         IntentFilter filter = new IntentFilter(INTENT_BROADCAST);
         mTaskInitReceiver = new TaskInitReceiver();
