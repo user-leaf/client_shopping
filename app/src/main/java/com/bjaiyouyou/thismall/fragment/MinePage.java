@@ -503,13 +503,20 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //        mTvName.setText(memberBean.getName());
 //        //昵称
         if (memberBean != null) {
-            mTvName.setText(memberBean.getNick_name());
-            String tel = memberBean.getPhone().trim();
+            String name=memberBean.getNick_name();
+            if (!TextUtils.isEmpty(name)){
+                mTvName.setText(name);
+            }else {
+                mTvName.setText("");
+            }
 
+            String tel = memberBean.getPhone().trim();
             if (!TextUtils.isEmpty(tel)) {
                 tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 3, tel.length());
+                mTVTel.setText(tel);
+            }else {
+                mTVTel.setText("");
             }
-            mTVTel.setText(tel);
 
             //test
 //        mEmail="";
@@ -522,6 +529,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 mTVEmail.setText(email);
             } else {
                 isHaveEmail = false;
+                mTVEmail.setText("");
             }
 
             //test
