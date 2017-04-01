@@ -29,7 +29,6 @@ import com.bjaiyouyou.thismall.model.OrderMakeOrderNumberModel;
 import com.bjaiyouyou.thismall.model.OrderMakeUploadModel;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.AppPackageChecked;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.MathUtil;
@@ -752,36 +751,43 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private void doCommitAndPay() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, this, AlertView.Style.ActionSheet, this).show();
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)}, this, AlertView.Style.ActionSheet, this).show();
 
     }
 
     //  https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
-        // 支付方式
-        int payType = -1;
+        super.onItemClick(o, position);
+
+        if (position < 0) { // 取消
+            return;
+        }
 
         switch (position) {
-            case 0: // 微信
-                // 提交订单拿到订单号+去支付
-                gotoPay(0);
+            case 0: // 支付宝
+                commitOrderBeforePay(0);
                 break;
 
-            case 1: // 支付宝
-                // 提交订单拿到订单号+去支付
-                gotoPay(1);
+            case 1: // 余额支付
+                break;
+
+            case 2: // 环迅支付
                 break;
 
             default:
-                return;
+                break;
         }
+
+
     }
 
     /**
-     * 提交订单拿到返回的订单号，然后去支付
+     * 提交订单获取订单号，然后去支付
+     *
+     * @param payType 支付方式
      */
-    private void gotoPay(final int payType) {
+    private void commitOrderBeforePay(final int payType) {
 
         if (TextUtils.isEmpty(mOrder_number)) { // 没有订单号，生成订单并支付
 
@@ -867,37 +873,44 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                             OrderMakeOrderNumberModel orderMakeOrderNumberModel = gson.fromJson(response, OrderMakeOrderNumberModel.class);
                             mOrder_number = orderMakeOrderNumberModel.getOrder_number();
 
-                            // 去支付
-                            doPingxxPay(payType);
+                            payOrder(payType);
 
                         }
                     });
 
         } else { // 已经获得订单号，不再生成订单，直接支付
-            // 去支付
-            doPingxxPay(payType);
+            payOrder(payType);
         }
     }
 
-    // 直接去支付
-    private void doPingxxPay(int payType) {
+    /**
+     * 付款
+     *
+     * @param payType 支付方式
+     */
+    private void payOrder(int payType) {
 
-        // 去支付
-        final int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-        String channel = "";
-        switch (payType) {
-            case 0: // 微信
-                channel = Constants.CHANNEL_WECHAT;
-
-                break;
-
-            case 1: // 支付宝
-                channel = Constants.CHANNEL_ALIPAY;
-                break;
+        if (payType < 0) {
+            return;
         }
 
-        new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, channel, mTvPay, TAG)
-                .execute(new PaymentTask.PaymentRequest(channel, amount));
+        switch (payType) {
+            case 0: // 支付宝
+                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                String channel = Constants.CHANNEL_ALIPAY;
+                new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mOrder_number, channel, mTvPay, TAG)
+                        .execute(new PaymentTask.PaymentRequest(channel, amount));
+                break;
+
+            case 1: // 余额支付
+                break;
+
+            case 2: // 环迅支付
+                break;
+
+            default:
+                break;
+        }
 
     }
 

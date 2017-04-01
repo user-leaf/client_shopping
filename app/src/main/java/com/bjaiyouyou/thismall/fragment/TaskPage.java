@@ -463,7 +463,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                                     return;
                                 }
 
-                                new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, getContext(), AlertView.Style.ActionSheet, TaskPage.this).show();
+                                new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)}, getContext(), AlertView.Style.ActionSheet, TaskPage.this).show();
 
                             }
                         })
@@ -513,32 +513,36 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     // https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
-        // 去支付
-        final int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+        super.onItemClick(o, position);
 
-        String channel = "";
+        if (position < 0){
+            return;
+        }
+
         switch (position) {
-            case 0: // 微信支付
-                channel = Constants.CHANNEL_WECHAT;
+            case 0: // 支付宝支付
+                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                String channel = Constants.CHANNEL_ALIPAY;
+                new PaymentTask(
+                        getActivity(),
+                        TaskPage.this,
+                        null,
+                        channel,
+                        mTvVipRecharge,
+                        TAG
+                ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
                 break;
 
-            case 1: // 支付宝支付
-                channel = Constants.CHANNEL_ALIPAY;
+            case 1: // 余额支付
+                break;
+
+            case 2: // 环迅支付
                 break;
 
             default:
-                return;
+                break;
         }
-
-        new PaymentTask(
-                getActivity(),
-                TaskPage.this,
-                null,
-                channel,
-                mTvVipRecharge,
-                TAG
-        ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
     }
 

@@ -28,15 +28,10 @@ import java.util.List;
 public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListener {
     private Context mContext;
     private List<OrderDetailModel.OrderBean.OrderDetailBean> mList;
-    /**
-     * 页面类型（当为已完成页面时，显示“申请售后”按钮）// 去掉了
-     */
-    private int type;
 
-    public OrderDetailAdapter(Context context, List<OrderDetailModel.OrderBean.OrderDetailBean> list, int type) {
+    public OrderDetailAdapter(Context context, List<OrderDetailModel.OrderBean.OrderDetailBean> list) {
         mContext = context;
         mList = list;
-        this.type = type;
     }
 
     /**
@@ -97,20 +92,15 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
         ViewHolder holder = (ViewHolder) ret.getTag();
         if (holder == null) {
             holder = new ViewHolder();
-            holder.pic = (ImageView) ret.findViewById(R.id.order_detail_item_iv_pic);
-            holder.name = (TextView) ret.findViewById(R.id.order_detail_item_tv_name);
-            holder.desc = (TextView) ret.findViewById(R.id.order_detail_item_tv_desc);
-            holder.price = (TextView) ret.findViewById(R.id.order_detail_item_tv_price);
-            holder.points = (TextView) ret.findViewById(R.id.order_detail_item_tv_points);
-            holder.count = (TextView) ret.findViewById(R.id.order_detail_item_tv_count);
-            holder.afterSale = (TextView) ret.findViewById(R.id.order_detail_item_tv_after_sale);
+            holder.ivImage = (ImageView) ret.findViewById(R.id.order_detail_item_iv_pic);
+            holder.tvName = (TextView) ret.findViewById(R.id.order_detail_item_tv_name);
+            holder.tvDesc = (TextView) ret.findViewById(R.id.order_detail_item_tv_desc);
+            holder.tvPrice = (TextView) ret.findViewById(R.id.order_detail_item_tv_price);
+            holder.tvJifen = (TextView) ret.findViewById(R.id.order_detail_item_tv_points);
+            holder.tvNum = (TextView) ret.findViewById(R.id.order_detail_item_tv_count);
+            holder.tvAfterSale = (TextView) ret.findViewById(R.id.order_detail_item_tv_after_sale);
 
-            holder.afterSale.setOnClickListener(this);
-
-            // 当为"已完成"页面时，显示“申请售后”按钮
-//            if (type == 2) {
-//                holder.afterSale.setVisibility(View.VISIBLE);
-//            }
+            holder.tvAfterSale.setOnClickListener(this);
 
             ret.setTag(holder);
         }
@@ -119,18 +109,18 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
 //        ProductInfo productInfo = mList.get(position).getProductInfo();
 //        if (productInfo != null) {
 //            if (productInfo.getProductImageUrl() != null) {
-//                Glide.with(mContext).load(productInfo.getProductImageUrl()).into(holder.pic);
+//                Glide.with(mContext).load(productInfo.getProductImageUrl()).into(holder.ivImage);
 //            }
-//            holder.name.setText(productInfo.getName());
-//            holder.price.setText("¥" + productInfo.getPrice());
-//            holder.count.setText("X" + Integer.toString(mList.get(position).getCount()));
+//            holder.tvName.setText(productInfo.getName());
+//            holder.tvPrice.setText("¥" + productInfo.getPrice());
+//            holder.tvNum.setText("X" + Integer.toString(mList.get(position).getCount()));
 //
 //            // TODO: 2016/6/25 退款状态
 ////            int returnStatus = 1;
 ////            if (returnStatus == 0) {
-////                holder.afterSale.setText("退款中");
+////                holder.tvAfterSale.setText("退款中");
 ////            } else if (returnStatus == 1) {
-////                holder.afterSale.setText("退款成功");
+////                holder.tvAfterSale.setText("退款成功");
 ////            }
 //        }
 
@@ -138,26 +128,26 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
         if (orderDetailBean != null) {
 
             if (orderDetailBean.getProduct() != null) {
-                holder.name.setText(orderDetailBean.getProduct().getName());
+                holder.tvName.setText(orderDetailBean.getProduct().getName());
             }
 
             if (orderDetailBean.getProduct_size() != null) {
-                holder.desc.setText(orderDetailBean.getProduct_size().getName());
+                holder.tvDesc.setText(orderDetailBean.getProduct_size().getName());
                 int points = orderDetailBean.getProduct_size().getIntegration_price();
-                holder.points.setText("+" + points + "积分");
+                holder.tvJifen.setText("+" + points + "积分");
             }
-            holder.price.setText("¥" + orderDetailBean.getPrice());
+            holder.tvPrice.setText("¥" + orderDetailBean.getPrice());
             // 数量
-            holder.count.setText("X" + orderDetailBean.getNumber());
+            holder.tvNum.setText("X" + orderDetailBean.getNumber());
 
             if (orderDetailBean.getProduct_image() != null) {
                 String imagePath = orderDetailBean.getProduct_image().getImage_path() + File.separator + orderDetailBean.getProduct_image().getImage_base_name();
-                Glide.with(mContext).load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(mContext)/4, 0)).placeholder(R.mipmap.list_image_loading).into(holder.pic);
+                Glide.with(mContext).load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(mContext)/4, 0)).placeholder(R.mipmap.list_image_loading).into(holder.ivImage);
             }
         }
 
         // 4. 设置带有点击事件的按钮的Tag，用于告诉监听器，到底点击哪一个
-        holder.afterSale.setTag(position);
+        holder.tvAfterSale.setTag(position);
 
         return ret;
     }
@@ -177,18 +167,18 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
 
     class ViewHolder {
         // 商品图片
-        private ImageView pic;
+        private ImageView ivImage;
         // 商品名称
-        private TextView name;
+        private TextView tvName;
         // 商品描述
-        private TextView desc;
+        private TextView tvDesc;
         // 商品价格
-        private TextView price;
+        private TextView tvPrice;
         // 积分
-        private TextView points;
+        private TextView tvJifen;
         // 购买数量
-        private TextView count;
+        private TextView tvNum;
         // 申请售后按钮
-        private TextView afterSale;
+        private TextView tvAfterSale;
     }
 }

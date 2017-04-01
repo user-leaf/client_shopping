@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import com.bjaiyouyou.thismall.model.ExpressDetailModel;
 import com.bjaiyouyou.thismall.model.OrderDetailModel;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.AppPackageChecked;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
@@ -34,7 +32,6 @@ import com.bjaiyouyou.thismall.widget.NoScrollListView;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.google.gson.Gson;
-import com.pingplusplus.android.Pingpp;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -61,17 +58,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     public static final String PARAM_ORDER_NUMBER = "orderNumber";
 
     private IUUTitleBar mTitleBar;
-    /**
-     * 订单详情类型
-     * -1：数据错误
-     * 0：待付款
-     * 1：未发货
-     * 2：已发货
-     * 3：申请退款
-     * 4：已退款
-     * 5：已收货
-     */
-    private int type = -1;
 
     // 订单状态
     private TextView mTvOrderStatus;
@@ -96,83 +82,61 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     private NoScrollListView mListView;
     private OrderDetailAdapter mAdapter;
     private List<OrderDetailModel.OrderBean.OrderDetailBean> mData;
+
     // 订单号
     private TextView mTvOrderNumber;
+
     // 收货地址栏
     private View mAddressView;
-    // 收货人姓名、电话、地址
+
     private TextView mTvName;
     private TextView mTvTel;
     private TextView mTvAddress;
 
-    // 数据
-    private String mName;
-    private String mTel;
-    private String mAddress;
+    private String mStrName;
+    private String mStrTel;
+    private String mStrAddress;
 
-    // 取消订单按钮
-    private TextView mTvCancelOrder;
-    // 立即付款按钮
-    private TextView mTvPayNow;
-    // 申请退款按钮
-    private TextView mTvRefundApply;
-    // 确认收货按钮
-    private TextView mTvReceiveOk;
-    // 申请售后按钮
-    private TextView mTvAfterSale;
-    // 再次购买按钮
-    private TextView mTvBuyAgain;
-    // 未完成分组中的重新购买按钮
-    private TextView mTvUncompleteBugAgain;
-    // 未完成分组中的退款详情按钮
-    private TextView mTvUncompleteReturn;
-    // 已完成分组中的订单删除按钮
-    private TextView mTvCompleteOrderDelete;
-    // 已完成分组中的退款详情按钮
-    private TextView mTvCompleteRefundDetail;
+    // 底部栏
+    private TextView mTvCancelOrder;    // 取消订单按钮
+    private TextView mTvPayNow;         // 立即付款按钮
+    private TextView mTvRefundApply;    // 申请退款按钮
+    private TextView mTvReceiveOk;      // 确认收货按钮
+    private TextView mTvAfterSale;      // 申请售后按钮
+    private TextView mTvBuyAgain;       // 再次购买按钮
+    private TextView mTvUncompleteBugAgain;     // 未完成分组中的重新购买按钮
+    private TextView mTvUncompleteReturn;       // 未完成分组中的退款详情按钮
+    private TextView mTvCompleteOrderDelete;    // 已完成分组中的订单删除按钮
+    private TextView mTvCompleteRefundDetail;   // 已完成分组中的退款详情按钮
 
+//    /**
+//     * 时间，倒计时
+//     */
+//    private static long currentMillis = 0;
+//    private static int hour = -1;
+//    private static int minute = -1;
+//    private static int second = -1;
+//    private TextView timeView;
+//    private Timer timer;
+//    private TimerTask timerTask;
+//    private Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//
+//            // 弃用
+//            // http://www.cnblogs.com/dyllove98/archive/2013/06/25/3155614.html
+////            showTimeWithHour();
+////            showTimeWithoutHour();
+//
+//            showTime();
+//        }
+//    };
 
-    /**
-     * 时间，倒计时
-     */
-    private static long currentMillis = 0;
-    private static int hour = -1;
-    private static int minute = -1;
-    private static int second = -1;
-    private TextView timeView;
-    private Timer timer;
-    private TimerTask timerTask;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-
-            // 弃用
-            // http://www.cnblogs.com/dyllove98/archive/2013/06/25/3155614.html
-//            showTimeWithHour();
-//            showTimeWithoutHour();
-
-            showTime();
-        }
-    };
-
-    // 订单编号
-    private String mOrderNumber;
-
-    // 商品重量
-//    private TextView mTvWeight;
-    // 配送方式
-//    private TextView mTvExpressCompany;
-    // 运费
-    private TextView mTvPostage;
-    // 本次消费可获得UU
-    private TextView mTvGoldCoin;
-
-    // 下单时间
-    private TextView mTvCreateTime;
-
-    // 实付金额
-    private TextView mTvMoney;
-    // 实付积分
-    private TextView mTvPoints;
+    private String mOrderNumber;    // 订单编号
+    private TextView mTvPostage;    // 运费
+    private TextView mTvUU;         // 本次消费可获得UU
+    private TextView mTvCreateTime; // 下单时间
+    private TextView mTvMoney;      // 实付金额
+    private TextView mTvJifen;     // 实付积分
 
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
@@ -181,7 +145,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
             switch (msg.what) {
                 case 0:
-                    // 销毁本页
                     OrderDetailActivity.this.finish();
                     break;
             }
@@ -215,16 +178,16 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onDestroy() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        if (timerTask != null) {
-            timerTask = null;
-        }
-        hour = -1;
-        minute = -1;
-        second = -1;
+//        if (timer != null) {
+//            timer.cancel();
+//            timer = null;
+//        }
+//        if (timerTask != null) {
+//            timerTask = null;
+//        }
+//        hour = -1;
+//        minute = -1;
+//        second = -1;
         super.onDestroy();
     }
 
@@ -270,9 +233,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 //        mTvExpressCompany = (TextView) findViewById(R.id.order_detail_tv_express_way);
         mTvPostage = (TextView) findViewById(R.id.order_detail_tv_postage);
 
-        mTvGoldCoin = (TextView) findViewById(R.id.order_detail_tv_goldcoin);
+        mTvUU = (TextView) findViewById(R.id.order_detail_tv_goldcoin);
         mTvMoney = (TextView) findViewById(R.id.order_detail_tv_money);
-        mTvPoints = (TextView) findViewById(R.id.order_detail_tv_points);
+        mTvJifen = (TextView) findViewById(R.id.order_detail_tv_points);
 
         mTvCancelOrder = (TextView) findViewById(R.id.order_detail_tv_cancel_order);
         mTvPayNow = (TextView) findViewById(R.id.order_detail_tv_pay_now);
@@ -286,7 +249,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         mTvCompleteOrderDelete = (TextView) findViewById(R.id.order_detail_tv_complete_order_delete);
         mTvCompleteRefundDetail = (TextView) findViewById(R.id.order_detail_tv_complete_refund_detail);
 
-        timeView = (TextView) findViewById(R.id.order_detail_tv_time_count);
+//        timeView = (TextView) findViewById(R.id.order_detail_tv_time_count);
         mTvCreateTime = (TextView) findViewById(R.id.order_detail_tv_create_time);
 
         mExpress2View = findViewById(R.id.order_detail_ll_express2);
@@ -344,9 +307,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                             // 订单编号
                             mTvOrderNumber.setText(order.getOrder_number());
                             // 地址
-                            mName = order.getAddressee();
-                            mTel = order.getPhone();
-                            mAddress = order.getAddress();
+                            mStrName = order.getAddressee();
+                            mStrTel = order.getPhone();
+                            mStrAddress = order.getAddress();
 
                             mTvAddress.setText(order.getAddress());
                             mTvName.setText(order.getAddressee());
@@ -361,48 +324,47 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                             mData.addAll(order_detail);
                             mAdapter.setData(order_detail);
 
-                            // 商品重量
-                            if (order_detail != null) {
-
-                                double sumWeight = 0;
-                                for (OrderDetailModel.OrderBean.OrderDetailBean good : order_detail) {
-                                    OrderDetailModel.OrderBean.OrderDetailBean.ProductSizeBean product_size = good.getProduct_size();
-
-                                    if (product_size != null) {
-
-                                        String weight1 = product_size.getWeight();
-                                        int sales_volume = good.getNumber();
-                                        if (weight1 != null) {
-                                            double weight = Double.parseDouble(weight1);
-                                            sumWeight += (weight * sales_volume);
-
-                                        }
-                                    }
-                                }
-
-                                LogUtils.d(TAG, "sumWeight: " + sumWeight);
-                                // 保留2位小数
+                            // 去掉了
+//                            // 商品重量
+//                            if (order_detail != null) {
+//                                double sumWeight = 0;
+//                                for (OrderDetailModel.OrderBean.OrderDetailBean good : order_detail) {
+//                                    OrderDetailModel.OrderBean.OrderDetailBean.ProductSizeBean product_size = good.getProduct_size();
+//
+//                                    if (product_size != null) {
+//
+//                                        String weight1 = product_size.getWeight();
+//                                        int sales_volume = good.getNumber();
+//                                        if (weight1 != null) {
+//                                            double weight = Double.parseDouble(weight1);
+//                                            sumWeight += (weight * sales_volume);
+//
+//                                        }
+//                                    }
+//                                }
+//
+//                                LogUtils.d(TAG, "sumWeight: " + sumWeight);
+//                                // 保留2位小数
 //                                        mTvWeight.setText("" + MathUtil.round(sumWeight, 2) + "公斤");
-
-                            }
+//
+//                            }
 
                             // 运费
                             mTvPostage.setText(order.getPostage() + "元");
 
                             // 实付金额栏
                             mTvMoney.setText("¥" + order.getAll_amount());
-                            mTvPoints.setText("+" + order.getDeduct_integration() + "积分");
+                            mTvJifen.setText("+" + order.getDeduct_integration() + "积分");
 
                             // 本次消费可获得UU
-                            mTvGoldCoin.setText(order.getGet_gold() + "UU");
+                            mTvUU.setText(order.getGet_gold() + "UU");
 
                             // 下单时间
                             mTvCreateTime.setText(order.getCreated_at());
                             // 订单状态
                             mTvOrderStatus.setText(order.getShow_state_msg());
                             // 根据页面类型显示相应布局
-                            type = order.getShow_state();
-                            showByType(type);
+                            showByStatus(order.getShow_state());
                         }
                     }
                 }
@@ -464,17 +426,26 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initCtrl() {
-        mAdapter = new OrderDetailAdapter(this, mData, type);
+        mAdapter = new OrderDetailAdapter(this, mData);
         mListView.setAdapter(mAdapter);
     }
 
     /**
-     * 根据type不同显示不同UI
+     * 根据订单状态不同显示不同UI
      *
-     * @param type 页面类型
+     * 订单状态
+     * -1：数据错误
+     * 0：待付款
+     * 1：未发货
+     * 2：已发货
+     * 3：申请退款
+     * 4：已退款
+     * 5：已收货
+     *
+     * @param status 页面类型
      */
-    public void showByType(int type) {
-        switch (type) {
+    public void showByStatus(int status) {
+        switch (status) {
             case 0: // 未付款栏 - 取消订单、立即付款 // 待付款
                 // 预计到达时间
                 mButtonGroup0.setVisibility(View.VISIBLE);
@@ -544,8 +515,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
             // 立即付款按钮
             case R.id.order_detail_tv_pay_now:
-                // 调用ping++付款
-                doPayByPingpp();
+                payNow();
                 break;
 
             //=============【未发货|已发货状态】=========================
@@ -664,7 +634,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     * 退款
+     * 退款详情
      */
     private void doReturn() {
         Intent returnIntent = new Intent(this, OrderReturnDealActivity.class);
@@ -757,78 +727,85 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         startActivity(intent);
     }
 
-    /**
-     * 订单失效倒计时
-     */
-    private void setTime() {
-        /**
-         * 初始化
-         */
-        currentMillis = System.currentTimeMillis();
+//    /**
+//     * 订单失效倒计时
+//     */
+//    private void setTime() {
+//        // 初始化
+//        currentMillis = System.currentTimeMillis();
+//
+//        if (hour == -1 && minute == -1 && second == -1) {
+//            hour = 2;
+//            minute = 1;
+//            second = 3;
+//        }
+//
+//        timeView.setText(hour + ":" + minute + ":" + second);
+//
+//        timerTask = new TimerTask() {
+//
+//            @Override
+//            public void run() {
+//                Message msg = new Message();
+//                msg.what = 0;
+//                handler.sendMessage(msg);
+//            }
+//        };
+//
+//        timer = new Timer();
+//        timer.schedule(timerTask, 0, 1000);
+//    }
+//
+//    /**
+//     * 显示订单失效时间
+//     */
+//    private void showTime() {
+//        currentMillis -= 1000; // 每秒减1000毫秒
+//        if (currentMillis <= 0) {
+//            return;
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//        String time = sdf.format(currentMillis);
+//        timeView.setText(time);
+//    }
 
-        if (hour == -1 && minute == -1 && second == -1) {
-            hour = 2;
-            minute = 1;
-            second = 3;
-        }
+    private void payNow() {
+        new AlertView(
+                "选择支付方式",
+                null,
+                "取消",
+                null,
+                new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)},
+                this,
+                AlertView.Style.ActionSheet, this
+        ).show();
 
-        timeView.setText(hour + ":" + minute + ":" + second);
-
-        timerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                Message msg = new Message();
-                msg.what = 0;
-                handler.sendMessage(msg);
-            }
-        };
-
-        timer = new Timer();
-        timer.schedule(timerTask, 0, 1000);
     }
 
-    /**
-     * 显示订单失效时间
-     */
-    private void showTime() {
-        currentMillis -= 1000; // 每秒减1000毫秒
-        if (currentMillis <= 0) {
-            return;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String time = sdf.format(currentMillis);
-        timeView.setText(time);
-    }
-
-    // 调用ping++去付款
-    private void doPayByPingpp() {
-
-        // https://github.com/saiwu-bigkoo/Android-AlertView
-//        new AlertView("选择支付方式", null, "取消", null, new String[]{"微信支付", "支付宝支付"}, this, AlertView.Style.ActionSheet, this).show();
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_wx), getString(R.string.pay_alipay)}, this, AlertView.Style.ActionSheet, this).show();
-
-    }
-
-    // https://github.com/saiwu-bigkoo/Android-AlertView
     @Override
     public void onItemClick(Object o, int position) {
-        final int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-        String channel = "";
+        super.onItemClick(o, position);
+
+        if (position < 0){
+            return;
+        }
+
         switch (position) {
-            case 0: // 微信支付
-                channel = Constants.CHANNEL_WECHAT;
+            case 0: // 支付宝支付
+                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                String channel = Constants.CHANNEL_ALIPAY;
+                new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, channel, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));
                 break;
 
-            case 1: // 支付宝支付
-                channel = Constants.CHANNEL_ALIPAY;
+            case 1: // 余额支付
+                break;
+
+            case 2: // 环迅支付
                 break;
 
             default:
-                return;
+                break;
         }
-
-        new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, channel, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));
 
     }
 
@@ -903,7 +880,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
             @Override
             public void onPaySuccess() {
-                OrderPaySuccessActivity.actionStart(OrderDetailActivity.this, mName, mTel, mAddress, mOrderNumber);
+                OrderPaySuccessActivity.actionStart(OrderDetailActivity.this, mStrName, mStrTel, mStrAddress, mOrderNumber);
                 mHandler.sendEmptyMessage(0);
 
             }
@@ -936,8 +913,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 //    }
 //
 //    private static String postJson(String url, String json) throws IOException {
-//        MediaType type = MediaType.parse("application/json; charset=utf-8");
-//        RequestBody body = RequestBody.create(type, json);
+//        MediaType orderStatus = MediaType.parse("application/json; charset=utf-8");
+//        RequestBody body = RequestBody.create(orderStatus, json);
 //        // post方式
 //        Request request = new Request.Builder().url(url).post(body).build();
 //

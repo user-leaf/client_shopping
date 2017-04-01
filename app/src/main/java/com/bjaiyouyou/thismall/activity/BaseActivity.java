@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.ActivityCollector;
 import com.bjaiyouyou.thismall.client.RequestManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.umeng.analytics.MobclickAgent;
@@ -29,7 +31,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
  * 添加startActivityForResult()的跳转方式
  *
  */
-public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
+public class BaseActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
     /** 是否禁止旋转屏幕 **/
     private boolean isAllowScreenRotate = false;
     /** 日志输出标志 **/
@@ -186,6 +188,30 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         loadingCount--;
+    }
+
+    @Override
+    public void onItemClick(Object o, int position) {
+
+        if (position < 0){ // 取消
+            return;
+        }
+
+        switch (position) {
+            case 0: // 支付宝支付
+                break;
+
+            case 1: // 余额支付
+                ToastUtils.showShort("正在开发中...");
+                break;
+
+            case 2: // 环迅支付
+                ToastUtils.showShort("正在开发中...");
+                break;
+
+            default:
+                break;
+        }
     }
 
 //    /**

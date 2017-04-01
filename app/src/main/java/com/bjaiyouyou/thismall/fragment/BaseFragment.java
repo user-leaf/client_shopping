@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.bigkoo.alertview.OnItemClickListener;
+import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.RequestManager;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -22,7 +24,7 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener {
+public class BaseFragment extends Fragment implements View.OnClickListener, OnItemClickListener {
     protected IUUTitleBar titleBar;
     protected InputMethodManager inputMethodManager;
     protected View layout;
@@ -237,4 +239,27 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         OkHttpUtils.getInstance().cancelTag(this);
     }
 
+    @Override
+    public void onItemClick(Object o, int position) {
+
+        if (position < 0){ // 取消
+            return;
+        }
+
+        switch (position) {
+            case 0: // 支付宝支付
+                break;
+
+            case 1: // 余额支付
+                ToastUtils.showShort("正在开发中");
+                break;
+
+            case 2: // 环迅支付
+                ToastUtils.showShort("正在开发中");
+                break;
+
+            default:
+                break;
+        }
+    }
 }

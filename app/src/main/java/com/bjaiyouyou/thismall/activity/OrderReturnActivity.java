@@ -161,7 +161,7 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
         if (thing != null) {
             mData.addAll(thing);
         }
-        mOrderAdapter = new OrderDetailAdapter(this, mData, 0);
+        mOrderAdapter = new OrderDetailAdapter(this, mData);
         mListView.setAdapter(mOrderAdapter);
 
     }
