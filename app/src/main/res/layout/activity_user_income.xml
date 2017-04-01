@@ -102,7 +102,7 @@
                 android:layout_height="40dp"
                 android:background="@android:color/white"
                 android:gravity="center_vertical"
-                android:text="本次可提取"
+                android:text="本次可换取"
                 />
 
             <EditText
@@ -160,7 +160,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="收款人姓名"/>
+                    android:text="收取人姓名"/>
 
                 <EditText
                     android:id="@+id/et_income_payee_name"
@@ -201,6 +201,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="end|center_vertical"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -234,7 +235,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/shape_copy_button_bg_red"
-            android:text="提取"
+            android:text="换取"
             android:textColor="@android:color/white"
             />
 
