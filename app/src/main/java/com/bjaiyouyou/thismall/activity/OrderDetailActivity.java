@@ -136,7 +136,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     private TextView mTvUU;         // 本次消费可获得UU
     private TextView mTvCreateTime; // 下单时间
     private TextView mTvMoney;      // 实付金额
-    private TextView mTvJifen;     // 实付积分
+    private TextView mTvJifen;     // 实付兑换券
 
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
@@ -354,7 +354,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
                             // 实付金额栏
                             mTvMoney.setText("¥" + order.getAll_amount());
-                            mTvJifen.setText("+" + order.getDeduct_integration() + "积分");
+                            mTvJifen.setText("+" + order.getDeduct_integration() + "兑换券");
 
                             // 本次消费可获得UU
                             mTvUU.setText(order.getGet_gold() + "UU");

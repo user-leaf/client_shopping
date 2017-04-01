@@ -374,4 +374,24 @@ public class ClassifyPage extends BaseFragment {
                 break;
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LogUtils.d("@@@", "onDestroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LogUtils.d("@@@", "onDestroyView");
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LogUtils.d("@@@", "onDetach");
+
+    }
 }

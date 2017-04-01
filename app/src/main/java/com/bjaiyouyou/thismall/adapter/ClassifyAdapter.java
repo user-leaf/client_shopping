@@ -63,7 +63,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
             String price = sizeBean.getPrice();
             viewHolder.mTvPrice.setText(!TextUtils.isEmpty(price) ? "¥" + price : "");
             int jifen = sizeBean.getIntegration_price();
-            viewHolder.mTvJifen.setText(!TextUtils.isEmpty(String.valueOf(jifen)) ? "+" + jifen + "积分" : "");
+            viewHolder.mTvJifen.setText(!TextUtils.isEmpty(String.valueOf(jifen)) ? "+" + jifen + "兑换券" : "");
         }
 
         ClassifyProductModel.DataBean.ImageBean imageBean = dataBean.getImage();

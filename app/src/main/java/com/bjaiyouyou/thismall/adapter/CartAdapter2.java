@@ -223,7 +223,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 
                     }
 
-                    tvPoints.setText("+" + product_size.getIntegration_price() + "积分");
+                    tvPoints.setText("+" + product_size.getIntegration_price() + "兑换券");
 
                 }
 
@@ -309,7 +309,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 //        holder.tvType.setText("-规格-");
 //        holder.tvSales.setText("-销量-");
 //        holder.tvPrice.setText("-价格-");
-//        holder.tvPoints.setText("-积分-");
+//        holder.tvPoints.setText("-兑换券-");
 //        holder.tvCount.setText("00");
 //
 //        CartItem2 cartItem = mList.get(position);
@@ -325,7 +325,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 //                    holder.tvType.setText(cartModel.getProduct_size().getName());
 //                    holder.tvSales.setText("已售出" + cartModel.getProduct_size().getSales_volume() + "件");
 //                    holder.tvPrice.setText("¥" + cartModel.getProduct_size().getPrice());
-//                    holder.tvPoints.setText("+" + cartModel.getProduct_size().getIntegration_price() + "积分");
+//                    holder.tvPoints.setText("+" + cartModel.getProduct_size().getIntegration_price() + "兑换券");
 //                }
 //                holder.tvCount.setText(Integer.toString(cartModel.getNumber()));
 //
@@ -540,7 +540,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
         private TextView tvSales;
         // 价格
         private TextView tvPrice;
-        // 积分
+        // 兑换券
         private TextView tvPoints;
         // 数量+1
         private ImageView ivInc;

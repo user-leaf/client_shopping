@@ -305,7 +305,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="现金收益权"
+                                    android:text="兑换券收益权"
                                     android:textColor="@color/app_red"
                                     />
 
@@ -321,7 +321,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="提现上限由100/周提升为"
+                                    android:text="换取上限由100/周提升为"
                                     />
 
                                 <TextView
@@ -433,7 +433,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="提现上限由100/周提升为"
+                                    android:text="换取上限由100/周提升为"
                                     />
 
                                 <TextView

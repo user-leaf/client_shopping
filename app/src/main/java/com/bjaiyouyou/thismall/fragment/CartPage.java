@@ -57,15 +57,22 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
     public static final String TAG = CartPage.class.getSimpleName();
 
+    private TextView mTvNoNet;          // 断网提示
+    private LinearLayout mBodyView;     // 主布局
+    private View mNoLoginView;          // 未登录
+    private View mNoLoginGoto;
+    private TextView mTvTipSendDelay;   // 延迟发货提示
+
     private PullToRefreshListView mRefreshListView;
 
-    // 接口返回的初始的数据集(删除、加减都是在这个数据集上操作的，不只用于显示..)
+    // 列表
 //    private List<CartItem> mRawList;
-    private List<CartItem2> mRawList;
-    // 过滤得到的合法数据集（目前仅去掉下架商品，用于全选判断、头部提示是否显示判断..）
-    private List<CartItem2> mOkList;
+    private List<CartItem2> mRawList;   // 接口返回的初始的数据集(删除、加减都是在这个数据集上操作的，不只用于显示..)
+    private List<CartItem2> mOkList;    // 过滤得到的合法数据集（目前仅去掉下架商品，用于全选判断、头部提示是否显示判断..）
     //    private CartAdapter mAdapter;
     private CartAdapter2 mAdapter;
+    private View mEmptyView;
+    private View mTvGoShopping;         // EmptyView中的“赶紧去逛逛”
 
     // 底部栏（全选、总价、总积分、结算按钮）
     private View mBottomView;
@@ -73,29 +80,14 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     private TextView mTvTotalPrice;
     private TextView mTvTotalPoint;
     private Button mBtnOrder;
-    // 全选标识
-    private boolean isChooseAll = false;
+
+    // flag
+    private boolean isChooseAll = false;    // 全选标识
     private int selectedCount = 0;
-
-    private View mEmptyView;
-    // EmptyView中的“赶紧去逛逛”
-    private View mTvGoShopping;
-    // 断网提示
-    private TextView mTvNoNet;
-
-    // 是否在onResume()中执行initData()
-    private boolean isPerform = true;
+    private int tipFlag = -1;               // 防止重复执行
+    private boolean isPerform = true;       // 是否在onResume()中执行initData()
 
     private MainActivity mMainActivity;
-    // 主布局
-    private LinearLayout mBodyView;
-    // 未登录
-    private View mNoLoginView;
-    private View mNoLoginGoto;
-    // 延迟发货提示
-    private TextView mTvTipSendDelay;
-    // 防止重复执行
-    private int tipFlag = -1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -233,7 +225,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 mTvTotalPrice.setText("¥" + ((sum < 10E-6) ? 0 : MathUtil.round(sum, 2)));
                 // 总积分
                 int sumPoint = countTotalPoints();
-                mTvTotalPoint.setText(String.format(Locale.CHINA, "+%d积分", sumPoint));
+                mTvTotalPoint.setText(String.format(Locale.CHINA, "+%d兑换券", sumPoint));
 
                 /**
                  * 条目按钮-->全选按钮
