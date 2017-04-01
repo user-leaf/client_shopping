@@ -154,12 +154,11 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
      * 获得提现信息
      */
     private void initData() {
-        String token = CurrentUserManager.getUserToken();
-        ClientAPI.getWithdraw(token, new StringCallback() {
+        ClientAPI.getWithdraw( new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 //错误提示
-                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+//                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
 
             @Override

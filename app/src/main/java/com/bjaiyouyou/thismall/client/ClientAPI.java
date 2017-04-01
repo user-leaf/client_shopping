@@ -761,11 +761,11 @@ public class ClientAPI {
     /**
      * 获取退款信息
      */
-    public static void getWithdraw(String token, StringCallback callback) {
+    public static void getWithdraw( StringCallback callback) {
 
         StringBuilder sb = new StringBuilder(API_POINT);
         sb.append("api/v1/member/getDrawingsInfo");
-        sb.append("?token=").append(token);
+        sb.append("?token=").append(CurrentUserManager.getUserToken());
         String url = sb.toString();
         Log.e("getWithdraw", url);
 
