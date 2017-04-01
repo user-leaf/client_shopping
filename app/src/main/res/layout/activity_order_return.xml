@@ -18,10 +18,9 @@
 
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
-    <View
-        style="@style/entry_divider_bold_line_style"
-        android:layout_height="3.5dp"
-        />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3.5dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,16 +41,15 @@
 
             </com.bjaiyouyou.thismall.widget.NoScrollListView>
 
-
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
-                />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:background="@color/white"
                 >
 
                 <TextView
@@ -90,15 +88,15 @@
                 </RadioGroup>
             </RelativeLayout>
 
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
-                />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:background="@color/white"
                 >
 
                 <TextView
@@ -142,15 +140,15 @@
                     />
             </RelativeLayout>
 
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
-                />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:background="@color/white"
                 >
 
                 <TextView
@@ -177,6 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:background="@color/white"
                 />
 
             <Button
