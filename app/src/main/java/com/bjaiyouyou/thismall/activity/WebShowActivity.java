@@ -85,6 +85,12 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                 view.loadUrl(url);
                 return true;
             }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+//                super.onReceivedSslError(view, handler, error);
+                handler.proceed();
+            }
         });
 
         // 弹出窗体的设置
