@@ -136,7 +136,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
                 }
             }
         });
-        mTitle.setRightLayoutClickListener(this);
+//        mTitle.setRightLayoutClickListener(this);
     }
 
     private void initData() {

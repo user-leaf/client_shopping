@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         app:iuuTitleBarTitle="我的收益"
-        app:iuuTitleBarRightImage="@mipmap/list_information_white"
         />
 
     <LinearLayout
