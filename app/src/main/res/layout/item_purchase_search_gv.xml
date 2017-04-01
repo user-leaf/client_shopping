@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="NAME"
+            android:text=""
             android:lines="2"
             android:ellipsize="end"
             />
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:text="+0积分"/>
+                android:text="+0兑换券"/>
         </LinearLayout>
 
 </LinearLayout>

@@ -646,7 +646,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         mTVGetIntegral.setText(mGetIntegralAll+"UU");
         mMoneyAll=mMoney*mProductNum;
         mIntegralAll=mIntegral*mProductNum;
-        mTVMoneyAll.setText("总金额：￥"+mMoneyAll+"+"+mIntegralAll+"积分");
+        mTVMoneyAll.setText("总金额：￥"+mMoneyAll+"+"+mIntegralAll+"兑换券");
         mTVChooseNum.setText(""+mProductNum);
     }
 

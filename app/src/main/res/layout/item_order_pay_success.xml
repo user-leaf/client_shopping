@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="147dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/list_image_loading"
         />
 
     <RelativeLayout
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/order_pay_success_item_tv_price"
             android:layout_toRightOf="@id/order_pay_success_item_tv_price"
-            android:text="+积分"
+            android:text="+兑换券"
             />
     </RelativeLayout>
 </LinearLayout>

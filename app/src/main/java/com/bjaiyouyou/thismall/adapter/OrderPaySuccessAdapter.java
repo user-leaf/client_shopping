@@ -77,7 +77,7 @@ public class OrderPaySuccessAdapter extends BaseAdapter {
         holder.mTvTitle.setText(productInfo.getTitle());
         holder.mTvPrice.setText("¥" + productInfo.getPrice());
         if (productInfo.getPoints() != null) {
-            holder.mTvPoints.setText("+" + productInfo.getPoints() + "积分");
+            holder.mTvPoints.setText("+" + productInfo.getPoints() + "兑换券");
         } else {
             holder.mTvPoints.setText("" + productInfo.getPoints());
         }

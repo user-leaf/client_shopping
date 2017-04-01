@@ -650,7 +650,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         }
                         //单价
                         if (detailBeani.getProduct_size() != null) {
-                            String singleMoney = "￥" + detailBeani.getPrice() + "\n+" + detailBeani.getProduct_size().getIntegration_price() + "积分";
+                            String singleMoney = "￥" + detailBeani.getPrice() + "\n+" + detailBeani.getProduct_size().getIntegration_price() + "兑换券";
                             SpannableStringBuilder builderSingleMoney = new SpannableStringBuilder(singleMoney);
                             //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
                             ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);

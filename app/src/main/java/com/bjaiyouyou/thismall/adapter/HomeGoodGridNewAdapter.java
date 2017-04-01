@@ -126,7 +126,7 @@ public class HomeGoodGridNewAdapter extends RecyclerView.Adapter<HomeGoodGridNew
             if (productInfo.getSize() != null) {
                 String price = "￥" + productInfo.getSize().getPrice();
                 viewHolder.mTvPrice.setText(price);
-                String integral = "+" + productInfo.getSize().getIntegration_price() + "积分";
+                String integral = "+" + productInfo.getSize().getIntegration_price() + "兑换券";
                 viewHolder.mTvPoints.setText(integral);
             }
         }

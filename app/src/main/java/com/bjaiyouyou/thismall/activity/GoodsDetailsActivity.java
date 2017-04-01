@@ -22,7 +22,6 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.MainActivity;
-import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4ClientOther;
@@ -856,7 +855,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         mTVGetIntegral.setText(mGetIntegralAll + "UU");
         mMoneyAll = mMoney * mProductNum;
         mIntegralAll = mIntegral * mProductNum;
-        mTVMoneyAll.setText("总金额：￥" + mMoneyAll + "+" + mIntegralAll + "积分");
+        mTVMoneyAll.setText("总金额：￥" + mMoneyAll + "+" + mIntegralAll + "兑换券");
         mTVChooseNum.setText("" + mProductNum);
     }
 

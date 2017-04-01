@@ -55,7 +55,7 @@ public class SearchResultGoodsAdapter extends RecyclerView.Adapter<SearchResultG
                 String price = "￥" + goods.getSize().getPrice();
 //        String price="￥"+goods.getPrice();
                 holder.tvPrice.setText(price);
-                String integral = "+" + goods.getSize().getIntegration_price() + "积分";
+                String integral = "+" + goods.getSize().getIntegration_price() + "兑换券";
                 holder.tvIntegral.setText(integral);
             }
 

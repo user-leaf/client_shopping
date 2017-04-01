@@ -65,7 +65,7 @@ public class GoodsAdapter extends MyBaseAdapter<Goods.DataBean>  {
                       holder.tvPrice.setText(price);
                   }
                   if (!TextUtils.isEmpty(goods.getSize().getIntegration_price()+"")){
-                      String integral="+"+goods.getSize().getIntegration_price()+"积分";
+                      String integral="+"+goods.getSize().getIntegration_price()+"兑换券";
                       holder.tvIntegral.setText(integral);
                   }
               }

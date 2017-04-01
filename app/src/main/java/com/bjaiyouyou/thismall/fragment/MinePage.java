@@ -392,7 +392,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         // 解决页面不从顶部开始
         gv.setFocusable(false);
         mIVUserIcon.setOnClickListener(this);
-        mRLIntegral.setOnClickListener(this);
+//        mRLIntegral.setOnClickListener(this);
         mRLGoldCoin.setOnClickListener(this);
         mRLWithdraw.setOnClickListener(this);
 //        titleBar.setRightLayoutClickListener(this);

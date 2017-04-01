@@ -10,7 +10,7 @@
         android:id="@+id/recharge_success_item_iv"
         android:layout_width="match_parent"
         android:layout_height="148dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/list_image_loading"
         />
 
     <TextView
@@ -37,7 +37,7 @@
             android:id="@+id/recharge_success_item_tv_points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+积分"
+            android:text="+兑换券"
             android:layout_toRightOf="@id/recharge_success_item_tv_price"
             />
     </RelativeLayout>

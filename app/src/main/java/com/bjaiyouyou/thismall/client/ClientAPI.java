@@ -38,13 +38,13 @@ public class ClientAPI {
     public static final String TAG = ClientAPI.class.getSimpleName();
 
     //*****************************************************************************
-    public static final String API_POINT = "http://testapi2.bjaiyouyou.com/";
-//    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
+//    public static final String API_POINT = "http://testapi2.bjaiyouyou.com/";
+    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
 //    public static final String API_POINT = "http://api.bjaiyouyou.com/";
 
     // 任务页视频播放地址
-//    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";
-    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
+    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";
+//    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
 
     //*****************************************************************************
 

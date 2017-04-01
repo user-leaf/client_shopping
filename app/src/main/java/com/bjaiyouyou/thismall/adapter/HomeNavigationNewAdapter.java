@@ -56,7 +56,7 @@ public class HomeNavigationNewAdapter extends MyBaseAdapter<HomeNavigationItemNe
         HomeNavigationItemNew.RushToPurchaseTimeFrameBean.DetailBean item=data.get(position);
         if(item!=null){
             if (item.getSize()!=null){
-                String price="￥"+item.getSize().getRush_price()+"\n+"+item.getSize().getIntegration_price()+"积分";
+                String price="￥"+item.getSize().getRush_price()+"\n+"+item.getSize().getIntegration_price()+"兑换券";
                 //改变部分文字的颜色
                 ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
                 SpannableStringBuilder builder = new SpannableStringBuilder(price);

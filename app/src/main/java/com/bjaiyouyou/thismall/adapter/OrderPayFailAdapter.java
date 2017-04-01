@@ -56,7 +56,7 @@ public class OrderPayFailAdapter extends MyBaseAdapter<OrderPayFail.OrderBean.Or
             if (order.getProduct_size()!=null&&order.getProduct_size().getName()!=null){
                 holder.tvDimension.setText(order.getProduct_size().getName());
             }
-            holder.tvIntegral.setText("￥"+order.getPrice()+"+"+order.getDeduct_integration()+"积分");
+            holder.tvIntegral.setText("￥"+order.getPrice()+"+"+order.getDeduct_integration()+"兑换券");
             //        网络加载图片
             if (order.getProduct_image()!=null&& order.getProduct_image().getImage_path()!=null&&order.getProduct_image().getImage_base_name()!=null){
 

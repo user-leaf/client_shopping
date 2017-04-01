@@ -53,7 +53,7 @@ public class HomeNavigationNewEmptyAdapter extends MyBaseAdapter<HomeNavigationI
             holder= (ViewHolder) convertView.getTag();
         }
         //填充数据
-        String price="￥0.0\n0积分+";
+        String price="￥0.0\n0兑换券+";
         //改变部分文字的颜色
         ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
         SpannableStringBuilder builder = new SpannableStringBuilder(holder.tv.getText().toString());

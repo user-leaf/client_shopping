@@ -153,7 +153,7 @@ public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBu
                     holder.tvPrice.setText(price);
                 }
                 if (!TextUtils.isEmpty(goods.getProduct_size().getIntegration_price() + "")) {
-                    String integral = "+" + goods.getProduct_size().getIntegration_price() + "积分";
+                    String integral = "+" + goods.getProduct_size().getIntegration_price() + "兑换券";
                     holder.tvIntegral.setText(integral);
                 }
             }

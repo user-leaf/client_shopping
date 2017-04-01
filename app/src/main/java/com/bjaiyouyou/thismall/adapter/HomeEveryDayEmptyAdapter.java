@@ -74,7 +74,7 @@ public class HomeEveryDayEmptyAdapter extends RecyclerView.Adapter<HomeEveryDayE
                 .error(R.mipmap.list_image_loading)
                 .placeholder(R.mipmap.list_image_loading)
                 .into(viewHolder.mImageView);
-        viewHolder.mTvName.setText("￥0.00\n+0积分");
+        viewHolder.mTvName.setText("￥0.00\n+0兑换券");
     }
 
 }

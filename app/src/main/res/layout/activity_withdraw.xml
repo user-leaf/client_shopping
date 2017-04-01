@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="我的兑换券"
-        app:iuuTitleBarRightImage="@mipmap/list_information_white"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"/>
    <FrameLayout
        android:layout_width="match_parent"

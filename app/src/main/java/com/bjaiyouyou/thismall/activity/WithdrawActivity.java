@@ -230,7 +230,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
         mTvChangeRule.setOnClickListener(this);
         mLLIsFive.setOnClickListener(this);
         mTvWithdrawDetail.setOnClickListener(this);
-        mTitleBar.setRightLayoutClickListener(this);
+//        mTitleBar.setRightLayoutClickListener(this);
         mTitleBar.setLeftLayoutClickListener(this);
         mBtnWithDraw.setOnClickListener(this);
         mTvGotoLogin.setOnClickListener(this);
