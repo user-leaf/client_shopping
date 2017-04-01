@@ -18,13 +18,22 @@ import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.google.gson.Gson;
 import com.pingplusplus.android.Pingpp;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Ping++ 支付任务
@@ -200,7 +209,8 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
 //        Log.d("OrderDetailActivity: ", url);
 //        Request request = new Request.Builder().url(url).build();
 
-        OkHttpClient client = new OkHttpClient();
+//        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = getOkHttpClient();
         Response response = client.newCall(request).execute();
 
 //        LogUtils.d(TAG, "response.body() = " + response.body().string()); // 这句代码会导致，再次获取response.body().string()时拿不到，下一句return null！！
@@ -221,4 +231,44 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
         }
     }
 
+    private static OkHttpClient getOkHttpClient() {
+        X509TrustManager trustManager;
+        SSLSocketFactory sslSocketFactory = null;
+
+        trustManager = new X509TrustManager() {
+
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
+
+            }
+
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
+
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[0];
+            }
+        };
+
+        try {
+            SSLContext sslContext;
+            sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, new X509TrustManager[]{trustManager}, null);
+            sslSocketFactory = sslContext.getSocketFactory();
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+        OkHttpClient client = new OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, trustManager).hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                })
+                .build();
+        return client;
+    }
 }

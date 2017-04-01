@@ -79,7 +79,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private View mSigninHasLoginView;   // 签到页已登录
     private View mTvLogin;              // 去登录按钮
 
-    // 会员展示栏标题
+    // 会员展示栏
     private TextView mTvVipTip;         // 标题
     private View mVipSyncView;          // 同步积分
     private ImageView mIvVipSync;       // 同步积分按钮图标
