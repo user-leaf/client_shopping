@@ -2,6 +2,7 @@ package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.fragment.MinePage;
+import com.bjaiyouyou.thismall.model.BindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.User;
@@ -102,7 +103,7 @@ public class Api4Mine extends BaseClientApi {
      *author Qxh
      *created at 2017/3/31 21:59
      */
-    public void bindingAlipay(String userId,DataCallback<String> callback){
+    public void bindingAlipay(String userId,DataCallback<BindingAlipayModel> callback){
         StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
         sb.append("api/v1/member/boundAlipay");
         sb.append("?alipay_id=");

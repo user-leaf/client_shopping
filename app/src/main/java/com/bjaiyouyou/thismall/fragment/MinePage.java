@@ -54,6 +54,7 @@ import com.bjaiyouyou.thismall.callback.OnNoDoubleClickListener;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.model.BindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
 import com.bjaiyouyou.thismall.model.MyMine;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
@@ -811,20 +812,24 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 不成功提示
      */
     private void bindingAlipay(String userId) {
-        mClientApi.bindingAlipay(userId, new DataCallback<String>(getContext()) {
+        mClientApi.bindingAlipay(userId, new DataCallback<BindingAlipayModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 //                ToastUtils.exceptionToast(e, getContext());
-//                ToastUtils.showShort("绑定支付宝失败");
+                ToastUtils.showShort("绑定支付宝失败");
+                return;
             }
 
             @Override
             public void onSuccess(Object response, int id) {
-                //绑定直接跳转到提现页面
+                if (response!=null){
+                    //绑定直接跳转到提现页面
 //                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
-                startActivity(mIntentSafeCode);
-                //取消对话框
+                    startActivity(mIntentSafeCode);
+                    //取消对话框
 //                mBindingAlipayDialog.dismiss();
+
+                }
             }
         });
     }
