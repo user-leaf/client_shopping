@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="2"
-            android:text="对待生命你不妨大胆冒险一点，因为好歹你要失去它，何必总陷于一片泥土。何必总陷于一片泥土。"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_tiny"
             />
@@ -59,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="对待生命你不妨大胆冒险一点，因为好歹你要失去它，何必总陷于一片泥土。"
             android:textColor="@color/app_gray_999999"
             android:textSize="@dimen/text_size_micro"
             />
@@ -77,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:minWidth="36dp"
-                android:text="$100"
                 android:textColor="@color/app_red"
                 android:textSize="@dimen/text_size_medium"
                 />
@@ -86,7 +83,6 @@
                 android:id="@+id/classify_recyclerview_item_tv_jifen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+0积分"
                 android:textColor="@color/app_gray_222222"
                 android:textSize="@dimen/text_size_tiny"
                 />
