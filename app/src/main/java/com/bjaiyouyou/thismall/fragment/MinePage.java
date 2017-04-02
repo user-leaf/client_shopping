@@ -256,6 +256,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     } else {
                         // 其他状态值则为授权失败
                         ToastUtils.showShort("授权失败重新授权");
+                        dismissLoadingDialog();
                     }
                     break;
                 }
@@ -746,6 +747,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             @Override
             public void onFail(Call call, Exception e, int id) {
 //                ToastUtils.exceptionToast(e, getContext());
+                dismissLoadingDialog();
             }
 
             @Override
@@ -759,6 +761,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         //登录
                         if (isLogin) {
                             createSafeCodeDialog();
+                            dismissLoadingDialog();
                             //没登录
                         } else {
                             //绑定直接跳转到提现页面
@@ -823,6 +826,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 //test
 //                String authorizationParameters= "";
 //                authV2(authorizationParameters);
+                dismissLoadingDialog();
 
             }
 
