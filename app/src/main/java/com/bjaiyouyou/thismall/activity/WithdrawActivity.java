@@ -153,11 +153,15 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
      * 获得提现信息
      */
     private void initData() {
+        //数据加载Loading
+        showLoadingDialog();
         ClientAPI.getWithdraw( new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 //错误提示
 //                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                //取消数据加载Loading
+//                dismissLoadingDialog();
             }
 
             @Override
@@ -178,6 +182,8 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                         initControl();
                     }
                 }
+                //取消数据加载Loading
+                dismissLoadingDialog();
             }
         });
     }
@@ -485,10 +491,14 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
 
         String token = CurrentUserManager.getUserToken();
         if (!TextUtils.isEmpty(token)) {
+            //数据加载Loading
+            showLoadingDialog();
             ClientAPI.withdraw(token, mOpenID, (int) mCanWithDrawBalance, userName, safeCode, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
 //                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                    //取消数据加载Loading
+                    dismissLoadingDialog();
                 }
 
                 @Override
@@ -500,6 +510,8 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                         //提现成功关闭页面
                         finish();
                     }
+                    //取消数据加载Loading
+                    dismissLoadingDialog();
                 }
             });
         }
@@ -507,4 +519,9 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
     //////////////////////////////////////////shareSDk第三方登录获得openID/////////////////////////////
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dismissLoadingDialog();
+    }
 }

@@ -420,7 +420,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
 
     private void initData() {
-
+        //取消数据加载Loading
+        showLoadingDialog();
         //退款接口为二次请求相应接口，先请求退款接口，（成功与否对获取用户信息不影响）再获取用户信息
         ClientAPI.getWithdraw(new StringCallback() {
             @Override
@@ -467,7 +468,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                             }
                         }
                     }
-                    dismissLoadingDialog();
                     //token是否过期，过期后对头部的显示隐藏进行处理
                     isLogin = false;
                     mLoginView.setVisibility(View.GONE);
@@ -478,6 +478,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     initGridViewChange();
 //                    gv.setAlpha(0.6f);
 //                    mLLNeedSafe.setAlpha(0.6f);
+                    //取消数据加载Loading
+                    dismissLoadingDialog();
                 }
 
                 @Override
@@ -514,7 +516,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
     private void setData() {
-        dismissLoadingDialog();
+//        dismissLoadingDialog();
         //重新设置头像为默认头像
 //        mIVUserIcon.setImageResource(R.mipmap.list_profile_photo);
         User.MemberBean memberBean = mUser.getMember();
@@ -738,7 +740,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 判断是否绑定支付宝
      */
     private void getIfBindingAlipay() {
-
+        //数据加载Loading
+        showLoadingDialog();
         mClientApi.getIfBindingAlipay(new DataCallback<CheckIfBindingAlipayModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
@@ -849,6 +852,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             public void onFail(Call call, Exception e, int id) {
 //                ToastUtils.exceptionToast(e, getContext());
                 ToastUtils.showShort("绑定支付宝失败");
+                //取消数据加载Loading
+                dismissLoadingDialog();
                 return;
             }
 
@@ -861,6 +866,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     createSafeCodeDialog();
                     //取消对话框
 //                mBindingAlipayDialog.dismiss();
+                    //取消数据加载Loading
+                    dismissLoadingDialog();
 
                 }
             }
@@ -1621,5 +1628,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dialogWindow.setGravity(Gravity.CENTER);
 
         dialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dismissLoadingDialog();
     }
 }
