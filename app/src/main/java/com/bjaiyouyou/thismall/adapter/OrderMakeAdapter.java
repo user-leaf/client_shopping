@@ -142,7 +142,7 @@ public class OrderMakeAdapter extends BaseAdapter {
 
                 }
 
-                holder.points.setText("+" + product_size.getIntegration_price() + "积分");
+                holder.points.setText("+" + product_size.getIntegration_price() + "兑换券");
 
             }
 
@@ -209,7 +209,7 @@ public class OrderMakeAdapter extends BaseAdapter {
 //
 //                    holder.desc.setText("" + product_size.getName());
 //                    int integration_price = product_size.getIntegration_price();
-//                    holder.points.setText("+" + integration_price + "积分");
+//                    holder.points.setText("+" + integration_price + "兑换券");
 //                }
 //
 //                holder.count.setText("X" + cartModel.getNumber());
@@ -227,7 +227,7 @@ public class OrderMakeAdapter extends BaseAdapter {
         private TextView desc;
         // 商品价格
         private TextView price;
-        // 购买消费积分
+        // 购买消费兑换券
         private TextView points;
         // 购买数量
         private TextView count;

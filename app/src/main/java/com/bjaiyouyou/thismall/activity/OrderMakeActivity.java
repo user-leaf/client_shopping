@@ -462,7 +462,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         sumMoney = MathUtil.round(sumMoney, 2);
         mTvMoneySum.setText("¥" + sumMoney);
         // 商品总额中的积分数
-        mTvPointsSum.setText("+" + totalPoints + "积分");
+        mTvPointsSum.setText("+" + totalPoints + "兑换券");
         // 本次消费可得UU
         mTvGoldSum.setText((int) sumMoney / 10 + "UU");
 
@@ -470,7 +470,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         // 底部实付金额
         mTvTotalPay.setText("¥" + finalPay);
         // 底部实付积分
-        mTvTotalPoints.setText("+" + totalPoints + "积分");
+        mTvTotalPoints.setText("+" + totalPoints + "兑换券");
 
     }
 
