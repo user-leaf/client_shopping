@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
-        app:iuuTitleBarTitle="充值成功"
+        app:iuuTitleBarTitle="兑换成功"
         >
 
 
@@ -48,7 +48,7 @@
                 android:id="@+id/recharge_success_tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="您的UU余额为"
+                android:text="您的UU数额为"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_tiny"
                 />
@@ -88,7 +88,7 @@
                 android:id="@+id/recharge_success_tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="您的积分余额为"
+                android:text="您的积分数额为"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_tiny"
                 />

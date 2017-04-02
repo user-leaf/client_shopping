@@ -75,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="UU余额"
+                            android:text="UU数额"
                             android:textColor="#bbbbbb"
                             android:layout_centerInParent="true"
                             />
@@ -151,6 +151,7 @@
                         android:gravity="center"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
                         android:text="定额充值"/>
 
 
@@ -180,7 +181,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:layout_toLeftOf="@id/member_center_sb"
-                        android:text="积分优先"
+                        android:text="积分优先兑换"
                         />
                 </RelativeLayout>
 
@@ -228,7 +229,7 @@
                         android:lines="1"
                         android:ellipsize="start"
                         android:background="#ffffff"
-                        android:hint="请输入整数充值金额"
+                        android:hint="请输入整数充值数额"
                         android:inputType="number"
                         android:singleLine="true"
                         android:textSize="@dimen/text_size_small"
@@ -289,7 +290,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@color/app_red"
-                    android:text="充值"
+                    android:text="兑换"
                     android:singleLine="true"
                     android:ellipsize="start"
                     android:textColor="#ffffff"

@@ -7,7 +7,7 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
 /**
- * 提现成功页面
+ * 换取成功页面
  * @author QuXinhang
  *Creare 2016/11/11 18:41
  */

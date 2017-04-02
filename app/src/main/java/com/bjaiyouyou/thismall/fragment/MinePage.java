@@ -760,9 +760,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         } else {
                             //绑定直接跳转到提现页面
                             startActivity(mIntentSafeCode);
+
                         }
                     } else {
-                        Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号，账号一经绑定不能修改，是否继续？", "绑定", "取消",
+                        Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号，一经绑定不能修改，是否继续？", "绑定", "取消",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -856,7 +857,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 if (response!=null){
                     //绑定直接跳转到提现页面
 //                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
-                    startActivity(mIntentSafeCode);
+//                    startActivity(mIntentSafeCode);
+                    createSafeCodeDialog();
                     //取消对话框
 //                mBindingAlipayDialog.dismiss();
 

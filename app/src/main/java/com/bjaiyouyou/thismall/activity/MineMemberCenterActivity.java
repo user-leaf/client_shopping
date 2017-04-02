@@ -52,7 +52,7 @@ import java.util.Set;
 import okhttp3.Call;
 
 /**
- * UU充值页
+ * UU兑换页
  * 原会员中心页
  *
  * @author kanbin
@@ -67,7 +67,7 @@ import okhttp3.Call;
  *         <p/>
  *         <p/>
  *         布局添加
- *         对充值功能的实现
+ *         对兑换功能的实现
  * @author QuXinhang
  *         Creare 2016/8/12 9:35
  */
@@ -76,18 +76,18 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 
     public static final String TAG = MineMemberCenterActivity.class.getSimpleName();
 
-    //充值选项列表
+    //兑换选项列表
     private TagFlowLayout mTagFlowLayout;
     //列表内容
     private String[] mVals;
-    //列表对应的充值费用
+    //列表对应的兑换费用
     private Long[] mRMBs;
     //列表适配器
     private TagAdapter<String> mTagAdapter;
     private IUUTitleBar mTitleBar;
     //其他金额输入框
     private EditText mEtMoney;
-    //充值按钮
+    //兑换按钮
     private Button mBtnNext;
     private Handler mHandler = new Handler() {
         @Override
@@ -112,7 +112,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     private TextView mTVIntegral;
     //积分
     private long mIntegral = 300;
-    //充值金额
+    //兑换金额
     private Long mPayMoney;
     //现金支付
     private double mPayRMB;
@@ -120,7 +120,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     private boolean isIntegral = true;
     //积分是否缺少
     private boolean isIntegralLack = false;
-    //充值获得UU
+    //兑换获得UU
     private long mGetCoin;
     //列表UU数组
     private int[] mCoins;
@@ -233,13 +233,13 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     private void setupView() {
         mTvUUDetail.setOnClickListener(this);
         mLLIsFive.setOnClickListener(this);
-        //提现详请监听
+        //换取详请监听
 //        mTvWithdrawRecord.setOnClickListener(this);
         mTitleBar.setLeftLayoutClickListener(this);
         //列表监听
         mTagFlowLayout.setOnTagClickListener(this);
         mTagFlowLayout.setOnSelectListener(this);
-        //充值监听
+        //兑换监听
         mBtnNext.setOnClickListener(this);
         //登录跳转监听
         mTvGotoLogin.setOnClickListener(this);
@@ -254,7 +254,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             }
         });
 
-        //输入充值变化监听
+        //输入兑换变化监听
         mEtMoney.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -269,10 +269,10 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                     mEtMoney.setSelection(money.length());
                 }
                 if (TextUtils.isEmpty(money)) {
-                    mBtnNext.setText("充值");
+                    mBtnNext.setText("兑换");
                 } else {
                     mPayMoney = Long.valueOf(money);
-//                    mBtnNext.setText("充值("+mPayMoney+")");
+//                    mBtnNext.setText("兑换("+mPayMoney+")");
 //                    compareMoney();
                     setButton();
                 }
@@ -282,7 +282,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             public void afterTextChanged(Editable s) {
             }
         });
-        //提现监听
+        //换取监听
         mTvWithDraw.setOnClickListener(this);
 
         mTagFlowLayout.setOnTagClickListener(this);
@@ -326,10 +326,10 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         // 预设选中
         mTagAdapter.setSelectedList(0);
         mTagFlowLayout.getChildAt(0).setClickable(true);
-        //初始化充值钱数
+        //初始化兑换钱数
         mPayMoney = mRMBs[0];
         mGetCoin = mCoins[0];
-        mBtnNext.setText("充值(" + mGetCoin + ")UU");
+        mBtnNext.setText("兑换(" + mGetCoin + ")UU");
     }
 
     @Override
@@ -339,9 +339,9 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             case R.id.left_layout: // 返回
                 finish();
                 break;
-            case R.id.member_center_btn_next: // 充值
-//                //处理充值
-//                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认充值？", "确认", "取消",
+            case R.id.member_center_btn_next: // 兑换
+//                //处理兑换
+//                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认兑换？", "确认", "取消",
 //                        new DialogInterface.OnClickListener() {
 //                            @Override
 //                            public void onClick(DialogInterface dialog, int which) {
@@ -360,7 +360,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 
                 //                jump(MineRechargeSuccessActivity.class,false);
                 break;
-            case R.id.member_center_tv_withdraw: // 提现入口
+            case R.id.member_center_tv_withdraw: // 换取入口
                 mClass = WithdrawRecordActivity.class;
                 mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
                 mIntentWithDraw.putExtra("havenCoin", mHavenCoin);
@@ -374,7 +374,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                 jump(new Intent(getApplicationContext(), LoginActivity.class), false);
                 finish();
                 break;
-//            case R.id.tv_member_center_title_bar_withdraw_record: // 提现详请入口
+//            case R.id.tv_member_center_title_bar_withdraw_record: // 换取详请入口
 //                jump(WithdrawRecordActivity.class,false);
 //                break;
             case R.id.ll__member_center_coin_income: // 我的收益入口
@@ -395,9 +395,9 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 //            case R.id.left_layout: // 返回
 //                finish();
 //                break;
-//            case R.id.member_center_btn_next: // 充值
-////                //处理充值
-////                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认充值？", "确认", "取消",
+//            case R.id.member_center_btn_next: // 兑换
+////                //处理兑换
+////                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认兑换？", "确认", "取消",
 ////                        new DialogInterface.OnClickListener() {
 ////                            @Override
 ////                            public void onClick(DialogInterface dialog, int which) {
@@ -416,7 +416,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 //
 //                //                jump(MineRechargeSuccessActivity.class,false);
 //                break;
-//            case R.id.member_center_tv_withdraw: // 提现入口
+//            case R.id.member_center_tv_withdraw: // 换取入口
 //                mClass = WithdrawRecordActivity.class;
 //                mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
 //                mIntentWithDraw.putExtra("havenCoin", mHavenCoin);
@@ -430,7 +430,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 //                jump(new Intent(getApplicationContext(), LoginActivity.class), false);
 //                finish();
 //                break;
-////            case R.id.tv_member_center_title_bar_withdraw_record: // 提现详请入口
+////            case R.id.tv_member_center_title_bar_withdraw_record: // 换取详请入口
 ////                jump(WithdrawRecordActivity.class,false);
 ////                break;
 //            case R.id.ll__member_center_coin_income: // 我的收益入口
@@ -447,7 +447,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 //    }
 
     /**
-     * 处理收益和提现页面的跳转
+     * 处理收益和换取页面的跳转
      * 一：绑定微信
      * 根据mClass跳转到
      * 二：没有绑定
@@ -464,7 +464,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     }
 
     /**
-     * 处理充值
+     * 处理兑换
      */
     private void pay() {
         //判断积分是否够用
@@ -473,10 +473,10 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         if (isIntegral) {
             if (!isIntegralLack) {
                 //积分够用,直接向服务器提交减少积分
-                LogUtils.e("UU充值", "积分支付优先支付" + mPayMoney + "还剩积分" + (mIntegral - mPayMoney));
+                LogUtils.e("UU兑换", "积分支付优先支付" + mPayMoney + "还剩积分" + (mIntegral - mPayMoney));
             } else {
                 //积分不够用,向服务器提交积分，带需要支付人民数值跳转到支付选择页面
-                LogUtils.e("UU充值", "积分支付优先支付" + mIntegral + "积分" + mPayRMB + "人民币");
+                LogUtils.e("UU兑换", "积分支付优先支付" + mIntegral + "积分" + mPayRMB + "人民币");
             }
         } else {
             //直接现金支付，带着值跳转到选择支付方式
@@ -510,7 +510,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                 public void onError(Call call, Exception e, int id) {
                     LogUtils.e("postIntegralPay--e:", e.toString());
                     if (mPayRMB > mLimitMoneys) {
-                        Toast.makeText(getApplicationContext(), "充值失败；支付人民币不能超过2000元", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "兑换失败；兑换数额不能超过2000元", Toast.LENGTH_SHORT).show();
                     } else {
                         UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                     }
@@ -518,7 +518,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 
                 @Override
                 public void onResponse(String response, int id) {
-                    if ((isIntegral && isIntegralLack) || !isIntegral) {//积分优先并且积分不足;或者不使用积分.调用支付，否则直接充值成功
+                    if ((isIntegral && isIntegralLack) || !isIntegral) {//积分优先并且积分不足;或者不使用积分.调用支付，否则直接兑换成功
                         //拿到订单调用支付
                         //拿到订单调用支付
                         mOrder_number = new Gson().fromJson(response, PayOrderNum.class).getOrder_number();
@@ -528,8 +528,8 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                         //支付成功后跳转页
 //                    jump(MineRechargeSuccessActivity.class,false);
                     } else {
-                        //积分充值不返回订单号
-//                        Toast.makeText(getApplicationContext(),"积分消费，UU充值成功",Toast.LENGTH_SHORT).show();
+                        //积分兑换不返回订单号
+//                        Toast.makeText(getApplicationContext(),"积分消费，UU兑换成功",Toast.LENGTH_SHORT).show();
                         //跳转到支付成功页面
 //                        mPaySucceedIntent=new Intent(getApplicationContext(),MineRechargeSuccessActivity.class);
 //                        mPaySucceedIntent.putExtra("coin",mGetCoin+mHavenCoin);
@@ -548,7 +548,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
      */
     private void compareMoney() {
         isIntegralLack = mIntegral < mPayMoney ? true : false;
-//        mBtnNext.setText("充值（"+mPayMoney+")");
+//        mBtnNext.setText("兑换（"+mPayMoney+")");
         //显示积分不足提示
         if (isIntegral && isIntegralLack) {
             mPayRMB = mPayMoney - mIntegral;
@@ -571,7 +571,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             LogUtils.e("coin", "" + (260 * bs + 10 * (bs - 1)));
             mGetCoin = 260 * bs + 10 * (bs - 1) + ((long) mPayMoney % mBound) * 5;
         }
-        mBtnNext.setText("充值（" + mGetCoin + "UU)");
+        mBtnNext.setText("兑换（" + mGetCoin + "UU)");
     }
 
 
@@ -609,7 +609,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     private void changePay() {
         //判断是否其它金额，控制输入框的隐藏显示
         if (choice == mVals.length - 1) {
-            mBtnNext.setText("充值");
+            mBtnNext.setText("兑换");
             mLLLockNotify.setVisibility(View.GONE);
             mOtherView.setVisibility(View.VISIBLE);
             mEtMoney.setText("");
@@ -617,10 +617,10 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             mPayMoney = 0l;
             mPayRMB = 0;
         } else {
-            //获得充值钱数,并且进行判断
+            //获得兑换钱数,并且进行判断
             mPayMoney = mRMBs[choice];
 //            compareMoney();
-//            mBtnNext.setText("充值("+mPayMoney+")");
+//            mBtnNext.setText("兑换("+mPayMoney+")");
             setButton();
             mOtherView.setVisibility(View.GONE);
         }

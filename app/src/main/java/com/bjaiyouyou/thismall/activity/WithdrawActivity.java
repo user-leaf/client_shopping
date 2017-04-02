@@ -23,7 +23,6 @@ import com.bjaiyouyou.thismall.model.Withdraw;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
-import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -468,6 +467,11 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
      */
     public void getWithdraw() {
         mCanWithDrawBalance = mInPutBalance;
+        String withdrawNum=mEtWithDraw.getText().toString().trim();
+        if (TextUtils.isEmpty(withdrawNum)){
+            ToastUtils.showShort("请输入换取数额");
+            return;
+        }
         String safeCode = mEtSafeCodeInput.getText().toString().trim();
         if (TextUtils.isEmpty(safeCode)) {
             ToastUtils.showShort("安全码不可为空");
@@ -484,7 +488,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
             ClientAPI.withdraw(token, mOpenID, (int) mCanWithDrawBalance, userName, safeCode, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+//                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                 }
 
                 @Override
