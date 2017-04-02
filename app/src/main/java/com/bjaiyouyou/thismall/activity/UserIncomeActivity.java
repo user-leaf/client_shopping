@@ -240,7 +240,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         LogUtils.d(TAG, "strWant: " + strWant + ", strSafecode: " + strSafecode + ", strPayee: " + strPayee);
 
         if (TextUtils.isEmpty(strWant)) {
-            mTvTip.setText("请输入换取金额");
+            mTvTip.setText("请输入换取数额");
             return;
         }
 

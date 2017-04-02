@@ -69,13 +69,8 @@
                           android:layout_height="wrap_content"
                           android:orientation="horizontal"
                           android:layout_centerVertical="true"
-                          android:visibility="gone"
                           >
-                          <ImageView
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:src="@mipmap/list_icon_profit"
-                              />
+
                           <TextView
                               android:layout_marginLeft="5dp"
                               android:layout_width="wrap_content"
@@ -266,7 +261,7 @@
                            android:layout_width="110dp"
                            android:layout_height="wrap_content"
                            android:textColor="#6b6b6b"
-                           android:text="收取人姓名"/>
+                           android:text="姓名"/>
                        <EditText
                            android:id="@+id/et_withdraw_beneficiary_name"
                            android:layout_width="match_parent"
@@ -299,7 +294,7 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:textColor="#6b6b6b"
-                           android:text="今日你还可以换取"/>
+                           android:text="今日还可换取"/>
                        <TextView
                            android:id="@+id/tv_withdraw_time"
                            android:layout_width="wrap_content"
