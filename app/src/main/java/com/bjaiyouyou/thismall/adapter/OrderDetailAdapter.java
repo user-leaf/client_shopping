@@ -134,7 +134,7 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
             if (orderDetailBean.getProduct_size() != null) {
                 holder.tvDesc.setText(orderDetailBean.getProduct_size().getName());
                 int points = orderDetailBean.getProduct_size().getIntegration_price();
-                holder.tvJifen.setText("+" + points + "积分");
+                holder.tvJifen.setText("+" + points + "兑换券");
             }
             holder.tvPrice.setText("¥" + orderDetailBean.getPrice());
             // 数量
