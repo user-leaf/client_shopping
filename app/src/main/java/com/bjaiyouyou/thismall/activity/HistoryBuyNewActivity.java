@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -159,6 +158,13 @@ public class HistoryBuyNewActivity extends BaseActivity {
                     //是否含有下一页
                     isHasNextPage = !TextUtils.isEmpty(historyBuy.getNext_page_url());
                     mLastPage = historyBuy.getLast_page();
+
+                    if (isHasNextPage){
+                        mGV.setIsnomore(false);
+                    }else {
+                        mGV.setIsnomore(true);
+                    }
+
                     if (historyBuy.getData().size() != 0) {
                         //显示列表
                         gvShow();
@@ -198,9 +204,9 @@ public class HistoryBuyNewActivity extends BaseActivity {
         mTVEmpty = (ImageView) findViewById(R.id.iv_data_loading);
         mGV.setEmptyView(mTVEmpty);
         mIvEmpty = ((ImageView) findViewById(R.id.iv_history_buy_empty));
-
-        footView = LayoutInflater.from(this).inflate(R.layout.fragment_home_foot, null);
-        mGV.addFootView(footView);
+//
+//        footView = LayoutInflater.from(this).inflate(R.layout.fragment_home_foot, null);
+//        mGV.addFootView(footView);
 
 
         mTitleBar = ((IUUTitleBar) findViewById(R.id.title_history_buy));
@@ -234,6 +240,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
                     initData();
                 } else {
                     isLast = true;
+
 //                    Toast.makeText(getApplicationContext(), "已经加载到最后一页了", Toast.LENGTH_SHORT).show();
                     mGV.loadMoreComplete();
                     mGV.refreshComplete();
