@@ -151,7 +151,8 @@ public class ClassifyPage extends BaseFragment {
     }
 
     private void initCtrl() {
-        shopAdapter = new ShopAdapter(getFragmentManager());
+//        shopAdapter = new ShopAdapter(getFragmentManager());
+        shopAdapter = new ShopAdapter(getChildFragmentManager());
         viewpager.setAdapter(shopAdapter);
     }
 
