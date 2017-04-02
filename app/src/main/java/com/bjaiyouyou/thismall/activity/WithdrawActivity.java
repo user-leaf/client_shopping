@@ -367,7 +367,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 // jump(WithDrawSucceedActivity.class,false);
 
                 if (!isEtChange){
-                    Toast.makeText(this, "请输入兑换金额", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请输入换取数额", Toast.LENGTH_SHORT).show();
                 }else {
                     if (!isCanWithDraw) {
                         Toast.makeText(this, "输入金额不符合条件，请确认后重新输入", Toast.LENGTH_SHORT).show();
