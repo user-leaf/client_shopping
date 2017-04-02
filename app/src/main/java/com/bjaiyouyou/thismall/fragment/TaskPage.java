@@ -66,7 +66,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private TaskInitReceiver mTaskInitReceiver;
 
     private int currentPageNum; // 当前页码
-    private boolean haveSigned; // 是否已签到
+    private boolean currentSignState; // 是否已签到
 
     private TextView mTvNoNet;  // 无网提示
 
@@ -125,6 +125,8 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
     private void initVariable() {
         currentPageNum = 1;
+        currentSignState = false;
+
     }
 
     @Override
@@ -282,8 +284,6 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
     private void loadData4Page() {
         checkLogin();
 
-        haveSigned = false;
-
         // 获取签到数据
         mApi4Task.getTaskSignInfo(new DataCallback<SignInInfo>(getContext()) {
             @Override
@@ -294,15 +294,16 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                     mTvGetGoldToday.setText("" + signInInfo.getToday_get_gold() + "UU");
                     mTvSignInContCount.setText("" + signInInfo.getSign_in_continuous_number());
 
-                    haveSigned = signInInfo.isIs_sign_in();
-                    mBtnSignIn.setSelected(signInInfo.isIs_sign_in());
+                    currentSignState = signInInfo.isIs_sign_in();
+                    mBtnSignIn.setSelected(currentSignState);
 
                 }
             }
 
             @Override
             public void onFail(Call call, Exception e, int id) {
-                mBtnSignIn.setSelected(false);
+                // 保持原有状态
+                mBtnSignIn.setSelected(currentSignState);
                 checkNet();
             }
         });
@@ -390,17 +391,16 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             case R.id.task_rbtn_sign_in:
 
                 // 当服务器返回已签到状态为true，或实际已签到，不再继续执行
-                if (haveSigned || mBtnSignIn.isSelected()) { // 第2个条件是防止点签到之后再次点击又执行一遍（走onError）
+                if (currentSignState || mBtnSignIn.isSelected()) { // 第2个条件是防止点签到之后再次点击又执行一遍（走onError）
                     return;
                 }
 
                 showLoadingDialog();
 
-                // 点击签到
-                // 累计签到天数+1
                 String userToken = CurrentUserManager.getUserToken();
                 String url = ClientAPI.API_POINT + "api/v1/auth/signInRecord" + "?token=" + userToken;
 
+                // 点击签到
                 OkHttpUtils.get()
                         .url(url)
                         .tag(this)
@@ -409,7 +409,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 dismissLoadingDialog();
-                                mBtnSignIn.setSelected(false);
+                                mBtnSignIn.setSelected(currentSignState); // 保持原有状态
                                 checkNet();
                             }
 
@@ -417,6 +417,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                             public void onResponse(String response, int id) {
                                 mTvNoNet.setVisibility(View.GONE);
 
+                                currentSignState = true;
                                 mBtnSignIn.setSelected(true);
 //                                mBtnSignIn.setClickable(false); // 改为：如果已签到，则在签到操作之前return掉
 
@@ -587,6 +588,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
             mTvSignInTotalNum.setText("0");
             mTvGetGoldToday.setText("0UU");
             mTvSignInContCount.setText("0");
+            currentSignState = false;
             mBtnSignIn.setSelected(false);
             mTvVipTip.setText(R.string.task_vip_no);
             mVipSyncView.setClickable(false);

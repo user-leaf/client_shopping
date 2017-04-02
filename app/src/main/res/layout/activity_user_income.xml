@@ -101,7 +101,7 @@
                 android:layout_height="40dp"
                 android:background="@android:color/white"
                 android:gravity="center_vertical"
-                android:text="本次可换取"
+                android:text="本次可换取兑换券"
                 />
 
             <EditText
