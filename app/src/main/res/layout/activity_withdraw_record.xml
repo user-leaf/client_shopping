@@ -12,7 +12,7 @@
         android:id="@+id/title_withdraw_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="提现记录"
+        app:iuuTitleBarTitle="兑换记录"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         />
     <com.handmark.pulltorefresh.library.PullToRefreshListView

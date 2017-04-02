@@ -170,7 +170,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
                                     income = "" + mMember.getPush_money();
                                     uu = "" + mMember.getMoney_quantity();
                                     double uudouble = Double.parseDouble(uu);
-                                    mTvIncomeAll.setText("¥" + income);
+                                    mTvIncomeAll.setText(income);
                                     mTvUU.setText(((int) uudouble + "UU"));
                                     mEtSafecode.setHint(mMember.getSecurity_code_hint() + "******");
                                     break;
@@ -182,7 +182,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
 
                                     income = "" + mMember.getCannot_push_money();
 
-                                    mTvIncomeAll.setText("¥" + income);
+                                    mTvIncomeAll.setText(income);
                                     mTvIncomeAll.setTextColor(getResources().getColor(R.color.app_gray_bbbbbb));
                                     break;
 
@@ -223,7 +223,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra(WebShowActivity.PARAM_URLPATH, ClientAPI.WITHDRAW_RULE);
                 jump(intent, false);
                 break;
-            case R.id.btn_income_withdraw: // 提取收益
+            case R.id.btn_income_withdraw: // 换取收益
                 withdrawIncome();
                 break;
         }
@@ -240,7 +240,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         LogUtils.d(TAG, "strWant: " + strWant + ", strSafecode: " + strSafecode + ", strPayee: " + strPayee);
 
         if (TextUtils.isEmpty(strWant)) {
-            mTvTip.setText("请输入提取金额");
+            mTvTip.setText("请输入换取金额");
             return;
         }
 
@@ -257,7 +257,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         }
 
         if (TextUtils.isEmpty(strPayee)) {
-            mTvTip.setText("请输入收款人姓名");
+            mTvTip.setText("请输入姓名");
             return;
         }
 

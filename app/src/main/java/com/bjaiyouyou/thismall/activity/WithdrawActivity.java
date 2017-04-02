@@ -144,7 +144,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
             if (mCanWithDrawBalance != 0) {
                 getWithdraw();
             } else {
-                Toast.makeText(getApplicationContext(), "0元不可提现哦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "0元不可换取哦", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -293,7 +293,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
 
     private void initControl() {
         //填充基本的数据
-        mTvWeekMax.setText("￥" + mLimitBalance);
+        mTvWeekMax.setText(String.valueOf(mLimitBalance));
         mTvAllPay.setText(mPayBalance + "");
         mTvAllCoin.setText(+mCoinBalance + "UU");
 //        mCanWithDrawBalance=(mLimitBalance<=mPayBalance?mLimitBalance:mPayBalance)<=mCoinBalance?
@@ -367,17 +367,16 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 // jump(WithDrawSucceedActivity.class,false);
 
                 if (!isEtChange){
-                    Toast.makeText(this, "请输入提现金额", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请输入兑换金额", Toast.LENGTH_SHORT).show();
                 }else {
                     if (!isCanWithDraw) {
-                        Toast.makeText(this, "输入金额不符合提取条件，请确认后重新输入", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "输入金额不符合条件，请确认后重新输入", Toast.LENGTH_SHORT).show();
                         return;
                     }else {
                         getWithdraw();
                     }
                 }
 
-//                Toast.makeText(this,"提取成功"+mCanWithDrawBalance,Toast.LENGTH_SHORT).show();
 //                getPermission();
 
                 break;
@@ -458,7 +457,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         Log.d("", "onPermissionsDenied:" + requestCode + ":" + perms.size());
-        Toast.makeText(getApplicationContext(), "未授权，不能提现，请到设置中为应用进行授权", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "未授权，请到设置中为应用进行授权", Toast.LENGTH_SHORT).show();
         return;
     }
 

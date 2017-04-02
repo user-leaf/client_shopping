@@ -14,7 +14,7 @@
             android:paddingTop="18.5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提现须知"
+            android:text="换取须知"
             android:layout_gravity="center"
             />
         <ImageView
@@ -49,7 +49,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="32.5dp"
             android:textColor="#6b6b6b"
-            android:text="您还没有绑定微信，请到“哎呦呦商城”微信公众号内完成绑定和提现"
+            android:text="您还没有绑定微信，请到“哎呦呦商城”微信公众号内完成绑定和换取"
             />
     </LinearLayout>
 

@@ -20,7 +20,6 @@
             android:id="@+id/tv_withdraw_record_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="微信提现"
             android:textColor="#6b6b6b"
             android:textSize="14sp"
             />

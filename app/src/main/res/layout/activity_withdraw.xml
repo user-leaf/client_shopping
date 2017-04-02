@@ -50,7 +50,7 @@
                        android:layout_height="match_parent"
                        android:gravity="center"
                        android:textColor="@color/white"
-                       android:text="请点击右上角查看提现规则"
+                       android:text="请点击右上角查看换取规则"
                        />
 
                </LinearLayout>
@@ -80,7 +80,7 @@
                               android:layout_marginLeft="5dp"
                               android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
-                              android:text="我的收益"
+                              android:text="兑换券收益"
                               android:textColor="#bbb"
                               android:textSize="12sp"
                               />
@@ -111,7 +111,7 @@
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
                        android:background="@drawable/selector_if_can_withdraw_bg"
-                       android:text="￥0"
+                       android:text="0"
                        android:padding="12.5dp"
                        android:textSize="30sp"
                        android:gravity="center"
@@ -140,11 +140,6 @@
                            android:textColor="#6b6b6b"
                            android:text="可消费兑换券"/>
 
-                       <TextView
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:textColor="@color/app_red"
-                           android:text="￥"/>
                        <TextView
                            android:id="@+id/tv_withdraw_pay_all"
                            android:layout_width="wrap_content"
@@ -271,7 +266,7 @@
                            android:layout_width="110dp"
                            android:layout_height="wrap_content"
                            android:textColor="#6b6b6b"
-                           android:text="收款人姓名"/>
+                           android:text="收取人姓名"/>
                        <EditText
                            android:id="@+id/et_withdraw_beneficiary_name"
                            android:layout_width="match_parent"
@@ -304,7 +299,7 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:textColor="#6b6b6b"
-                           android:text="今日你还可以提现"/>
+                           android:text="今日你还可以换取"/>
                        <TextView
                            android:id="@+id/tv_withdraw_time"
                            android:layout_width="wrap_content"
@@ -351,7 +346,7 @@
                        android:layout_height="wrap_content"
                        android:textColor="@android:color/holo_red_dark"
                        android:layout_gravity="center"
-                       android:text="不符合提现要求"
+                       android:text="不符合换取要求"
                        android:visibility="gone"
                        />
                    <LinearLayout
@@ -397,7 +392,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:gravity="center"
-                   android:text="提现规则提示"
+                   android:text="换取规则提示"
                    android:textColor="@color/app_red"
                    android:layout_marginTop="20dp"
                    android:layout_marginBottom="20dp"

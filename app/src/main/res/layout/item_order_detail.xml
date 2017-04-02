@@ -36,7 +36,6 @@
             android:ellipsize="end"
             android:maxEms="9"
             android:singleLine="true"
-            android:text="¥00"
             android:textColor="#000000"
             />
 

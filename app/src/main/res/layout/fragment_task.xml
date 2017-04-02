@@ -321,7 +321,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="换取上限由100/周提升为"
+                                    android:text="收益上限由100/周提升为"
                                     />
 
                                 <TextView
@@ -433,7 +433,29 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="换取上限由100/周提升为"
+                                    android:text="享有本商城"
+                                    />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="兑换券收益权"
+                                    android:textColor="@color/app_red"
+                                    />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="9dp"
+                                android:orientation="horizontal"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="收益上限由100/周提升为"
                                     />
 
                                 <TextView
@@ -464,14 +486,14 @@
                 <View
                     style="@style/entry_divider_fine_line_style"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:text="点击广告获得UU"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="点击广告获得UU"
+                    />
 
                 <View
                     style="@style/entry_divider_fine_line_style"
