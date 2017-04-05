@@ -244,8 +244,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //        initTimer();
         initTime();
         //处理抢购区域
-        initPanicBuying();
-        initPanicBuyingEmpty();
+//        initPanicBuying();
+//        initPanicBuyingEmpty();
     }
 
 
