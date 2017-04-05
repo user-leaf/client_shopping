@@ -53,7 +53,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
         if (productBean != null) {
             String productName = productBean.getName();
             viewHolder.mTvTitle.setText(String.valueOf(!TextUtils.isEmpty(productName) ? productName : ""));
-            viewHolder.mTvTag.setVisibility(dataBean.getRecommend() == 1 ? View.VISIBLE : View.INVISIBLE);
+            viewHolder.mTvTag.setVisibility(productBean.getRecommend() == 1 ? View.VISIBLE : View.INVISIBLE);
         }
 
         ClassifyProductModel.DataBean.SizeBean sizeBean = dataBean.getSize();
