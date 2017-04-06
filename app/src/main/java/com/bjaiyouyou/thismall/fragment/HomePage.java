@@ -2,6 +2,8 @@ package com.bjaiyouyou.thismall.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -53,10 +55,10 @@ import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNewEmpty;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.RefreshUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
+import com.bjaiyouyou.thismall.utils.RefreshUtils;
 import com.bjaiyouyou.thismall.utils.SPUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
@@ -95,8 +97,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     // WebView
 //    private WebView mWebView;
     private ImageView ivScanCode;
-    // 历史购买
-    private View mTvPurchaseHistory;
+    // 系统推送消息入口
+    private View mLLPushMessage;
     // 广告位容器
     private RelativeLayout mAdContainer;
     // 广告栏控件
@@ -221,6 +223,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private boolean isRefresh;
     private TextView mTvfoot;
     private Api4Home mClientApi;
+    private ImageView mIvPushMessage;
 
     @Nullable
     @Override
@@ -257,7 +260,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             initTime();
             //处理抢购区域
 //        initPanicBuying();
-            initPanicBuyingEmpty();
+//            initPanicBuyingEmpty();
             if (timeIndex == 4 || timeIndex == -1) {
 //                changeNavigation(0);
             } else {
@@ -493,6 +496,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 初始化控件
      */
     private void initView() {
+        mIvPushMessage = ((ImageView) layout.findViewById(R.id.home_iv_push_message));
+        Bitmap pushMessageBitmap= BitmapFactory.decodeResource(getResources(), R.mipmap.nav_icon_scan);
+
         //获取屏幕的宽度
         WindowManager manager = getActivity().getWindowManager();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -518,7 +524,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mEtSearch = ((EditText) layout.findViewById(R.id.home_et_search));
 //        mWebView = (WebView) layout.findViewById(R.id.home_webview);
         ivScanCode = ((ImageView) layout.findViewById(R.id.home_iv_scan));
-        mTvPurchaseHistory = layout.findViewById(R.id.home_tv_purchase_history);
+        mLLPushMessage = layout.findViewById(R.id.ll_home_push_message);
 
         initHeadView();
 
@@ -623,7 +629,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      */
     private void setUpView() {
         mEtSearch.setOnClickListener(this);
-        mTvPurchaseHistory.setOnClickListener(this);
+        mLLPushMessage.setOnClickListener(this);
         ivScanCode.setOnClickListener(this);
         mGVPanicBuying.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -661,7 +667,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 if (NetStateUtils.isNetworkAvailable(getContext())) {
                     //刷新抢购
 //                   initPanicBuying();
-                    refreshPanicBuying();
+//                    refreshPanicBuying();
                     //刷新每日上新
                     mEveryDayPage = 1;
                     isHaveNextNews = true;
@@ -828,14 +834,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             case R.id.home_et_search: // 搜索框
                 startActivity(new Intent(getActivity(), SearchGoodsActivity.class));
                 break;
-
-            case R.id.home_tv_purchase_history: // 历史购买
-                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
-                //携带数据接口
-                phIntent.putExtra("title", "历史购买");
-                startActivity(phIntent);
-                break;
-
             case R.id.home_iv_scan:
                 //跳转到拍照
 
@@ -856,23 +854,31 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 startActivity(intentNavigation);
                 break;
 
-            //抢购导航按钮处理
-            case R.id.ll_home_navigation_panicbuying1:
-//                mLLPanicBuy1.setTag(0);
-                changeNavigation(0);
+//            //抢购导航按钮处理
+//            case R.id.ll_home_navigation_panicbuying1:
+////                mLLPanicBuy1.setTag(0);
+//                changeNavigation(0);
+//                break;
+//            case R.id.ll_home_navigation_panicbuying2:
+////                mLLPanicBuy2.setTag(1);
+//                changeNavigation(1);
+//                break;
+//            case R.id.ll_home_navigation_panicbuying3:
+////                mLLPanicBuy3.setTag(2);
+//                changeNavigation(2);
+//                break;
+//            case R.id.ll_home_navigation_panicbuying4:
+////                mLLPanicBuy4.setTag(3);
+//                changeNavigation(3);
+//                break;
+            case R.id.ll_home_push_message: // 系统消息入口
+                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
+                //携带数据接口
+                phIntent.putExtra("title", "");
+                startActivity(phIntent);
                 break;
-            case R.id.ll_home_navigation_panicbuying2:
-//                mLLPanicBuy2.setTag(1);
-                changeNavigation(1);
-                break;
-            case R.id.ll_home_navigation_panicbuying3:
-//                mLLPanicBuy3.setTag(2);
-                changeNavigation(2);
-                break;
-            case R.id.ll_home_navigation_panicbuying4:
-//                mLLPanicBuy4.setTag(3);
-                changeNavigation(3);
-                break;
+            default:
+                return;
         }
 
 
