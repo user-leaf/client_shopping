@@ -36,6 +36,7 @@ import com.bjaiyouyou.thismall.other.GlideRoundTransform;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.RefreshUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -197,9 +198,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
                 }
 
                 /**
-                 * 设置不可见时就还原为“全部分类”
-                 *
-                 * 临时解决切换回来要显示全部分类的需求（耗流量）
+                 * 不可见时就还原为“全部分类”
                  * 不用担心mDropDownMenu为null，如果==null，说明第一次创建，是会走网络请求的
                  */
                 ((TextView) ((LinearLayout) mDropDownMenu.getChildAt(0)).getChildAt(0)).setText(strDefaultSort);
@@ -364,7 +363,8 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     }
 
     private void setupView() {
-        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.CubeTransition);
+//        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.CubeTransition);
+        RefreshUtils.setLoadMoreProgressStyleStyle(mRecyclerView);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {

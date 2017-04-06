@@ -86,7 +86,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     public void getSearchGoodsData(String strTag,String key, int page,DataCallback<SearchResultGoods> callback) {
 
-        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT + ClientAPI.SEARCH);
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT + HttpUrls.SEARCH);
         sb.append("keyword=" + key);
         sb.append("&page=" + page);
         String url = sb.toString();

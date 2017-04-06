@@ -18,6 +18,7 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.client.HttpUrls;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
@@ -59,7 +60,7 @@ public class SearchResultsActivity extends BaseActivity implements View.OnClickL
     private ImageView mTVEmpty;
     //当搜索为空的推荐地址
     //test
-    private String mNullUrl=ClientAPI.API_POINT+ClientAPI.SEARCH+"1";
+    private String mNullUrl=ClientAPI.API_POINT+ HttpUrls.SEARCH+"1";
     //为空推荐列表
     private PullToRefreshScrollView mScrollViewNull;
     private NoScrollGridView mGvNull;

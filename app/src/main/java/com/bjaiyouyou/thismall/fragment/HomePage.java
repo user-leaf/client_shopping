@@ -45,6 +45,7 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Home;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.client.HttpUrls;
 import com.bjaiyouyou.thismall.model.HomeAdBigModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
 import com.bjaiyouyou.thismall.model.HomeNavigationItem;
@@ -52,6 +53,7 @@ import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNewEmpty;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.RefreshUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -61,7 +63,6 @@ import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.zxing.activity.CaptureActivity;
 import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.io.File;
@@ -326,7 +327,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
     private void initPanicBuying() {
         mNavigationDataNew = new ArrayList<>();
-        initNavigationDataNew(ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW);
+        initNavigationDataNew(ClientAPI.API_POINT + HttpUrls.PANICBUY_NEW);
         mNavigationAdapterNew = new HomeNavigationNewAdapter(mNavigationDataNew, getActivity());
         mGVPanicBuying.setAdapter(mNavigationAdapterNew);
         initControlNavigation();
@@ -652,7 +653,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             mLLPanicBuys.get(i).setOnClickListener(this);
         }
 
-        mGvShow.setLoadingMoreProgressStyle(ProgressStyle.CubeTransition);
+//        mGvShow.setLoadingMoreProgressStyle(ProgressStyle.CubeTransition);
+        RefreshUtils.setLoadMoreProgressStyleStyle(mGvShow);
         mGvShow.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -706,7 +708,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      */
     private void refreshPanicBuying() {
         mNavigationDataNew = new ArrayList<>();
-        initNavigationDataNew(ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW);
+        initNavigationDataNew(ClientAPI.API_POINT + HttpUrls.PANICBUY_NEW);
 //        mNavigationAdapterNew = new HomeNavigationNewAdapter (mNavigationDataNew, getActivity());
 //        mGVPanicBuying.setAdapter(mNavigationAdapterNew);
 //        initControlNavigation();
@@ -848,7 +850,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 //携带数据接口
                 intentNavigation.putExtra("title", "限时抢购");
                 //页数
-                String moreUrl = ClientAPI.API_POINT + ClientAPI.PANICBUY_MORE + mIndexs[mCurrentIndex];
+                String moreUrl = ClientAPI.API_POINT + HttpUrls.PANICBUY_MORE + mIndexs[mCurrentIndex];
                 LogUtils.e("moreUrl", moreUrl);
                 intentNavigation.putExtra("url", moreUrl);
                 startActivity(intentNavigation);

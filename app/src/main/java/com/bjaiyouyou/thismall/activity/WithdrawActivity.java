@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.HttpUrls;
 import com.bjaiyouyou.thismall.model.Withdraw;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -364,7 +365,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 //跳转到webView查看提现规则
 //                Toast.makeText(this,"提现疑问解答",Toast.LENGTH_SHORT).show();
                 Intent intentWebView = new Intent(this, WebShowActivity.class);
-                intentWebView.putExtra("urlpath", ClientAPI.WITHDRAW_RULE);
+                intentWebView.putExtra("urlpath", HttpUrls.WITHDRAW_RULE);
                 jump(intentWebView, false);
                 break;
             case R.id.btn_withdraw://提现

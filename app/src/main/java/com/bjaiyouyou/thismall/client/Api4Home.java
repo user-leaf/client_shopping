@@ -42,7 +42,7 @@ public class Api4Home extends BaseClientApi {
 
     public void getRecommendData(String strTag, int page,DataCallback<HomeProductModel> callback) {
 
-        String url = ClientAPI.API_POINT + ClientAPI.EVERYDAY_NEW +page;
+        String url = ClientAPI.API_POINT + HttpUrls.EVERYDAY_NEW +page;
 
         LogUtils.d(TAG, "getRecommendData: " + url);
 
@@ -59,7 +59,7 @@ public class Api4Home extends BaseClientApi {
      * @param callback
      */
     public void getNavigation(String strTag,DataCallback<HomeNavigationItemNew> callback){
-        String url =ClientAPI.API_POINT + ClientAPI.PANICBUY_NEW;
+        String url =ClientAPI.API_POINT + HttpUrls.PANICBUY_NEW;
         LogUtils.d(TAG, "getNavigation: " + url);
         doGet(url, strTag, null, callback);
     }

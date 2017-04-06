@@ -17,18 +17,14 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.HttpUrls;
 import com.bjaiyouyou.thismall.model.UserInComeModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import okhttp3.Call;
 
@@ -220,7 +216,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
 
             case R.id.right_layout:
                 Intent intent = new Intent(this, WebShowActivity.class);
-                intent.putExtra(WebShowActivity.PARAM_URLPATH, ClientAPI.WITHDRAW_RULE);
+                intent.putExtra(WebShowActivity.PARAM_URLPATH, HttpUrls.WITHDRAW_RULE);
                 jump(intent, false);
                 break;
             case R.id.btn_income_withdraw: // 换取收益

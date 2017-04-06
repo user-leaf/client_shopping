@@ -38,29 +38,15 @@ public class ClientAPI {
     public static final String TAG = ClientAPI.class.getSimpleName();
 
     //*****************************************************************************
-    public static final String API_POINT = "http://testapi2.bjaiyouyou.com/";
-//    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
+//    public static final String API_POINT = "http://testapi2.bjaiyouyou.com/";
+    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
 //    public static final String API_POINT = "http://api.bjaiyouyou.com/";
 
     // 任务页视频播放地址
-//    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";
-    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
+    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";
+//    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
 
     //*****************************************************************************
-
-    //抢购拼接地址
-    public static final String PANICBUY = "api/v1/product/allRushToPurchase?page=";
-    public static final String PANICBUY_NEW = "api/v1/product/defaultRushToPurchase";
-
-    //抢购更多
-    public static final String PANICBUY_MORE = "api/v1/product/allRushToPurchase/";
-
-    //搜索拼接地址
-    public static final String SEARCH = "api/v1/product/searchAll?";
-    //每日上新拼接地址
-    public static final String EVERYDAY_NEW = "api/v1/product/allNow?page=";
-    //提现规则地址
-    public static final String WITHDRAW_RULE = "http://wxweb.bjaiyouyou.com/tixianstep.html";
 
     private ClientAPI() {
     }
@@ -153,7 +139,7 @@ public class ClientAPI {
      */
 
     public static void getSearchGoodsData(final String key, int page, final StringCallback callback) {
-        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT + ClientAPI.SEARCH);
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT + HttpUrls.SEARCH);
         sb.append("keyword=" + key);
         sb.append("&page=" + page);
         String url = sb.toString();
