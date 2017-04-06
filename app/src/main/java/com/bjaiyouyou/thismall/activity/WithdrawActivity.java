@@ -161,7 +161,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 //错误提示
 //                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                 //取消数据加载Loading
-//                dismissLoadingDialog();
+                dismissLoadingDialog();
             }
 
             @Override
@@ -497,6 +497,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                 @Override
                 public void onError(Call call, Exception e, int id) {
 //                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                    ToastUtils.showException(e);
                     //取消数据加载Loading
                     dismissLoadingDialog();
                 }
