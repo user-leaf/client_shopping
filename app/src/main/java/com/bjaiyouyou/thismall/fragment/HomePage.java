@@ -258,9 +258,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //        initPanicBuying();
             initPanicBuyingEmpty();
             if (timeIndex == 4 || timeIndex == -1) {
-                changeNavigation(0);
+//                changeNavigation(0);
             } else {
-                changeNavigation(timeIndex);
+//                changeNavigation(timeIndex);
             }
         }
     }
