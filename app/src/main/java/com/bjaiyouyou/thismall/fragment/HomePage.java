@@ -2,8 +2,6 @@ package com.bjaiyouyou.thismall.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -224,6 +222,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private TextView mTvfoot;
     private Api4Home mClientApi;
     private ImageView mIvPushMessage;
+    private View mTvPurchaseHistory;
 
     @Nullable
     @Override
@@ -496,8 +495,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 初始化控件
      */
     private void initView() {
-        mIvPushMessage = ((ImageView) layout.findViewById(R.id.home_iv_push_message));
-        Bitmap pushMessageBitmap= BitmapFactory.decodeResource(getResources(), R.mipmap.nav_icon_scan);
+//        mIvPushMessage = ((ImageView) layout.findViewById(R.id.home_iv_push_message));
+//        Bitmap pushMessageBitmap= BitmapFactory.decodeResource(getResources(), R.mipmap.nav_icon_scan);
+
+
+        mTvPurchaseHistory = layout.findViewById(R.id.home_tv_purchase_history);
 
         //获取屏幕的宽度
         WindowManager manager = getActivity().getWindowManager();
@@ -524,7 +526,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mEtSearch = ((EditText) layout.findViewById(R.id.home_et_search));
 //        mWebView = (WebView) layout.findViewById(R.id.home_webview);
         ivScanCode = ((ImageView) layout.findViewById(R.id.home_iv_scan));
-        mLLPushMessage = layout.findViewById(R.id.ll_home_push_message);
+//        mLLPushMessage = layout.findViewById(R.id.ll_home_push_message);
 
         initHeadView();
 
@@ -628,8 +630,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 设置属性、监听等
      */
     private void setUpView() {
+        mTvPurchaseHistory.setOnClickListener(this);
         mEtSearch.setOnClickListener(this);
-        mLLPushMessage.setOnClickListener(this);
+//        mLLPushMessage.setOnClickListener(this);
         ivScanCode.setOnClickListener(this);
         mGVPanicBuying.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -871,7 +874,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 ////                mLLPanicBuy4.setTag(3);
 //                changeNavigation(3);
 //                break;
-            case R.id.ll_home_push_message: // 系统消息入口
+            case R.id.home_tv_purchase_history: // 系统消息入口
                 Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
                 //携带数据接口
                 phIntent.putExtra("title", "");

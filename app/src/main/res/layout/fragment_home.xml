@@ -7,11 +7,73 @@
               android:orientation="vertical">
 
     <!-- 顶部标题栏 -->
-    <RelativeLayout
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/height_top_bar"-->
+        <!--android:background="@color/top_bar_normal_bg"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:visibility="gone"-->
+        <!--&gt;-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/home_iv_scan"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:src="@mipmap/nav_icon_scan"/>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_home_push_message"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:orientation="vertical"-->
+            <!--android:gravity="center"-->
+            <!--&gt;-->
+            <!--<ImageView-->
+                <!--android:id="@+id/home_iv_push_message"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:src="@mipmap/nav_icon_scan"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/home_tv_purchase_history"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="消息"-->
+                <!--android:textColor="#ffffff"-->
+                <!--/>-->
+
+        <!--</LinearLayout>-->
+        <!--<EditText-->
+            <!--android:id="@+id/home_et_search"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/shape_home_top_bar_et_bg"-->
+            <!--android:drawableRight="@mipmap/nav_icon_seach"-->
+            <!--android:focusable="false"-->
+            <!--android:paddingBottom="3dp"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingRight="5dp"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toRightOf="@+id/home_iv_scan"-->
+            <!--android:layout_toLeftOf="@id/ll_home_push_message"-->
+            <!--/>-->
+
+    <!--</RelativeLayout>-->
+
+
+    <!-- 顶部标题栏 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/top_bar_normal_bg"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         >
 
         <ImageView
@@ -21,49 +83,32 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@mipmap/nav_icon_scan"/>
-        <LinearLayout
-            android:id="@+id/ll_home_push_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            >
-            <ImageView
-                android:id="@+id/home_iv_push_message"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@mipmap/nav_icon_scan"/>
 
-            <TextView
-                android:id="@+id/home_tv_purchase_history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="消息"
-                android:textColor="#ffffff"
-                />
-
-        </LinearLayout>
         <EditText
             android:id="@+id/home_et_search"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/shape_home_top_bar_et_bg"
-            android:drawableRight="@mipmap/nav_icon_seach"
             android:focusable="false"
             android:paddingBottom="3dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="3dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/home_iv_scan"
-            android:layout_toLeftOf="@id/ll_home_push_message"
+            android:drawableRight="@mipmap/nav_icon_seach"
             />
+        <TextView
+            android:id="@+id/home_tv_purchase_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="历史购买"
+            android:textColor="#ffffff"
+            />
+    </LinearLayout>
 
-    </RelativeLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,6 +1,8 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,12 +19,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.wallet.core.utils.LogUtil;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.HttpUrls;
 import com.bjaiyouyou.thismall.model.Withdraw;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.StringUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
@@ -113,7 +118,6 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_withdraw);
         mIntent = getIntent();
         isLogin=mIntent.getBooleanExtra("isLogin",false);
         mCoinBalance = mIntent.getLongExtra("coin", -1);
@@ -121,21 +125,27 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
         mMember_type=mIntent.getIntExtra("member_type",0);
         isVip=mIntent.getIntExtra("isVip",0);
         isInTestUser=mIntent.getIntExtra("isInTestUser",0);
+        init();
+    }
+
+    private void init() {
+        setContentView(R.layout.activity_withdraw);
         initView();
         setUpView();
         initData();
-
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        LogUtil.d("onNewIntent","onNewIntent执行了" );
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.d("onNewIntent","onNewIntent执行了" );
         initData();
         mIntent = getIntent();
         mOpenID = mIntent.getStringExtra("openid");
@@ -161,6 +171,7 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
             public void onError(Call call, Exception e, int id) {
                 //错误提示
 //                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                ToastUtils.exceptionToast(e,getApplicationContext());
                 //取消数据加载Loading
                 dismissLoadingDialog();
             }
@@ -239,59 +250,59 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
         mTitleBar.setLeftLayoutClickListener(this);
         mBtnWithDraw.setOnClickListener(this);
         mTvGotoLogin.setOnClickListener(this);
-        mEtWithDraw.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        mEtWithDraw.addTextChangedListener(withDraw);
+    }
+    TextWatcher withDraw=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            //获得输入金额
+            String string = s.toString().trim();
+
+            //限制开头输入不能是“0”
+            while (string.startsWith("0")) {
+                string = string.substring(1, string.length());
+                mEtWithDraw.setText(string);
             }
+            //控制光标的位置
+            mEtWithDraw.setSelection(string.length());
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                //获得输入金额
-                String string = s.toString().trim();
-
-                //限制开头输入不能是“0”
-                while (string.startsWith("0")) {
-                    string = string.substring(1, string.length());
-                    mEtWithDraw.setText(string);
-                }
-                //控制光标的位置
-                mEtWithDraw.setSelection(string.length());
-
-                if (string.length() > mEtLength) {
-                    //不可编辑当长度超长的时候不能删除
+            if (string.length() > mEtLength) {
+                //不可编辑当长度超长的时候不能删除
 //                    mEtWithDraw.setEnabled(false);
 //                    mEtWithDraw.setFocusable(false);
-                    //超长不显示，还可编辑
-                    string = string.substring(0, mEtLength);
-                    mEtWithDraw.setSelection(string.length());
-                    mEtWithDraw.setText(string);
-                }
-                if (!TextUtils.isEmpty(string)) {
-                    mInPutBalance = Long.valueOf(string);
-                    if (mInPutBalance!=0L){
-                        //根据输入判断是否可提现
-                        etChange(mInPutBalance);
-                    }else {
-                        isEtChange=false;
-                }
-                } else {
-                    //去掉所有的超限提示背景
-                    mTvWeekMax.setEnabled(true);
-                    mTvAllCoin.setEnabled(true);
-                    mTvAllPay.setEnabled(true);
-                    mTvOver.setVisibility(View.GONE);
-                }
+                //超长不显示，还可编辑
+                string = string.substring(0, mEtLength);
+                mEtWithDraw.setSelection(string.length());
+                mEtWithDraw.setText(string);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            if (!TextUtils.isEmpty(string)) {
+                mInPutBalance = Long.valueOf(string);
+                if (mInPutBalance!=0L){
+                    //根据输入判断是否可提现
+                    etChange(mInPutBalance);
+                }else {
+                    isEtChange=false;
+                }
+            } else {
+                //去掉所有的超限提示背景
+                mTvWeekMax.setEnabled(true);
+                mTvAllCoin.setEnabled(true);
+                mTvAllPay.setEnabled(true);
+                mTvOver.setVisibility(View.GONE);
             }
-        });
+        }
 
-    }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     /**
      * 数据填充
@@ -382,6 +393,8 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
                         getWithdraw();
                     }
                 }
+
+                init();
 
 //                getPermission();
 
@@ -495,12 +508,39 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
             //数据加载Loading
             showLoadingDialog();
             ClientAPI.withdraw(token, mOpenID, (int) mCanWithDrawBalance, userName, safeCode, new StringCallback() {
+                /**
+                 * @param call
+                 * @param e
+                 * @param id
+                 */
                 @Override
                 public void onError(Call call, Exception e, int id) {
 //                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
-                    ToastUtils.showException(e);
                     //取消数据加载Loading
                     dismissLoadingDialog();
+
+//                    ToastUtils.showException(e);
+                    if (e!=null){
+                        String exceptionString= StringUtils.getExceptionMessage(e.getMessage());
+
+                        Dialog dialog = DialogUtils.createConfirmDialog(WithdrawActivity.this, null, exceptionString, "确定", "",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                },
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                        );
+                        dialog.show();
+
+                    }
+
                 }
 
                 @Override
