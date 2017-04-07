@@ -42,6 +42,10 @@ public class GuideActivity extends BaseActivity {
         ImageView imageView2 = new ImageView(this);
         ImageView imageView3 = new ImageView(this);
 
+        imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView2.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView3.setScaleType(ImageView.ScaleType.FIT_XY);
+
         // OOM 图片也不太大...
 //        imageView1.setImageResource(R.drawable.guide1);
 //        imageView2.setImageResource(R.drawable.guide2);
@@ -50,10 +54,6 @@ public class GuideActivity extends BaseActivity {
         Glide.with(this).load(R.drawable.guide1).dontAnimate().into(imageView1);
         Glide.with(this).load(R.drawable.guide2).dontAnimate().into(imageView2);
         Glide.with(this).load(R.drawable.guide3).dontAnimate().into(imageView3);
-
-        imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView2.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView3.setScaleType(ImageView.ScaleType.FIT_XY);
 
         mList.add(imageView1);
         mList.add(imageView2);

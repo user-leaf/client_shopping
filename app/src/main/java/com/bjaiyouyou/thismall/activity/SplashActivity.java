@@ -37,8 +37,7 @@ public class SplashActivity extends BaseActivity {
         String versionName = AppUtils.getVersionName(this);
         boolean isFirst = !versionName.equals(SPUtils.get(this, PARAM_GUIDE, ""));
         LogUtils.d("isFirst: " + isFirst);
-//        if (isFirst) { //首次加载
-        if (false) { //去掉欢迎页面
+        if (isFirst) { //首次加载
             SPUtils.put(this, PARAM_GUIDE, versionName);
             Intent intent = new Intent(this, GuideActivity.class);
             startActivity(intent);
