@@ -210,6 +210,8 @@ public class WithdrawActivity extends BaseActivity implements View.OnClickListen
         mLLIsFive = ((LinearLayout) findViewById(R.id.ll_withdraw_income));
         if (mMember_type==5||isInTestUser==1||isVip==2){
             mLLIsFive.setVisibility(View.VISIBLE);
+        }else {
+            mLLIsFive.setVisibility(View.GONE);
         }
         mTvWithdrawDetail = ((TextView) findViewById(R.id.tv_withdraw_detail));
         mTvWithdrawDetail.setFocusable(true);
