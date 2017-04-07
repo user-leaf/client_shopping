@@ -245,7 +245,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //处理抢购状态
 //        //创建计时器
 //        initTimer();
-        initTime();
+//        initTime();
         //处理抢购区域
 //        initPanicBuying();
 //        initPanicBuyingEmpty();
@@ -256,7 +256,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            initTime();
+//            initTime();
             //处理抢购区域
 //        initPanicBuying();
 //            initPanicBuyingEmpty();
@@ -677,7 +677,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                     isRefresh = true;
 //                   mHomeGoodGridAdapter.notifyDataSetChanged();
                     initData();
-                    initTime();
+//                    initTime();
 
                 } else {
                     mLLUNNetWork.setVisibility(View.VISIBLE);
@@ -987,7 +987,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         super.onResume();
         //广告开始自动翻页
         mConvenientBanner.startTurning(5000);
-        initTime();
+//        initTime();
 
     }
 
