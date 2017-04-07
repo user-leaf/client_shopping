@@ -1,5 +1,7 @@
 package com.bjaiyouyou.thismall.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,7 +21,9 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.HttpUrls;
 import com.bjaiyouyou.thismall.model.UserInComeModel;
+import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.StringUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
@@ -116,14 +120,14 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 String str = s.toString();
-                while (str.startsWith("0")){
+                while (str.startsWith("0")) {
                     str = str.substring(1, str.length());
                     mEtIncomeWant.setText(str);
                 }
 
                 double min = getMoneyMin(income, uu, str);
                 double input = 0;
-                if (!TextUtils.isEmpty(str)){
+                if (!TextUtils.isEmpty(str)) {
                     input = Double.parseDouble(str);
                 }
                 if (input != min) {
@@ -259,24 +263,32 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
 
         String open_id = mMember.getOpen_id();
 
-        if (canWithdraw(mMember)) {
-            showLoadingDialog();
-            ClientAPI.postWithDraw(TAG, open_id, amount, strPayee, strSafecode, new StringCallback() {
-                @Override
-                public void onError(Call call, Exception e, int id) {
-                    dismissLoadingDialog();
-                    ToastUtils.showException(e);
-                }
+        // 没有微信了
+//        if (canWithdraw(mMember)) {
+        showLoadingDialog();
+        ClientAPI.postWithDraw(TAG, open_id, amount, strPayee, strSafecode, new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                dismissLoadingDialog();
 
-                @Override
-                public void onResponse(String response, int id) {
-                    dismissLoadingDialog();
-                    jump(WithDrawSucceedActivity.class, false);
-                }
-            });
-        } else {
-            showDialog();
-        }
+                Dialog dialog = DialogUtils.createMessageDialog(UserIncomeActivity.this, "", StringUtils.getExceptionMessage(e.getMessage()), "确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                dismissLoadingDialog();
+                jump(WithDrawSucceedActivity.class, false);
+            }
+        });
+//        } else {
+//            showDialog();
+//        }
     }
 
     // 提示去公众号绑定微信的
