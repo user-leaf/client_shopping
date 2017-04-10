@@ -61,26 +61,20 @@ import okhttp3.Call;
  */
 public class MineCustomerServiceSuggestionActivity extends BaseActivity implements TagFlowLayout.OnTagClickListener, View.OnClickListener, TagFlowLayout.OnSelectListener {
 
-    // 标题栏
     private IUUTitleBar mTitleBar;
-    // 问题类型 标签流式布局
+
     private TagFlowLayout mFlowLayout;
-    // 问题类型 数据集
     private String[] mVals;
-    // 标签流式布局的适配器
     private TagAdapter<String> mTagAdapter;
     // 提交
     private Button mBtnCommit;
     private TextView mTvCount;
     private EditText mEtDesc;
-    //呼叫客服中心
-    private RelativeLayout mRLCallCentre;
-    //去评分
-    private RelativeLayout mRLToScore;
-    //客服电话
-    private TextView mTvCallCenter;
-    //客服电话号码
-    private String mCenterNum;
+
+    private RelativeLayout mRLCallCentre;   // 呼叫客服中心
+    private RelativeLayout mRLToScore;      // 去评分
+    private TextView mTvCallCenter;         // 客服电话
+    private String mCenterNum;              // 客服电话号码
     //选中的意见类型
     private int mType = 0;
     private RelativeLayout mRLNotLogin;
@@ -177,6 +171,7 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initSize() {
+
         mRadioButtons = new ArrayList<>();
         for (int i = 0; i < mVals.length; i++) {
             RadioButton radioButton = new RadioButton(this);

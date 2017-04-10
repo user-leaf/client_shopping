@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#fff"
     tools:context="com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity">
 
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
         android:id="@+id/service_suggestion_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="意见反馈"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="意见反馈"
         />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,17 +23,20 @@
         <include layout="@layout/layout_not_login"/>
 
         <include layout="@layout/layout_un_network"/>
+
         <LinearLayout
             android:id="@+id/ll_mine_customer_service_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:background="@color/white"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingTop="10dp"
                 >
 
                 <TextView
@@ -47,29 +50,35 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请先选择问题类型"
                     android:layout_toRightOf="@id/service_suggestion_tv1"
+                    android:text="请先选择问题类型"
                     />
-            </RelativeLayout>
-            <com.zhy.view.flowlayout.TagFlowLayout
-                android:id="@+id/service_suggestion_flowlayout"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                app:max_select="1"
-                android:visibility="visible"
-                />
-            <com.bjaiyouyou.thismall.widget.FlowRadioGroup
-                android:id="@+id/service_suggestion_flow_rg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:visibility="visible"
-                />
 
-            <View
-                style="@style/entry_divider_bold_line_style"
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/service_suggestion_flowlayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible"
+                    app:max_select="1"
+                    android:layout_below="@id/service_suggestion_tv1"
+                    />
+
+                <com.bjaiyouyou.thismall.widget.FlowRadioGroup
+                    android:id="@+id/service_suggestion_flow_rg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="visible"
+                    android:layout_below="@id/service_suggestion_flowlayout"
+                    />
+
+            </RelativeLayout>
+
+            <Space
+                android:layout_width="match_parent"
                 android:layout_height="5dp"
                 />
 
@@ -77,79 +86,81 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:background="@color/white"
                 >
 
                 <TextView
                     android:id="@+id/service_suggestion_tv2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="描述问题"
                     android:layout_marginBottom="5dp"
+                    android:text="描述问题"
                     />
 
                 <EditText
                     android:id="@+id/service_suggestion_et_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lines="5"
-                    android:hint="请写下您的宝贵意见，这将帮助我们更好的完善产品。"
-                    android:textSize="@dimen/text_size_small"
-                    android:gravity="top"
                     android:layout_below="@id/service_suggestion_tv2"
                     android:background="#ffffff"
+                    android:gravity="top"
+                    android:hint="请写下您的宝贵意见，这将帮助我们更好的完善产品。"
+                    android:lines="5"
+                    android:maxLength="300"
                     android:padding="10dp"
                     android:scrollbars="none"
-                    android:maxLength="300"
+                    android:textSize="@dimen/text_size_small"
                     />
 
                 <TextView
                     android:id="@+id/service_suggestion_tv3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/300"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/service_suggestion_et_desc"
+                    android:text="/300"
                     />
 
                 <TextView
                     android:id="@+id/service_suggestion_tv_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:layout_toLeftOf="@id/service_suggestion_tv3"
                     android:layout_alignTop="@id/service_suggestion_tv3"
+                    android:layout_toLeftOf="@id/service_suggestion_tv3"
+                    android:text="0"
                     />
             </RelativeLayout>
 
-            <FrameLayout
+            <Button
+                android:id="@+id/service_suggestion_btn_commit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#eee"
-                android:paddingBottom="20dp"
-                android:paddingTop="30dp"
-                >
-                <Button
-                    android:id="@+id/service_suggestion_btn_commit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="提交"
-                    android:background="@color/app_red"
-                    android:textColor="#ffffff"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    />
-            </FrameLayout>
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/app_red"
+                android:text="提交"
+                android:textColor="#ffffff"
+                />
+
             <RelativeLayout
                 android:id="@+id/rl_call_centre"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                >
+
                 <TextView
                     android:id="@+id/tv_call_centre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="呼叫客服"
                     />
+
                 <TextView
                     android:id="@+id/tv_call_number"
                     android:layout_width="wrap_content"
@@ -158,16 +169,6 @@
                     android:text="4001599586"
                     />
             </RelativeLayout>
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="3.5dp"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#eee"/>
-
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
