@@ -256,7 +256,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     } else {
                         // 其他状态值则为授权失败
                         ToastUtils.showShort("授权失败重新授权");
-                        dismissLoadingDialog();
+//                        dismissLoadingDialog();
                     }
                     break;
                 }
@@ -422,7 +422,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initData() {
         //取消数据加载Loading
-        showLoadingDialog();
+//        showLoadingDialog();
         //退款接口为二次请求相应接口，先请求退款接口，（成功与否对获取用户信息不影响）再获取用户信息
         ClientAPI.getWithdraw(new StringCallback() {
             @Override
@@ -480,7 +480,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                    gv.setAlpha(0.6f);
 //                    mLLNeedSafe.setAlpha(0.6f);
                     //取消数据加载Loading
-                    dismissLoadingDialog();
+//                    dismissLoadingDialog();
                 }
 
                 @Override
@@ -503,13 +503,13 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     } else {
                         ToastUtils.showShort("数据加载错误");
                     }
-                    dismissLoadingDialog();
+//                    dismissLoadingDialog();
 
                 }
             });
         } else {
             Toast.makeText(getActivity(), "请先登录后再回来哦", Toast.LENGTH_SHORT).show();
-            dismissLoadingDialog();
+//            dismissLoadingDialog();
         }
 
         //设置背景透明度
@@ -742,12 +742,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
     private void getIfBindingAlipay() {
         //数据加载Loading
-        showLoadingDialog();
+//        showLoadingDialog();
         mClientApi.getIfBindingAlipay(new DataCallback<CheckIfBindingAlipayModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 //                ToastUtils.exceptionToast(e, getContext());
-                dismissLoadingDialog();
+//                dismissLoadingDialog();
             }
 
             @Override
@@ -761,7 +761,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         //登录
                         if (isLogin) {
                             createSafeCodeDialog();
-                            dismissLoadingDialog();
+//                            dismissLoadingDialog();
                             //没登录
                         } else {
                             //绑定直接跳转到提现页面
@@ -826,7 +826,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 //test
 //                String authorizationParameters= "";
 //                authV2(authorizationParameters);
-                dismissLoadingDialog();
+//                dismissLoadingDialog();
 
             }
 
@@ -857,7 +857,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                ToastUtils.exceptionToast(e, getContext());
                 ToastUtils.showShort("绑定支付宝失败");
                 //取消数据加载Loading
-                dismissLoadingDialog();
+//                dismissLoadingDialog();
                 return;
             }
 
@@ -871,7 +871,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     //取消对话框
 //                mBindingAlipayDialog.dismiss();
                     //取消数据加载Loading
-                    dismissLoadingDialog();
+//                    dismissLoadingDialog();
 
                 }
             }
@@ -1637,6 +1637,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     @Override
     public void onDestroy() {
         super.onDestroy();
-        dismissLoadingDialog();
+//        dismissLoadingDialog();
     }
 }
