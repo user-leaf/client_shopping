@@ -265,7 +265,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
         View mHeader = LayoutInflater.from(getContext()).inflate(R.layout.classify_recyclerview_header, null, false);
         mAdContainer = (LinearLayout) mHeader.findViewById(R.id.classify_header_container);
         ViewGroup.LayoutParams layoutParams = mAdContainer.getLayoutParams();
-        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) / 4;
+        layoutParams.height = ScreenUtils.getScreenWidth(getContext()) * 3 / 20;
         LogUtils.d(TAG, "ad height: " + layoutParams.height);
         mRecyclerView.addHeaderView(mHeader);
 
