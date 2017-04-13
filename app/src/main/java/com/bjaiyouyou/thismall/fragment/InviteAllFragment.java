@@ -89,7 +89,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 //            if (pd != null && pd.isShowing()) {
 //                pd.dismiss();
 //            }
-//            dismissLoadingDialog();
+            dismissLoadingDialog();
         }
     };
 
