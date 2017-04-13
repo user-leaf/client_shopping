@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.bjaiyouyou.thismall.R;
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -36,18 +39,9 @@ public class LoadingDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
 
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         mLoadingView = (ProgressWheel) findViewById(R.id.loading_progress_wheel);
         mLoadingView.setRimColor(Color.LTGRAY);
-    }
-
-    @Override
-    public void show() {
-        super.show();
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.bjaiyouyou.thismall;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -24,6 +26,8 @@ import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.UpdateUtils;
 
+import java.util.List;
+
 public class MainActivity extends BaseActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -40,15 +44,25 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fm;
     private BaseFragment cacheFragment;
 
-    /** 第0页：首页 */
+    /**
+     * 第0页：首页
+     */
     private HomePage mHomePage;
-    /** 第1页：任务页 */
+    /**
+     * 第1页：任务页
+     */
     private TaskPage mTaskPage;
-    /** 第2页：购物车页 */
+    /**
+     * 第2页：购物车页
+     */
     private CartPage mCartPage;
-    /** 第3页：个人页 */
+    /**
+     * 第3页：个人页
+     */
     private MinePage mMinePage;
-    /** 分类页 **/
+    /**
+     * 分类页
+     **/
     private ClassifyPage mClassifyPage;
 
     RadioButton[] mTabs;
@@ -65,17 +79,74 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         initView();
-        setupView();
+        if (savedInstanceState == null) {
+//            setupView();
+
+            fm = getSupportFragmentManager();
+
+            // 将四个页面加入到栈中，并持有第一个页面的引用
+            mHomePage = new HomePage();
+            mClassifyPage = new ClassifyPage();
+            mTaskPage = new TaskPage();
+            mCartPage = new CartPage();
+            mMinePage = new MinePage();
+
+            fragments[0] = mHomePage;
+            fragments[1] = mClassifyPage;
+            fragments[2] = mTaskPage;
+            fragments[3] = mCartPage;
+            fragments[4] = mMinePage;
+
+//        fragments = new android.support.v4.app.Fragment[]{mHomePage, mClassifyPage, mTaskPage, mCartPage, mMinePage};
+            getSupportFragmentManager().beginTransaction().add(R.id.container, mHomePage, mHomePage.TAG)
+                    .add(R.id.container, mClassifyPage, mClassifyPage.TAG).hide(mClassifyPage)
+//                .add(R.id.container, mTaskPage, mTaskPage.TAG).hide(mTaskPage)
+//                .add(R.id.container,mCartPage, mCartPage.TAG).hide(mCartPage)
+//                .add(R.id.container, mMinePage, mMinePage.TAG).hide(mMinePage)
+                    .show(mHomePage)
+                    .commit();
+
+        }else { // 内存重启
+            List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+            for (Fragment fragment : fragmentList) {
+                if (fragment instanceof HomePage){
+                    mHomePage = (HomePage) fragment;
+                    fragments[0] = mHomePage;
+                }else if (fragment instanceof ClassifyPage){
+                    mClassifyPage = (ClassifyPage) fragment;
+                    fragments[1] = mClassifyPage;
+                }else if (fragment instanceof TaskPage){
+                    mTaskPage = (TaskPage) fragment;
+                    fragments[2] = mTaskPage;
+                }else if (fragment instanceof CartPage){
+                    mCartPage = (CartPage) fragment;
+                    fragments[3] = mCartPage;
+                }else if (fragment instanceof MinePage){
+                    mMinePage = (MinePage) fragment;
+                    fragments[4] = mMinePage;
+                }
+            }
+
+//            fragments = new android.support.v4.app.Fragment[]{mHomePage, mClassifyPage, mTaskPage, mCartPage, mMinePage};
+        }
 
         mUpdateUtils = new UpdateUtils();
         // 检查升级
         mUpdateUtils.checkUpdate(this, null);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+    }
+
     /**
      * 初始化组件
      */
     private void initView() {
+        fragments = new Fragment[5];
+
         mController0 = (RadioButton) findViewById(R.id.controller_zero);
         mController1 = (RadioButton) findViewById(R.id.controller_one);
         mController2 = (RadioButton) findViewById(R.id.controller_two);
@@ -104,7 +175,13 @@ public class MainActivity extends BaseActivity {
         mCartPage = new CartPage();
         mMinePage = new MinePage();
 
-        fragments = new android.support.v4.app.Fragment[]{mHomePage, mClassifyPage, mTaskPage, mCartPage, mMinePage};
+        fragments[0] = mHomePage;
+        fragments[1] = mClassifyPage;
+        fragments[2] = mTaskPage;
+        fragments[3] = mCartPage;
+        fragments[4] = mMinePage;
+
+//        fragments = new android.support.v4.app.Fragment[]{mHomePage, mClassifyPage, mTaskPage, mCartPage, mMinePage};
         getSupportFragmentManager().beginTransaction().add(R.id.container, mHomePage, mHomePage.TAG)
                 .add(R.id.container, mClassifyPage, mClassifyPage.TAG).hide(mClassifyPage)
 //                .add(R.id.container, mTaskPage, mTaskPage.TAG).hide(mTaskPage)
@@ -123,18 +200,38 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.controller_zero:
                 index = 0;
+                if (fragments[index] == null) {
+                    LogUtils.d("@@@", "index " + index + " null");
+                    fragments[index] = new HomePage();
+                }
                 break;
             case R.id.controller_one:
                 index = 1;
+                if (fragments[index] == null) {
+                    LogUtils.d("@@@", "index " + index + " null");
+                    fragments[index] = new ClassifyPage();
+                }
                 break;
             case R.id.controller_two:
                 index = 2;
+                if (fragments[index] == null) {
+                    LogUtils.d("@@@", "index " + index + " null");
+                    fragments[index] = new TaskPage();
+                }
                 break;
             case R.id.controller_three:
                 index = 3;
+                if (fragments[index] == null) {
+                    LogUtils.d("@@@", "index " + index + " null");
+                    fragments[index] = new CartPage();
+                }
                 break;
             case R.id.controller_four:
                 index = 4;
+                if (fragments[index] == null) {
+                    LogUtils.d("@@@", "index " + index + " null");
+                    fragments[index] = new MinePage();
+                }
                 break;
         }
 
@@ -254,4 +351,5 @@ public class MainActivity extends BaseActivity {
             DialUtils.callCentre(this, DialUtils.CENTER_NUM);
         }
     }
+
 }

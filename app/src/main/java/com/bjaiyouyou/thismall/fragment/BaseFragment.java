@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.RequestManager;
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
@@ -25,6 +27,8 @@ import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 public class BaseFragment extends Fragment implements View.OnClickListener, OnItemClickListener {
+    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
+
     protected IUUTitleBar titleBar;
     protected InputMethodManager inputMethodManager;
     protected View layout;
@@ -72,6 +76,34 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
         getActivity().onBackPressed();
     }
     //====[解决Toast重复显示]end=========================<<
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtils.d("@@@", "onCreate");
+        if (savedInstanceState != null) {
+            LogUtils.d("@@@", "onCreate, savedInstanceState != null");
+            boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            if (isSupportHidden) {
+                ft.hide(this);
+            } else {
+                ft.show(this);
+            }
+            ft.hide(this);
+            ft.commit();
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
+        LogUtils.d("@@@", "onSaveInstanceState");
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -242,7 +274,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
     @Override
     public void onItemClick(Object o, int position) {
 
-        if (position < 0){ // 取消
+        if (position < 0) { // 取消
             return;
         }
 

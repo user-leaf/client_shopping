@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import com.bumptech.glide.Glide;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyydjk.library.DropDownMenu;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ import okhttp3.Call;
  * <p>
  * Created by kanbin on 2017/3/28.
  */
-public class ClassifyDetailFragment extends BaseFragment implements OnItemClickListener, ClassifyAdapter.OnItemClickListener {
+public class ClassifyDetailFragment extends Fragment implements OnItemClickListener, ClassifyAdapter.OnItemClickListener {
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();
 
     // debug
@@ -174,6 +176,7 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
     public void onDestroyView() {
         super.onDestroyView();
         LogUtils.d("====", "Fragment " + classTag + ": onDestroyView");
+        OkHttpUtils.getInstance().cancelTag(this);
     }
 
     @Override
@@ -696,15 +699,15 @@ public class ClassifyDetailFragment extends BaseFragment implements OnItemClickL
 
     }
 
-    // TODO: 2017/3/29 没起作用，以后再说
-    @Override
-    public void onBackPressed() {
-        //退出activity前关闭菜单
-        if (mDropDownMenu.isShowing()) {
-            mDropDownMenu.closeMenu();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    // TODO: 2017/3/29 没起作用，以后再说
+//    @Override
+//    public void onBackPressed() {
+//        //退出activity前关闭菜单
+//        if (mDropDownMenu.isShowing()) {
+//            mDropDownMenu.closeMenu();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
 }
