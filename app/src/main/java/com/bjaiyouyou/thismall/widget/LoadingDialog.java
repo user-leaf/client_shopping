@@ -2,15 +2,13 @@ package com.bjaiyouyou.thismall.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 
 import com.bjaiyouyou.thismall.R;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 /**
  * 加载中Dialog
@@ -21,8 +19,7 @@ import com.bjaiyouyou.thismall.R;
 public class LoadingDialog extends Dialog {
 
     private Context context;
-    private ImageView imageLoading;
-    private RotateAnimation operatingAnim;
+    private ProgressWheel mLoadingView;
 
     private LoadingDialog(Context context) {
         super(context, R.style.loading_dialog);
@@ -38,28 +35,18 @@ public class LoadingDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
-        imageLoading = (ImageView)findViewById(R.id.loading);
-        operatingAnim = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.anim_loading);
-//        LinearInterpolator lin = new LinearInterpolator();
-//        operatingAnim.setInterpolator(lin);
-        operatingAnim.setRepeatCount(Animation.INFINITE);
-        imageLoading.startAnimation(operatingAnim);
 
+        mLoadingView = (ProgressWheel) findViewById(R.id.loading_progress_wheel);
+        mLoadingView.setRimColor(Color.LTGRAY);
     }
 
     @Override
     public void show() {
         super.show();
-        if (imageLoading != null && !this.isShowing()) {
-            imageLoading.startAnimation(operatingAnim);
-        }
     }
 
     @Override
     public void dismiss() {
-        if (imageLoading != null && this.isShowing()) {
-            imageLoading.clearAnimation();
-        }
         super.dismiss();
     }
 
@@ -70,7 +57,7 @@ public class LoadingDialog extends Dialog {
 //            return true;
 //        }
 //        return super.onTouchEvent(event);
-        return true;
+        return false;
     }
 
     @Override

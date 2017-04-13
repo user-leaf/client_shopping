@@ -152,4 +152,5 @@ dependencies {
     compile project(':library:Common')
     compile project(':library:WheelPicker')
     compile 'com.github.dongjunkun:DropDownMenu:1.0.3'
+    compile 'com.pnikosis:materialish-progress:1.7'
 }
