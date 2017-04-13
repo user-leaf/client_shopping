@@ -1,7 +1,8 @@
 package com.bjaiyouyou.thismall.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -12,19 +13,18 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.TokenModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.StringUtils;
@@ -52,6 +52,11 @@ import okhttp3.Call;
  *
  * @author kanbin
  * @date 2016/6/18
+ * @author QuXinhang
+ * UpDate 2016/6/25 10:12
+ * <p/>
+ * 添加三方登录的入口
+ * 添加第三方登录的方法
  */
 
 /**
@@ -257,53 +262,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.login_btn_get_veri_code: // 获取验证码
-                String phone = mEtTel.getText().toString();
-
-                if ("".equals(phone)) {
-                    mTipsView.setVisibility(View.VISIBLE);
-                    mTvTelTips.setText("请输入手机号码");
-                    return;
-                }
-
-                if (!ValidateUserInputUtils.validateUserPhone(phone)) {
-                    mTipsView.setVisibility(View.VISIBLE);
-                    mTvTelTips.setText("手机号码有误");
-                    return;
-                }
-
-                mBtnGetVeriCode.setEnabled(false);
-                mCountDownTimer.start();
-
-                StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
-                sb.append("api/v1/auth/getRandPassword")
-                        .append("?phone=")
-                        .append(phone.trim());
-                String url = sb.toString();
-
-                OkHttpUtils.get()
-                        .url(url)
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
-                                    mTipsView.setVisibility(View.VISIBLE);
-                                    mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
-                                } else {
-                                    mTipsView.setVisibility(View.VISIBLE);
-                                    mTvTelTips.setText("网络未连接");
-                                }
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-//                                Toast.makeText(LoginActivity.this, "已发送", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
+                sendVeriCode();
                 break;
-
-//            点击跳转到指定平台
 
             case R.id.login_btn_login: //短信验证登录
                 doLogin();
@@ -333,9 +293,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     //处理登录
     private void doLogin() {
-        String phone = mEtTel.getText().toString();
-        String password = mEtVeriCode.getText().toString();
-        String invitationCode = mEtInviteCode.getText().toString();
+        final String phone = mEtTel.getText().toString();
+        final String password = mEtVeriCode.getText().toString();
+        final String invitationCode = mEtInviteCode.getText().toString();
 
         if (!ValidateUserInputUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
@@ -349,50 +309,70 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
-        showLoadingDialog();
-
-        ClientAPI.postLogin(phone, password, invitationCode, new
-
-                StringCallback() {
+        Dialog loginDialog = DialogUtils.createConfirmDialog(
+                this,
+                null,
+                getString(R.string.login_tip_invite_person),
+                "继续",
+                "取消",
+                new DialogInterface.OnClickListener() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        dismissLoadingDialog();
+                    public void onClick(DialogInterface dialog, int which) {
 
-                        if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
-                            mTipsView.setVisibility(View.VISIBLE);
-                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
-                        } else {
-                            mTipsView.setVisibility(View.VISIBLE);
-                            mTvTelTips.setText("网络未连接");
-                        }
+                        showLoadingDialog();
+
+                        ClientAPI.postLogin(phone, password, invitationCode, new
+
+                                StringCallback() {
+                                    @Override
+                                    public void onError(Call call, Exception e, int id) {
+                                        dismissLoadingDialog();
+
+                                        if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
+                                            mTipsView.setVisibility(View.VISIBLE);
+                                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
+                                        } else {
+                                            mTipsView.setVisibility(View.VISIBLE);
+                                            mTvTelTips.setText("网络未连接");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onResponse(String response, int id) {
+                                        dismissLoadingDialog();
+
+                                        if (response != null && !"[]".equals(response)) {
+                                            Gson gson = new Gson();
+                                            TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
+                                            if (tokenModel == null) {
+                                                return;
+                                            }
+
+                                            String token = tokenModel.getToken();
+                                            if (token != null) {
+                                                LogUtils.d(TAG, "保存token：" + token);
+                                                CurrentUserManager.setUserToken(token);
+                                                setResult(RESULT_OK);
+                                                finish();
+
+                                            } else {
+                                                ToastUtils.showShort("token为空");
+                                            }
+                                        }
+                                    }
+                                }
+
+                        );
+
                     }
-
+                },
+                new DialogInterface.OnClickListener() {
                     @Override
-                    public void onResponse(String response, int id) {
-                        dismissLoadingDialog();
-
-                        if (response != null && !"[]".equals(response)) {
-                            Gson gson = new Gson();
-                            TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
-                            if (tokenModel == null) {
-                                return;
-                            }
-
-                            String token = tokenModel.getToken();
-                            if (token != null) {
-                                LogUtils.d(TAG, "保存token：" + token);
-                                CurrentUserManager.setUserToken(token);
-                                setResult(RESULT_OK);
-                                finish();
-
-                            } else {
-                                ToastUtils.showShort("token为空");
-                            }
-                        }
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
-                }
-
-        );
+                });
+        loginDialog.show();
 
     }
 
@@ -486,5 +466,53 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         Log.e("AAA", "取消");
     }
 
+    /**
+     * 发送验证码
+     */
+    public void sendVeriCode() {
+        String phone = mEtTel.getText().toString();
 
+        if ("".equals(phone)) {
+            mTipsView.setVisibility(View.VISIBLE);
+            mTvTelTips.setText("请输入手机号码");
+            return;
+        }
+
+        if (!ValidateUserInputUtils.validateUserPhone(phone)) {
+            mTipsView.setVisibility(View.VISIBLE);
+            mTvTelTips.setText("手机号码有误");
+            return;
+        }
+
+        mBtnGetVeriCode.setEnabled(false);
+        mCountDownTimer.start();
+
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/auth/getRandPassword")
+                .append("?phone=")
+                .append(phone.trim());
+        String url = sb.toString();
+
+        OkHttpUtils.get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
+                            mTipsView.setVisibility(View.VISIBLE);
+                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
+                        } else {
+                            mTipsView.setVisibility(View.VISIBLE);
+                            mTvTelTips.setText("网络未连接");
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+//                                Toast.makeText(LoginActivity.this, "已发送", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
 }
