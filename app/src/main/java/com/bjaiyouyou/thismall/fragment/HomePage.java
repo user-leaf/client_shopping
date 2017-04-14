@@ -52,6 +52,7 @@ import com.bjaiyouyou.thismall.model.HomeNavigationItem;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNewEmpty;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
+import com.bjaiyouyou.thismall.model.IsHaveMessageNotRead;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -223,6 +224,10 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     private ImageView mIvPushMessage;
     //历史购买入口
     private View mTvPurchaseHistory;
+    //扫描页面入口
+    private View mLLScan;
+    //显示是否存在未读系统信息，存在显示，不存在隐藏
+    private TextView mTvMessageNotRead;
 
     @Nullable
     @Override
@@ -241,6 +246,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //处理每日上新+广告
         initData();
         initCtrl();
+
         //处理抢购状态
 //        //创建计时器
 //        initTimer();
@@ -307,12 +313,12 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 初始化控件
      */
     private void initView() {
-//        mIvPushMessage = ((ImageView) layout.findViewById(R.id.home_iv_push_message));
-//        Bitmap pushMessageBitmap= BitmapFactory.decodeResource(getResources(), R.mipmap.nav_icon_scan);
+        mLLPushMessage = (layout.findViewById(R.id.ll_home_push_message));
+        mTvMessageNotRead = ((TextView) layout.findViewById(R.id.tv_home_message_not_read));
 
 
-        mTvPurchaseHistory = layout.findViewById(R.id.home_tv_purchase_history);
-
+        //历史购买入口
+//        mTvPurchaseHistory = layout.findViewById(R.id.home_tv_purchase_history);
         //获取屏幕的宽度
         WindowManager manager = getActivity().getWindowManager();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -336,7 +342,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //最外层的ScrollView
 
         mEtSearch = ((EditText) layout.findViewById(R.id.home_et_search));
-        ivScanCode = ((ImageView) layout.findViewById(R.id.home_iv_scan));
+        mLLScan = ( layout.findViewById(R.id.ll_home_scan));
+//        ivScanCode = ((ImageView) layout.findViewById(R.id.home_iv_scan));
 //        mLLPushMessage = layout.findViewById(R.id.ll_home_push_message);
 
         initHeadView();
@@ -439,10 +446,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
      * 设置属性、监听等
      */
     private void setUpView() {
-        mTvPurchaseHistory.setOnClickListener(this);
+//        mTvPurchaseHistory.setOnClickListener(this);
         mEtSearch.setOnClickListener(this);
-//        mLLPushMessage.setOnClickListener(this);
-        ivScanCode.setOnClickListener(this);
+        mLLPushMessage.setOnClickListener(this);
+//        ivScanCode.setOnClickListener(this);
+        mLLScan.setOnClickListener(this);
         mGVPanicBuying.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -601,6 +609,31 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 }
 
         );
+
+        /////加载信息判断是否存在未读系统消息
+        mClientApi.isHaveMessageNotRead(new DataCallback<IsHaveMessageNotRead>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                //test
+                mTvMessageNotRead.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response!=null){
+                    IsHaveMessageNotRead isHaveMessageNotRead= (IsHaveMessageNotRead) response;
+                    int message=isHaveMessageNotRead.getIsRead();
+                    //不存在未读消息
+                    if (message==0){
+                        mTvMessageNotRead.setVisibility(View.INVISIBLE);
+                        //存在未读消息
+                    }else if(message==1){
+
+                        mTvMessageNotRead.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -625,13 +658,20 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             case R.id.home_et_search: // 搜索框
                 startActivity(new Intent(getActivity(), SearchGoodsActivity.class));
                 break;
-            case R.id.home_iv_scan:
+            case R.id.ll_home_scan:
                 //跳转到拍照
 
                 //跳转到扫码
                 Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivity(intent);
                 break;
+//            case R.id.home_iv_scan:
+//                //跳转到拍照
+//
+//                //跳转到扫码
+//                Intent intent = new Intent(getActivity(), CaptureActivity.class);
+//                startActivity(intent);
+//                break;
 
             //抢购查看更多.
             case R.id.iv_home_navigation:
@@ -662,7 +702,13 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //                mLLPanicBuy4.setTag(3);
                 changeNavigation(3);
                 break;
-            case R.id.home_tv_purchase_history: // 系统消息入口
+//            case R.id.home_tv_purchase_history: // 历史购买入口
+//                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
+//                //携带数据接口
+//                phIntent.putExtra("title", "");
+//                startActivity(phIntent);
+//                break;
+            case R.id.ll_home_push_message: // 系统消息入口
                 Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
                 //携带数据接口
                 phIntent.putExtra("title", "");

@@ -1,9 +1,12 @@
 package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.fragment.HomePage;
 import com.bjaiyouyou.thismall.model.HomeAdBigModel;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
+import com.bjaiyouyou.thismall.model.IsHaveMessageNotRead;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 
 /**
@@ -62,6 +65,24 @@ public class Api4Home extends BaseClientApi {
         String url =ClientAPI.API_POINT + HttpUrls.PANICBUY_NEW;
         LogUtils.d(TAG, "getNavigation: " + url);
         doGet(url, strTag, null, callback);
+    }
+
+    /**
+     *author Qxh
+     *created at 2017/3/24 10:47
+     *
+     * 获取抢购信息
+     * @param callback
+     */
+    public void isHaveMessageNotRead(DataCallback<IsHaveMessageNotRead> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT );
+        sb.append("api/v1/message/isHasNoRead");
+        sb.append("?device_type=" + "android");
+        sb.append("&token=" + CurrentUserManager.getUserToken());
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "isHaveMessageNotRead: " + url);
+        doGet(url, HomePage.TAG, null, callback);
     }
 
 }
