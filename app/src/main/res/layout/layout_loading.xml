@@ -13,13 +13,20 @@
         <!--android:layout_centerInParent="true"-->
         <!--android:src="@mipmap/loading"/>-->
 
-    <com.pnikosis.materialishprogress.ProgressWheel
-        android:id="@+id/loading_progress_wheel"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        wheel:matProg_barColor="@color/red"
-        wheel:matProg_progressIndeterminate="true"
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleSmall"
         android:layout_gravity="center"
         />
+
+    <!--<com.pnikosis.materialishprogress.ProgressWheel-->
+        <!--android:id="@+id/loading_progress_wheel"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--wheel:matProg_barColor="@color/red"-->
+        <!--wheel:matProg_progressIndeterminate="true"-->
+        <!--android:layout_gravity="center"-->
+        <!--/>-->
 
 </FrameLayout>
