@@ -54,6 +54,10 @@ public abstract class Callback<T>
 
     public abstract void onError(Call call, Exception e, int id);
 
+    public void onError(Call call, String responseBody, int id){
+
+    }
+
     public abstract void onResponse(T response, int id);
 
 

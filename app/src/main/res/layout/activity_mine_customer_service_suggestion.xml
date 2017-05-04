@@ -106,7 +106,7 @@
                     android:gravity="top"
                     android:hint="请写下您的宝贵意见，这将帮助我们更好的完善产品。"
                     android:lines="5"
-                    android:maxLength="300"
+                    android:maxLength="100"
                     android:padding="10dp"
                     android:scrollbars="none"
                     android:textSize="@dimen/text_size_small"
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/service_suggestion_et_desc"
-                    android:text="/300"
+                    android:text="/100"
                     />
 
                 <TextView

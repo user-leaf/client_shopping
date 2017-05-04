@@ -19,9 +19,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
-import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
@@ -37,7 +36,7 @@ public class MainApplication extends MultiDexApplication {
     public static Context sContext;
     private static MainApplication instance;
     // 是否开启debug模式
-    private static boolean isDebug;
+    public static final boolean DEBUG = BuildConfig.DEBUG;
     // 数据载体
     private Object data;
 
@@ -48,12 +47,14 @@ public class MainApplication extends MultiDexApplication {
         sContext = getApplicationContext();
         instance = this;
 
-        isDebug = true;
         LeakCanary.install(this);
 
         ClientApiHelper.getInstance().setApplicationContext(this);
 
         initHttps();
+
+        JPushInterface.setDebugMode(DEBUG);
+        JPushInterface.init(this);
     }
 
     public static Context getContext() {
@@ -62,10 +63,6 @@ public class MainApplication extends MultiDexApplication {
 
     public static MainApplication getInstance() {
         return instance;
-    }
-
-    public static boolean getIsDebug() {
-        return isDebug;
     }
 
     public Object getData() {

@@ -1,5 +1,6 @@
 package com.bjaiyouyou.thismall.user;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bjaiyouyou.thismall.MainApplication;
@@ -76,5 +77,12 @@ public class CurrentUserManager {
      */
     public static void clearUserToken() {
         SPUtils.remove(MainApplication.getContext(), SP_USER_TOKEN);
+    }
+
+    /**
+     * 判断用户是否登录
+     */
+    public static boolean isLoginUser(){
+        return TextUtils.isEmpty(getUserToken())?false:true;
     }
 }

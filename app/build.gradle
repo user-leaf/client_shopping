@@ -26,6 +26,19 @@ android {
 
         signingConfig signingConfigs.debug
 
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+                JPUSH_APPKEY: "0c7619851b42096e5d4c2b71" //JPush上注册的包名对应的appkey.（正式）
+//                    JPUSH_APPKEY: "bb181800e1bd09bc0b13825b" //JPush上注册的包名对应的appkey.（测试，重新核对）
+//                    JPUSH_APPKEY: "fa12e28aa3f6ce16f0039645" //JPush上注册的包名对应的appkey.（测试，重新核对）
+        ]
     }
 
     dexOptions {
@@ -102,55 +115,54 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.android.support:support-v4:23.3.0'
     compile project(':pullToRefreshLibrary')
     compile files('libs/zxing.jar')
     compile project(':imageselector')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
     compile project(':viewPagerIndicatorLibrary')
+    //    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
+    //    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
+    //    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
+    //    compile 'com.zhy:okhttputils:2.6.2'
+    //    compile 'com.squareup.okhttp:okhttp:2.7.5' // 貌似ping++用到了
+    compile project(':okhttputils')
+    //    compile 'com.wang.avi:library:2.1.3'
+    //    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
+    compile project(':library:Common')
+    compile project(':library:WheelPicker')
+    compile project(':library:xrecyclerview')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.jiechic.library:xUtils:2.6.14'
     compile 'com.bigkoo:convenientbanner:2.0.5'
-    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    //    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
-
-    //    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
-
-    //    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
     compile 'com.alibaba:fastjson:1.2.12'
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.kyleduo.switchbutton:library:1.4.1'
     compile 'de.hdodenhof:circleimageview:2.0.0'
-    //    compile 'com.zhy:okhttputils:2.6.2'
-    compile project(':lib:bdwallet_pay_sdk')
-    compile project(':lib:pingpp')
-    compile project(':lib:pingpp_one')
-    compile 'com.squareup.okhttp:okhttp:2.7.5' // 貌似ping++用到了
     compile 'com.bigkoo:alertview:1.0.3'
-    // 权限检查
     compile 'pub.devrel:easypermissions:0.2.0'
-    compile project(':okhttputils')
-    // Luban
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'top.zibin:Luban:1.0.8'
-    //    compile 'com.wang.avi:library:2.1.3'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
     compile 'com.afollestad.material-dialogs:core:0.9.0.2'
     compile 'com.afollestad.material-dialogs:commons:0.9.0.2'
-    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
-    compile project(':library:Common')
-    compile project(':library:WheelPicker')
     compile 'com.github.dongjunkun:DropDownMenu:1.0.3'
     compile 'com.pnikosis:materialish-progress:1.7'
+    compile 'cn.jiguang.sdk:jpush:3.0.3'
+    compile 'cn.jiguang.sdk:jcore:1.1.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+    compile 'com.pingxx:pingpp-core:2.1.9' //必须添加
+    compile 'com.pingxx:pingpp-alipay:2.1.9' //使用支付宝时添加
+//    compile 'com.pingxx:pingpp-wxpay:2.1.9' //使用微信支付时添加
 }

@@ -31,14 +31,18 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.callback.PingppPayResult;
+import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.model.ActivateInfoModel;
 import com.bjaiyouyou.thismall.model.PayOrderNum;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
-import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
@@ -164,6 +168,13 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     //uu详情的入口
     private TextView mTvUUDetail;
 
+    private Api4ClientOther mClient;
+    //获取数据类型
+    private ActivateInfoModel mDataModel;
+    private ActivateInfoModel.UserAboutCashInfoBean mUserAboutCashInfo;
+    //积分数
+    private TextView mTvIntegralNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +182,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         mIntent = getIntent();
         mHavenCoin = mIntent.getLongExtra("coin", 0);
         mIntegral = mIntent.getLongExtra("integral", 0);
-        isLogin = mIntent.getBooleanExtra("isLogin", false);
+        isLogin = CurrentUserManager.isLoginUser();
         mMember_type = mIntent.getIntExtra("member_type", 0);
         isInTestUser = mIntent.getIntExtra("isInTestUser", 0);
         mSafeCode = mIntent.getStringExtra("safeCode");
@@ -182,6 +193,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         //test
 //        mOpenId=null;
 //        mOpenId="";
+        initData();
 
         loadData();
         initView();
@@ -190,6 +202,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     }
 
     private void initView() {
+        mTvIntegralNum = ((TextView) findViewById(R.id.tv_member_center_integral_num));
         mTvUUDetail = ((TextView) findViewById(R.id.tv_uu_detail));
 
         //根据是否是第五季会员控制显示
@@ -208,15 +221,14 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         mLLLockNotify = ((LinearLayout) findViewById(R.id.ll_member_center_integral_lack));
         mTVIntegral = ((TextView) findViewById(R.id.tv_member_center_integral));
         //初始化积分控件
-        mTVIntegral.setText("" + mIntegral);
         //初始化UU余额控价
         mTvCoinHaven = ((TextView) findViewById(R.id.tv_member_center_coin_haven));
-        mTvCoinHaven.setText(mHavenCoin + "");
+
 
         mSlLogin = ((ScrollView) findViewById(R.id.sr_goldcoid_login));
         mLLNotLogin = ((RelativeLayout) findViewById(R.id.ll_not_login));
         mTVNotLoginTitle = ((TextView) findViewById(R.id.tv_not_login_title));
-        mTVNotLoginTitle.setText("无法获得支付信息");
+        mTVNotLoginTitle.setText("");
         mTvGotoLogin = ((TextView) findViewById(R.id.tv_goto_login));
         if (isLogin) {
             mSlLogin.setVisibility(View.VISIBLE);
@@ -272,6 +284,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                     mBtnNext.setText("兑换");
                 } else {
                     mPayMoney = Long.valueOf(money);
+                    mPayRMB=0;
 //                    mBtnNext.setText("兑换("+mPayMoney+")");
 //                    compareMoney();
                     setButton();
@@ -286,6 +299,52 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         mTvWithDraw.setOnClickListener(this);
 
         mTagFlowLayout.setOnTagClickListener(this);
+
+    }
+
+    /**
+     * 获得数据
+     */
+    private void initData() {
+        ///////////////////////////////获取数据//////////////////////////////
+        showLoadingDialog();
+        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient.getExchangeData(new DataCallback<ActivateInfoModel>(getApplicationContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                LogUtils.e("getExchangeData", "失败");
+                dismissLoadingDialog();
+//                ToastUtils.exceptionToast(e,getApplicationContext());
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                dismissLoadingDialog();
+                if (response != null) {
+                    mDataModel = (ActivateInfoModel) response;
+                    if (mDataModel != null) {
+                        mUserAboutCashInfo = mDataModel.getUserAboutCashInfo();
+                        if (mUserAboutCashInfo != null) {
+                            setData();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 处理数据
+     */
+    private void setData() {
+        //uu
+        mHavenCoin = mUserAboutCashInfo.getMoney_quantity();
+        //积分
+        mIntegral =mUserAboutCashInfo.getUser_integration();
+
+        mTVIntegral.setText("" + mIntegral);
+        mTvCoinHaven.setText(mHavenCoin + "");
+        mTvIntegralNum.setText(mIntegral+"");
 
     }
 
@@ -362,7 +421,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                 break;
             case R.id.member_center_tv_withdraw: // 换取入口
                 mClass = WithdrawRecordActivity.class;
-                mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
+//                mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
                 mIntentWithDraw.putExtra("havenCoin", mHavenCoin);
                 mIntentWithDraw.putExtra("safeCode", mSafeCode);
                 goToGetMoney();
@@ -467,6 +526,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
      * 处理兑换
      */
     private void pay() {
+        showLoadingDialog();
         //判断积分是否够用
         compareMoney();
         //积分优先支付
@@ -486,6 +546,12 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 
 
         ///////////////生成支付订单///////////////
+        //添加充值限额
+        if (mPayRMB > mLimitMoneys) {
+            Toast.makeText(getApplicationContext(), "充值数额不能超过2000元", Toast.LENGTH_SHORT).show();
+            dismissLoadingDialog();
+            return;
+        }
 
         final String token = CurrentUserManager.getUserToken();
         if (token != null) {
@@ -497,13 +563,13 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             }
 
             //防止连续重复点击
-            mBtnNext.setEnabled(false);
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mHandler.sendEmptyMessage(0);
-                }
-            }, 10000);
+//            mBtnNext.setEnabled(false);
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mHandler.sendEmptyMessage(0);
+//                }
+//            }, 10000);
 
             ClientAPI.postGoldCodePay(token, mPayMoney, isIntegralPriority, new StringCallback() {
                 @Override
@@ -512,18 +578,25 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
                     if (mPayRMB > mLimitMoneys) {
                         Toast.makeText(getApplicationContext(), "兑换失败；兑换数额不能超过2000元", Toast.LENGTH_SHORT).show();
                     } else {
-                        UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+//                        UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                     }
+                    dismissLoadingDialog();
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
+                    dismissLoadingDialog();
                     if ((isIntegral && isIntegralLack) || !isIntegral) {//积分优先并且积分不足;或者不使用积分.调用支付，否则直接兑换成功
                         //拿到订单调用支付
                         //拿到订单调用支付
-                        mOrder_number = new Gson().fromJson(response, PayOrderNum.class).getOrder_number();
-                        //吊起支付
-                        doPayByPingpp();
+                        PayOrderNum orderNum=new Gson().fromJson(response, PayOrderNum.class);
+                        if (orderNum!=null){
+                            mOrder_number = orderNum.getOrder_number();
+                            //吊起支付
+                            doPayByPingpp();
+                        }else {
+                            ToastUtils.showShort("获取订单失败，稍后再试");
+                        }
 //                        doPayByPingpp();
                         //支付成功后跳转页
 //                    jump(MineRechargeSuccessActivity.class,false);
@@ -614,11 +687,12 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             mOtherView.setVisibility(View.VISIBLE);
             mEtMoney.setText("");
             //刚刚切换过来初始化
-            mPayMoney = 0l;
+            mPayMoney = 0L;
             mPayRMB = 0;
         } else {
             //获得兑换钱数,并且进行判断
             mPayMoney = mRMBs[choice];
+            mPayRMB = 0;
 //            compareMoney();
 //            mBtnNext.setText("兑换("+mPayMoney+")");
             setButton();
@@ -675,7 +749,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     // 去付款2之调用ping++去付款
     private void doPayByPingpp() {
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay)
         }, this, AlertView.Style.ActionSheet, this).show();
     }
 
@@ -762,4 +836,9 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         dialog.show();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dismissLoadingDialog();
+    }
 }

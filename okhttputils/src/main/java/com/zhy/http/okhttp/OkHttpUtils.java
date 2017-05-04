@@ -122,22 +122,19 @@ public class OkHttpUtils {
                     if (!finalCallback.validateReponse(response, id)) {
                         String responseBody = response.body().string();
                         Log.d(TAG, "onResponse: " + responseBody);
-//                        switch (response.code()) {
-//                            case 500:
-//                            case 409:
+                        // 409
                         try {
                             Gson gson = new Gson();
                             ResponseModel responseModel = gson.fromJson(responseBody, ResponseModel.class);
+                            // 如果有自定义code，则走这个回调，返回整个responseBody
+                            if (responseModel.getCode() > 0) {
+                                sendFailResultCallback(call, responseBody, finalCallback, id);
+                            }
+                            // 为兼容之前的报错回调
                             sendFailResultCallback(call, new IOException("" + response.code() + " : " + responseModel.getMessage()), finalCallback, id);
                         } catch (Exception e) {
                             sendFailResultCallback(call, new IOException("request failed , reponse's code is : " + response.code()), finalCallback, id);
-
                         }
-//                                break;
-//
-//                            default:
-//                                break;
-//                        }
                         return;
                     }
 
@@ -154,6 +151,17 @@ public class OkHttpUtils {
         });
     }
 
+    public void sendFailResultCallback(final Call call, final String responseBody, final Callback callback, final int id) {
+        if (callback == null) return;
+
+        mPlatform.execute(new Runnable() {
+            @Override
+            public void run() {
+                callback.onError(call, responseBody, id);
+                callback.onAfter(id);
+            }
+        });
+    }
 
     public void sendFailResultCallback(final Call call, final Exception e, final Callback callback, final int id) {
         if (callback == null) return;

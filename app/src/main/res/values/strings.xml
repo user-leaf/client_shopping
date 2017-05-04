@@ -34,6 +34,6 @@
     <string name="task_vip_yes">您已成为我们尊贵的会员</string>
     <!--个人中心-->
     <string name="mine_user_income_name">支付宝实名认证姓名</string>
-    <string name="login_tip_invite_person">温馨提示：新用户首次登陆，若未填写推荐人手机号，一旦登陆将无法建立推荐关系，且无法修改，请确认是否继续登陆！</string>
+    <string name="login_tip_invite_person">温馨提示：新用户首次登录，若未填写推荐人手机号，一旦登录将无法建立推荐关系，且无法修改，请确认是否继续登录！</string>
 
 </resources>

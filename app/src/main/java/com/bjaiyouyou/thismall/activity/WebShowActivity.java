@@ -1,5 +1,7 @@
 package com.bjaiyouyou.thismall.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +12,8 @@ import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceResponse;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,10 +33,27 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
     private static final java.lang.String TAG = WebShowActivity.class.getSimpleName();
     public static final String PARAM_URLPATH = "urlpath";
+    public static final String PARAM_TITLE = "title";
+
+    private int isCustomTitle = -1;
 
     private IUUTitleBar mTitleBar;
     private ProgressBar mProgressBar;
     private WebView mWebView;
+    private View mRefreshView;
+
+    /**
+     * 启动本页面
+     * @param context
+     * @param url
+     * @param title     传null，则用网页默认标题
+     */
+    public static void actionStart(Context context, String url, String title) {
+        Intent intent = new Intent(context, WebShowActivity.class);
+        intent.putExtra(PARAM_URLPATH, url);
+        intent.putExtra(PARAM_TITLE, title);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +62,13 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
         initView();
         setupView();
+
+        // 如果传过来标题，则用自定义标题，否则用默认标题
+        String title = getIntent().getStringExtra(PARAM_TITLE);
+        if (title != null) {
+            mTitleBar.setTitle(title);
+            isCustomTitle = 1;
+        }
 
         initWebView();
         loadUrl();
@@ -52,11 +79,13 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         mTitleBar = (IUUTitleBar) findViewById(R.id.web_show_title_bar);
         mProgressBar = (ProgressBar) findViewById(R.id.web_show_progress_bar);
         mWebView = (WebView) findViewById(R.id.web_show_webview);
+        mRefreshView = findViewById(R.id.web_show_refresh);
     }
 
     private void setupView() {
         mTitleBar.setLeftLayoutClickListener(this);
         mProgressBar.setMax(100);
+        mRefreshView.setOnClickListener(this);
     }
 
     private void initWebView() {
@@ -73,7 +102,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         webSettings.setDatabasePath(WebShowActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
 
         // 设置Android5.0以上版本支持同时加载Https和Http混合模式
-        if(Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
@@ -84,6 +113,19 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                mWebView.setVisibility(View.GONE);
+                mRefreshView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -98,13 +140,18 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                mTitleBar.setTitle(title);
+                if (isCustomTitle != 1) {
+                    mTitleBar.setTitle(title);
+                }
             }
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 if (newProgress != 100) {
+                    if (mProgressBar.getVisibility() == View.GONE) {
+                        mProgressBar.setVisibility(View.VISIBLE);
+                    }
                     mProgressBar.setProgress(newProgress);
                 } else {
                     mProgressBar.setVisibility(View.GONE);
@@ -148,6 +195,12 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             case R.id.left_layout:
                 pauseVideo();
                 finish();
+                break;
+
+            case R.id.web_show_refresh:
+                loadUrl();
+                mWebView.setVisibility(View.VISIBLE);
+                mRefreshView.setVisibility(View.GONE);
                 break;
         }
     }

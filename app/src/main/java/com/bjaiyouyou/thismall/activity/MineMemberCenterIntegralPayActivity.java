@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,17 +32,11 @@ import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -448,7 +441,7 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
     private void doPayByPingpp() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay)
         }, this, AlertView.Style.ActionSheet, this).show();
     }
 

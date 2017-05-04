@@ -117,8 +117,10 @@ public class ClassifyPage extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        reLoadData();
-        LogUtils.e("ClassifyPage-onHiddenChanged","onHiddenChanged");
+        if (!hidden){
+            reLoadData();
+            LogUtils.e("ClassifyPage-onHiddenChanged","onHiddenChanged");
+        }
     }
 
     @Override

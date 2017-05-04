@@ -10,7 +10,7 @@
         android:id="@+id/title_withdraw_succeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="换取成功"
+        app:iuuTitleBarTitle="兑换成功"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         android:layout_gravity="start"
         />
@@ -28,7 +28,7 @@
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="恭喜您，换取成功！"
+            android:text="恭喜您，兑换成功！"
             android:textColor="@color/app_red"
             android:textStyle="bold"
             />

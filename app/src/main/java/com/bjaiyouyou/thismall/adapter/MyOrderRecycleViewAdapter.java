@@ -23,26 +23,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.OrderReturnActivity;
 import com.bjaiyouyou.thismall.activity.OrderReturnDealActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.fragment.BaseFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
+import com.bjaiyouyou.thismall.fragment.PayDetailFragment;
 import com.bjaiyouyou.thismall.model.AddAllToCart;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
+import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.PayUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
@@ -103,6 +106,8 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     private LayoutInflater mInflater;
     private OnItemClickListener mItemClickListener;
     private OnItemLongClickListener mItemLongClickListener;
+    //需要支付的总金额
+    private double mAmount;
 
     public MyOrderRecycleViewAdapter(Context context, BaseFragment fragment, List<MyOrder.DataBean> orders, Activity activity, Handler mHandler) {
         mInflater = LayoutInflater.from(context);
@@ -359,8 +364,11 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
 
     @Override
     public void onClick(View v) {
+
         //获得被点击按钮所在位置
         nowPosition = (int) v.getTag();
+
+
         //当前点击按钮对应的订单号
         mOrderNumber = orders.get(nowPosition).getOrder_number();
         switch (v.getId()) {
@@ -695,7 +703,8 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
             holder.tvGoodsNum.setText("共" + item.getNumber() + "件商品  合计:");
             //总钱数
             String allMoney = null;
-            allMoney = "￥" + item.getAll_amount();
+            mAmount= item.getAll_amount();
+            allMoney = "￥" + mAmount;
             holder.tvAllMoney.setText(allMoney);
 
 //        SpannableStringBuilder builderAllMoney = new SpannableStringBuilder(allMoney);
@@ -921,9 +930,31 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     // 调用ping++去付款
     private void doPayByPingpp() {
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{context.getString(R.string.pay_alipay), context.getString(R.string.pay_balance), context.getString(R.string.pay_hx)
-        }, activity, AlertView.Style.ActionSheet, this).show();
 
+//        new AlertView("选择支付方式", null, "取消", null, new String[]{context.getString(R.string.pay_alipay), context.getString(R.string.pay_balance), context.getString(R.string.pay_hx)
+//        }, activity, AlertView.Style.ActionSheet, this).show();
+
+        double amount=0;
+        if (orders.get(nowPosition)!=null){
+            amount=orders.get(nowPosition).getAmount();
+        }
+        LogUtils.e("amount","position**"+nowPosition+"amount**"+amount);
+
+        PayUtils.pay(MyOrderActivity.mFragmentManager, MyOrderPaymentFragment.TAG, amount, new PayDetailFragment.PayCallback() {
+            @Override
+            public void onPayCallback(String channel) {
+                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                new PaymentTask(
+                        activity,
+                        activity,
+                        mOrderNumber,
+                        channel,
+                        holder.btPay,
+                        MyOrderPaymentFragment.TAG
+                ).execute(new PaymentTask.PaymentRequest(channel, amount));
+
+            }
+        });
     }
 
     //  https://github.com/saiwu-bigkoo/Android-AlertView

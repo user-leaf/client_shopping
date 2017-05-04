@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.bjaiyouyou.thismall.activity.SystemPushMessageActivity"
+    android:orientation="vertical"
+    >
+    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_system_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="系统消息"
+        />
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/ptrlv_push_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>

@@ -22,7 +22,7 @@ public class BaseClientApi {
 
     public Context mContext;
     /** 请求超时时间 **/
-    private static final long TIME_OUT_SPAN = OkHttpUtils.DEFAULT_MILLISECONDS; // 60 * 1000
+    private static final long TIME_OUT_SPAN = 60 * 1000; // 60 * 1000
 
     /**
      * 初始化方法

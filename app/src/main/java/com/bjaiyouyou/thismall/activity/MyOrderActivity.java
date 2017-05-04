@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +21,14 @@ import com.bjaiyouyou.thismall.adapter.MyOrderRecycleViewAdapter;
 import com.bjaiyouyou.thismall.fragment.MyOrderFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderNotFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
+import com.bjaiyouyou.thismall.model.PayResultEvent;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,11 +88,15 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         }
     };
 
+    //用于Adapter里面吊起支付
+    public static FragmentManager mFragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
         initView();
+        mFragmentManager=getSupportFragmentManager();
         //延时10秒发送指令，隐藏提醒
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -95,6 +104,9 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
                 mHandler.sendEmptyMessage(0);
             }
         },10000);
+
+        //注册evenbus处理余额支付解决处理
+        EventBus.getDefault().register(this);
     }
 
     private void initView() {
@@ -237,6 +249,42 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         intentPayFail.putExtra("mOrderNumber", MyOrderRecycleViewAdapter.getOrderNum());
         startActivity(intentPayFail);
 //        activity.finish();
+    }
+
+    ////////////////////////注册EvenBus，实现订单支付/////////////////////////
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        EventBus.getDefault().unregister(this);
+//    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //取消余额支付回调处理的EvenBus
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 余额支付回调
+     * @param event
+     */
+    @Subscribe
+    public void onBalancePayEvent(PayResultEvent event){
+        if (event.isPaySuccess()) {
+            //刷新数据
+            fPayment.refreshData();
+
+        }else {
+            //跳转到支付失败页面,传递订单号
+
+        }
     }
 
 }

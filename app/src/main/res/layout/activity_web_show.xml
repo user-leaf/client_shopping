@@ -16,11 +16,22 @@
 
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
+    <TextView
+        android:id="@+id/web_show_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/web_show_title_bar"
+        android:text="加载失败\n点击重试"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
     <WebView
         android:id="@+id/web_show_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/web_show_title_bar"/>
+        android:layout_below="@id/web_show_title_bar"
+        />
 
     <ProgressBar
         android:id="@+id/web_show_progress_bar"

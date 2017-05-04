@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.bigkoo.alertview.OnItemClickListener;
-import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
-import com.bjaiyouyou.thismall.client.RequestManager;
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
@@ -25,6 +23,8 @@ import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 public class BaseFragment extends Fragment implements View.OnClickListener, OnItemClickListener {
+    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
+
     protected IUUTitleBar titleBar;
     protected InputMethodManager inputMethodManager;
     protected View layout;
@@ -33,45 +33,25 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
     private int loadingCount = 0;
     private long lastClick = 0;
 
-    // from https://github.com/afollestad/material-dialogs
-    // 这个demo里用的
-//    private Toast mToast;
-//    public void showToast(String message) {
-//        if (mToast != null) {
-//            mToast.cancel();
-//            mToast = null;
-//        }
-//        mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
-//        mToast.show();
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtils.d("@@@", "onCreate");
+        if (savedInstanceState != null) {
+            LogUtils.d("@@@", "onCreate, savedInstanceState != null");
+            boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
+            LogUtils.d("@@@", "onCreate()--isSupportHidden: " + isSupportHidden);
 
-    //====[解决Toast重复显示]begin====================>>
-    private Toast mToast;
-
-    public void showToast(String text) {
-        if (!TextUtils.isEmpty(text)) {
-            if (mToast == null) {
-                mToast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            if (isSupportHidden) {
+                ft.hide(this);
             } else {
-                mToast.setText(text);
-                mToast.setDuration(Toast.LENGTH_SHORT);
+                ft.show(this);
             }
-            mToast.show();
+            ft.commit();
         }
-    }
 
-    public void cancelToast() {
-        if (mToast != null) {
-            mToast.cancel();
-        }
     }
-
-    public void onBackPressed() {
-        cancelToast();
-//        super.onBackPressed();
-        getActivity().onBackPressed();
-    }
-    //====[解决Toast重复显示]end=========================<<
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -81,6 +61,33 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
         loadingDialog = LoadingDialog.getInstance(getContext());
 //        initView();
 //        setUpView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        OkHttpUtils.getInstance().cancelTag(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        RequestManager.cancelAll(this);
+        OkHttpUtils.getInstance().cancelTag(this);
+    }
+
+    public void onBackPressed() {
+//        super.onBackPressed();
+        getActivity().onBackPressed();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
+        LogUtils.d("@@@", "onSaveInstanceState");
+        LogUtils.d("@@@", "onSaveInstanceState()--isSupportHidden: " + isHidden());
     }
 
     /**
@@ -133,18 +140,9 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
     @Override
     public void onClick(View v) {
 
-        // 返回键会失效
-        // 一些页面可能没法点进去
-        // 如果联网但是网络不通...
-//        if (!NetStateUtils.isNetworkAvailable(getContext())) {
-//            ToastUtils.showShort("网络不可用");
-//            return;
-//        }
-
         if (!Utility.isFastDoubleClick()) {
             widgetClick(v);
         }
-
     }
 
 //    /**
@@ -160,7 +158,6 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
 //        lastClick = currentTime;
 //        return false;
 //    }
-
 
     /**
      * [页面跳转]
@@ -227,22 +224,9 @@ public class BaseFragment extends Fragment implements View.OnClickListener, OnIt
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-//        OkHttpUtils.getInstance().cancelTag(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        RequestManager.cancelAll(this);
-        OkHttpUtils.getInstance().cancelTag(this);
-    }
-
-    @Override
     public void onItemClick(Object o, int position) {
 
-        if (position < 0){ // 取消
+        if (position < 0) { // 取消
             return;
         }
 

@@ -1,5 +1,7 @@
 package com.bjaiyouyou.thismall.client;
 
+import android.text.TextUtils;
+
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.fragment.HomePage;
 import com.bjaiyouyou.thismall.model.HomeAdBigModel;
@@ -8,6 +10,8 @@ import com.bjaiyouyou.thismall.model.HomeProductModel;
 import com.bjaiyouyou.thismall.model.IsHaveMessageNotRead;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 /**
  * Created by Administrator on 2017/2/16.
@@ -68,21 +72,71 @@ public class Api4Home extends BaseClientApi {
     }
 
     /**
+     * 是否存在未读取信息
+     *author Qxh
+     *created at 2017/4/14 17:03
+     */
+    public void isHaveMessageNotRead(DataCallback<IsHaveMessageNotRead> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT );
+        sb.append("api/v1/message/isHasNoRead");
+        if(!TextUtils.isEmpty(CurrentUserManager.getUserToken())){
+            sb.append("?token=" + CurrentUserManager.getUserToken());
+        }
+//        sb.append("&device_type=" + "android");
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "isHaveMessageNotRead: " + url);
+        doGet(url, HomePage.TAG, null, callback);
+    }
+    /**
      *author Qxh
      *created at 2017/3/24 10:47
      *
      * 获取抢购信息
      * @param callback
      */
-    public void isHaveMessageNotRead(DataCallback<IsHaveMessageNotRead> callback){
-        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT );
-        sb.append("api/v1/message/isHasNoRead");
-        sb.append("?device_type=" + "android");
-        sb.append("&token=" + CurrentUserManager.getUserToken());
+    public void getPushMessage(int page,StringCallback callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/message/getList");
+        sb.append("?page=");
+        sb.append(page);
+        if(!TextUtils.isEmpty(CurrentUserManager.getUserToken())){
+            sb.append("&token=" + CurrentUserManager.getUserToken());
+        }
+//        sb.append("&device_type=" + "android");
         String url = sb.toString();
+        LogUtils.d("getPushMessage",url);
 
-        LogUtils.d(TAG, "isHaveMessageNotRead: " + url);
-        doGet(url, HomePage.TAG, null, callback);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(callback);
+
     }
+    /**
+     * 删除系统消息
+     *author Qxh
+     *created at 2017/4/19 14:48
+     */
+
+    public void deletePushMessage(String id,StringCallback callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/message/delete/");
+        sb.append(id);
+        sb.append("?token=" + CurrentUserManager.getUserToken());
+//        sb.append("&device_type=" + "android");
+        String url = sb.toString();
+        LogUtils.d("deletePushMessage",url);
+
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(callback);
+
+    }
+
+
 
 }

@@ -11,9 +11,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.Editable;
-import android.text.InputType;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,14 +45,13 @@ import com.bjaiyouyou.thismall.activity.MineBingPhoneNumActivity;
 import com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity;
 import com.bjaiyouyou.thismall.activity.MineMemberCenterActivity;
 import com.bjaiyouyou.thismall.activity.MineMemberCenterIntegralPayActivity;
+import com.bjaiyouyou.thismall.activity.MyExchangeActivity;
 import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.activity.SettingsActivity;
 import com.bjaiyouyou.thismall.activity.UpdateMineUserMessageActivity;
-import com.bjaiyouyou.thismall.activity.WithdrawActivity;
 import com.bjaiyouyou.thismall.adapter.MineAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
-import com.bjaiyouyou.thismall.callback.OnNoDoubleClickListener;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
@@ -61,6 +62,7 @@ import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.pay.AuthResult;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.ACache;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -69,6 +71,7 @@ import com.bjaiyouyou.thismall.utils.SPUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
+import com.bjaiyouyou.thismall.utils.ValidatorsUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.NoScrollGridView;
 import com.bumptech.glide.Glide;
@@ -187,12 +190,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private String mOpenId;
     //是否是测试用户
     private int isInTestUser;
-    //安全码验证对话框
-    private MaterialDialog mSafeCodeDialog;
-    //找回安全码对话框
-    private MaterialDialog mFindSafeCodeDialog;
-    //邮件发送成功对话框
-    private MaterialDialog mEmailSendSucceedDialog;
     //提现
     private TextView mTvWithdraw;
     //提现布局
@@ -201,6 +198,14 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private TextView mTVEmail;
     //供货电话
     private LinearLayout mLLSupplyPhone;
+
+    ////////////安全码对话框相关///////////////////////
+    //安全码验证对话框
+    private MaterialDialog mSafeCodeDialog;
+    //找回安全码对话框
+    private MaterialDialog mFindSafeCodeDialog;
+    //邮件发送成功对话框
+    private MaterialDialog mEmailSendSucceedDialog;
 
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
@@ -394,7 +399,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         // 解决页面不从顶部开始
         gv.setFocusable(false);
         mIVUserIcon.setOnClickListener(this);
+
+        //积分充值禁止进入
 //        mRLIntegral.setOnClickListener(this);
+
         mRLGoldCoin.setOnClickListener(this);
         mRLWithdraw.setOnClickListener(this);
 //        titleBar.setRightLayoutClickListener(this);
@@ -499,7 +507,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                          * 频繁报错
                          */
 //                        SPUtils.put(getContext(), Constants.USER, response+"");
-                        SPUtils.put(MainApplication.getContext(), Constants.USER, response + "");
+                        ACache aCache=ACache.get(getActivity());
+                        aCache.put(Constants.USER,mUser);
+//                        SPUtils.put(MainApplication.getContext(), Constants.USER, mUser + "");
                     } else {
                         ToastUtils.showShort("数据加载错误");
                     }
@@ -700,6 +710,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine6);
         MyMine mine7 = new MyMine("通用设置", R.mipmap.list_set);
         dataListLogin.add(mine7);
+        //test
+//        MyMine mine8 = new MyMine("我的兑换券", R.mipmap.list_set);
+//        dataListLogin.add(mine8);
+
         adapter = new MineAdapter(getActivity(), gv, dataListLogin);
         gv.setAdapter(adapter);
     }
@@ -725,8 +739,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListNotLogin.add(mine66);
         MyMine mine77 = new MyMine("通用设置", R.mipmap.list_set_nor);
         dataListNotLogin.add(mine77);
-//        MyMine mine8= new MyMine("绑定微信", R.mipmap.list_signinwechat);
-//        dataList.add(mine8);
+
+        //test
+//        MyMine mine8= new MyMine("我的兑换券", R.mipmap.list_signinwechat);
+//        dataListNotLogin.add(mine8);
 //        MyMine mine9= new MyMine("绑定QQ", R.mipmap.list_signinqq);
 //        dataList.add(mine9);
 
@@ -746,7 +762,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mClientApi.getIfBindingAlipay(new DataCallback<CheckIfBindingAlipayModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-//                ToastUtils.exceptionToast(e, getContext());
+                ToastUtils.exceptionToast(e, getContext());
 //                dismissLoadingDialog();
             }
 
@@ -760,14 +776,16 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     if (isBindingAlipay) {
                         //登录
                         if (isLogin) {
+                            //安全码验证
                             createSafeCodeDialog();
-//                            dismissLoadingDialog();
                             //没登录
                         } else {
                             //绑定直接跳转到提现页面
                             startActivity(mIntentSafeCode);
-
                         }
+
+//                        startActivity(mIntentSafeCode);
+
                     } else {
                         Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "绑定支付宝账号，一经绑定不能修改，是否继续？", "绑定", "取消",
                                 new DialogInterface.OnClickListener() {
@@ -822,7 +840,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mClientApi.getAuthorizationParameters(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-//                ToastUtils.exceptionToast(e, getContext());
+                ToastUtils.exceptionToast(e, getContext());
                 //test
 //                String authorizationParameters= "";
 //                authV2(authorizationParameters);
@@ -866,7 +884,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 if (response!=null){
                     //绑定直接跳转到提现页面
 //                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
+                    //直接跳转我的兑换券页面
 //                    startActivity(mIntentSafeCode);
+                    //去掉安全码验证
                     createSafeCodeDialog();
                     //取消对话框
 //                mBindingAlipayDialog.dismiss();
@@ -951,74 +971,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
     /**
-     * @param parent
-     * @param view
-     * @param position
-     * @param id       处理条目点击事件
-     */
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                // 我的订单
-                jump(MyOrderActivity.class, false);
-                break;
-            case 1:
-                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
-                //携带数据接口
-                phIntent.putExtra("title", "历史购买");
-                startActivity(phIntent);
-                break;
-            case 2:
-                //Toast.makeText(getActivity(), "收货地址", Toast.LENGTH_SHORT).show();
-
-                jump(AddressManagerNewActivity.class, false);
-                break;
-            case 3:
-                //Toast.makeText(getActivity(), "邀请好友", Toast.LENGTH_SHORT).show();
-//                jump(MobileContactActivity.class,false);
-                jump(InviteActivity.class, false);
-                break;
-            case 4:
-                // Toast.makeText(getActivity(), "关于我们", Toast.LENGTH_SHORT).show();
-                jump(AboutIUUActivity.class, false);
-                break;
-            case 5:
-                //Toast.makeText(getActivity(), "意见反馈", Toast.LENGTH_SHORT).show();
-//                jump(MineCustomerServiceActivity.class, false);
-                jump(MineCustomerServiceSuggestionActivity.class, false);
-                break;
-            case 6:
-                //Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
-                jump(SettingsActivity.class, false);
-
-                break;
-//            case 7:
-//                // Toast.makeText(getActivity(), "绑定微信", Toast.LENGTH_SHORT).show();
-//                if (isLogin){
-//                    //微信第三方登录，登录成功绑定手机号
-//
-//
-//                }else {
-//                    //直接跳转提示去登录
-//                    bindPhone();
-//                }
-//                break;
-//            case 8:
-//                if (isLogin){
-//                    //QQ第三方登录，登录成功绑定手机号
-//
-//
-//                }else {
-//                    bindPhone();
-//                }
-//                // Toast.makeText(getActivity(), "绑定QQ", Toast.LENGTH_SHORT).show();
-//                break;
-        }
-    }
-
-    /**
      * 绑定微信
      * 绑定qq
      * （绑定手机号）
@@ -1048,6 +1000,22 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //设置安全码找回邮箱布局
     private LinearLayout mLLSetEmail;
 
+
+    //不允许输入空格
+    private InputFilter etInputFilter=new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+        //返回null表示接收输入的字符,返回空字符串表示不接受输入的字符
+
+            if(source.equals(" "))return "";      else return null;   }
+    };
+
+    /**
+     *
+     * 生成安全码对话框
+     *
+     */
     private void createSafeCodeDialog() {
         if (mSafeCodeDialog != null) {
             mSafeCodeDialog.dismiss();
@@ -1058,6 +1026,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         View view = mSafeCodeDialog.getCustomView();
         mSafeCodeDialog.setCancelable(false);
+        //设置显示动画
+//        mSafeCodeDialog.getWindow().setWindowAnimations(R.style.Dialog_Anim_Style_Up_Down);
 
         etSateCodeInput = (EditText) view.findViewById(R.id.et_safe_code_input);
         etSateCodeMakeSure = (EditText) view.findViewById(R.id.et_safe_code_input_makesure);
@@ -1069,6 +1039,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mLLSetEmail = ((LinearLayout) view.findViewById(R.id.ll_safe_code_email));
         mEtEmail = ((EditText) view.findViewById(R.id.et_safe_code_input_email));
 
+        //设置不允许输入空格
+        etSateCodeInput.setFilters(new InputFilter[]{etInputFilter});
+
+
 
         //添加输入字符上限判断
         etSateCodeInput.addTextChangedListener(new TextWatcher() {
@@ -1079,7 +1053,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String safeCode = s.toString().trim();
+                String safeCode = s.toString();
                 int inPutLength = safeCode.length();
                 if (inPutLength > mSafeCodeMaxLimit) {
                     Toast.makeText(getContext(), "安全码不超过" + mSafeCodeMaxLimit + "位", Toast.LENGTH_SHORT).show();
@@ -1087,7 +1061,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     etSateCodeInput.setSelection(mSafeCodeMaxLimit);
                     return;
                 }
-
             }
 
             @Override
@@ -1098,9 +1071,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
         // 设置按钮监听
-        ivSateCodeClose.setOnClickListener(onClickListener);
-        tvSateCodeSubmit.setOnClickListener(onClickListener);
-        tvSateCodeForget.setOnClickListener(onClickListener);
+        ivSateCodeClose.setOnClickListener(this);
+        tvSateCodeSubmit.setOnClickListener(this);
+        tvSateCodeForget.setOnClickListener(this);
 //        ivSateCodeClose.setOnClickListener(this);
 //        tvSateCodeSubmit.setOnClickListener(this);
 //        tvSateCodeForget.setOnClickListener(this);
@@ -1109,7 +1082,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         //判断存不存在安全码进行页面显示变化
         if (mIsHaveSafeCode) {
             //安全码验证将输入类型改为密码
-            etSateCodeInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            //方法一： 会引起EditText中android:digits失效问题
+//            etSateCodeInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+            etSateCodeInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
             etSateCodeInput.setText("");
             tvSateCodeMode.setText("输入安全码");
             tvSateCodeMode.setGravity(Gravity.CENTER);
@@ -1139,216 +1116,72 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mSafeCodeDialog.show();
     }
 
-    @Override
-    public void widgetClick(View v) {
-        super.widgetClick(v);
-        switch (v.getId()) {
-            //提交安全码，判断是否已经有安全码分别调用两个接口
-            //有：验证
-            case R.id.tv_safe_code_submit:
-                //处理安全码
-                submitSafeCode();
-                break;
-            //跳转到忘记密码处理, popWin
-            case R.id.tv_safe_code_forget:
-                dialogDismiss(mSafeCodeDialog);
-                createFindSafeCodeDialog();
-                break;
-            //关闭安全码验证的窗口
-            case R.id.iv_safe_code_close:
-                dialogDismiss(mSafeCodeDialog);
-                break;
-
-            //忘记密码页面，验证邮箱提交
-            case R.id.tv_safe_code_forget_submit:
-                emailValidate();
-                break;
-
-            //忘记你密码页面联系客服
-            case R.id.tv_safe_code_forget_callcentre:
-                //拨打客服电话
-                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
-                //Test
-                dialogDismiss(mFindSafeCodeDialog);
-                break;
-            //关闭找回安全码的窗口
-            case R.id.iv_safe_code_forget_close:
-                dialogDismiss(mFindSafeCodeDialog);
-                break;
-            //关闭邮箱验证成功的窗口
-            case R.id.iv_email_send_succeed:
-                dialogDismiss(mEmailSendSucceedDialog);
-                break;
-            //////////////////////////////////个人中心重复点击/////////////////////////
-
-            case R.id.bt_mine_login: // 登录
-                jump(LoginActivity.class, false);
-
-                break;
-            case R.id.rl_mine_integral: // 积分
-                mClassJump = MineMemberCenterIntegralPayActivity.class;
-//                Toast.makeText(getActivity(), "积分", Toast.LENGTH_SHORT).show();
-                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
-                mIntentSafeCode.putExtra("mIntegral", mIntegral);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
-                if (isLogin) {
-//                    showSafeCodePopWin();
-                    createSafeCodeDialog();
-                } else {
-                    startActivity(mIntentSafeCode);
-                }
-//                startActivity(intentMIntegral);
-                break;
-            case R.id.rl_mine_goldcoin: // UU
-                mClassJump = MineMemberCenterActivity.class;
-//                Toast.makeText(getActivity(), "UU", Toast.LENGTH_SHORT).show();
-                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
-                mIntentSafeCode.putExtra("coin", mCoin);
-                mIntentSafeCode.putExtra("integral", mIntegral);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
-                mIntentSafeCode.putExtra("member_type", mMember_type);
-                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
-                mIntentSafeCode.putExtra("openId", mOpenId);
-                mIntentSafeCode.putExtra("safeCode", mSafeCode);
-
-                if (isLogin) {
-//                    showSafeCodePopWin();
-                    createSafeCodeDialog();
-                } else {
-                    startActivity(mIntentSafeCode);
-                }
-//                startActivity(intentMCoin);
-
-                break;
-            case R.id.rl_mine_withdraw: //提现
-                //没登录去登录页
-                if (!isLogin){
-                    mIntentSafeCode=new Intent(getActivity(),LoginActivity.class);
-                    startActivity(mIntentSafeCode);
-                    return;
-                }
-                //已经登录做登录处理
-                mIntentSafeCode = new Intent(getActivity(), WithdrawActivity.class);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
-                mIntentSafeCode.putExtra("safeCode", mSafeCode);
-                mIntentSafeCode.putExtra("coin", mCoin);
-                mIntentSafeCode.putExtra("member_type", mMember_type);
-                mIntentSafeCode.putExtra("isInTestUser", isInTestUser);
-                mIntentSafeCode.putExtra("isVip", isVip);
-                mClassJump = WithdrawActivity.class;
-                /**
-                 * 根据mOpenId判断是否绑定微信
-                 * 没绑定弹框提示绑定
-                 * 绑定直接跳转
-                 */
-                //已经绑定的
-                //test
-//                mOpenId=null;
-//                isLogin=false;
-                //没设置安全码
-                if (TextUtils.isEmpty(mSafeCode)) {
-                    createSafeCodeDialog();
-                    //设置安全码
-                } else {
-//                    //绑定微信
-//                    if (!TextUtils.isEmpty(mOpenId)) {
-//                        //登录
-//                        if (isLogin) {
-//                            createSafeCodeDialog();
-//                            //没登录
-//                        } else {
-//                            startActivity(mIntentSafeCode);
-//                        }
-//                    } else {
-//                        //没绑定微信的，显示弹出框
-//                        showBindingWeChatDialog();
-//                    }
-                    getIfBindingAlipay();
-                }
 
 
-                //////////////////////////////////处理微信授权/////////////////////////
-
-
-                break;
-
-            case R.id.rl_mine_head_login: //带值跳转到安全码页面，然后再修改信息页面
-                updateMineUserMessage();
-                break;
-            case R.id.iv_mine_head: //带值跳转到安全码页面，然后再修改信息页面
-                updateMineUserMessage();
-                break;
-
-            case R.id.ll_mine_supply_the_phone: //拨打供货电话
-//                ToastUtils.showShort("拨打供货电话");
-//                callCustomerServerPhone();
-                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
-                break;
-            case R.id.ll_mine_service_the_phone: //拨打供货电话
-//                ToastUtils.showShort("拨打供货电话");
-//                callCustomerServerPhone();
-                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
-                break;
-
-
-        }
-
-    }
 
     /**
-     * 对话框的点击事件
+     *
+     *
+     * 验证安全码处理，对话框的点击事件
+     *
+     *
+     *
+     *
      */
 
-    private OnNoDoubleClickListener onClickListener = new OnNoDoubleClickListener() {
-        @Override
-        public void onNoDoubleClick(View view) {
-            switch (view.getId()) {
-                //提交安全码，判断是否已经有安全码分别调用两个接口
-                //有：验证
-                case R.id.tv_safe_code_submit:
-                    //处理安全码
-                    submitSafeCode();
-                    break;
-                //跳转到忘记密码处理, popWin
-                case R.id.tv_safe_code_forget:
-                    dialogDismiss(mSafeCodeDialog);
-                    createFindSafeCodeDialog();
-                    break;
-                //关闭安全码验证的窗口
-                case R.id.iv_safe_code_close:
-                    dialogDismiss(mSafeCodeDialog);
-                    break;
-
-                //忘记密码页面，验证邮箱提交
-                case R.id.tv_safe_code_forget_submit:
-                    emailValidate();
-                    break;
-
-                //忘记你密码页面联系客服
-                case R.id.tv_safe_code_forget_callcentre:
-                    //拨打客服电话
-                    DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
-                    //Test
-                    dialogDismiss(mFindSafeCodeDialog);
-                    break;
-                //关闭邮箱验证的窗口
-                case R.id.iv_safe_code_forget_close:
-                    dialogDismiss(mFindSafeCodeDialog);
-                    break;
-                //关闭邮箱验证成功的窗口
-                case R.id.iv_email_send_succeed:
-                    dialogDismiss(mEmailSendSucceedDialog);
-                    break;
-
-
-            }
-
-        }
-    };
+//    private OnNoDoubleClickListener onClickListener = new OnNoDoubleClickListener() {
+//        @Override
+//        public void onNoDoubleClick(View view) {
+//            switch (view.getId()) {
+//                //提交安全码，判断是否已经有安全码分别调用两个接口
+//                //有：验证
+//                case R.id.tv_safe_code_submit:
+//                    //处理安全码
+//                    submitSafeCode();
+//                    break;
+//                //跳转到忘记密码处理, popWin
+//                case R.id.tv_safe_code_forget:
+//                    dialogDismiss(mSafeCodeDialog);
+//                    createFindSafeCodeDialog();
+//                    break;
+//                //关闭安全码验证的窗口
+//                case R.id.iv_safe_code_close:
+//                    dialogDismiss(mSafeCodeDialog);
+//                    break;
+//
+//                //忘记密码页面，验证邮箱提交
+//                case R.id.tv_safe_code_forget_submit:
+//                    emailValidate();
+//                    break;
+//
+//                //忘记你密码页面联系客服
+//                case R.id.tv_safe_code_forget_callcentre:
+//                    //拨打客服电话
+//                    DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+//                    //Test
+//                    dialogDismiss(mFindSafeCodeDialog);
+//                    break;
+//                //关闭邮箱验证的窗口
+//                case R.id.iv_safe_code_forget_close:
+//                    dialogDismiss(mFindSafeCodeDialog);
+//                    break;
+//                //关闭邮箱验证成功的窗口
+//                case R.id.iv_email_send_succeed:
+//                    dialogDismiss(mEmailSendSucceedDialog);
+//                    break;
+//            }
+//
+//        }
+//    };
 
 
     /**
-     * 验证邮箱
+     *
+     *
+     * 验证邮箱提交
+     *
+     *
+     *
      */
     private void emailValidate() {
         String emailReset = etSateCodeReGetEmailInput.getText().toString().trim();
@@ -1399,7 +1232,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //提交成功条状到   mClassJump  类
         //没有：添加
-        String safeCode = etSateCodeInput.getText().toString().trim();
+        String safeCode = etSateCodeInput.getText().toString();
         int minLeght = safeCode.length();
         if (minLeght < mSafeCodeMinLimit) {
             Toast.makeText(getContext(), "安全密码不能少于8位数", Toast.LENGTH_SHORT).show();
@@ -1428,7 +1261,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //情况一：邮箱未设置
             if (!isHaveEmail) {
                 String email = mEtEmail.getText().toString().trim();
-                if (!(!TextUtils.isEmpty(email) && email.contains("@") && email.length() > 1)) {
+                if (!(!TextUtils.isEmpty(email)  && email.length() > 1&& ValidatorsUtils.isEmail(email))) {
                     Toast.makeText(getContext(), "请输入正确的邮箱", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -1480,7 +1313,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     /**
+     *
+     *
      * 创建邮箱验证的对话框
+     *
+     *
      */
 
     //邮箱输入
@@ -1531,11 +1368,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         });
 
 //        // 设置按钮监听确定
-        tvSateCodeFindSubmit.setOnClickListener(onClickListener);
+        tvSateCodeFindSubmit.setOnClickListener(this);
         //联系客服
-        tvSateCodeCallCentre.setOnClickListener(onClickListener);
+        tvSateCodeCallCentre.setOnClickListener(this);
         //关闭窗体
-        ivSateCodeFindClose.setOnClickListener(onClickListener);
+        ivSateCodeFindClose.setOnClickListener(this);
         // 设置按钮监听确定
 //        tvSateCodeFindSubmit.setOnClickListener(this);
 //        //联系客服
@@ -1564,7 +1401,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     ///////////////////////////邮箱验证成功的对话框//////////////////////////////////////////////////
 
     /**
+     *
+     *
      * 创建邮箱验证成功的对话框
+     *
+     *
+     *
      */
 
     private ImageView ivEmailSendSucceedClose;
@@ -1580,7 +1422,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mEmailSendSucceedDialog.setCancelable(false);
 
         ivEmailSendSucceedClose = ((ImageView) view.findViewById(R.id.iv_email_send_succeed));
-        ivEmailSendSucceedClose.setOnClickListener(onClickListener);
+        ivEmailSendSucceedClose.setOnClickListener(this);
 //        ivEmailSendSucceedClose.setOnClickListener(this);
 
         mEmailSendSucceedDialog.show();
@@ -1634,9 +1476,231 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dialog.show();
     }
 
+
+
+    ////////////////////////////点击事件处理////////////////////////////
+    /**
+     *
+     *
+     *
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id       处理条目点击事件
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        dismissLoadingDialog();
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0:
+                // 我的订单
+                jump(MyOrderActivity.class, false);
+                break;
+            case 1:
+                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
+                //携带数据接口
+                phIntent.putExtra("title", "历史购买");
+                startActivity(phIntent);
+                break;
+            case 2:
+                //Toast.makeText(getActivity(), "收货地址", Toast.LENGTH_SHORT).show();
+
+                jump(AddressManagerNewActivity.class, false);
+                break;
+            case 3:
+                //Toast.makeText(getActivity(), "邀请好友", Toast.LENGTH_SHORT).show();
+//                jump(MobileContactActivity.class,false);
+                jump(InviteActivity.class, false);
+                break;
+            case 4:
+                // Toast.makeText(getActivity(), "关于我们", Toast.LENGTH_SHORT).show();
+                jump(AboutIUUActivity.class, false);
+                break;
+            case 5:
+                //Toast.makeText(getActivity(), "意见反馈", Toast.LENGTH_SHORT).show();
+//                jump(MineCustomerServiceActivity.class, false);
+                jump(MineCustomerServiceSuggestionActivity.class, false);
+                break;
+            case 6:
+                //Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
+                jump(SettingsActivity.class, false);
+
+                break;
+            //test
+//            case 7:
+//                //test，跳转我的兑换券
+//                jump(MyExchangeActivity.class,false);
+//                break;
+
+//            case 8:
+//                if (isLogin){
+//                    //QQ第三方登录，登录成功绑定手机号
+//
+//
+//                }else {
+//                    bindPhone();
+//                }
+//                // Toast.makeText(getActivity(), "绑定QQ", Toast.LENGTH_SHORT).show();
+//                break;
+        }
+    }
+
+
+
+    /**
+     *
+     *
+     *
+     *
+     * 点击事件处理
+     * @param v
+     *
+     *
+     *
+     *
+     *
+     */
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        switch (v.getId()) {
+            //提交安全码，判断是否已经有安全码分别调用两个接口
+            //有：验证
+            case R.id.tv_safe_code_submit:
+                //处理安全码
+                submitSafeCode();
+                break;
+            //跳转到忘记密码处理, popWin
+            case R.id.tv_safe_code_forget:
+                dialogDismiss(mSafeCodeDialog);
+                createFindSafeCodeDialog();
+                break;
+            //关闭安全码验证的窗口
+            case R.id.iv_safe_code_close:
+                dialogDismiss(mSafeCodeDialog);
+                break;
+
+            //忘记密码页面，验证邮箱提交
+            case R.id.tv_safe_code_forget_submit:
+                emailValidate();
+                break;
+
+            //忘记你密码页面联系客服
+            case R.id.tv_safe_code_forget_callcentre:
+                //拨打客服电话
+                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                //Test
+                dialogDismiss(mFindSafeCodeDialog);
+                break;
+            //关闭邮箱验证的窗口
+            case R.id.iv_safe_code_forget_close:
+                dialogDismiss(mFindSafeCodeDialog);
+                break;
+            //关闭邮箱验证成功的窗口
+            case R.id.iv_email_send_succeed:
+                dialogDismiss(mEmailSendSucceedDialog);
+                break;
+
+
+            ///////////////////////////个人中心重复点击// ////////////////////////////////////////////////////////
+
+            case R.id.bt_mine_login: // 登录
+                jump(LoginActivity.class, false);
+
+                break;
+            case R.id.rl_mine_integral: // 积分
+                mClassJump = MineMemberCenterIntegralPayActivity.class;
+//                Toast.makeText(getActivity(), "积分", Toast.LENGTH_SHORT).show();
+                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
+                mIntentSafeCode.putExtra("mIntegral", mIntegral);
+                mIntentSafeCode.putExtra("isLogin", isLogin);
+
+                if (isLogin) {
+                    //进入不验证安全码
+//                    createSafeCodeDialog();
+                } else {
+//                    startActivity(mIntentSafeCode);
+                }
+
+                startActivity(mIntentSafeCode);
+                break;
+            case R.id.rl_mine_goldcoin: // UU
+                mClassJump = MineMemberCenterActivity.class;
+//                Toast.makeText(getActivity(), "UU", Toast.LENGTH_SHORT).show();
+                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
+
+
+                if (isLogin) {
+                    //进入的时候不验证安全码
+                    createSafeCodeDialog();
+                } else {
+                    startActivity(mIntentSafeCode);
+                }
+                //不用验证安全码直接跳转
+//               startActivity(mIntentSafeCode);
+
+                break;
+
+            case R.id.rl_mine_withdraw: //我的兑换券页面
+//                ToastUtils.showShort("我的兑换券被点击");
+                //没登录去登录页
+                if (!isLogin){
+                    mIntentSafeCode=new Intent(getActivity(),LoginActivity.class);
+                    startActivity(mIntentSafeCode);
+                    return;
+                }
+
+                //已经登录做登录处理
+                mIntentSafeCode = new Intent(getActivity(), MyExchangeActivity.class);
+
+                mClassJump = MyExchangeActivity.class;
+                /**
+                 * 根据mOpenId判断是否绑定微信
+                 * 没绑定弹框提示绑定
+                 * 绑定直接跳转
+                 */
+                //已经绑定的
+                //test
+//                mOpenId=null;
+//                isLogin=false;
+                //没有安全码设置安全码
+                if (TextUtils.isEmpty(mSafeCode)) {
+                    createSafeCodeDialog();
+                } else {
+                //绑定支付宝
+                    getIfBindingAlipay();
+                }
+//                getIfBindingAlipay();
+
+                break;
+
+            case R.id.rl_mine_head_login: //带值跳转到安全码页面，然后再修改信息页面
+                updateMineUserMessage();
+                break;
+            case R.id.iv_mine_head: //带值跳转到安全码页面，然后再修改信息页面
+                updateMineUserMessage();
+                break;
+
+            case R.id.ll_mine_supply_the_phone: //拨打供货电话
+//                ToastUtils.showShort("拨打供货电话");
+//                callCustomerServerPhone();
+                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
+                break;
+            case R.id.ll_mine_service_the_phone: //拨打供货电话
+//                ToastUtils.showShort("拨打供货电话");
+//                callCustomerServerPhone();
+                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                break;
+
+
+        }
+
     }
 }

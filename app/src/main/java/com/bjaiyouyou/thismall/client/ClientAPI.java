@@ -3,11 +3,9 @@ package com.bjaiyouyou.thismall.client;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
+import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.task.TaskCallback;
 import com.bjaiyouyou.thismall.task.TaskResult;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -38,59 +36,59 @@ public class ClientAPI {
     public static final String TAG = ClientAPI.class.getSimpleName();
 
     //*****************************************************************************
-    public static final String API_POINT = "http://testapi2.bjaiyouyou.com/";
+//    public static final String API_POINT = "https://testapi2.bjaiyouyou.com/";
 //    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
-//    public static final String API_POINT = "http://api.bjaiyouyou.com/";
+    public static final String API_POINT = "https://api.bjaiyouyou.com/";
 
     // 任务页视频播放地址
-//    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";
-    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
+    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";
+//    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
 
     //*****************************************************************************
 
     private ClientAPI() {
     }
 
-    /**
-     * 获取首页物品数据
-     *
-     * @param stage_id
-     * @param page
-     * @param limit
-     * @param callback
-     */
-    public static void getHomeGoodData(int stage_id, int page, int limit, final TaskCallback callback) {
-        StringBuilder sb = new StringBuilder(API_POINT);
-        sb.append("cf/dish_list.php?")
-                .append("stage_id=").append(stage_id)
-                .append("&page=").append(page)
-                .append("&limit=").append(limit);
-
-        String url = sb.toString();
-
-        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                TaskResult result = new TaskResult();
-                if (!TextUtils.isEmpty(response)) {
-                    //请求成功
-                    result.mCode = Constants.TASK_CODE_OK;
-                    result.mData = response;
-                } else {
-                    // 数据为空
-                    result.mCode = Constants.TASK_CODE_NO_DATA;
-                }
-
-                callback.onTaskFinished(result);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-
-        RequestManager.addRequest(request, null);
-    }
+//    /**
+//     * 获取首页物品数据
+//     *
+//     * @param stage_id
+//     * @param page
+//     * @param limit
+//     * @param callback
+//     */
+//    public static void getHomeGoodData(int stage_id, int page, int limit, final TaskCallback callback) {
+//        StringBuilder sb = new StringBuilder(API_POINT);
+//        sb.append("cf/dish_list.php?")
+//                .append("stage_id=").append(stage_id)
+//                .append("&page=").append(page)
+//                .append("&limit=").append(limit);
+//
+//        String url = sb.toString();
+//
+//        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                TaskResult result = new TaskResult();
+//                if (!TextUtils.isEmpty(response)) {
+//                    //请求成功
+//                    result.mCode = Constants.TASK_CODE_OK;
+//                    result.mData = response;
+//                } else {
+//                    // 数据为空
+//                    result.mCode = Constants.TASK_CODE_NO_DATA;
+//                }
+//
+//                callback.onTaskFinished(result);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//            }
+//        });
+//
+//        RequestManager.addRequest(request, null);
+//    }
 
     /**
      * 抢购的数据获取
@@ -634,6 +632,29 @@ public class ClientAPI {
                 .execute(callback);
 
     }
+    /**
+     * 充值
+     *
+     * @param token
+     * @param callback
+     */
+
+    public static void postRechargePay(String token, int money, StringCallback callback) {
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/recharge/balance");
+        sb.append("?token=");
+        sb.append(token);
+        sb.append("&amount=");
+        sb.append(money);
+
+        String url = sb.toString();
+        LogUtils.e("postLogin--", url);
+        OkHttpUtils.post()
+                .url(url)
+                .build()
+                .execute(callback);
+
+    }
 
 
     /**
@@ -745,7 +766,8 @@ public class ClientAPI {
     }
 
     /**
-     * 获取退款信息
+     * 获取提现信息
+     * @param callback
      */
     public static void getWithdraw( StringCallback callback) {
 
@@ -764,12 +786,11 @@ public class ClientAPI {
     /**
      * 提现
      */
-    public static void withdraw(String token, String openID, int amount, String userName, String safeCode, StringCallback callback) {
-
+    public static void withdraw(String token,  double amount, String userName, String safeCode, DataCallback callback) {
         StringBuilder sb = new StringBuilder(API_POINT);
         sb.append("api/v1/transfer");
         sb.append("?token=").append(token);
-        sb.append("&open_id=").append(openID);
+//        sb.append("&open_id=").append(openID);
         sb.append("&amount=").append(amount);
         sb.append("&user_name=").append(userName);
         sb.append("&security_code=").append(safeCode);

@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.ActivityCollector;
-import com.bjaiyouyou.thismall.client.RequestManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
@@ -32,15 +31,14 @@ import com.zhy.http.okhttp.OkHttpUtils;
  *
  */
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
-    /** 是否禁止旋转屏幕 **/
-    private boolean isAllowScreenRotate = false;
-    /** 日志输出标志 **/
+
     public final String TAG = this.getClass().getSimpleName();
+
+    // 是否禁止旋转屏幕
+    private boolean isAllowScreenRotate = false;
     // 加载中dialog
     public LoadingDialog loadingDialog;
     private int loadingCount = 0;
-    private long lastClick = 0;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +49,34 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         loadingDialog = LoadingDialog.getInstance(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public void onDestroy() {
+//        RequestManager.cancelAll(this);
+        LogUtils.d(TAG, "-->" + this);
+        OkHttpUtils.getInstance().cancelTag(this);
+        ActivityCollector.removeActivity(this);
+
+        // 销毁前dismissLoadingDialog
+        if (loadingCount >= 1) {
+            loadingCount = 1;
+            dismissLoadingDialog();
+        }
+
+        super.onDestroy();
     }
 
     /**
@@ -110,34 +136,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        RequestManager.cancelAll(this);
-        LogUtils.d(TAG, "-->" + this);
-        OkHttpUtils.getInstance().cancelTag(this);
-        ActivityCollector.removeActivity(this);
-
-        // 销毁前dismissLoadingDialog
-        if (loadingCount >= 1) {
-            loadingCount = 1;
-            dismissLoadingDialog();
-        }
-
-        super.onDestroy();
-    }
-
     /**
      * [是否允许屏幕旋转]
      *
@@ -155,14 +153,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
-        // 返回键也失效了
-        // 一些页面可能没法点进去
-//        if (v.getId() != R.id.left_layout && !NetStateUtils.isNetworkAvailable(this)){
-//            ToastUtils.showShort("网络不可用");
-//            return;
-//        }
-
         if (!Utility.isFastDoubleClick()) {
             widgetClick(v);
         }
@@ -213,18 +203,4 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-//    /**
-//     * [防止快速点击]
-//     *
-//     * @return
-//     */
-//    private boolean fastClick() {
-//        long currentTime = System.currentTimeMillis();
-//        if (currentTime - lastClick <= 1000) {
-//            return true;
-//        }
-//        lastClick = currentTime;
-//        return false;
-//    }
 }

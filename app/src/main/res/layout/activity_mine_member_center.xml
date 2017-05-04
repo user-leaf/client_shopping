@@ -138,22 +138,49 @@
                     />
 
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:padding="10dp"
+                    android:gravity="center_vertical"
                     >
                     <TextView
                         android:id="@+id/member_center_tv1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
-                        android:visibility="gone"
+                        android:visibility="invisible"
                         android:text="定额充值"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="17dp"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        android:text="积分优先兑换"
+                        />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/list_icon_integral_type"
+                        />
+                    <TextView
+                        android:id="@+id/tv_member_center_integral_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="17dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#dc9600"
+                        android:textSize="15sp"
+                        android:text="0"
+                        />
 
                     <com.kyleduo.switchbutton.SwitchButton
                         android:id="@+id/member_center_sb"
@@ -172,18 +199,8 @@
                         app:kswThumbMarginTop="-2.5dp"
 
                         android:checked="true"
-
                         />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@id/member_center_sb"
-                        android:text="积分优先兑换"
-                        />
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/entry_divider_fine_line_style"/>

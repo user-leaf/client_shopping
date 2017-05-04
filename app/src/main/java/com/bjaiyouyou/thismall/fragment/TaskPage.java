@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -94,6 +96,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
     private Api4Task mApi4Task;
     private Api4Mine mApi4Mine;
+    private FrameLayout mFrameLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,6 +159,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
     private void initView() {
         mList = new ArrayList<>();
+        mFrameLayout = (FrameLayout) layout.findViewById(R.id.task_fl);
         mScrollView = (PullToRefreshScrollView) layout.findViewById(R.id.task_scrollview);
         mGridView = (NoScrollGridView) layout.findViewById(R.id.task_gridview);
         mTvLogin = layout.findViewById(R.id.task_tv_login);
@@ -166,13 +170,22 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         mTvVipTip = (TextView) layout.findViewById(R.id.task_tv_vip_tip);
         mVipSyncView = layout.findViewById(R.id.task_ll_sync);
         mIvVipSync = (ImageView) layout.findViewById(R.id.task_iv_sync);
-        mTvVipSyncShow = (TextView) layout.findViewById(R.id.task_tv_sync_show);
         mTvVipRecharge = (TextView) layout.findViewById(R.id.task_tv_recharge);
 
         mTvNoNet = (TextView) layout.findViewById(R.id.net_fail);
         mSigninNologinView = layout.findViewById(R.id.task_rl_no_login);
         mSigninHasLoginView = layout.findViewById(R.id.task_fl_has_login);
 
+//        mTvVipSyncShow = (TextView) layout.findViewById(R.id.task_tv_sync_show);
+        // 同步积分文字
+        mTvVipSyncShow = new TextView(getContext());
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        mTvVipSyncShow.setLayoutParams(layoutParams);
+        mTvVipSyncShow.setTextColor(getResources().getColor(R.color.app_red));
+        mTvVipSyncShow.setTextSize(35);
+        mTvVipSyncShow.setVisibility(View.GONE);
+        mFrameLayout.addView(mTvVipSyncShow);
     }
 
     private void setupView() {
@@ -270,10 +283,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                     .append("&type=android");
             String strVideoH5Url = stringBuilder.toString();
 
-            intent.putExtra(
-                    WebShowActivity.PARAM_URLPATH,
-                    strVideoH5Url);
-            getActivity().startActivity(intent);
+            WebShowActivity.actionStart(getContext(), strVideoH5Url, "广告");
         }
 
     }
@@ -466,7 +476,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                                     return;
                                 }
 
-                                new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)}, getContext(), AlertView.Style.ActionSheet, TaskPage.this).show();
+                                new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay)}, getContext(), AlertView.Style.ActionSheet, TaskPage.this).show();
 
                             }
                         })

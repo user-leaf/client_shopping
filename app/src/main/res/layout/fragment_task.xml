@@ -13,7 +13,7 @@
 
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
-    <View
+    <Space
         style="@style/entry_divider_fine_line_style"
         />
 
@@ -28,12 +28,12 @@
         android:visibility="gone"
         />
 
-
-    <View
+    <Space
         style="@style/entry_divider_fine_line_style"
         />
 
     <FrameLayout
+        android:id="@+id/task_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -96,12 +96,12 @@
                 <FrameLayout
                     android:id="@+id/task_fl_has_login"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp">
+                    android:layout_height="wrap_content"
+                    >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#ffffff"
                         android:paddingBottom="15dp"
                         android:paddingLeft="10dp"
                         >
@@ -215,7 +215,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@color/white"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     >
@@ -236,7 +235,6 @@
                     android:id="@+id/task_tv_vip_tip"
                     android:layout_width="match_parent"
                     android:layout_height="66dp"
-                    android:background="@color/white"
                     android:drawableLeft="@mipmap/list_icon_member_litle"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
@@ -514,15 +512,5 @@
             </LinearLayout>
         </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 
-        <TextView
-            android:id="@+id/task_tv_sync_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="+5万积分"
-            android:textColor="@color/app_red"
-            android:textSize="35sp"
-            android:visibility="gone"
-            />
     </FrameLayout>
 </LinearLayout>

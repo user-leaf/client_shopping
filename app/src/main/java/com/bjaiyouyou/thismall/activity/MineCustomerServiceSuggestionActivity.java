@@ -95,6 +95,8 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     //意见反馈的容器
     private FlowRadioGroup mRadioGroup;
     private List<RadioButton> mRadioButtons;
+    //重新获取数据
+    private TextView mTvGetAgain;
 
 
     @Override
@@ -107,6 +109,7 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
         setupView();
         loadData();
         initCtrl();
+        checkNet();
     }
 
     private void initView() {
@@ -124,12 +127,15 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
         mRLNotLogin = ((RelativeLayout) findViewById(R.id.ll_not_login));
         mTVGoToLogin = ((TextView) findViewById(R.id.tv_goto_login));
         mLLUnNetWork = ((LinearLayout) findViewById(R.id.ll_unnetwork));
+        mTvGetAgain = ((TextView) findViewById(R.id.tv_get_data_again));
         mLLLogin = ((LinearLayout) findViewById(R.id.ll_mine_customer_service_login));
 
     }
 
     private void setupView() {
         mTVGoToLogin.setOnClickListener(this);
+
+        mTvGetAgain.setOnClickListener(this);
 
         mTitleBar.setLeftLayoutClickListener(this);
         mFlowLayout.setOnTagClickListener(this);
@@ -255,6 +261,12 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
             case R.id.tv_goto_login: // 去登陆
                 jump(LoginActivity.class, false);
                 break;
+            case R.id.tv_get_data_again: // 重新进行网络加载
+                checkNet();
+
+                break;
+            default:
+                return;
 
         }
     }
@@ -270,11 +282,8 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
         ClientAPI.postSubmitOpinion(mType, content, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
-                    UNNetWorkUtils.isNetHaveConnect(getApplicationContext(), mRLNotLogin, mLLLogin, mLLUnNetWork);
-//                        ToastUtils.showShort("当前网络不可用，请检查网络设置");
-                }
-                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                checkNet();
+//                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
 
             @Override
@@ -366,6 +375,20 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
 //            finish();
         } else if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
             DialUtils.callCentre(this, DialUtils.CENTER_NUM);
+        }
+    }
+
+    /**
+     * 网络检查
+     */
+    public void checkNet(){
+        if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
+            UNNetWorkUtils.isNetHaveConnect(getApplicationContext(), mRLNotLogin, mLLLogin, mLLUnNetWork);
+            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+        }else {
+            mRLNotLogin.setVisibility(View.GONE);
+            mLLUnNetWork.setVisibility(View.GONE);
+            mLLLogin.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -19,13 +19,16 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.OrderDetailAdapter;
 import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.ClientAPI;
+import com.bjaiyouyou.thismall.fragment.PayDetailFragment;
 import com.bjaiyouyou.thismall.model.AddAlltoCartNew;
 import com.bjaiyouyou.thismall.model.ExpressDetailModel;
 import com.bjaiyouyou.thismall.model.OrderDetailModel;
+import com.bjaiyouyou.thismall.model.PayResultEvent;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.PayUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
@@ -34,6 +37,9 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +64,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     public static final String PARAM_ORDER_NUMBER = "orderNumber";
 
     private IUUTitleBar mTitleBar;
+
+    private double mAllAmount;  // 订单总额
 
     // 订单状态
     private TextView mTvOrderStatus;
@@ -109,28 +117,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     private TextView mTvCompleteOrderDelete;    // 已完成分组中的订单删除按钮
     private TextView mTvCompleteRefundDetail;   // 已完成分组中的退款详情按钮
 
-//    /**
-//     * 时间，倒计时
-//     */
-//    private static long currentMillis = 0;
-//    private static int hour = -1;
-//    private static int minute = -1;
-//    private static int second = -1;
-//    private TextView timeView;
-//    private Timer timer;
-//    private TimerTask timerTask;
-//    private Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
-//
-//            // 弃用
-//            // http://www.cnblogs.com/dyllove98/archive/2013/06/25/3155614.html
-////            showTimeWithHour();
-////            showTimeWithoutHour();
-//
-//            showTime();
-//        }
-//    };
-
     private String mOrderNumber;    // 订单编号
     private TextView mTvPostage;    // 运费
     private TextView mTvUU;         // 本次消费可获得UU
@@ -167,6 +153,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
 
+        EventBus.getDefault().register(this);
+
         initVariables();
         initView();
         setupView();
@@ -178,17 +166,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onDestroy() {
-//        if (timer != null) {
-//            timer.cancel();
-//            timer = null;
-//        }
-//        if (timerTask != null) {
-//            timerTask = null;
-//        }
-//        hour = -1;
-//        minute = -1;
-//        second = -1;
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -282,14 +261,10 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void loadData() {
 
-//        // 订单失效时间
-//        hour = 3;
-//        minute = 0;
-//        second = 0;
-
         showLoadingDialog();
 
         ClientAPI.getOrderDetail(TAG, mOrderNumber, new StringCallback() {
+
             @Override
             public void onError(Call call, Exception e, int id) {
                 dismissLoadingDialog();
@@ -324,36 +299,12 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                             mData.addAll(order_detail);
                             mAdapter.setData(order_detail);
 
-                            // 去掉了
-//                            // 商品重量
-//                            if (order_detail != null) {
-//                                double sumWeight = 0;
-//                                for (OrderDetailModel.OrderBean.OrderDetailBean good : order_detail) {
-//                                    OrderDetailModel.OrderBean.OrderDetailBean.ProductSizeBean product_size = good.getProduct_size();
-//
-//                                    if (product_size != null) {
-//
-//                                        String weight1 = product_size.getWeight();
-//                                        int sales_volume = good.getNumber();
-//                                        if (weight1 != null) {
-//                                            double weight = Double.parseDouble(weight1);
-//                                            sumWeight += (weight * sales_volume);
-//
-//                                        }
-//                                    }
-//                                }
-//
-//                                LogUtils.d(TAG, "sumWeight: " + sumWeight);
-//                                // 保留2位小数
-//                                        mTvWeight.setText("" + MathUtil.round(sumWeight, 2) + "公斤");
-//
-//                            }
-
                             // 运费
                             mTvPostage.setText(order.getPostage() + "元");
 
                             // 实付金额栏
-                            mTvMoney.setText("¥" + order.getAll_amount());
+                            mAllAmount = order.getAll_amount();
+                            mTvMoney.setText("¥" + mAllAmount);
                             mTvJifen.setText("+" + order.getDeduct_integration() + "兑换券");
 
                             // 本次消费可获得UU
@@ -432,7 +383,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     /**
      * 根据订单状态不同显示不同UI
-     *
+     * <p>
      * 订单状态
      * -1：数据错误
      * 0：待付款
@@ -727,151 +678,87 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         startActivity(intent);
     }
 
-//    /**
-//     * 订单失效倒计时
-//     */
-//    private void setTime() {
-//        // 初始化
-//        currentMillis = System.currentTimeMillis();
+    private void payNow() {
+//        new AlertView(
+//                "选择支付方式",
+//                null,
+//                "取消",
+//                null,
+//                new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)},
+//                this,
+//                AlertView.Style.ActionSheet, this
+//        ).show();
+
+        PayUtils.pay(getSupportFragmentManager(), TAG, mAllAmount, new PayDetailFragment.PayCallback() {
+            @Override
+            public void onPayCallback(String channel) {
+                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                new PaymentTask(
+                        OrderDetailActivity.this,
+                        OrderDetailActivity.this,
+                        mOrderNumber,
+                        channel,
+                        mTvPayNow,
+                        TAG
+                ).execute(new PaymentTask.PaymentRequest(channel, amount));
+
+            }
+        });
+
+    }
+
+//    @Override
+//    public void onItemClick(Object o, int position) {
+//        super.onItemClick(o, position);
 //
-//        if (hour == -1 && minute == -1 && second == -1) {
-//            hour = 2;
-//            minute = 1;
-//            second = 3;
-//        }
-//
-//        timeView.setText(hour + ":" + minute + ":" + second);
-//
-//        timerTask = new TimerTask() {
-//
-//            @Override
-//            public void run() {
-//                Message msg = new Message();
-//                msg.what = 0;
-//                handler.sendMessage(msg);
-//            }
-//        };
-//
-//        timer = new Timer();
-//        timer.schedule(timerTask, 0, 1000);
-//    }
-//
-//    /**
-//     * 显示订单失效时间
-//     */
-//    private void showTime() {
-//        currentMillis -= 1000; // 每秒减1000毫秒
-//        if (currentMillis <= 0) {
+//        if (position < 0) {
 //            return;
 //        }
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//        String time = sdf.format(currentMillis);
-//        timeView.setText(time);
-//    }
-
-    private void payNow() {
-        new AlertView(
-                "选择支付方式",
-                null,
-                "取消",
-                null,
-                new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)},
-                this,
-                AlertView.Style.ActionSheet, this
-        ).show();
-
-    }
-
-    @Override
-    public void onItemClick(Object o, int position) {
-        super.onItemClick(o, position);
-
-        if (position < 0){
-            return;
-        }
-
-        switch (position) {
-            case 0: // 支付宝支付
-                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-                String channel = Constants.CHANNEL_ALIPAY;
-                new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, channel, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));
-                break;
-
-            case 1: // 余额支付
-                break;
-
-            case 2: // 环迅支付
-                break;
-
-            default:
-                break;
-        }
-
-    }
-
-//    class PaymentTask extends AsyncTask<PaymentRequest, Void, String> {
 //
-//        // 订单号
-//        private String orderNo;
-//        // 支付方式
-//        private String channel;
+//        switch (position) {
+//            case 0: // 支付宝支付
+//                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+//                String channel = Constants.CHANNEL_ALIPAY;
+//                new PaymentTask(OrderDetailActivity.this, OrderDetailActivity.this, mOrderNumber, channel, mTvPayNow, TAG).execute(new PaymentTask.PaymentRequest(channel, amount));
+//                break;
 //
-//        public PaymentTask(String orderNo, String channel) {
-//            this.orderNo = orderNo;
-//            this.channel = channel;
-//        }
+//            case 1: // 余额支付
+//                break;
 //
-//        @Override
-//        protected void onPreExecute() {
-//            loadingDialog.show();
-//            //按键点击之后的禁用，防止重复点击
-//            mTvPayNow.setOnClickListener(null);
-//        }
+//            case 2: // 环迅支付
+//                break;
 //
-//        @Override
-//        protected String doInBackground(PaymentRequest... pr) {
-//
-//            PaymentRequest paymentRequest = pr[0];
-//            String data = null;
-//            String json = new Gson().toJson(paymentRequest);
-//            try {
-//                //向Your Ping++ Server SDK请求数据
-////                String URL = Constants.PingppURL+"?token="+CurrentUserManager.getUserToken() + "&orderNo=" + orderNo;
-//
-//                LogUtils.d(TAG, "orderNo = " + orderNo + ", channel = " + channel);
-//
-//                StringBuilder sb = new StringBuilder(Constants.PingppURL);
-//                sb.append("?token=").append(CurrentUserManager.getUserToken());
-//                sb.append("&orderNo=").append(orderNo);
-//                sb.append("&channel=").append(channel);
-//                String URL = sb.toString();
-//
-//                data = postJson(URL, json);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return data;
-//        }
-//
-//        /**
-//         * 获得服务端的charge，调用ping++ sdk。
-//         */
-//        @Override
-//        protected void onPostExecute(String data) {
-//            if (null == data) {
-//                showMsg("请求出错", "请检查URL", "URL无法获取charge");
-//                return;
-//            }
-//            Log.d("charge", data);
-////            Pingpp.createPayment(ClientSDKActivity.this, data);
-//            //QQ钱包调起支付方式  “qwalletXXXXXXX”需与AndroidManifest.xml中的data值一致
-//            //建议填写规则:qwallet + APP_ID
-//            Pingpp.createPayment(OrderDetailActivity.this, data, "qwalletXXXXXXX");
+//            default:
+//                break;
 //        }
 //
 //    }
 
+    /**
+     * 支付成功后的操作
+     */
+    private void paySuccess(){
+        OrderPaySuccessActivity.actionStart(OrderDetailActivity.this, mStrName, mStrTel, mStrAddress, mOrderNumber);
+        mHandler.sendEmptyMessage(0);
+    }
+
+    /**
+     * 余额支付后的“回调”
+     * @param event
+     */
+    @Subscribe
+    public void onBalancePayEvent(PayResultEvent event){
+        if (event.isPaySuccess()) {
+            paySuccess();
+        }
+    }
+
+    /**
+     * 第三方支付后的“回调”
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        loadingDialog.dismiss();
@@ -880,9 +767,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
             @Override
             public void onPaySuccess() {
-                OrderPaySuccessActivity.actionStart(OrderDetailActivity.this, mStrName, mStrTel, mStrAddress, mOrderNumber);
-                mHandler.sendEmptyMessage(0);
-
+                paySuccess();
             }
 
             @Override
@@ -896,50 +781,4 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         });
 
     }
-
-//    public void showMsg(String title, String msg1, String msg2) {
-//        String str = title;
-//        if (null != msg1 && msg1.length() != 0) {
-//            str += "\n" + msg1;
-//        }
-//        if (null != msg2 && msg2.length() != 0) {
-//            str += "\n" + msg2;
-//        }
-//        AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-//        builder.setMessage(str);
-//        builder.setTitle("提示");
-//        builder.setPositiveButton("OK", null);
-//        builder.create().show();
-//    }
-//
-//    private static String postJson(String url, String json) throws IOException {
-//        MediaType orderStatus = MediaType.parse("application/json; charset=utf-8");
-//        RequestBody body = RequestBody.create(orderStatus, json);
-//        // post方式
-//        Request request = new Request.Builder().url(url).post(body).build();
-//
-//        // get方式
-////        Log.d("OrderDetailActivity: ", url);
-////        Request request = new Request.Builder().url(url).build();
-//
-//        OkHttpClient client = new OkHttpClient();
-//        Response response = client.newCall(request).execute();
-//
-////        LogUtils.d(TAG, "response.body() = " + response.body().string()); // 这句代码会导致，再次获取response.body().string()时拿不到，下一句return null！！
-////        String responseBody = response.body().string();
-////        return responseBody;
-////        return "{\"id\":\"ch_ezPGWP0GaXbDDS0ybL8KWDO8\",\"object\":\"charge\",\"created\":1473146951,\"livemode\":true,\"paid\":false,\"refunded\":false,\"app\":\"app_SynjLKu1Si5Czrnz\",\"channel\":\"wx\",\"order_no\":\"2016090550535349\",\"client_ip\":\"106.39.193.120\",\"amount\":1,\"amount_settle\":1,\"currency\":\"cny\",\"subject\":\"orderNo : 2016090550535349\",\"body\":\"adsfadf\",\"extra\":[],\"time_paid\":null,\"time_expire\":1473154151,\"time_settle\":null,\"transaction_no\":null,\"refunds\":{\"object\":\"list\",\"url\":\"/v1/charges/ch_ezPGWP0GaXbDDS0ybL8KWDO8/refunds\",\"has_more\":false,\"data\":[]},\"amount_refunded\":0,\"failure_code\":null,\"failure_msg\":null,\"metadata\":[],\"credential\":{\"object\":\"credential\",\"wx\":{\"appId\":\"wxa4650166adbfdcc1\",\"partnerId\":\"1383715402\",\"prepayId\":\"wx20160906152912ba7e15ede20721592606\",\"nonceStr\":\"5be48dae595399ea42e479c679c26aa8\",\"timeStamp\":1473146952,\"packageValue\":\"Sign=WXPay\",\"sign\":\"5384B61FE9EA36D6D41CCC9A9D7B5816\"}},\"description\":null}";
-//        return response.body().string();
-//    }
-//
-//    class PaymentRequest {
-//        String channel;
-//        int amount;
-//
-//        public PaymentRequest(String channel, int amount) {
-//            this.channel = channel;
-//            this.amount = amount;
-//        }
-//    }
-
 }

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#fff"
+              android:orientation="vertical"
+    >
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        >
+
+        <TextView
+            android:id="@+id/tv_income_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="取消"
+            android:textColor="#222"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="兑换"
+            android:textColor="#222"
+            android:textSize="18sp"
+            />
+
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_bold_line_style"></View>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--内容-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical"
+                android:paddingTop="27dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="兑换券额"
+                    android:textColor="#222"
+                    android:textSize="17sp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_exchange_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="#222"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:maxLength="10"
+                    />
+
+                <View
+                    style="@style/exchange_orange_divider_fine_line_style"
+                    android:layout_marginTop="6dp"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_exchange_can_use"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="可使用兑换券额0"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_exchange_set_all_can_use"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="全部兑换"
+                        android:textColor="#0871f1"
+                        android:textSize="15sp"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="安全码"
+                    android:textColor="#222"
+                    android:textSize="17sp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_exchange_safe_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@null"
+                    android:digits="0123456789abcdefghijgklmnopqrstuvwxyzABCDEFGHIJGKLMNOPQRSTUVWXYZ"
+                    android:gravity="center_vertical"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="#222"
+                    android:textSize="30sp"
+                    android:hint="请输入安全码"
+                    />
+
+                <View
+                    style="@style/exchange_orange_divider_fine_line_style"
+                    android:layout_marginTop="6dp"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:text="姓名"
+                    android:textColor="#222"
+                    android:textSize="17sp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_exchange_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="#222"
+                    android:textSize="30sp"
+                    android:hint="支付宝实名认证姓名"
+                    />
+
+                <View
+                    style="@style/exchange_orange_divider_fine_line_style"
+                    android:layout_marginTop="6dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_income_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/app_red"
+                />
+
+            <TextView
+                android:id="@+id/tv_exchange_commit"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_long_btn_bg"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="#fff"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="兑换需扣除等值的UU，UU余额："
+                    />
+
+                <TextView
+                    android:id="@+id/exchange_income_tv_uu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/app_red"
+                    />
+
+                <TextView
+                    android:id="@+id/exchange_income_tv_uu_recharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"
+                    android:text="充值UU"
+                    android:textColor="#0871f1"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

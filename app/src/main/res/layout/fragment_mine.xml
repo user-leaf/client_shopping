@@ -225,7 +225,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingTop="15dp"
+                android:paddingTop="10dp"
                 >
 
                 <LinearLayout
@@ -247,31 +247,33 @@
                         android:singleLine="true"
                         android:text="0"
                         android:textSize="20sp"
-                        android:textColor="#e10c28"/>
+                        android:textColor="#e10c28"
+                        android:visibility="gone"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/tv_mine_goldcoin"
-                            android:src="@mipmap/list_icon_uu"
-                            android:visibility="gone"
+                            android:layout_width="22.5dp"
+                            android:layout_height="22.5dp"
+                            android:src="@mipmap/list_icon_uu_b"
+                            android:visibility="visible"
                             />
 
                         <TextView
                             android:id="@+id/tv_mine_goldcoin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="center"
                             android:textSize="10sp"
                             android:gravity="center"
                             android:text="我的UU"
-                            android:textColor="#6b6b6b"
+                            android:textColor="#222"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -299,29 +301,30 @@
                         android:singleLine="true"
                         android:text="0"
                         android:textSize="20sp"
-                        android:textColor="#e10c28"/>
+                        android:textColor="#e10c28"
+                        android:visibility="gone"
+                        />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/tv_mine_integral"
-                            android:src="@mipmap/list_icon_integral"
-                            android:visibility="gone"
+                            android:layout_width="22.5dp"
+                            android:layout_height="22.5dp"
+                            android:src="@mipmap/list_icon_integral_b"
+                            android:visibility="visible"
                             />
 
                         <TextView
                             android:id="@+id/tv_mine_integral"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
                             android:text="我的积分"
                             android:textSize="10sp"
-                            android:textColor="#6b6b6b"/>
+                            android:textColor="#222"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -353,32 +356,31 @@
                         android:singleLine="true"
                         android:text="0"
                         android:textColor="#e10c28"
-                        android:visibility="visible"
                         android:textSize="20sp"
+                        android:visibility="gone"
                         />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/tv_mine_goldcoin"
-                            android:src="@mipmap/list_icon_returnmoney"
-                            android:visibility="gone"
+                            android:layout_width="22.5dp"
+                            android:layout_height="22.5dp"
+                            android:src="@mipmap/list_icon_coincertificate"
+                            android:visibility="visible"
                             />
 
                         <TextView
                             android:id="@+id/tv_mine_withdraw"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
                             android:gravity="center"
                             android:text="我的兑换券"
                             android:textSize="10sp"
-                            android:textColor="#6b6b6b"
+                            android:textColor="#222"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -416,15 +418,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="客服电话"
+                    android:text="客服电话（9:00-18:00）"
                     android:textColor="#6b6b6b"
                     android:textSize="14sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="（上班时间：9:00-18:00）400-1599586"
-                    android:textColor="#6b6b6b"
+                    android:text="4001-599-586"
+                    android:textColor="@color/app_red"
                     android:textSize="14sp"
                     android:singleLine="true"
                     android:ellipsize="start"
@@ -446,7 +448,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="供货电话"
+                    android:text="招商电话"
                     android:textColor="#6b6b6b"
                     android:textSize="14sp"/>
 

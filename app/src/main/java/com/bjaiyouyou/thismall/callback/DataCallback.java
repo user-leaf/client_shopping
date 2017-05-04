@@ -73,7 +73,17 @@ public abstract class DataCallback<T> extends Callback {
         onFail(call, e, id);
     }
 
+    // 自定义code > 0 时走的回调
+    @Override
+    public void onError(Call call, String responseBody, int id) {
+        onFail(call, responseBody, id);
+    }
+
     public abstract void onFail(Call call, Exception e, int id);
+
+    public void onFail(Call call, String responseBody, int id){
+
+    }
 
     public abstract void onSuccess(Object response, int id);
 

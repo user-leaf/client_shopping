@@ -29,7 +29,7 @@ import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.StringUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
-import com.bjaiyouyou.thismall.utils.ValidateUserInputUtils;
+import com.bjaiyouyou.thismall.utils.ValidatorsUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -297,13 +297,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         final String password = mEtVeriCode.getText().toString();
         final String invitationCode = mEtInviteCode.getText().toString();
 
-        if (!ValidateUserInputUtils.validateUserPhone(phone)) {
+        if (!ValidatorsUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
             mTvTelTips.setText("手机号码有误");
             return;
         }
 
-        if (!TextUtils.isEmpty(invitationCode) && !ValidateUserInputUtils.validateUserPhone(invitationCode)) {
+        if (!TextUtils.isEmpty(invitationCode) && !ValidatorsUtils.validateUserPhone(invitationCode)) {
             mTipsView.setVisibility(View.VISIBLE);
             mTvTelTips.setText("邀请人号码有误");
             return;
@@ -478,7 +478,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
-        if (!ValidateUserInputUtils.validateUserPhone(phone)) {
+        if (!ValidatorsUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
             mTvTelTips.setText("手机号码有误");
             return;

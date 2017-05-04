@@ -22,6 +22,10 @@ public class Constants {
     public static final String PingppURL = ClientAPI.API_POINT+"api/v1/pay";
 
     /**
+     * 余额支付渠道
+     */
+    public static final String CHANNEL_BALANCE = "balance";
+    /**
      * 银联支付渠道
      */
     public static final String CHANNEL_UPACP = "upacp";

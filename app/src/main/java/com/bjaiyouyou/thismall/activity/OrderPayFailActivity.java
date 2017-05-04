@@ -248,7 +248,7 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
     private void doPayByPingpp() {
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)
+        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance)
         }, this, AlertView.Style.ActionSheet, this).show();
     }
 

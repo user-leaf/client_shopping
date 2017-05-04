@@ -32,6 +32,7 @@ import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
+import com.bjaiyouyou.thismall.utils.ValidatorsUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -375,10 +376,10 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                     mEtEmail.setHint(mEmail);
 //            mEtEmail.setSelection(mEmail.length());
 
-                    mEtSafeCode.setEnabled(true);
+//                    mEtSafeCode.setEnabled(true);
                 }else {
                     //未设置邮箱不能修改安全码
-                    mEtSafeCode.setEnabled(false);
+//                    mEtSafeCode.setEnabled(false);
                 }
                 mSafeCode = mBean.getSecurity_code_hint();
                 if (!TextUtils.isEmpty(mSafeCode)) {
@@ -518,7 +519,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 parameterMap.put("email", mEmail);
             } else {
                 if (!mEmail.isEmpty()) {
-                    if (!mEmail.contains("@")) {
+                    if (! ValidatorsUtils.isEmail(mEmail)) {
                         Toast.makeText(getApplicationContext(), "邮箱格式不正确", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -602,7 +603,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                  * Android 6.0 权限检查
                  * https://github.com/googlesamples/easypermissions
                  */
-                String[] perms1 = {Manifest.permission.CAMERA};
+                String[] perms1 = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
                 if (EasyPermissions.hasPermissions(this, perms1)) {
 //                    ToastUtils.showShort("拍照");
                     camera();

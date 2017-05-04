@@ -15,6 +15,9 @@ import java.util.Set;
  */
 public class SPUtils{
 
+	public static String PUSH_MESSAGE_KEY_ONE="pushMessages1";
+	public static String PUSH_MESSAGE_KEY_TWO="pushMessages2";
+
 	public SPUtils()
 	{
 		/* cannot be instantiated */

@@ -35,6 +35,18 @@
         <item name="android:layout_height">@dimen/line_bold</item>
         <item name="android:background">#DCDCDC</item> <!-- 88CCCCCC -->
     </style>
+    <!-- 兑换页面分割线-->
+    <style name="exchange_divider_fine_line_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_fine</item>
+        <item name="android:background">#DDDDDD</item> <!-- 88CCCCCC --><!-- EEEEEE -->
+    </style>
+    <!-- 兑换popWindow页面分割线-->
+    <style name="exchange_orange_divider_fine_line_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_fine</item>
+        <item name="android:background">#DC9600</item> <!-- 88CCCCCC --><!-- EEEEEE -->
+    </style>
 
     <!-- 入口条目布局style -->
     <style name="settings_entry_bar_style">
@@ -100,7 +112,7 @@
         <!-- 背景是否模糊显示 -->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
-    
+
     <style name="address_picker_anim_style">
         <item name="android:windowEnterAnimation">@anim/anim_picker_pop_enter</item>
         <item name="android:windowExitAnimation">@anim/anim_picker_pop_exit</item>
@@ -120,5 +132,23 @@
         <item name="android:textColorHint">#ffcccccc</item>
         <item name="android:textSize">16sp</item>
         <item name="android:hint">搜索商品</item>
+    </style>
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_push_bottom_out</item>
+    </style>
+    <!--底部弹框-->
+    <style name="BottomDialog" parent="@style/AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--兑换popWindow弹出动画-->
+    <style name="PopWindow_Anim_Style_Up_Down">
+        <item name="android:windowEnterAnimation">@anim/anim_activate_exchange_certificate_open</item>
+        <item name="android:windowExitAnimation">@anim/anim_activate_exchange_certificate_close</item>
     </style>
 </resources>

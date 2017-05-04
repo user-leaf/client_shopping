@@ -26,64 +26,55 @@ public class ToastUtils {
     private ToastUtils() {
     }
 
-    private static void show(Context context, int resId, int duration) {
-        Toast.makeText(context, resId, duration).show();
+    private static Toast toast;
+
+    private static void showToast(Context context, String content, int duration) {
+        if (toast == null) {
+            toast = Toast.makeText(context,
+                    content,
+                    duration);
+        } else {
+            toast.setText(content);
+            toast.setDuration(duration);
+        }
+
+        toast.show();
     }
 
     private static void show(Context context, String message, int duration) {
-        Toast.makeText(context, message, duration).show();
-    }
-
-    public static void showShort(int resId) {
-        Toast.makeText(MainApplication.getContext(), resId, Toast.LENGTH_SHORT).show();
+        showToast(context, message, duration);
     }
 
     public static void showShort(String message) {
-        Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showLong(int resId) {
-        Toast.makeText(MainApplication.getContext(), resId, Toast.LENGTH_LONG).show();
+        showToast(MainApplication.getContext(), message, Toast.LENGTH_SHORT);
     }
 
     public static void showLong(String message) {
-        Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG).show();
+        showToast(MainApplication.getContext(), message, Toast.LENGTH_LONG);
     }
 
 //    private static void show(Context context, int resId, int duration) {
-//        if (isDebug) {
-//            Toast.makeText(context, resId, duration).show();
-//        }
+//        Toast.makeText(context, resId, duration).show();
 //    }
 //
 //    private static void show(Context context, String message, int duration) {
-//        if (isDebug) {
-//            Toast.makeText(context, message, duration).show();
-//        }
+//        Toast.makeText(context, message, duration).show();
 //    }
 //
 //    public static void showShort(int resId) {
-//        if (isDebug) {
-//            Toast.makeText(MainApplication.getContext(), resId, Toast.LENGTH_SHORT).show();
-//        }
+//        Toast.makeText(MainApplication.getContext(), resId, Toast.LENGTH_SHORT).show();
 //    }
 //
 //    public static void showShort(String message) {
-//        if (isDebug) {
-//            Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_SHORT).show();
-//        }
+//        Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_SHORT).show();
 //    }
 //
 //    public static void showLong(int resId) {
-//        if (isDebug) {
-//            Toast.makeText(MainApplication.getContext(), resId, Toast.LENGTH_LONG).show();
-//        }
+//        Toast.makeText(MainApplication.getContext(), resId, Toast.LENGTH_LONG).show();
 //    }
 //
 //    public static void showLong(String message) {
-//        if (isDebug) {
-//            Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG).show();
-//        }
+//        Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG).show();
 //    }
 
     /**
@@ -105,8 +96,9 @@ public class ToastUtils {
 //        }
 
         if (e != null) {
-            if (!TextUtils.isEmpty(e.getMessage())){
-                Toast.makeText(context, StringUtils.getExceptionMessage(e.getMessage()), Toast.LENGTH_SHORT).show();
+            if (!TextUtils.isEmpty(e.getMessage())) {
+//                Toast.makeText(context, StringUtils.getExceptionMessage(e.getMessage()), Toast.LENGTH_SHORT).show();
+                showToast(context, StringUtils.getExceptionMessage(e.getMessage()), Toast.LENGTH_SHORT);
             }
         }
 

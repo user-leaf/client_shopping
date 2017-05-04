@@ -16,6 +16,16 @@ public class ResponseModel {
 
     private String message;
     private int status_code;
+    private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
     /**
      * line : 40
      * file : /home/wwwroot/laravel-5.2.31/Admin/app/CommonModel.php

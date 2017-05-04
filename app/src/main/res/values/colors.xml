@@ -16,6 +16,9 @@
     <color name="top_bar_normal_bg">#E10C28</color> <!--00acff--> <!--FF6666-->
     <color name="app_red">#E10C28</color>
     <color name="app_gray">#b5b5b5</color>
+    <color name="app_btn_gray">#dddddd</color>
+    <color name="app_btn_light_red">#f18694</color>
+    <color name="app_btn_text_light_red">#ffa0ac</color>
     <color name="app_gray_222222">#222222</color>
     <color name="app_gray_dcdcdc">#dcdcdc</color>
     <color name="app_gray_6b6b6b">#6b6b6b</color>
@@ -50,5 +53,6 @@
     <color name="dark_gray_press">#ff7e8a97</color>
 
     <color name="webview_progressbar_bg">#01D64A</color>
+    <color name="line">#eeeeee</color>
 
 </resources>

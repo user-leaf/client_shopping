@@ -1,12 +1,17 @@
 package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.fragment.ExchangeCertificateFragment;
+import com.bjaiyouyou.thismall.model.ActivateInfoModel;
+import com.bjaiyouyou.thismall.model.ActivateResultMode;
+import com.bjaiyouyou.thismall.model.ExchangeResultModel;
 import com.bjaiyouyou.thismall.model.HistoryBuy;
 import com.bjaiyouyou.thismall.model.IntegralDetailModel;
 import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.model.ProductDetail;
 import com.bjaiyouyou.thismall.model.SearchHot;
 import com.bjaiyouyou.thismall.model.SearchResultGoods;
+import com.bjaiyouyou.thismall.model.UserBalance;
 import com.bjaiyouyou.thismall.model.UuDetailModel;
 import com.bjaiyouyou.thismall.model.WithdrawReCordModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -250,56 +255,61 @@ public class Api4ClientOther extends BaseClientApi {
         LogUtils.d("url", url);
         doGet(url, strTag, null, callback);
     }
-//
-//
-//    /**
-//     * 判断是否绑定支付宝
-//     *author Qxh
-//     *created at 2017/3/31 21:59
-//     */
-//    public void getIfBindingAlipay(DataCallback<Boolean> callback){
-//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
-//        sb.append("api/v1/member/checkIsBoundAlipay");
-//        sb.append("?token=");
-//        sb.append(CurrentUserManager.getUserToken());
-//
-//        String url = sb.toString();
-//        LogUtils.d("url", url);
-//        doGet(url, WithdrawActivity.TAG, null, callback);
-//
-//    }
-//
-//    /**
-//     * 获得支付宝参数
-//     *author Qxh
-//     *created at 2017/3/31 21:59
-//     */
-//    public void getAuthorizationParameters(DataCallback<String> callback){
-//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
-//        sb.append("api/v1/ali/appAuthInfo");
-//
-//        String url = sb.toString();
-//        LogUtils.d("url", url);
-//        doGet(url, WithdrawActivity.TAG, null, callback);
-//
-//    }
-//    /**
-//     * 绑定支付宝
-//     *author Qxh
-//     *created at 2017/3/31 21:59
-//     */
-//    public void bindingAlipay(String userId,DataCallback<String> callback){
-//        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
-//        sb.append("api/v1/member/boundAlipay");
-//        sb.append("?alipay_id=");
-//        sb.append(userId);
-//
-//        String url = sb.toString();
-//        LogUtils.d("url", url);
-//        doGet(url, WithdrawActivity.TAG, null, callback);
-//
-//    }
 
+    /**
+     * 获取兑换可使用兑换券额
+     */
+    public void getUserBalance(DataCallback<UserBalance> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/member/getUserBalance");
+        sb.append("?token=");
+        sb.append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+        LogUtils.d("url", url);
+        doGet(url, ExchangeCertificateFragment.TAG, null, callback);
+    }
+    /**
+     * 激活兑换券
+     */
+    public void postActivateExchange(Double amount, DataCallback<ActivateResultMode> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/unfreeze");
+        sb.append("?token=");
+        sb.append(CurrentUserManager.getUserToken());
+        sb.append("&amount=");
+        sb.append(amount);
+        String url = sb.toString();
+        LogUtils.d("url", url);
+        doPost(url, ExchangeCertificateFragment.TAG, null, callback);
+    }
+    /**
+     * 获取兑换券页面数据
+     */
+    public void getExchangeData(DataCallback<ActivateInfoModel> callback){
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
+        sb.append("api/v1/member/getUserAboutCashInfo");
+        sb.append("?token=");
+        sb.append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+        LogUtils.d(TAG, "getExchangeData: " + url);
+        doGet(url, null, callback);
+    }
 
+    /**
+     * 提交兑换
+     */
+    public void postExchangeData(String token,  double amount, String userName, String safeCode,DataCallback<ExchangeResultModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/transfer");
+        sb.append("?token=").append(token);
+//        sb.append("&open_id=").append(openID);
+        sb.append("&amount=").append(amount);
+        sb.append("&user_name=").append(userName);
+        sb.append("&security_code=").append(safeCode);
+
+        String url = sb.toString();
+        LogUtils.d(TAG, "postExchangeData: " + url);
+        doPost(url, null, callback);
+    }
 
 }

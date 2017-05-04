@@ -1,0 +1,61 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.bjaiyouyou.thismall.fragment.IncomeFragment"
+    android:background="#fff"
+    >
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="31dp"
+        android:src="@mipmap/icon_profit"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="兑换券收益"
+        android:textColor="#000"
+        android:textSize="14sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_exchange_income_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:text="0"
+        android:textColor="@color/app_red"
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_income_exchange"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/shape_btn_back_red"
+        android:gravity="center"
+        android:text="兑换"
+        android:textColor="#fff"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="14dp"
+        android:text="每日可兑换1次，每次兑换等额的UU哦~"
+        android:textColor="#222"
+        android:textSize="14sp"
+        />
+
+</LinearLayout>

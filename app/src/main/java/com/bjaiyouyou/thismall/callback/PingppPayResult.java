@@ -32,7 +32,7 @@ public class PingppPayResult {
                 String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
 //                showMsg(result, errorMsg, extraMsg);
 
-//                LogUtils.d(TAG, "errorMsg: " + errorMsg + ", extraMsg: " + extraMsg);
+                LogUtils.d("p++", "errorMsg: " + errorMsg + ", extraMsg: " + extraMsg);
 
                 if ("success".equals(result)) {
                     ToastUtils.showShort("支付成功");

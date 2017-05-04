@@ -8,6 +8,7 @@ import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Map;
@@ -118,6 +119,26 @@ public class Api4Mine extends BaseClientApi {
 
     }
 
+    /**
+     * 兑换收益
+     * @param TAG
+     * @param amount
+     * @param name
+     * @param safecode
+     * @param callback
+     */
+    public void withdrawIncome(String TAG, int amount, String name, String safecode, StringCallback callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/drawing_push_money");
+        sb.append("?token=").append(CurrentUserManager.getUserToken());
+//        sb.append("&open_id=").append(openId);
+        sb.append("&amount=").append(amount);
+        sb.append("&user_name=").append(name);
+        sb.append("&security_code=").append(safecode);
+        String url = sb.toString();
 
+        LogUtils.d(TAG, "withdrawIncome: " + url);
 
+        doPost(url, TAG, null, callback);
+    }
 }

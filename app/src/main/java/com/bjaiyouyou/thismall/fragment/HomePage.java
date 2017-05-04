@@ -1,11 +1,15 @@
 package com.bjaiyouyou.thismall.fragment;
 
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -34,8 +38,8 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.GoodsDetailsActivity;
 import com.bjaiyouyou.thismall.activity.GoodsListShowActivity;
-import com.bjaiyouyou.thismall.activity.HistoryBuyNewActivity;
 import com.bjaiyouyou.thismall.activity.SearchGoodsActivity;
+import com.bjaiyouyou.thismall.activity.SystemPushMessageActivity;
 import com.bjaiyouyou.thismall.activity.WebShowActivity;
 import com.bjaiyouyou.thismall.adapter.HomeEveryDayEmptyAdapter;
 import com.bjaiyouyou.thismall.adapter.HomeGoodGridNewAdapter;
@@ -60,11 +64,13 @@ import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.RefreshUtils;
 import com.bjaiyouyou.thismall.utils.SPUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.zxing.activity.CaptureActivity;
 import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -81,7 +87,7 @@ import okhttp3.Call;
  * @author QuXinhang
  *         Update 2016/7/3 17:44
  *         添加抢购区域
- *         <p>
+ *         <p/>
  *         填充每日上新数据
  */
 
@@ -229,6 +235,17 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     //显示是否存在未读系统信息，存在显示，不存在隐藏
     private TextView mTvMessageNotRead;
 
+    //本地广播接收器
+    private LocalBroadcastManager mLocalBroadcastManager;
+    private IntentFilter intentFilter;
+    private LocalJPushReceiver localReceiver;
+    //主次本地广播，名字
+    public static final String MESSAGE_RECEIVER_ACTION = "com.bjaiyouyou.thismall.intent.ACTION_JPUSH_MESSAGE_RECEIVE";
+    //消息提示框
+    private Dialog messageDialog;
+    //未读消息类
+    private IsHaveMessageNotRead isHaveMessageNotRead;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -241,6 +258,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initVariables();
+        initReceiver();
         initView();
         setUpView();
         //处理每日上新+广告
@@ -256,11 +274,15 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //        initPanicBuyingEmpty();
     }
 
-
+    /**
+     * @param hidden
+     */
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            //获得系统消息数据
+            getJpushData();
 //            initTime();
             //处理抢购区域
 //        initPanicBuying();
@@ -272,7 +294,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             }
         }
     }
-
 
 
     /**
@@ -308,7 +329,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     }
 
 
-
     /**
      * 初始化控件
      */
@@ -342,7 +362,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         //最外层的ScrollView
 
         mEtSearch = ((EditText) layout.findViewById(R.id.home_et_search));
-        mLLScan = ( layout.findViewById(R.id.ll_home_scan));
+        mLLScan = (layout.findViewById(R.id.ll_home_scan));
 //        ivScanCode = ((ImageView) layout.findViewById(R.id.home_iv_scan));
 //        mLLPushMessage = layout.findViewById(R.id.ll_home_push_message);
 
@@ -490,6 +510,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                     isHaveNextNews = true;
                     isRefresh = true;
                     initData();
+                    //获得推送消息的数据
+                    getJpushData();
 //                    initTime();
 
                 } else {
@@ -509,7 +531,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
                         @Override
                         public void run() {
-                            showToast("最后一页");
+                            ToastUtils.showShort("最后一页");
                         }
                     }, 1000);
                     mGvShow.loadMoreComplete();
@@ -518,7 +540,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         });
 
     }
-
 
 
     /**
@@ -546,7 +567,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 //有网隐藏提示
                 mLLUNNetWork.setVisibility(View.GONE);
                 //获得数据
-                if (response!=null) {
+                if (response != null) {
                     //是刷新清空数据
                     if (isRefresh) {
                         mHomeGoodGridAdapter.clear();
@@ -588,7 +609,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                                     mConvenientBanner.setPageIndicator(new int[]{android.R.color.transparent, android.R.color.transparent});
                                     mConvenientBanner.setCanLoop(false);
 
-                                } else if (adNum > 1){
+                                } else if (adNum > 1) {
                                     mConvenientBanner.setPageIndicator(new int[]{R.mipmap.list_indicate_nor, R.mipmap.list_indicate_sel});
                                     mConvenientBanner.setCanLoop(true);
                                 }
@@ -600,40 +621,132 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                             }
                         }
 
-                        if (mNetImages.isEmpty()){ // mConvenientBanner貌似不支持数据减为空时的刷新
+                        if (mNetImages.isEmpty()) { // mConvenientBanner貌似不支持数据减为空时的刷新
                             mAdContainer.removeView(mConvenientBanner);
-                        }else {
+                        } else {
                             mConvenientBanner.notifyDataSetChanged();
                         }
                     }
                 }
 
         );
+    }
+
+    /**
+     * 获得推送消息的数据
+     */
+    private void getJpushData() {
 
         /////加载信息判断是否存在未读系统消息
+
         mClientApi.isHaveMessageNotRead(new DataCallback<IsHaveMessageNotRead>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-                //test
+                //请求失败不显示主页提示红点
                 mTvMessageNotRead.setVisibility(View.INVISIBLE);
+                LogUtils.d("isHaveMessageNotRead", "错误");
+                dismissMessageDialog();
             }
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null){
-                    IsHaveMessageNotRead isHaveMessageNotRead= (IsHaveMessageNotRead) response;
-                    int message=isHaveMessageNotRead.getIsRead();
+                LogUtils.d("isHaveMessageNotRead", "成功");
+                if (response != null) {
+                    LogUtils.d("isHaveMessageNotRead", "不为空");
+                    isHaveMessageNotRead = (IsHaveMessageNotRead) response;
+                    int message = isHaveMessageNotRead.getHasNoRead();
+                    LogUtils.d("isHaveMessageNotRead", message + "message");
                     //不存在未读消息
-                    if (message==0){
+                    if (message == 0) {
                         mTvMessageNotRead.setVisibility(View.INVISIBLE);
+                        dismissMessageDialog();
                         //存在未读消息
-                    }else if(message==1){
-
+                    } else if (message == 1) {
                         mTvMessageNotRead.setVisibility(View.VISIBLE);
+                        //弹窗提示有未读消息
+//                        if (messageDialog == null) {
+//                            messageDialog = DialogUtils.createConfirmDialog(getContext(), null, "你有一条未读消息，请查看", "阅读", "",
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            //跳转消息详情页面
+//                                            IsHaveMessageNotRead.LatestMessageBean bean = isHaveMessageNotRead.getLatestMessage();
+//                                            if (bean != null) {
+//                                                String id = bean.getId();
+//                                                LogUtils.e("id", id);
+//                                                //根据Id跳转
+//                                                StringBuffer sb = new StringBuffer(ClientAPI.URL_WX_H5);
+//                                                sb.append("message_detail.html?id=");
+//                                                sb.append(id);
+//                                                sb.append("&token=");
+//                                                sb.append(CurrentUserManager.getUserToken());
+//                                                sb.append("&type=");
+//                                                sb.append("android");
+//
+//                                                String webShowUrl = sb.toString().trim();
+//                                                WebShowActivity.actionStart(getActivity(), webShowUrl);
+//                                            }
+//                                            dialog.dismiss();
+//                                        }
+//                                    },
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    }
+//                            );
+//                            //点击其他地方消失取消
+//                            messageDialog.setCancelable(false);
+//                        }
+//
+//                        if (messageDialog!=null&&!messageDialog.isShowing()){
+//                            messageDialog.show();
+//                        }
+
                     }
+
+                } else {
+                    mTvMessageNotRead.setVisibility(View.INVISIBLE);
+                    dismissMessageDialog();
+                    LogUtils.d("isHaveMessageNotRead", "为空");
                 }
             }
         });
+
+
+        ////////////////////缓存消息数据，默认加载第一页的数据
+
+        mClientApi.getPushMessage(1, new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                if (!TextUtils.isEmpty(response)) {
+                    String pushMessages = response.trim();
+                    SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_ONE, pushMessages);
+                    //获取第二页
+                    mClientApi.getPushMessage(2, new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (!TextUtils.isEmpty(response)) {
+                                String pushMessages = response.trim();
+                                SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_TWO, pushMessages);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     /**
@@ -709,7 +822,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 //                startActivity(phIntent);
 //                break;
             case R.id.ll_home_push_message: // 系统消息入口
-                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
+//                Intent phIntent = new Intent(getActivity(), SystemPushMessageActivity.class);
+                //test
+                Intent phIntent = new Intent(getActivity(), SystemPushMessageActivity.class);
                 //携带数据接口
                 phIntent.putExtra("title", "");
                 startActivity(phIntent);
@@ -802,13 +917,16 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     public void onDestroy() {
         super.onDestroy();
 //        mTimer.cancel(); //退出计时器
+
+        //取消注册调用的是unregisterReceiver()方法，并传入接收器实例。  
+        mLocalBroadcastManager.unregisterReceiver(localReceiver);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 300 && resultCode == getActivity().RESULT_OK && data != null) {
-            if (data.getStringExtra("result")!=null){
+            if (data.getStringExtra("result") != null) {
                 Toast.makeText(getContext(), "Home----" + data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
 //            Log.e("QRCode",data.getData().toString());
                 Log.e("QRCode", data.getStringExtra("result").toString());
@@ -821,10 +939,11 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         super.onResume();
         //广告开始自动翻页
         mConvenientBanner.startTurning(5000);
+        //获得系统消息数据
+        getJpushData();
 //        initTime();
 
     }
-
 
 
     /**
@@ -838,6 +957,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mGVPanicBuying.setAdapter(mNavigationAdapterNew);
         initControlNavigation();
     }
+
     private void initPanicBuyingEmpty() {
         //计算宽度
         int size = 4;
@@ -879,8 +999,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null) {
-                    HomeNavigationItemNew homeNavigationItemNew= (HomeNavigationItemNew) response;
+                if (response != null) {
+                    HomeNavigationItemNew homeNavigationItemNew = (HomeNavigationItemNew) response;
                     mTimeFrameBeans = homeNavigationItemNew.getRush_to_purchase_time_frame();
                     //是否显示更多按钮
                     mNavigationDataNew = mTimeFrameBeans.get(mCurrentIndex).getDetail();
@@ -1016,6 +1136,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             }
         }
     }
+
     /**
      * 刷新抢购页
      */
@@ -1116,6 +1237,40 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 }, mTimeDifference);
             }
         };
+    }
+
+
+    /**
+     * 本地广播处理系统消息接收时更新数据
+     */
+    private void initReceiver() {
+        //本地广播接收器
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        //新建intentFilter并给其action标签赋值。
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(MESSAGE_RECEIVER_ACTION);
+        //创建广播接收器实例，并注册。将其接收器与action标签进行绑定。
+        localReceiver = new LocalJPushReceiver();
+        mLocalBroadcastManager.registerReceiver(localReceiver, intentFilter);
+    }
+
+    class LocalJPushReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //当接到系统消息的广播通知时，重新获取系统消息数据
+            getJpushData();
+            mTvMessageNotRead.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    /**
+     * 销毁消息提醒对话框
+     */
+    public void dismissMessageDialog(){
+        if (messageDialog != null&&messageDialog.isShowing()) {
+            messageDialog.dismiss();
+        }
     }
 
 }

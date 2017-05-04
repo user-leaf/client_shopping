@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
@@ -189,7 +188,7 @@ public class MyOrderNotFinishFragment extends BaseFragment {
                             lv.refreshComplete();
                         }
                     }, 1000);
-                    Toast.makeText(getContext(), "已经加载到最后一页", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "已经加载到最后一页", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -345,7 +344,9 @@ public class MyOrderNotFinishFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        refreshData();
+        if (!hidden){
+            refreshData();
+        }
     }
 
 }

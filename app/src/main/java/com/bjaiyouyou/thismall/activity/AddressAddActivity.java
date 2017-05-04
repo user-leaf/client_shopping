@@ -14,7 +14,7 @@ import com.bjaiyouyou.thismall.model.AddressInfo2;
 import com.bjaiyouyou.thismall.task.AddressInitTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
-import com.bjaiyouyou.thismall.utils.ValidateUserInputUtils;
+import com.bjaiyouyou.thismall.utils.ValidatorsUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -169,7 +169,7 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
             return;
         }
 
-        if (!ValidateUserInputUtils.validateUserPhone(tel)){
+        if (!ValidatorsUtils.validateUserPhone(tel)){
             ToastUtils.showShort("手机号码有误");
             return;
         }

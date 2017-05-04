@@ -160,9 +160,9 @@ public class HistoryBuyNewActivity extends BaseActivity {
                     mLastPage = historyBuy.getLast_page();
 
                     if (isHasNextPage){
-                        mGV.setIsnomore(false);
+                        mGV.setNoMore(false);
                     }else {
-                        mGV.setIsnomore(true);
+                        mGV.setNoMore(true);
                     }
 
                     if (historyBuy.getData().size() != 0) {

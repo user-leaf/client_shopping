@@ -11,7 +11,7 @@ import com.bjaiyouyou.thismall.MainApplication;
 public class LogUtils {
     private LogUtils(){}
 
-    public static boolean isDebug = MainApplication.getIsDebug();// 是否需要打印bug，可以在application的onCreate函数里面初始化
+    public static boolean isDebug = MainApplication.DEBUG;// 是否需要打印bug，可以在application的onCreate函数里面初始化
     private static final String TAG = "iuu";
 
     // 下面四个是默认tag的函数

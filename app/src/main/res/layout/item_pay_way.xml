@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/pay_way_item_icon"
+        android:layout_width="22.5dp"
+        android:layout_height="22.5dp"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/pay_way_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/pay_way_item_icon"
+        android:text="兑换券支付"
+        android:textColor="#222222"
+        />
+
+    <TextView
+        android:id="@+id/pay_way_item_recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/pay_way_item_title"
+        android:text="推荐"
+        android:textSize="10sp"
+        android:textColor="#ffffff"
+        android:background="@drawable/shape_pay_way_tag_recommend"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        />
+
+    <RadioButton
+        android:id="@+id/pay_way_item_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/selector_pay_way_rbtn"
+        android:clickable="false"
+        android:focusable="false"
+        />
+
+</RelativeLayout>
