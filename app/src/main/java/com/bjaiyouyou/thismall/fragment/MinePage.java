@@ -62,7 +62,6 @@ import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.pay.AuthResult;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
-import com.bjaiyouyou.thismall.utils.ACache;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -507,8 +506,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                          * 频繁报错
                          */
 //                        SPUtils.put(getContext(), Constants.USER, response+"");
-                        ACache aCache=ACache.get(getActivity());
-                        aCache.put(Constants.USER,mUser);
+//                        ACache aCache=ACache.get(getActivity());
+//                        aCache.put(Constants.USER,mUser);
 //                        SPUtils.put(MainApplication.getContext(), Constants.USER, mUser + "");
                     } else {
                         ToastUtils.showShort("数据加载错误");
