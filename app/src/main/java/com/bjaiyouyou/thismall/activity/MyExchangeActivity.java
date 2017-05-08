@@ -128,7 +128,15 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
                 .add(R.id.ll_my_exchange_fragment, mFragments.get(0))
                 .add(R.id.ll_my_exchange_fragment, mFragments.get(1)).hide(mFragments.get(1))
                 .show(mFragments.get(0))
-                .commit();
+                .commitAllowingStateLoss();
+
+        /**
+         报错Can not perform this action after onSaveInstanceState
+         大致意思是说我使用的 commit方法是在Activity的onSaveInstanceState()之后调用的，这样会出错，因为
+         onSaveInstanceState方法是在该Activity即将被销毁前调用，来保存Activity数据的，如果在保存玩状态后
+         再给它添加Fragment就会出错。解决办法就是把commit（）方法替换成 commitAllowingStateLoss()就行
+         了，其效果是一样的。
+         */
     }
 
     private void setupView() {
