@@ -776,8 +776,6 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 startActivity(new Intent(getActivity(), SearchGoodsActivity.class));
                 break;
             case R.id.ll_home_scan:
-                //跳转到拍照
-
                 //跳转到扫码
                 Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivity(intent);
