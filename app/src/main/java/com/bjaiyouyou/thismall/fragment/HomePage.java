@@ -727,22 +727,26 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             public void onResponse(String response, int id) {
                 if (!TextUtils.isEmpty(response)) {
                     String pushMessages = response.trim();
-                    SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_ONE, pushMessages);
-                    //获取第二页
-                    mClientApi.getPushMessage(2, new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
+                    if (pushMessages!=null){
+                        SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_ONE, pushMessages);
+                        //获取第二页
+                        mClientApi.getPushMessage(2, new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
 
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (!TextUtils.isEmpty(response)) {
-                                String pushMessages = response.trim();
-                                SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_TWO, pushMessages);
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                if (!TextUtils.isEmpty(response)) {
+                                    String pushMessages = response.trim();
+                                    if (pushMessages!=null){
+                                        SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_TWO, pushMessages);
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });
