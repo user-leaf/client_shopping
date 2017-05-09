@@ -9,10 +9,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -41,17 +39,16 @@ import com.bjaiyouyou.thismall.model.PayOrderNum;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 
@@ -75,8 +72,8 @@ import okhttp3.Call;
  * @author QuXinhang
  *         Creare 2016/8/12 9:35
  */
-public class MineMemberCenterActivity extends BaseActivity implements TagFlowLayout.OnTagClickListener,
-        View.OnClickListener, TagFlowLayout.OnSelectListener, OnItemClickListener {
+public class MineMemberCenterActivity extends BaseActivity implements
+        View.OnClickListener,OnItemClickListener {
 
     public static final String TAG = MineMemberCenterActivity.class.getSimpleName();
 
@@ -174,6 +171,8 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     private ActivateInfoModel.UserAboutCashInfoBean mUserAboutCashInfo;
     //积分数
     private TextView mTvIntegralNum;
+    //按钮数组
+    private List<TextView> mTextViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,7 +211,6 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         }
 //        mTvWithdrawRecord = ((TextView) findViewById(R.id.tv_member_center_title_bar_withdraw_record));
         mTitleBar = (IUUTitleBar) findViewById(R.id.member_center_title_bar);
-        mTagFlowLayout = (TagFlowLayout) findViewById(R.id.member_center_tfl);
         mEtMoney = (EditText) findViewById(R.id.member_center_et_money);
         mBtnNext = (Button) findViewById(R.id.member_center_btn_next);
         mOtherView = findViewById(R.id.member_center_rl_other);
@@ -240,6 +238,32 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
 //            mTvWithdrawRecord.setVisibility(View.GONE);
 
         }
+
+        //获取按钮数组
+        mTextViews=new ArrayList<>();
+        TextView tv=((TextView) findViewById(R.id.tv_uu_1));
+        mTextViews.add(tv);
+        TextView tv1=((TextView) findViewById(R.id.tv_uu_2));
+        mTextViews.add(tv1);
+        TextView tv2=((TextView) findViewById(R.id.tv_uu_3));
+        mTextViews.add(tv2);
+        TextView tv3=((TextView) findViewById(R.id.tv_uu_4));
+        mTextViews.add(tv3);
+        TextView tv4=((TextView) findViewById(R.id.tv_uu_5));
+        mTextViews.add(tv4);
+        TextView tv5=((TextView) findViewById(R.id.tv_uu_6));
+        mTextViews.add(tv5);
+        TextView tv6=((TextView) findViewById(R.id.tv_uu_7));
+        mTextViews.add(tv6);
+        TextView tv7=((TextView) findViewById(R.id.tv_uu_8));
+        mTextViews.add(tv7);
+        TextView tv8=((TextView) findViewById(R.id.tv_uu_9));
+        mTextViews.add(tv8);
+        TextView tv9=((TextView) findViewById(R.id.tv_uu_10));
+        mTextViews.add(tv9);
+        TextView tv10=((TextView) findViewById(R.id.tv_uu_11));
+        mTextViews.add(tv10);
+
     }
 
     private void setupView() {
@@ -248,9 +272,7 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         //换取详请监听
 //        mTvWithdrawRecord.setOnClickListener(this);
         mTitleBar.setLeftLayoutClickListener(this);
-        //列表监听
-        mTagFlowLayout.setOnTagClickListener(this);
-        mTagFlowLayout.setOnSelectListener(this);
+
         //兑换监听
         mBtnNext.setOnClickListener(this);
         //登录跳转监听
@@ -298,7 +320,13 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
         //换取监听
         mTvWithDraw.setOnClickListener(this);
 
-        mTagFlowLayout.setOnTagClickListener(this);
+
+        //金额按钮监听
+        for (int i=0;i<mTextViews.size();i++){
+            TextView tv=mTextViews.get(i);
+            tv.setTag(i);
+            tv.setOnClickListener(this);
+        }
 
     }
 
@@ -357,34 +385,34 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     }
 
     private void initControl() {
-        mTagAdapter = new TagAdapter<String>(mVals) {
-            @Override
-            public View getView(FlowLayout parent, int position, String s) {
-                TextView textView = (TextView) LayoutInflater.from(MineMemberCenterActivity.this)
-                        .inflate(R.layout.member_center_tv, mTagFlowLayout, false);
-
-                int width = ScreenUtils.getScreenWidth(getApplicationContext());
-                int textWidth = width / 4;
-
-                textView.setText(s);
-
-                LogUtils.e("width", "" + width);
-                LogUtils.e("textHeight", textView.getHeight() + "");
-                int textSpace = textWidth / 10;
-
-                ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(textWidth, textWidth / 2);
-                textView.setPadding(0, 10, 0, 10);
-                params.setMargins(textSpace, 0, textSpace, textSpace);
-                textView.setLayoutParams(params);
-                return textView;
-            }
-        };
-
-        mTagFlowLayout.setAdapter(mTagAdapter);
-
-        // 预设选中
-        mTagAdapter.setSelectedList(0);
-        mTagFlowLayout.getChildAt(0).setClickable(true);
+//        mTagAdapter = new TagAdapter<String>(mVals) {
+//            @Override
+//            public View getView(FlowLayout parent, int position, String s) {
+//                TextView textView = (TextView) LayoutInflater.from(MineMemberCenterActivity.this)
+//                        .inflate(R.layout.member_center_tv, mTagFlowLayout, false);
+//
+//                int width = ScreenUtils.getScreenWidth(getApplicationContext());
+//                int textWidth = width / 4;
+//
+//                textView.setText(s);
+//
+//                LogUtils.e("width", "" + width);
+//                LogUtils.e("textHeight", textView.getHeight() + "");
+//                int textSpace = textWidth / 10;
+//
+//                ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(textWidth, textWidth / 2);
+//                textView.setPadding(0, 10, 0, 10);
+//                params.setMargins(textSpace, 0, textSpace, textSpace);
+//                textView.setLayoutParams(params);
+//                return textView;
+//            }
+//        };
+//
+//        mTagFlowLayout.setAdapter(mTagAdapter);
+//
+//        // 预设选中
+//        mTagAdapter.setSelectedList(0);
+//        mTagFlowLayout.getChildAt(0).setClickable(true);
         //初始化兑换钱数
         mPayMoney = mRMBs[0];
         mGetCoin = mCoins[0];
@@ -445,7 +473,66 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
             case R.id.tv_uu_detail: // UU详情入口
                 jump(UUDetailActivity.class, false);
                 break;
+
+
+            //////////////////////////////////////处理UU充值选项/////////////////////////
+            case R.id.tv_uu_1:
+                uuBntChange(v);
+                break;
+            case R.id.tv_uu_2:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_3:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_4:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_5:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_6:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_7:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_8:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_9:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_10:
+                uuBntChange(v);
+
+                break;
+            case R.id.tv_uu_11:
+                uuBntChange(v);
+                break;
+
         }
+    }
+
+    /**
+     * UU充值按钮改变
+     * @param v
+     */
+    private void uuBntChange(View v) {
+        mTextViews.get(choice).setEnabled(true);
+        //处理点击改变
+        choice = (int) v.getTag();
+        mTextViews.get(choice).setEnabled(false);
+        changePay();
+        LogUtils.d(TAG, mVals[choice]);
     }
 
 //    @Override
@@ -648,32 +735,6 @@ public class MineMemberCenterActivity extends BaseActivity implements TagFlowLay
     }
 
 
-    /**
-     * TagFlowLayout
-     *
-     * @param selectPosSet
-     */
-    @Override
-    public void onSelected(Set<Integer> selectPosSet) {
-
-    }
-
-    @Override
-    public boolean onTagClick(View view, int position, FlowLayout parent) {
-        LogUtils.d(TAG, mVals[position]);
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            if (i != position) {
-//                        parent.getChildAt(i).setEnabled(true);
-                parent.getChildAt(i).setClickable(false);
-            } else {
-                parent.getChildAt(i).setClickable(true);
-            }
-        }
-        //处理点击改变
-        choice = position;
-        changePay();
-        return false;
-    }
 
     /**
      * 处理条目点击事件的切换
