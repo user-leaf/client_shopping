@@ -474,7 +474,13 @@ public class MineMemberCenterActivity extends BaseActivity implements
                 jump(UUDetailActivity.class, false);
                 break;
 
+        }
+    }
 
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
             //////////////////////////////////////处理UU充值选项/////////////////////////
             case R.id.tv_uu_1:
                 uuBntChange(v);
@@ -518,7 +524,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
             case R.id.tv_uu_11:
                 uuBntChange(v);
                 break;
-
         }
     }
 

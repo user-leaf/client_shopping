@@ -400,7 +400,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mIVUserIcon.setOnClickListener(this);
 
         //积分充值禁止进入
-//        mRLIntegral.setOnClickListener(this);
+        mRLIntegral.setOnClickListener(this);
 
         mRLGoldCoin.setOnClickListener(this);
         mRLWithdraw.setOnClickListener(this);

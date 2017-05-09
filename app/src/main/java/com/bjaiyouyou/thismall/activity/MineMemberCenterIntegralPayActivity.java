@@ -48,7 +48,7 @@ import okhttp3.Call;
  * @author QuXinhang
  *         Creare 2016/8/13 15:31
  */
-public class MineMemberCenterIntegralPayActivity extends BaseActivity implements View.OnClickListener, TagFlowLayout.OnTagClickListener, OnItemClickListener {
+public class MineMemberCenterIntegralPayActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {
 
     public static final String TAG = MineMemberCenterIntegralPayActivity.class.getSimpleName();
     //列表数据
@@ -100,6 +100,9 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
     private int mLimitMonyes;
     //积分详情入口
     private TextView mTvIntegralDetail;
+
+    //按钮数组
+    private List<TextView> mTextViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +163,6 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 
         mTitleBar = ((IUUTitleBar) findViewById(R.id.title_member_center_integral));
         mTvHavenIntegral = ((TextView) findViewById(R.id.tv_member_center_integral_haven));
-        mTFL = ((TagFlowLayout) findViewById(R.id.tfl_member_center_integral));
         mBtnPay = ((Button) findViewById(R.id.btn_pay_member_center_integral));
         mEtMoney = ((EditText) findViewById(R.id.et_money_member_center_integral));
 
@@ -177,13 +179,38 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
             mSlLogin.setVisibility(View.GONE);
             mLLNotLogin.setVisibility(View.VISIBLE);
         }
+
+        //获取按钮数组
+        mTextViews=new ArrayList<>();
+        TextView tv=((TextView) findViewById(R.id.tv_integral_1));
+        mTextViews.add(tv);
+        TextView tv1=((TextView) findViewById(R.id.tv_integral_2));
+        mTextViews.add(tv1);
+        TextView tv2=((TextView) findViewById(R.id.tv_integral_3));
+        mTextViews.add(tv2);
+        TextView tv3=((TextView) findViewById(R.id.tv_integral_4));
+        mTextViews.add(tv3);
+        TextView tv4=((TextView) findViewById(R.id.tv_integral_5));
+        mTextViews.add(tv4);
+        TextView tv5=((TextView) findViewById(R.id.tv_integral_6));
+        mTextViews.add(tv5);
+        TextView tv6=((TextView) findViewById(R.id.tv_integral_7));
+        mTextViews.add(tv6);
+        TextView tv7=((TextView) findViewById(R.id.tv_integral_8));
+        mTextViews.add(tv7);
+        TextView tv8=((TextView) findViewById(R.id.tv_integral_9));
+        mTextViews.add(tv8);
+        TextView tv9=((TextView) findViewById(R.id.tv_integral_10));
+        mTextViews.add(tv9);
+        TextView tv10=((TextView) findViewById(R.id.tv_integral_11));
+        mTextViews.add(tv10);
+
     }
 
     private void setUpView() {
         mTvIntegralDetail.setOnClickListener(this);
         mTitleBar.setLeftLayoutClickListener(this);
         mBtnPay.setOnClickListener(this);
-        mTFL.setOnTagClickListener(this);
         mTvGotoLogin.setOnClickListener(this);
         mEtMoney.addTextChangedListener(new TextWatcher() {
             @Override
@@ -215,7 +242,14 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
             }
         });
 
-        mTFL.setOnTagClickListener(this);
+
+        //金额按钮监听
+        for (int i=0;i<mTextViews.size();i++){
+            TextView tv=mTextViews.get(i);
+            tv.setTag(i);
+            tv.setOnClickListener(this);
+        }
+
     }
 
 
@@ -256,10 +290,7 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
                 return textView;
             }
         };
-        mTFL.setAdapter(mTagAdapter);
         //初始化页面状态
-        mTagAdapter.setSelectedList(0);
-        mTFL.getChildAt(0).setClickable(true);
         mPayMoney = mMoneys.get(0);
         mGetIntegral = mIntegralNums.get(0);
         setButtonIntegral();
@@ -354,6 +385,83 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
                 jump(IntegralDetailActivity.class, false);
                 break;
 
+
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
+            //////////////////////////////////////处理积分充值选项/////////////////////////
+            case R.id.tv_integral_1:
+                integralBntChange(v);
+                break;
+            case R.id.tv_integral_2:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_3:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_4:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_5:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_6:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_7:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_8:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_9:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_10:
+                integralBntChange(v);
+
+                break;
+            case R.id.tv_integral_11:
+                integralBntChange(v);
+                break;
+        }
+    }
+
+    /**
+     * 处理我的积分按钮切换
+     * @param v
+     */
+
+    private void integralBntChange(View v) {
+        mTextViews.get(mChooseIndex).setEnabled(true);
+        //处理点击改变
+        mChooseIndex = (int) v.getTag();
+        mTextViews.get(mChooseIndex).setEnabled(false);
+
+        if (mChooseIndex == mIntegralNums.size()) {
+            mBtnPay.setText("充值");
+            mRlEtPayMoney.setVisibility(View.VISIBLE);
+            //刚刚切换过来初始化
+            mPayMoney = 0;
+            mGetIntegral = 0;
+        } else {
+            mEtMoney.setText("");
+            mRlEtPayMoney.setVisibility(View.GONE);
+            mPayMoney = mMoneys.get(mChooseIndex);
+            mGetIntegral = mIntegralNums.get(mChooseIndex);
+            setButtonIntegral();
         }
     }
 
@@ -409,32 +517,6 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 
     }
 
-    @Override
-    public boolean onTagClick(View view, int position, FlowLayout parent) {
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            if (i != position) {
-//                        parent.getChildAt(i).setEnabled(true);
-                parent.getChildAt(i).setClickable(false);
-            } else {
-                parent.getChildAt(i).setClickable(true);
-            }
-        }
-        if (position == mIntegralNums.size()) {
-            mBtnPay.setText("充值");
-            mRlEtPayMoney.setVisibility(View.VISIBLE);
-            //刚刚切换过来初始化
-            mPayMoney = 0;
-            mGetIntegral = 0;
-        } else {
-            mEtMoney.setText("");
-            mRlEtPayMoney.setVisibility(View.GONE);
-            mChooseIndex = position;
-            mPayMoney = mMoneys.get(mChooseIndex);
-            mGetIntegral = mIntegralNums.get(mChooseIndex);
-            setButtonIntegral();
-        }
-        return true;
-    }
 
     //////////////////////////////////支付
     // 去付款2之调用ping++去付款
