@@ -9,7 +9,7 @@
           android:text="SIZESIZE"
           android:singleLine="true"
           android:background="@drawable/selector_goodsdetail_size_item_bg"
-          android:textColor="@drawable/selector_textcolor"
+          android:textColor="@drawable/selector_good_detail_size_textcolor"
     >
 
 </TextView>
