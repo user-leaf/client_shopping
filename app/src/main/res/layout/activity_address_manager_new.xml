@@ -42,7 +42,7 @@
             android:id="@+id/address_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_red"
+            android:background="@color/app_basic"
             android:gravity="center"
             android:padding="15dp"
             android:text="添加新地址"
