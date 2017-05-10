@@ -76,7 +76,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/app_red"
+                android:background="@color/app_basic"
                 >
                 <TextView
                     android:id="@+id/tv_pay_fail_text1"
@@ -216,7 +216,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="本次消费金可获得积分："/>
+                    android:text="本次消费金可获得UU："/>
                 <TextView
                     android:id="@+id/tv_orderpayfail_integral"
                     android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="积分"/>
+                    android:text="UU"/>
             </LinearLayout>
             <LinearLayout
                 android:padding="10dp"

@@ -346,7 +346,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/app_red"
+                android:textColor="@color/app_basic"
                 android:background="@drawable/shape_copy_button_bg_stroke_red"
                 android:text="加入购物车"/>
             <ImageView
