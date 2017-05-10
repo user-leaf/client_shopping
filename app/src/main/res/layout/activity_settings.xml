@@ -117,7 +117,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:background="@color/app_red"
+        android:background="@color/app_basic"
         android:gravity="center"
         android:text="退出账号"
         android:textColor="#ffffff"
