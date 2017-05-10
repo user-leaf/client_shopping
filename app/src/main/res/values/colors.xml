@@ -12,8 +12,9 @@
     <color name="yellow">#FFFF00</color>
     <color name="orange">#FF6600</color>
 
+    <color name="app_basic">#FF5A27</color>
     <color name="app_common_bg">#EEEEEE</color>  <!--fcfcfc-->
-    <color name="top_bar_normal_bg">#E10C28</color> <!--00acff--> <!--FF6666-->
+    <color name="top_bar_normal_bg">#FF5A27</color> <!--00acff--> <!--FF6666-->
     <color name="app_red">#E10C28</color>
     <color name="app_gray">#b5b5b5</color>
     <color name="app_btn_gray">#dddddd</color>
@@ -28,6 +29,10 @@
     <color name="app_gray_dddddd">#dddddd</color>
     <color name="app_orange">#FF7800</color>
     <color name="app_blue">#0A92DC</color>
+
+    <color name="btn_default">#FF5A27</color>
+    <color name="btn_pressed">#E13811</color>
+    <color name="btn_unenable">#DCDCDC</color>
 
     <color name="side_bar_text">#4A4A4A</color>
     <color name="shadow_bg">#66000000</color>
