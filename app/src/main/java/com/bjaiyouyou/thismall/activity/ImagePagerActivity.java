@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * 图片查看器
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/10/25
  */
 public class ImagePagerActivity extends BaseActivity {

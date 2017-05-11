@@ -18,7 +18,7 @@ import java.util.List;
  * @see AddressManagerNewActivity
  * 条目不可滑动
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/6
  */
 public class AddressManagerActivity extends BaseActivity implements View.OnClickListener {

@@ -50,7 +50,7 @@ import okhttp3.Call;
 /**
  * 购物车页面
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/5
  */
 public class CartPage extends BaseFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
@@ -768,7 +768,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     /**
      * 购物车辅助类
      * <p>
-     * Created by kanbin on 2016/12/5.
+     * Created by JackB on 2016/12/5.
      */
     public static class CartHelper {
 

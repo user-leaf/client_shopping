@@ -19,7 +19,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 public class Api4Home extends BaseClientApi {
 
     /**
-     * Created bykanbin
+     * Created byJackB
      * on 2017/2/16.
      */
     /**

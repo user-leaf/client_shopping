@@ -21,7 +21,7 @@ import java.util.List;
  * 购物车页 数据列表适配器
  * @see CartAdapter2
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/5
  */
 public class CartAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {

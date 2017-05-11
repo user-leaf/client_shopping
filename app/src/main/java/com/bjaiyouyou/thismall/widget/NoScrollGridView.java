@@ -11,7 +11,7 @@ import android.widget.GridView;
  * http://mobile.51cto.com/aprogram-394381.htm
  * http://blog.csdn.net/zhiying201039/article/details/8631418
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/2
  */
 public class NoScrollGridView extends GridView {

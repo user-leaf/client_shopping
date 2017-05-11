@@ -50,7 +50,7 @@ import okhttp3.Call;
 /**
  * 登录页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/18
  * @author QuXinhang
  * UpDate 2016/6/25 10:12

@@ -33,7 +33,7 @@ import com.bjaiyouyou.thismall.other.UpdateManager;
 /**
  * 升级工具类
  * <p>
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/10
  */
 public class UpdateUtils {

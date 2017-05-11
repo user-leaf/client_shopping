@@ -61,7 +61,7 @@ import okhttp3.Call;
 /**
  * 确认订单页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class OrderMakeActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {

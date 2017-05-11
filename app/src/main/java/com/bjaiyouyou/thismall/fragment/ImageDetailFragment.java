@@ -20,7 +20,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * 单张图片显示Fragment
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/10/25
  */
 public class ImageDetailFragment extends BaseFragment {

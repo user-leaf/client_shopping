@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 邀请好友页
  *
- * User: kanbin
+ * User: JackB
  */
 public class InviteActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 

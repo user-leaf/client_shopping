@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 商品对象(首页物品列表、购物车、订单详情、下订单)
- * @author kanbin
+ * @author JackB
  * @date 2016/6/5
  */
 public class ProductInfo {

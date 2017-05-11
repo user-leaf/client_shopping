@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 收货地址数据类（新）
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/30
  */
 public class AddressInfo2 {

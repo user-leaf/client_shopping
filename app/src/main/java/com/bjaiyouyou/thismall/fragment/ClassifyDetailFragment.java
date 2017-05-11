@@ -55,7 +55,7 @@ import okhttp3.Call;
 /**
  * 分类详情页
  * <p>
- * Created by kanbin on 2017/3/28.
+ * Created by JackB on 2017/3/28.
  */
 public class ClassifyDetailFragment extends Fragment implements OnItemClickListener, ClassifyAdapter.OnItemClickListener {
     public static final String TAG = ClassifyDetailFragment.class.getSimpleName();

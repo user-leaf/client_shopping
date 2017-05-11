@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 活动管理器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/8/4
  */
 public class ActivityCollector {

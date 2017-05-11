@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 获取手机通讯录联系人
- * User: kanbin
+ * User: JackB
  * Date: 2016/5/16
  */
 public class MobileUtils {

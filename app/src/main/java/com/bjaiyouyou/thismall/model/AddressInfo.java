@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 收货地址数据类（旧）
- * @author kanbin
+ * @author JackB
  * @date 2016/6/6
  * @see AddressInfo2 (新)
  */

@@ -27,7 +27,7 @@ import okhttp3.Call;
  * <p/>
  * 条目不可滑动
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  * @see AddressManagerActivity
  */

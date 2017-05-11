@@ -9,7 +9,7 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 /**
  * 个人中心-客服
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/16
  */
 public class MineCustomerServiceActivity extends BaseActivity implements View.OnClickListener {

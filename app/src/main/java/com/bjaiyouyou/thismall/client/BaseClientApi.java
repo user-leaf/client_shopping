@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * 网络请求base类
  * <p>
- * Created by kanbin on 2016/12/8.
+ * Created by JackB on 2016/12/8.
  */
 public class BaseClientApi {
     public static final String TAG = BaseClientApi.class.getSimpleName();

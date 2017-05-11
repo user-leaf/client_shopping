@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 购物车接口数据中的CartModel类
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/17
  */
 public class CartModel {
@@ -81,7 +81,7 @@ public class CartModel {
     /**
      * 购物车接口数据中的Product类
      *
-     * @author kanbin
+     * @author JackB
      * @date 2016/7/17
      */
     public static class ProductBean {
@@ -169,7 +169,7 @@ public class CartModel {
     /**
      * 购物车接口数据中的ProductSize类
      *
-     * @author kanbin
+     * @author JackB
      * @date 2016/7/17
      */
     public static class ProductSizeBean {
@@ -494,7 +494,7 @@ public class CartModel {
     /**
      * 购物车接口数据中的ProductImageModel类
      *
-     * @author kanbin
+     * @author JackB
      * @date 2016/7/17
      */
     public static class ProductImagesBean {

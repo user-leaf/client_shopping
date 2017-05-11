@@ -10,7 +10,7 @@ import com.bjaiyouyou.thismall.utils.SPUtils;
 /**
  * 当前登录用户信息管理
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/9
  */
 public class CurrentUserManager {

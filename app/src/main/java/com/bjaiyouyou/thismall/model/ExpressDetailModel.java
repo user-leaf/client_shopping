@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 物流信息
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/10/25
  */
 public class ExpressDetailModel {

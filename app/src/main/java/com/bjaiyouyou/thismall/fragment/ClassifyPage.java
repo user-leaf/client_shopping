@@ -33,7 +33,7 @@ import okhttp3.Call;
 
 /**
  * 分类页
- * Created by kanbin on 2017/3/28.
+ * Created by JackB on 2017/3/28.
  */
 /**
  *author Qxh

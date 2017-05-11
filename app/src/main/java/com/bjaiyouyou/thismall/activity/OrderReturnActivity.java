@@ -51,7 +51,7 @@ import top.zibin.luban.OnCompressListener;
 /**
  * 申请退款页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/14
  * <p/>
  * 本页搜mOrderNumber

@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 购物车条目（新）
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/17
  */
 public class CartItem2 {

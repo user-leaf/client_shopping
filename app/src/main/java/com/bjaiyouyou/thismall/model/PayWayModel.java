@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 支付方式
  *
- * Created by kanbin on 2017/4/21.
+ * Created by JackB on 2017/4/21.
  */
 public class PayWayModel {
     private String payWay;

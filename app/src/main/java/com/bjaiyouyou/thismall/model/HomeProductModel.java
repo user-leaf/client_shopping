@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 首页为您推荐商品中的Model
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/18
  */
 

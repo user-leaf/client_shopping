@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 申请退款页 展示选择的图片的RecyclerView的适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/15
  */
 public class OrderReturnImageUploadAdapter extends RecyclerView.Adapter<OrderReturnImageUploadAdapter.ViewHolder> {

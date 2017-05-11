@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 购物车条目(旧)
  * @see CartItem2
- * @author kanbin
+ * @author JackB
  * @date 2016/6/5
  */
 public class CartItem implements Serializable{

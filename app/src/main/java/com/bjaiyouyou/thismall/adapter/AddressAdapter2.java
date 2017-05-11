@@ -34,7 +34,7 @@ import okhttp3.Call;
 /**
  * 新的收货地址列表适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class AddressAdapter2 extends BaseSwipeAdapter implements View.OnClickListener {

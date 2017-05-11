@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * （新）任务页 GridView的适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/16
  */
 public class TaskGridViewAdapter extends BaseAdapter {

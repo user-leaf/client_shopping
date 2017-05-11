@@ -5,7 +5,7 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 /**
  * APP中大部分的常量定义
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/1
  */
 public class Constants {

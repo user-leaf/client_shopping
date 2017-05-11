@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 订单支付成功页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/28
  */
 public class OrderPaySuccessActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {

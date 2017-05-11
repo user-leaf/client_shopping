@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 邀请页验证联系人是否是注册会员 数据类
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/16
  */
 public class ContactMemberModel {

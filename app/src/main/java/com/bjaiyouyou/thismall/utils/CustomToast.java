@@ -8,7 +8,7 @@ import android.widget.Toast;
  * 自定义Toast类，解决Toast重复显示问题
  * http://blog.sina.com.cn/s/blog_7bac47070101449g.html
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/6
  */
 public class CustomToast {

@@ -51,7 +51,7 @@ import okhttp3.Call;
 
 /**
  * 支付底部弹窗Fragment
- * Created by kanbin on 2017/4/25.
+ * Created by JackB on 2017/4/25.
  */
 public class PayDetailFragment extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
     public static final String TAG = PayDetailFragment.class.getSimpleName();

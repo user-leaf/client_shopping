@@ -41,7 +41,7 @@ import okhttp3.Call;
 /**
  * 购物车页 数据列表适配器(适应新的数据类型)
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/5
  */
 public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {

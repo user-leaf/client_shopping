@@ -32,7 +32,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * 处理退款申请页、退款进度
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/20
  */
 public class OrderReturnDealActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {

@@ -27,7 +27,7 @@ import okhttp3.Call;
  * 充值成功页
  * 积分和UU的充值成功页
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/15
  */
 public class MineRechargeSuccessActivity extends BaseActivity implements View.OnClickListener {

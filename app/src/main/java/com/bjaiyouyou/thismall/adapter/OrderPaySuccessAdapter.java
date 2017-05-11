@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 订单支付成功页GridView适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/28
  */
 public class OrderPaySuccessAdapter extends BaseAdapter {

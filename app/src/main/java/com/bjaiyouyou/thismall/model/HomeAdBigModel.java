@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 首页广告轮播
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/12
  */
 public class HomeAdBigModel {

@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.task;
 
 /**
  * 异步任务的回调接口
- * @author kanbin
+ * @author JackB
  * @date 2016/6/1
  * @see TaskResult
  */

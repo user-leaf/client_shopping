@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 购物车接口数据中的CartBigModel类
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/17
  */
 public class CartBigModel {

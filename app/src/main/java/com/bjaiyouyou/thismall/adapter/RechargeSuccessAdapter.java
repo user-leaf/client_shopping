@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * UU充值、积分充值 充值成功页
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/15
  */
 public class RechargeSuccessAdapter extends BaseAdapter{

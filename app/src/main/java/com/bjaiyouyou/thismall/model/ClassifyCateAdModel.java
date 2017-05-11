@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 分类详情页广告数据格式
  *
- * Created by kanbin on 2017/3/29.
+ * Created by JackB on 2017/3/29.
  */
 public class ClassifyCateAdModel {
 

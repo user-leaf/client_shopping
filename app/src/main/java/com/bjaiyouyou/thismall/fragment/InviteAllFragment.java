@@ -50,7 +50,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * 邀请成员页--所有联系人
  * <p/>
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/24
  */
 public class InviteAllFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {

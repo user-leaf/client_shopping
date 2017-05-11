@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * 正则表达式处理类
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/22
  */
 public class ValidatorsUtils {

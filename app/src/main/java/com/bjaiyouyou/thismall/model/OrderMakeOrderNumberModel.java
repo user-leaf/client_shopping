@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 确认订单页提交订单后的订单号
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/2
  */
 public class OrderMakeOrderNumberModel {

@@ -28,7 +28,7 @@ import okhttp3.Call;
  * @see ClientApiHelper
  * ClientApiHelper.getInstance().getClientApi(Api4XXX.class).xxx()
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/1
  */
 public class ClientAPI {

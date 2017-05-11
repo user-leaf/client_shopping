@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 确认订单页列表适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class OrderMakeAdapter extends BaseAdapter {

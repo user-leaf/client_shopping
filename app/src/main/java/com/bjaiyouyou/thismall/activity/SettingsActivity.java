@@ -26,7 +26,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 /**
  * 设置
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/6
  */
 public class SettingsActivity extends BaseActivity implements View.OnClickListener {

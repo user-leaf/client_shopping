@@ -56,7 +56,7 @@ import okhttp3.Call;
  * UU兑换页
  * 原会员中心页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/20
  */
 

@@ -8,7 +8,7 @@ import android.widget.ListView;
 /**
  * 工具类
  * 
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class Utility {

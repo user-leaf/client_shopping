@@ -5,7 +5,7 @@ import cn.sharesdk.framework.authorize.AuthorizeAdapter;
 /**
  * ShareSDK分享 去掉 powered by ShareSDK标识所需的
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/29
  */
 public class MobShareAdapter extends AuthorizeAdapter {

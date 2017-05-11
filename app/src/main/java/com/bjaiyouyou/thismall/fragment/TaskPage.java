@@ -57,7 +57,7 @@ import okhttp3.Call;
 /**
  * 任务页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/16
  */
 public class TaskPage extends BaseFragment implements AdapterView.OnItemClickListener, View.OnClickListener, OnItemClickListener {

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * 数据清理管理
  * 不知道准不准确：http://www.2cto.com/kf/201503/385492.html
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/7
  */
 public class DataCleanManager {

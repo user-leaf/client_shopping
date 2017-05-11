@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 收货地址列表适配器（旧）
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/6
  */
 public class AddressAdapter extends BaseAdapter implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {

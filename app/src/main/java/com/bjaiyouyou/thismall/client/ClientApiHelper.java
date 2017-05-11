@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * ClientAPI实体管理类
  * <p>
- * Created by kanbin on 2016/12/8.
+ * Created by JackB on 2016/12/8.
  */
 public class ClientApiHelper {
     public static final String TAG = ClientApiHelper.class.getSimpleName();

@@ -90,7 +90,7 @@ import okhttp3.Call;
  * 个人页
  *
  * @author quxinhang
- * @author kanbin
+ * @author JackB
  * @date 2016/5/31
  * @date 2016/6/20
  */

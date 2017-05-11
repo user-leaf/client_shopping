@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * UU、积分 充值成功页数据类
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/15
  */
 public class RechargeSuccessModel {

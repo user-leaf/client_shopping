@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 下订单页列表项数据(旧 @see CartItem2.java)
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class OrderMakeItem {

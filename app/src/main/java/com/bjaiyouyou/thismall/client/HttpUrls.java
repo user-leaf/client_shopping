@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.client;
 /**
  * urls
  * <p/>
- * User: kanbin
+ * User: JackB
  * Date: 2016/11/2
  */
 public class HttpUrls {

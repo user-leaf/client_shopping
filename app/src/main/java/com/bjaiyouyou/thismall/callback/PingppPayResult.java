@@ -11,7 +11,7 @@ import com.pingplusplus.android.Pingpp;
 /**
  * 支付结果
  *
- * Created by kanbin on 2017/3/23.
+ * Created by JackB on 2017/3/23.
  */
 public class PingppPayResult {
 

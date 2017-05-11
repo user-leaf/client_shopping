@@ -26,7 +26,7 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 /**
  * 网页展示页
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/12
  */
 public class WebShowActivity extends BaseActivity implements View.OnClickListener {

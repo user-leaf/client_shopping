@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 支付方式
  * <p>
- * Created by kanbin on 2017/4/21.
+ * Created by JackB on 2017/4/21.
  */
 public class PayWayAdapter extends BaseAdapter {
 

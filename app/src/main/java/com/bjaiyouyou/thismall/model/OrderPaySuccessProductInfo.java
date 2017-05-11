@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 订单支付成功页商品类
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/28
  */
 public class OrderPaySuccessProductInfo {

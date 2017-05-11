@@ -13,7 +13,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 /**
  * 加载中Dialog
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/11/3
  */
 public class LoadingDialog extends Dialog {

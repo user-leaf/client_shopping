@@ -19,7 +19,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 /**
  * BaseActivity
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/5/31
  */
 

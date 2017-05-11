@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 邀请页-我邀请的
  * <p/>
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/24
  */
 public class InviteMineAdapter extends BaseAdapter implements SectionIndexer {

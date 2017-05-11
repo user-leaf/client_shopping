@@ -28,7 +28,7 @@ import okhttp3.Call;
  * <p/>
  * 地址选择器控件使用的是 https://github.com/gzu-liyujiang/AndroidPicker
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/6
  */
 public class AddressAddActivity extends BaseActivity implements View.OnClickListener {

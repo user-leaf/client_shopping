@@ -8,7 +8,7 @@ import java.net.URLEncoder;
 /**
  * 图片、图片地址相关
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/30
  */
 public class ImageUtils {

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 地址选择页列表适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class AddressSelectAdapter extends BaseAdapter {

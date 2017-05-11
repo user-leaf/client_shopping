@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 要上传的商品列表中的商品Model
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/7/18
  */
 public class OrderMakeUploadModel {

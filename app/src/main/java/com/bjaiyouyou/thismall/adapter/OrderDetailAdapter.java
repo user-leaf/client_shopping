@@ -22,7 +22,7 @@ import java.util.List;
  * 订单详情页列表适配器
  * 申请退款页列表适配器
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/12
  */
 public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListener {

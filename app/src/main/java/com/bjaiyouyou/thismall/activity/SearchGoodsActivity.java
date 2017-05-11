@@ -48,7 +48,7 @@ import okhttp3.Call;
  *         Create 2016/6/2 11:55
  *         <p>
  *         修改
- * @author kanbin
+ * @author JackB
  * @date 2016/6/16
  */
 @ContentView(R.layout.activity_search_goods)

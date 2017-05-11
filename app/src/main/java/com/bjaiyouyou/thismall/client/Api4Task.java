@@ -14,7 +14,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 /**
  * 任务模块网络请求
  *
- * Created by kanbin on 2017/2/14.
+ * Created by JackB on 2017/2/14.
  */
 public class Api4Task extends BaseClientApi {
 

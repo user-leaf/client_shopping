@@ -38,7 +38,7 @@ import okhttp3.Call;
  * 手机通讯录朋友页面(旧)
  * @see InviteActivity
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/5/18
  */
 public class MobileContactActivity extends BaseActivity implements View.OnClickListener {

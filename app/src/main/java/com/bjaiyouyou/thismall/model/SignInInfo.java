@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 任务页签到数据
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/15
  */
 public class SignInInfo {

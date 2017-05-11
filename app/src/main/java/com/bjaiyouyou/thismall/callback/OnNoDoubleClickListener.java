@@ -7,7 +7,7 @@ import java.util.Calendar;
 /**
  * 防止过快点击造成多次点击事件
  * 
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/29
  */
 public abstract class OnNoDoubleClickListener implements View.OnClickListener {

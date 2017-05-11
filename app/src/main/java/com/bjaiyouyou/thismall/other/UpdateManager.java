@@ -26,7 +26,7 @@ import okhttp3.Call;
 /**
  * 升级管理类
  * <p/>
- * User: kanbin
+ * User: JackB
  * Date: 2016/9/10
  */
 public class UpdateManager {

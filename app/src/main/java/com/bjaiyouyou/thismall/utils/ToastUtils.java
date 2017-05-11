@@ -9,7 +9,7 @@ import com.bjaiyouyou.thismall.MainApplication;
 /**
  * Toast工具类
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/6/1
  */
 

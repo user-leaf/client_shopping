@@ -12,7 +12,7 @@ import com.bjaiyouyou.thismall.utils.LogUtils;
 
 /**
  * WebView 加载网页及资源时，会自动调用这个WebViewClient当中的回调方法
- * @author kanbin
+ * @author JackB
  * @date 2016/6/4
  */
 public class AppWebViewClient extends WebViewClient {

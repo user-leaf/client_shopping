@@ -43,7 +43,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * 邀请成员页--我邀请的
  * <p>
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/24
  */
 public class InviteMineFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {

@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.task;
 
 /**
  * 异步任务通用的数据结果对象：任何异步任务都可以使用
- * @author kanbin
+ * @author JackB
  * @date 2016/6/1
  */
 public class TaskResult {

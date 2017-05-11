@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 订单详情--重新购买--批量添加到购物车
  *
- * User: kanbin
+ * User: JackB
  * Date: 2016/8/25
  */
 public class AddAlltoCartNew {

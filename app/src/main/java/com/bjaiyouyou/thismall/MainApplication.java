@@ -26,7 +26,7 @@ import okhttp3.OkHttpClient;
 /**
  * MainApplication
  *
- * @author kanbin
+ * @author JackB
  * @date 2016/5/31
  */
 public class MainApplication extends MultiDexApplication {

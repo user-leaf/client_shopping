@@ -10,7 +10,7 @@ import android.view.View;
 /**
  * 常用对话框Dialog封装
  * 
- * Created by kanbin on 2017/1/9.
+ * Created by JackB on 2017/1/9.
  */
 public class DialogUtils {
 
