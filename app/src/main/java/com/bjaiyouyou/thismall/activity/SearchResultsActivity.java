@@ -35,7 +35,7 @@ import java.util.List;
 import okhttp3.Call;
 
 /**
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/6/4 10:44
  *         搜索结果页面
  */

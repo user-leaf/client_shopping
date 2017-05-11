@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 搜素结果类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/9 16:14
  *
  *

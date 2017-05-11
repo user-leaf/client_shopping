@@ -6,7 +6,7 @@ import android.widget.ListView;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/22 15:25
  * 解决scrollView与ListView的滑动冲动
  *

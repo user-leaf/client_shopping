@@ -25,7 +25,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/18 11:42
  * 添加startActivityForResult()的跳转方式
  *
@@ -108,7 +108,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      *
-     * @author QuXinhang
+     * @author Alice
      *Creare 2016/6/18 14:19
      * @param intent 意图
 
@@ -124,7 +124,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      *  带值跳转
-     * @author QuXinhang
+     * @author Alice
      *  Creare 2016/6/18 14:19
      * @param intent 意图
      * @param isFinish 是否关闭本页

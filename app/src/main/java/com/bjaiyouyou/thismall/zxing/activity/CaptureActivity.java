@@ -57,7 +57,7 @@ import static com.bjaiyouyou.thismall.utils.LogUtils.e;
 
 /**
  * 
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/5 13:41
  * 
  * 

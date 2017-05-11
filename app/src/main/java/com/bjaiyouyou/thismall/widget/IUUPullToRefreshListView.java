@@ -16,7 +16,7 @@ import com.bjaiyouyou.thismall.animat.IUUPullToRefreshListViewAnimation;
 
 /**
  * 自定义下拉刷新列表
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/1 17:16
  *
  */

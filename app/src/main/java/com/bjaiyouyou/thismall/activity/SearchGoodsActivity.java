@@ -44,7 +44,7 @@ import okhttp3.Call;
 /**
  * 商品搜索界面
  *
- * @author QuXinhang
+ * @author Alice
  *         Create 2016/6/2 11:55
  *         <p>
  *         修改

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 首页每日上新的RecycleView的适配器
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/11/10 13:3
  */
 public class HomeGoodGridNewAdapter extends RecyclerView.Adapter<HomeGoodGridNewAdapter.ViewHolder>  {

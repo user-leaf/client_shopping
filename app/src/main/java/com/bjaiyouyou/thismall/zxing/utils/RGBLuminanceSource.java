@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.zxing.utils;
 
 /**
  * Created by Administrator on 2016/5/21.
- * quxinhang
+ * Alice
  * 图片二位码识别类
  */
 import android.graphics.Bitmap;

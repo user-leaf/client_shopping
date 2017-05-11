@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/14 14:09
  * 选择付款方式页面
  *

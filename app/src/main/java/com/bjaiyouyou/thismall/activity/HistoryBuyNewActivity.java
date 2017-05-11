@@ -33,7 +33,7 @@ import okhttp3.Call;
 /**
  * 历史购买
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/15 14:56
  */
 public class HistoryBuyNewActivity extends BaseActivity {

@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/7/11 12:11
  * 购买历史记录类
  * 显示抢购详情

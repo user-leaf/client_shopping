@@ -55,7 +55,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * 修改个人用户信息页面
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/24 18:11
  */
 public class UpdateMineUserMessageActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks, OnItemClickListener {

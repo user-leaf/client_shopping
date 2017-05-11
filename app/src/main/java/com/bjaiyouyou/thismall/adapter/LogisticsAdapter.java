@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * 查看物流的适配器
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/10/25 15:24
  */
 public class LogisticsAdapter extends MyBaseAdapter<ExpressDetailModel.DataBean.TracesBean.TraceBean> {

@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 批量加入购物车类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/23 16:35
  */
 public class AddAllToCart {

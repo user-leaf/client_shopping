@@ -7,7 +7,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/11/10 14:38
  *
  *

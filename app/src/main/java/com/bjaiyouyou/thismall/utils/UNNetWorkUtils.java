@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 /**
  * 断网处理
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/18 9:49
  */
 public class UNNetWorkUtils {

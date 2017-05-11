@@ -18,7 +18,7 @@ import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 
 /**
- *author Qxh
+ *author Alice
  *created at 2017/3/10 13:39
  * 未完成订单页面网络请求
  */
@@ -26,7 +26,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/10 15:48
      * 获取订单信息
      *
@@ -55,7 +55,7 @@ public class Api4ClientOther extends BaseClientApi {
 
    /**
     *
-    *author Qxh
+    *author Alice
     *created at 2017/3/13 14:46
     *获取历史购买数据
     *
@@ -79,7 +79,7 @@ public class Api4ClientOther extends BaseClientApi {
     
     /**
      * 
-     *author Qxh
+     *author Alice
      *created at 2017/3/14 17:37
      *获取搜索结果的数据
      *
@@ -102,7 +102,7 @@ public class Api4ClientOther extends BaseClientApi {
     }
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/14 17:52
      *获取热门搜索数据
      *
@@ -122,7 +122,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/15 15:08
      * 获得商品扫描数据
      *
@@ -143,7 +143,7 @@ public class Api4ClientOther extends BaseClientApi {
     }
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/15 15:08
      * 获得商品数据
      *
@@ -166,7 +166,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/16 16:25
      *
      * 获得体现记录数据
@@ -191,7 +191,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/16 16:50
      * 获得积分详情数据
      *
@@ -216,7 +216,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/16 16:50
      * 获得UU详情数据
      *
@@ -240,7 +240,7 @@ public class Api4ClientOther extends BaseClientApi {
 
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/17 15:34
      * 修改个人信息，获取验证码
      *

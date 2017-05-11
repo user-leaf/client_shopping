@@ -30,7 +30,7 @@ import okhttp3.Call;
 
 /**
  * 个人中心，绑定手机号页面
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/30 15:49
  *
  *

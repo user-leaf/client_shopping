@@ -6,7 +6,7 @@ import android.view.animation.Transformation;
 
 /**
  * 
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/1 20:29
  * 
  * 

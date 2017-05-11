@@ -33,7 +33,7 @@ import okhttp3.Call;
 
 /**
  * 系统消息列表类
- * author Qxh
+ * author Alice
  * created at 2017/4/14 14:19
  */
 public class SystemPushMessageActivity extends BaseActivity implements View.OnClickListener {

@@ -45,7 +45,7 @@ import okhttp3.Call;
 /**
  * 积分充值页面
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/13 15:31
  */
 public class MineMemberCenterIntegralPayActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {

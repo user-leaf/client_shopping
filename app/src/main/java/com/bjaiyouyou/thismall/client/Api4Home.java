@@ -37,7 +37,7 @@ public class Api4Home extends BaseClientApi {
     }
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/10 15:48
      * 获取首页为您推荐部分的信息
      *
@@ -57,7 +57,7 @@ public class Api4Home extends BaseClientApi {
     }
     /**
      *
-     *author Qxh
+     *author Alice
      *created at 2017/3/24 10:47
      *
      * 获取抢购信息
@@ -73,7 +73,7 @@ public class Api4Home extends BaseClientApi {
 
     /**
      * 是否存在未读取信息
-     *author Qxh
+     *author Alice
      *created at 2017/4/14 17:03
      */
     public void isHaveMessageNotRead(DataCallback<IsHaveMessageNotRead> callback){
@@ -89,7 +89,7 @@ public class Api4Home extends BaseClientApi {
         doGet(url, HomePage.TAG, null, callback);
     }
     /**
-     *author Qxh
+     *author Alice
      *created at 2017/3/24 10:47
      *
      * 获取抢购信息
@@ -116,7 +116,7 @@ public class Api4Home extends BaseClientApi {
     }
     /**
      * 删除系统消息
-     *author Qxh
+     *author Alice
      *created at 2017/4/19 14:48
      */
 

@@ -84,7 +84,7 @@ import java.util.TimerTask;
 import okhttp3.Call;
 
 /**
- * @author QuXinhang
+ * @author Alice
  *         Update 2016/7/3 17:44
  *         添加抢购区域
  *         <p/>

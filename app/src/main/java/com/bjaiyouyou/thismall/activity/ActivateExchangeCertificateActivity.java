@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.bjaiyouyou.thismall.R;
 /**
  * 激活兑换券类
- *author Qxh
+ *author Alice
  *created at 2017/4/21 14:54
  */
 public class ActivateExchangeCertificateActivity extends BaseActivity {

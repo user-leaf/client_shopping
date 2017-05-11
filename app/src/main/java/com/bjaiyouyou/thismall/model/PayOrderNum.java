@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 获取支付订单号
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/5 20:30
  *
  *

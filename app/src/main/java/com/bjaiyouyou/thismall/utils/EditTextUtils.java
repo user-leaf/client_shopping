@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.utils;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/21 11:57
  *
  *

@@ -10,7 +10,7 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/18 11:16
  * 选择默认支付方式
  *

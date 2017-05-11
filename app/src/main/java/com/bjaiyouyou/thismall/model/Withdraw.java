@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 提现信息数据
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/18 20:10
  */
 public class Withdraw {

@@ -7,7 +7,7 @@ import android.widget.RadioGroup;
 
 /**
  * 实现radiogroup中 的radiobutton自动换行
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/10/13 16:35
  */
 public class FlowRadioGroup extends RadioGroup {

@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 是否存在未读系统消息
- *author Qxh
+ *author Alice
  *created at 2017/4/11 16:59
  */
 public class IsHaveMessageNotRead {

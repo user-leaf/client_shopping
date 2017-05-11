@@ -1,7 +1,7 @@
 package com.bjaiyouyou.thismall.activity;
 /**
  * 关于我么页面
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/27 19:57
  *
  *

@@ -8,7 +8,6 @@ import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Map;
@@ -56,7 +55,7 @@ public class Api4Mine extends BaseClientApi {
 
     /**
      * 判断是否绑定支付宝
-     *author Qxh
+     *author Alice
      *created at 2017/3/31 21:59
      */
     public void getIfBindingAlipay(DataCallback<CheckIfBindingAlipayModel> callback){
@@ -73,7 +72,7 @@ public class Api4Mine extends BaseClientApi {
 
     /**
      * 获得支付宝参数
-     *author Qxh
+     *author Alice
      *created at 2017/3/31 21:59
      */
     public void getAuthorizationParameters( StringCallback callback){
@@ -87,7 +86,7 @@ public class Api4Mine extends BaseClientApi {
     }
 //    /**
 //     * 获得支付宝参数
-//     *author Qxh
+//     *author Alice
 //     *created at 2017/3/31 21:59
 //     */
 //    public void getAuthorizationParameters(DataCallback<String> callback){
@@ -101,7 +100,7 @@ public class Api4Mine extends BaseClientApi {
 //    }
     /**
      * 绑定支付宝
-     *author Qxh
+     *author Alice
      *created at 2017/3/31 21:59
      */
     public void bindingAlipay(String userId,DataCallback<BindingAlipayModel> callback){

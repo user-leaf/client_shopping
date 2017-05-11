@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * 提现记录适配器
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/11/1 16:56
  */
 public class WithdrawRecordAdapter extends MyBaseAdapter<WithdrawReCordModel.DataBean>{

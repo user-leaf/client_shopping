@@ -14,7 +14,7 @@ import com.bjaiyouyou.thismall.MainApplication;
  */
 
 /**
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/10/14 10:31
  *         添加网络连接错误Toast
  */

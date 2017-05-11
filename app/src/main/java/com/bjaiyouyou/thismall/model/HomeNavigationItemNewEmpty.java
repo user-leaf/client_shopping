@@ -3,7 +3,7 @@ package com.bjaiyouyou.thismall.model;
 /**
  * 首页抢购商品为空类
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/7/28 10:41
  */
 public class HomeNavigationItemNewEmpty {

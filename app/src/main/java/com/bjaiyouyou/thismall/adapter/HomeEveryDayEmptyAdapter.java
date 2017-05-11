@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 /**
  * 首页每日上新的RecycleView的适配器
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/11/10 13:3
  */
 public class HomeEveryDayEmptyAdapter extends RecyclerView.Adapter<HomeEveryDayEmptyAdapter.ViewHolder> {

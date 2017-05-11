@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 订单支付失败的订单类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/7/30 14:40
  *
  *

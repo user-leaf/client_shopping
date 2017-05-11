@@ -56,7 +56,7 @@ import okhttp3.Call;
 /**
  * 修改
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/8 9:33
  */
 public class MineCustomerServiceSuggestionActivity extends BaseActivity implements TagFlowLayout.OnTagClickListener, View.OnClickListener, TagFlowLayout.OnSelectListener {

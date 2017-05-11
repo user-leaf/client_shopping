@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  *用户余额
- *author Qxh
+ *author Alice
  *created at 2017/4/25 15:59
  */
 public class UserBalance {

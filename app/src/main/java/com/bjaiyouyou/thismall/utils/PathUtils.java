@@ -1,7 +1,7 @@
 package com.bjaiyouyou.thismall.utils;
 
 /**
- * Created by Quxinhang
+ * Created by Alice
  * on 2016/6/4.
  * 与HTML5交互地址类
  */

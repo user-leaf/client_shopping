@@ -22,7 +22,7 @@ import okhttp3.Call;
 
 /**
  * UU详情页面
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/11/29 18:34
  */
 public class UUDetailActivity extends BaseActivity implements View.OnClickListener ,PullToRefreshBase.OnRefreshListener2{

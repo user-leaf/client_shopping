@@ -7,7 +7,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 
 /**
  * 上拉加载的,解决滑动冲突的GridView
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/7/18 14:58
  */
 public class NoScrollPullToRefreshGridView extends PullToRefreshGridView{

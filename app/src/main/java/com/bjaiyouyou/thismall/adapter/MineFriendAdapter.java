@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/22 16:51
  * 我的好友适配器
  *

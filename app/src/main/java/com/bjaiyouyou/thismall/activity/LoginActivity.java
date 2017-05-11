@@ -52,7 +52,7 @@ import okhttp3.Call;
  *
  * @author JackB
  * @date 2016/6/18
- * @author QuXinhang
+ * @author Alice
  * UpDate 2016/6/25 10:12
  * <p/>
  * 添加三方登录的入口
@@ -60,7 +60,7 @@ import okhttp3.Call;
  */
 
 /**
- * @author QuXinhang
+ * @author Alice
  *         UpDate 2016/6/25 10:12
  *         <p/>
  *         添加三方登录的入口
@@ -69,7 +69,7 @@ import okhttp3.Call;
 
 /**
  *  修改登录方法
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/30 20:17
  *
  *

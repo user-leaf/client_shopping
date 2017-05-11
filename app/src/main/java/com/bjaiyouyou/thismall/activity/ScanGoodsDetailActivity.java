@@ -52,7 +52,7 @@ import okhttp3.Call;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/4 11:15
  * 扫码结果页面
  *

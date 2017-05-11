@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * UU详情类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/12/1 15:22
  */
 public class UuDetailModel {

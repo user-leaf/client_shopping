@@ -30,7 +30,7 @@ import okhttp3.Call;
 
 /**
  * 兑换券充值页面
- * author Qxh
+ * author Alice
  * created at 2017/4/20 18:14
  */
 public class RechargeActivity extends BaseActivity {

@@ -28,7 +28,7 @@ import okhttp3.Call;
 /**
   *商品浏览列表页面
  * 1、抢购更多列表
-  * @author QuXinhang
+  * @author Alice
   *Creare 2016/7/11 11:25
   * 完成搭建
   *

@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/22 16:44
  * 用户邀请好友类
  * 

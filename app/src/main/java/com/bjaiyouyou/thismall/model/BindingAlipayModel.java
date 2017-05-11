@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 绑定支付宝结果
- *author Qxh
+ *author Alice
  *created at 2017/4/1 20:45
  */
 

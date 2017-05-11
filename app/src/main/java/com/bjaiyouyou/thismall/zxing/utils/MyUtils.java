@@ -10,7 +10,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 /**
- * user:quxinhang
+ * user:Alice
  * 图片地址转化类
  * 2016/5/21
  */

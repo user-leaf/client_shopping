@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * UU详情适配器
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/12/1 16:56
  */
 public class UuDetailAdapter extends MyBaseAdapter<UuDetailModel.DataBean>{

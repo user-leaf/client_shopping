@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * 查看物流
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/10/25 15:24
  */
 public class CheckTheLogisticsActivity extends BaseActivity implements View.OnClickListener {

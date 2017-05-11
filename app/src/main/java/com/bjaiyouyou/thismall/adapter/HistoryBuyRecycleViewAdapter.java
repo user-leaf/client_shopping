@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * 历史购买recycleview适配器
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/12/9 15:33
  */
 public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBuyRecycleViewAdapter.ViewHolder> {

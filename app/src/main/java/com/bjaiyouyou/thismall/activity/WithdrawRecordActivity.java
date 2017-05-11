@@ -23,7 +23,7 @@ import okhttp3.Call;
 
 /**
  * 提现记录页面
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/11/1 16:55
  *
  *

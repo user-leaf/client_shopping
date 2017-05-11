@@ -8,7 +8,7 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
 /**
  * 换取成功页面
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/11/11 18:41
  */
 public class WithDrawSucceedActivity extends BaseActivity implements View.OnClickListener{

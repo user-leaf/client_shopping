@@ -1,7 +1,6 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.bjaiyouyou.thismall.R;
@@ -9,7 +8,7 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
 /**
  * 安全码重置链接发送
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/25 11:19
  *
  *

@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/21 15:45
  * 判断是否存在某个包
  *

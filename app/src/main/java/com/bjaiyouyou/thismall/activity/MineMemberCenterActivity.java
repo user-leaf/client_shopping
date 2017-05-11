@@ -63,13 +63,13 @@ import okhttp3.Call;
 /**
  * 添加提现跳转
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/8 18:40
  *         <p/>
  *         <p/>
  *         布局添加
  *         对兑换功能的实现
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/12 9:35
  */
 public class MineMemberCenterActivity extends BaseActivity implements

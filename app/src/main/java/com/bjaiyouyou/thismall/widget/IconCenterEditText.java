@@ -12,7 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 /**
- * author Qxh
+ * author Alice
  * created at 2017/3/29 10:18
  *
  * http://www.bkjia.com/Androidjc/1012884.html

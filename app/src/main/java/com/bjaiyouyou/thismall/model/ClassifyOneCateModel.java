@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 一级分类列表数据
- *author Qxh
+ *author Alice
  *created at 2017/3/29 13:14
  */
 public class ClassifyOneCateModel {

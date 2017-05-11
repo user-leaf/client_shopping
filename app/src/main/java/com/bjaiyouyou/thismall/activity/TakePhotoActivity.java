@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * user:quxinhang
+ * user:Alice
  * 2016/5/29
  * 拍照页面
  */

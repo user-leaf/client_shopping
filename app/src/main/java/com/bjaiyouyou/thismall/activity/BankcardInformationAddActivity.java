@@ -11,7 +11,7 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/14 18:31
  * 添加银行卡信息页面
  *

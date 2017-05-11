@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 搜索结果适配器
  *
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/8/9 16:12
  */
 public class SearchResultGoodsAdapter extends RecyclerView.Adapter<SearchResultGoodsAdapter.ViewHolder> {

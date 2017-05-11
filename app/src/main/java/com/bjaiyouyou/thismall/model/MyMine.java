@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/7 15:11
  * 我页面的数据类型类
  *

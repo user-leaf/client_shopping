@@ -42,7 +42,7 @@ import okhttp3.Call;
 
 /**
  * 我的兑换券页面
- * author Qxh
+ * author Alice
  * created at 2017/4/20 18:25
  */
 public class ExchangeCertificateFragment extends BaseFragment {

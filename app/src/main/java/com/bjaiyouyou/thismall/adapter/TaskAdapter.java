@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * 
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/7 17:33
  * 
  * 任务适配器

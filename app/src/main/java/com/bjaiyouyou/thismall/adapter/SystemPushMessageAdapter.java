@@ -26,7 +26,7 @@ import okhttp3.Call;
 
 /**
  * 系统消息列表适配器
- * author Qxh
+ * author Alice
  * created at 2017/4/14 14:20
  */
 public class SystemPushMessageAdapter extends BaseSwipeAdapter implements View.OnClickListener{

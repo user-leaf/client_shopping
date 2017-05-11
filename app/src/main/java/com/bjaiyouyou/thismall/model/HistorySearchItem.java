@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 历史搜索条目类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/14 18:04
  */
 public class HistorySearchItem {

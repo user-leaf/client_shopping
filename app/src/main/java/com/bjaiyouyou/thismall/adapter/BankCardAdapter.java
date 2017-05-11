@@ -21,10 +21,10 @@ import java.util.List;
 
 /**
  * 
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/14 14:06
  *
-  * @author QuXinhang
+  * @author Alice
   *Creare 2016/6/21 14:26
   * 修改为可以侧滑的
   *

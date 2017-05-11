@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  * 我的收益类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/11/9 19:43
  */
 public class UserInComeModel {

@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/28 11:31
  *
  * 支付失败适配器

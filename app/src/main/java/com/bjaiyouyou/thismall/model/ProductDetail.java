@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 商品详情类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/8/1 12:04
  */
 public class ProductDetail {

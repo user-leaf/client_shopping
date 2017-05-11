@@ -22,7 +22,7 @@ import java.util.List;
 
   /**
    *
-   * @author QuXinhang
+   * @author Alice
    *Creare 2016/6/21 10:24
    *支付方式选择页面
    *

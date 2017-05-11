@@ -33,7 +33,7 @@ import okhttp3.Call;
 
 /**
  * 收益页面
- * author Qxh
+ * author Alice
  * created at 2017/4/20 18:29
  */
 public class IncomeFragment extends BaseFragment {

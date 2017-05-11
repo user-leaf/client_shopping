@@ -2,7 +2,7 @@ package com.bjaiyouyou.thismall.model;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/7 17:19
  * 任务数据
  *

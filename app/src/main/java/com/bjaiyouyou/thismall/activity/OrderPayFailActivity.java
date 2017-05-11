@@ -35,7 +35,7 @@ import okhttp3.Call;
 
 /**
  *
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/6/28 11:32
  *
  * 支付失败页面

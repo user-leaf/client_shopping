@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * 主页面我抢购的适配器
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/7/28 11:07
  *
  *

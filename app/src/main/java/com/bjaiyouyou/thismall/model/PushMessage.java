@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 系统消息列表类
- *author Qxh
+ *author Alice
  *created at 2017/4/14 11:36
  */
 public class PushMessage {

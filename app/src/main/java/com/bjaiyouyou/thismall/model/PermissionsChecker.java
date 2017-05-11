@@ -6,7 +6,7 @@ import android.support.v4.content.ContextCompat;
 
 /**
  * 检查权限的工具类
- * @author QuXinhang
+ * @author Alice
  *Creare 2016/9/14 10:23
  *
  */

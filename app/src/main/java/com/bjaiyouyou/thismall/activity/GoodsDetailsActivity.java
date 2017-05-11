@@ -56,7 +56,7 @@ import okhttp3.Call;
 
 
 /**
- * @author QuXinhang
+ * @author Alice
  *         Creare 2016/6/4 11:15
  *         商品详情页面
  */

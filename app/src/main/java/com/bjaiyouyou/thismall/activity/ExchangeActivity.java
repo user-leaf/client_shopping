@@ -8,7 +8,7 @@ import com.bjaiyouyou.thismall.R;
 
 /**
  *兑换页面
- *author Qxh
+ *author Alice
  *created at 2017/4/20 18:13
  */
 public class ExchangeActivity extends BaseActivity {
