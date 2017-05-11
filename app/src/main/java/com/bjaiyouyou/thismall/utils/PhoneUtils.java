@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 邀请好友页-我邀请的 号码处理
  * <p/>
- * Created by kb on 2016/11/30.
+ * Created by JackB on 2016/11/30.
  */
 public class PhoneUtils {
     private static final String TAG = PhoneUtils.class.getSimpleName();

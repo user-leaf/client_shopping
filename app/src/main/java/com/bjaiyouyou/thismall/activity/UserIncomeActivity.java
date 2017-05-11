@@ -35,7 +35,7 @@ import okhttp3.Call;
 /**
  * 我的收益
  * <p/>
- * Created by kb on 2016/11/11.
+ * Created by JackB on 2016/11/11.
  */
 public class UserIncomeActivity extends BaseActivity implements View.OnClickListener {
     private IUUTitleBar mTitle;
