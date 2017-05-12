@@ -588,6 +588,8 @@
 
         <activity android:name=".activity.MyIncomeActivity">
         </activity>
+        <activity android:name=".activity.UserPayActivity">
+        </activity>
     </application>
 
 </manifest>
