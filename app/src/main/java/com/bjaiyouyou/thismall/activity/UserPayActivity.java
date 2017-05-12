@@ -3,6 +3,9 @@ package com.bjaiyouyou.thismall.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +15,21 @@ import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
+import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+
+import java.text.DecimalFormat;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
  * 扫码支付页面
  */
 public class UserPayActivity extends Activity implements View.OnClickListener {
 
+    public static final String TAG = UserPayActivity.class.getSimpleName();
+    private IUUTitleBar mTitleBar;
     private ImageView mIvHead;  // 头像
     private TextView mTvName;   // 姓名
 
@@ -42,6 +54,8 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
+        mTitleBar = (IUUTitleBar) findViewById(R.id.title_bar);
+
         mIvHead = (ImageView) findViewById(R.id.user_pay_iv_head);
         mTvName = (TextView) findViewById(R.id.user_pay_tv_name);
 
@@ -55,8 +69,50 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     }
 
     private void setupView() {
+        mTitleBar.setLeftLayoutClickListener(this);
+        mEtMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // 限定只能输入两位小数
+                // http://blog.csdn.net/yinzhijiezhan/article/details/46819261
+                if (s.toString().contains(".")) {
+                    if (s.length() - 1 - s.toString().indexOf(".") > 2) {
+                        s = s.toString().subSequence(0,
+                                s.toString().indexOf(".") + 3);
+                        mEtMoney.setText(s);
+                        mEtMoney.setSelection(s.length());
+                    }
+                }
+                if (s.toString().trim().substring(0).equals(".")) {
+                    s = "0" + s;
+                    mEtMoney.setText(s);
+                    mEtMoney.setSelection(2);
+                }
+
+                if (s.toString().startsWith("0")
+                        && s.toString().trim().length() > 1) {
+                    if (!s.toString().substring(1, 2).equals(".")) {
+                        mEtMoney.setText(s.subSequence(0, 1));
+                        mEtMoney.setSelection(1);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         mBtnPay.setOnClickListener(this);
         mBtnPayCustomMoney.setOnClickListener(this);
+
     }
 
     /**
@@ -79,12 +135,22 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.left_layout:
+                finish();
+                break;
+
             case R.id.user_pay_btn_pay: // 固定金额支付
-                showPayDialog(123);
+                showPayDialog(123.);
                 break;
 
             case R.id.user_pay_btn_pay_custom_money:    // 自定义金额支付
-                showPayDialog(321);
+                String strMoney = mEtMoney.getText().toString();
+                if (TextUtils.isEmpty(strMoney) || "0".equals(strMoney)){
+                    ToastUtils.showShort("请输入支付金额");
+                    return;
+                }
+                Double aDouble = Double.valueOf(strMoney);
+                showPayDialog(aDouble);
                 break;
         }
     }
@@ -93,7 +159,7 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
      * 支付弹窗
      * @param money 金额
      */
-    private void showPayDialog(double money) {
+    private void showPayDialog(Double money) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.layout_user_pay, null);
         final Dialog payDialog = DialogUtils.createRandomDialog(this, null, null, null, null, null,
                 inflate

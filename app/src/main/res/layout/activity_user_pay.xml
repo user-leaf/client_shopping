@@ -9,6 +9,7 @@
     tools:context="com.bjaiyouyou.thismall.activity.UserPayActivity">
 
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarBackground="@color/white"
@@ -19,130 +20,137 @@
 
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:background="#f7f7f7"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
         >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_pay_iv_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7.5dp"
-            android:layout_marginTop="19dp"
-            android:src="@mipmap/ic_launcher"
-            />
-
-        <TextView
-            android:id="@+id/user_pay_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="向商家用户（**名）支付"
-            />
-
         <LinearLayout
-            android:id="@+id/user_pay_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:background="#f7f7f7"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="35dp"
-            android:visibility="gone"
             >
 
-            <TextView
-                android:id="@+id/user_pay_tv_money"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_pay_iv_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100.00"
-                android:textColor="#222222"
-                android:textSize="40sp"
+                android:layout_marginBottom="7.5dp"
+                android:layout_marginTop="19dp"
+                android:src="@mipmap/ic_launcher"
                 />
 
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="80dp"/>
-
-            <Button
-                android:id="@+id/user_pay_btn_pay"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/shape_user_pay_btn_bg"
-                android:gravity="center"
-                android:text="支付"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+            <TextView
+                android:id="@+id/user_pay_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="向商家用户（**名）支付"
                 />
 
+            <LinearLayout
+                android:id="@+id/user_pay_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="35dp"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/user_pay_tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100.00"
+                    android:textColor="#222222"
+                    android:textSize="40sp"
+                    />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"/>
+
+                <Button
+                    android:id="@+id/user_pay_btn_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/shape_user_pay_btn_bg"
+                    android:gravity="center"
+                    android:text="支付"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_pay_ll_custom_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="20dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付金额"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    />
+
+                <EditText
+                    android:id="@+id/user_pay_et_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:numeric="decimal"
+                    android:maxLength="10"
+                    android:singleLine="true"
+                    android:textColor="#222222"
+                    android:textSize="50dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#dc9600"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="剩余券额56000.00"
+                    />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+
+                <Button
+                    android:id="@+id/user_pay_btn_pay_custom_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/shape_user_pay_btn_bg"
+                    android:gravity="center"
+                    android:text="支付"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/user_pay_ll_custom_money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="20dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="支付金额"
-                android:textColor="#333333"
-                android:textSize="15sp"
-                />
-
-            <EditText
-                android:id="@+id/user_pay_et_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:background="@null"
-                android:textSize="50dp"
-                android:textColor="#222222"
-                android:inputType="number"
-                android:maxLength="10"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#dc9600"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="剩余券额56000.00"
-                android:layout_marginTop="10dp"
-                />
-
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
-
-            <Button
-                android:id="@+id/user_pay_btn_pay_custom_money"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/shape_user_pay_btn_bg"
-                android:gravity="center"
-                android:text="支付"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                />
-
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

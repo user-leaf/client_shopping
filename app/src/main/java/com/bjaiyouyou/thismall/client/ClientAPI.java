@@ -37,8 +37,9 @@ public class ClientAPI {
 
     //*****************************************************************************
 //    public static final String API_POINT = "https://testapi2.bjaiyouyou.com/";
+    public static final String API_POINT = "https://testapi3.bjaiyouyou.com/";
 //    public static final String API_POINT = "https://api2.bjaiyouyou.com/";
-    public static final String API_POINT = "https://api.bjaiyouyou.com/";
+//    public static final String API_POINT = "https://api.bjaiyouyou.com/";
 
     // 任务页视频播放地址
 //    public static final String URL_WX_H5 = "https://wxweb.bjaiyouyou.com/";

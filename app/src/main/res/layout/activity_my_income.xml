@@ -8,16 +8,6 @@
     android:orientation="vertical"
     tools:context="com.bjaiyouyou.thismall.activity.MyIncomeActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:iuuTitleBarLeftImage="@mipmap/nav_return_black"
-        app:iuuTitleBarTitle="我的收益"
-        android:visibility="gone"
-        >
-
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
@@ -71,7 +61,7 @@
             android:layout_toLeftOf="@id/right_layout"
             android:layout_toRightOf="@id/left_layout"
             android:gravity="center"
-            android:text="我的收益"
+            android:text="        我的收益"
             />
     </RelativeLayout>
 
@@ -79,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:scrollbars="none"
         >
 
         <LinearLayout
@@ -361,6 +352,10 @@
 
             </LinearLayout>
 
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
+
         </LinearLayout>
     </ScrollView>
 
@@ -371,36 +366,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:background="@color/white"
         >
 
         <TextView
+            style="@style/my_income_tv_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="您已累计获得收益："
-            style="@style/my_income_tv_style"
             />
 
         <TextView
             android:id="@+id/my_income_tv6_1"
+            style="@style/my_income_tv_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="元"
             android:layout_alignParentRight="true"
-            style="@style/my_income_tv_style"
+            android:text="元"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="60000.00"
-            android:textSize="15.3sp"
-            android:textColor="@color/app_basic"
             android:layout_toLeftOf="@id/my_income_tv6_1"
+            android:text="60000.00"
+            android:textColor="@color/app_basic"
+            android:textSize="15.3sp"
             />
 
     </RelativeLayout>
