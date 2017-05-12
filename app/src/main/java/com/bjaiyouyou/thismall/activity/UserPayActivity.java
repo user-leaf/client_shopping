@@ -2,6 +2,7 @@ package com.bjaiyouyou.thismall.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,7 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
@@ -168,15 +171,21 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
         View ivClose = inflate.findViewById(R.id.user_pay_dialog_iv_close);
         TextView tvMoney = (TextView) inflate.findViewById(R.id.user_pay_dialog_tv_money);
         EditText etSafecode = (EditText) inflate.findViewById(R.id.user_pay_dialog_et_psw);
+        TextView tvForget = (TextView) inflate.findViewById(R.id.user_pay_dialog_tv_forget);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.user_pay_dialog_iv_close:
+                    case R.id.user_pay_dialog_iv_close:     // 关闭
                         if (payDialog != null && payDialog.isShowing()) {
                             payDialog.dismiss();
                         }
+                        break;
+
+                    case R.id.user_pay_dialog_tv_forget:    // 忘记安全码
+                        payDialog.dismiss();
+                        showSafeCodeForgetDialog();
                         break;
                 }
             }
@@ -184,7 +193,36 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
 
         tvMoney.setText(String.valueOf(money));
         ivClose.setOnClickListener(onClickListener);
+        tvForget.setOnClickListener(onClickListener);
 
         payDialog.show();
+    }
+
+    /**
+     * 忘记安全码
+     */
+    private void showSafeCodeForgetDialog() {
+        // 拨打客服电话
+        Dialog pswForgetDialog = DialogUtils.createConfirmDialog(
+                UserPayActivity.this,
+                null,
+                "拨打客服电话" + Constants.KEFU_TEL + "进行修改",
+                "拨打",
+                "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DialUtils.callCentre(UserPayActivity.this, DialUtils.CENTER_NUM);
+                        dialog.dismiss();
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        pswForgetDialog.show();
+
     }
 }
