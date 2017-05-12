@@ -24,8 +24,8 @@
             android:id="@+id/user_pay_dialog_iv_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/guanbi"
             android:padding="5dp"
+            android:src="@mipmap/guanbi"
             />
     </RelativeLayout>
 
@@ -50,11 +50,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="向商家用户（**名）支付"
-            android:textSize="15sp"
             android:textColor="#666666"
+            android:textSize="15sp"
             />
 
         <TextView
+            android:id="@+id/user_pay_dialog_tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
@@ -75,8 +76,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             >
 
             <ImageView
@@ -105,8 +106,8 @@
             android:id="@+id/user_pay_dialog_et_psw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_user_pay_et_pwd_bg"
             android:layout_marginTop="17dp"
+            android:background="@drawable/shape_user_pay_et_pwd_bg"
             android:hint="190*******"
             />
 
