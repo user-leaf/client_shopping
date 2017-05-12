@@ -80,7 +80,7 @@
                         android:drawablePadding="10dp"
                         android:drawableRight="@mipmap/list_edit_b"
                         android:gravity="center_vertical"
-                        android:text="兑换券"
+                        android:text="众汇券"
                         android:textColor="#999999"
                         />
 

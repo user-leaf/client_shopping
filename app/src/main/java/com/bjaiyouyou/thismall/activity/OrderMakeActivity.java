@@ -104,7 +104,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private TextView mTvWeight;             // 重量
     private double mSumWeight;              // 商品总重量
 
-    private TextView mTvGoldSum;            // 本次消费可得积分
+//    private TextView mTvGoldSum;            // 本次消费可得积分
     private TextView mTvMoneySum;           // 商品总额
     private TextView mTvPointsSum;          // 商品总额中的积分
 
@@ -232,7 +232,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         mTvWeight = (TextView) findViewById(R.id.order_make_tv_weight);
         mTvPostage = (TextView) findViewById(R.id.order_make_tv_postage);
         mTvPostageExtra = (TextView) findViewById(R.id.order_make_tv_postage_extra);
-        mTvGoldSum = (TextView) findViewById(R.id.order_make_gold_sum);
+//        mTvGoldSum = (TextView) findViewById(R.id.order_make_gold_sum);
         mTvMoneySum = (TextView) findViewById(R.id.order_make_tv_money_sum);
         mTvPointsSum = (TextView) findViewById(R.id.order_make_tv_points_sum);
 
@@ -435,7 +435,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         // 商品总额中的积分数
         mTvPointsSum.setText("+" + totalPoints + "兑换券");
         // 本次消费可得UU
-        mTvGoldSum.setText((int) sumMoney / 10 + "UU");
+//        mTvGoldSum.setText((int) sumMoney / 10 + "UU");
 
         mFinalPay = sumMoney;
         // 底部实付金额

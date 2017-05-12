@@ -333,7 +333,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="运费(运费从兑换券中扣除)"
+                            android:text="运费"
                             />
 
                         <!-- 增收运费 -->
@@ -360,30 +360,30 @@
                     <View
                         style="@style/entry_divider_fine_line_style"/>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="15dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="15dp"
-                        >
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:paddingBottom="15dp"-->
+                        <!--android:paddingLeft="10dp"-->
+                        <!--android:paddingRight="10dp"-->
+                        <!--android:paddingTop="15dp"-->
+                        <!--&gt;-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="本次消费可获得UU"
-                            />
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="本次消费可获得UU"-->
+                            <!--/>-->
 
-                        <!-- 可获得UU -->
-                        <TextView
-                            android:id="@+id/order_make_gold_sum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            />
-                    </RelativeLayout>
+                        <!--&lt;!&ndash; 可获得UU &ndash;&gt;-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/order_make_gold_sum"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_alignParentRight="true"-->
+                            <!--android:layout_centerVertical="true"-->
+                            <!--/>-->
+                    <!--</RelativeLayout>-->
 
                 </LinearLayout>
 

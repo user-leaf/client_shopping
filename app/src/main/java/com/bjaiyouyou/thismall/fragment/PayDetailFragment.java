@@ -141,7 +141,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         mPayWayModels = new ArrayList<>();
         LogUtils.d(TAG, PayWayEnum.balance.name());
         LogUtils.d(TAG, PayWayEnum.balance.toString());
-        PayWayModel payWayModel = new PayWayModel(PayWayEnum.balance.name(), R.mipmap.list_icon_coincertificate, "兑换券", true, true);
+        PayWayModel payWayModel = new PayWayModel(PayWayEnum.balance.name(), R.mipmap.list_icon_coincertificate, "众汇券", true, true);
         mPayWayModels.add(payWayModel);
         PayWayModel payWayModel2 = new PayWayModel(PayWayEnum.alipay.name(), R.mipmap.list_icon_alipay, "支付宝", false, false);
         mPayWayModels.add(payWayModel2);
@@ -404,7 +404,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
 
         switch (currentPayWay) {
             case balance:
-                payWay = "兑换券";
+                payWay = "众汇券";
                 break;
 
             case alipay:
