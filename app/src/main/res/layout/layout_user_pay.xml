@@ -108,7 +108,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
             android:background="@drawable/shape_user_pay_et_pwd_bg"
-            android:hint="190*******"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:hint="请输入安全码"
+            android:inputType="textPassword"
+            android:maxLength="16"
+            android:singleLine="true"
+            android:textSize="14sp"
             />
 
     </LinearLayout>

@@ -94,7 +94,6 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:padding="20dp"
-            android:visibility="gone"
             >
 
             <TextView
@@ -113,6 +112,8 @@
                 android:background="@null"
                 android:textSize="50dp"
                 android:textColor="#222222"
+                android:inputType="number"
+                android:maxLength="10"
                 />
 
             <View

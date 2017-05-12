@@ -22,13 +22,13 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     private TextView mTvName;   // 姓名
 
     // 固定金额支付
-    private View mLlPayBanner; // 支付栏
+    private View mLlPayBanner;          // 支付栏
     private TextView mTvMoney;          // 固定金额
     private Button mBtnPay;             // 支付按钮
 
     // 自定义金额支付
     private View mLlPayBannerCustomMoney;  // 支付栏
-    private EditText mEtMoney;              // 金额输入框
+    private EditText mEtMoney;             // 金额输入框
     private Button mBtnPayCustomMoney;     // 支付按钮
 
     @Override
@@ -38,7 +38,7 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
 
         initView();
         setupView();
-        showBanner(1);
+        showBanner(2);
     }
 
     private void initView() {
@@ -59,6 +59,10 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
         mBtnPayCustomMoney.setOnClickListener(this);
     }
 
+    /**
+     * 选择显示支付栏
+     * @param i 1或者2
+     */
     private void showBanner(int i) {
         switch (i) {
             case 1:
