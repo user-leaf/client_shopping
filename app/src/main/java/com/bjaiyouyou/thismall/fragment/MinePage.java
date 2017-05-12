@@ -178,7 +178,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private ImageView mIvMemberFive;
 
 
-
     //提现布局
     //邮箱
     private TextView mTVEmail;
@@ -258,7 +257,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         ;
     };
-
 
 
     @Nullable
@@ -520,10 +518,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //        mTvName.setText(memberBean.getName());
 //        //昵称
         if (memberBean != null) {
-            String name=memberBean.getNick_name();
-            if (!TextUtils.isEmpty(name)){
+            String name = memberBean.getNick_name();
+            if (!TextUtils.isEmpty(name)) {
                 mTvName.setText(name);
-            }else {
+            } else {
                 mTvName.setText("");
             }
 
@@ -531,7 +529,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             if (!TextUtils.isEmpty(tel)) {
                 tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 3, tel.length());
                 mTVTel.setText(tel);
-            }else {
+            } else {
                 mTVTel.setText("");
             }
 
@@ -859,7 +857,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null){
+                if (response != null) {
                     //绑定直接跳转到提现页面
 //                ToastUtils.showShort("绑定支付宝成功，跳转提现页面");
                     //直接跳转我的兑换券页面
@@ -979,19 +977,19 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     //不允许输入空格
-    private InputFilter etInputFilter=new InputFilter() {
+    private InputFilter etInputFilter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 
-        //返回null表示接收输入的字符,返回空字符串表示不接受输入的字符
+            //返回null表示接收输入的字符,返回空字符串表示不接受输入的字符
 
-            if(source.equals(" "))return "";      else return null;   }
+            if (source.equals(" ")) return "";
+            else return null;
+        }
     };
 
     /**
-     *
      * 生成安全码对话框
-     *
      */
     private void createSafeCodeDialog() {
         if (mSafeCodeDialog != null) {
@@ -1018,7 +1016,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //设置不允许输入空格
         etSateCodeInput.setFilters(new InputFilter[]{etInputFilter});
-
 
 
         //添加输入字符上限判断
@@ -1094,8 +1091,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
 
-
-
     /**
      *
      *
@@ -1153,12 +1148,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     /**
-     *
-     *
      * 验证邮箱提交
-     *
-     *
-     *
      */
     private void emailValidate() {
         String emailReset = etSateCodeReGetEmailInput.getText().toString().trim();
@@ -1238,7 +1228,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //情况一：邮箱未设置
             if (!isHaveEmail) {
                 String email = mEtEmail.getText().toString().trim();
-                if (!(!TextUtils.isEmpty(email)  && email.length() > 1&& ValidatorsUtils.isEmail(email))) {
+                if (!(!TextUtils.isEmpty(email) && email.length() > 1 && ValidatorsUtils.isEmail(email))) {
                     Toast.makeText(getContext(), "请输入正确的邮箱", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -1290,11 +1280,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     /**
-     *
-     *
      * 创建邮箱验证的对话框
-     *
-     *
      */
 
     //邮箱输入
@@ -1378,12 +1364,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     ///////////////////////////邮箱验证成功的对话框//////////////////////////////////////////////////
 
     /**
-     *
-     *
      * 创建邮箱验证成功的对话框
-     *
-     *
-     *
      */
 
     private ImageView ivEmailSendSucceedClose;
@@ -1454,23 +1435,13 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
 
-
     ////////////////////////////点击事件处理////////////////////////////
+
     /**
-     *
-     *
-     *
-     *
      * @param parent
      * @param view
      * @param position
      * @param id       处理条目点击事件
-     *
-     *
-     *
-     *
-     *
-     *
      */
 
     @Override
@@ -1530,19 +1501,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
 
-
     /**
-     *
-     *
-     *
-     *
      * 点击事件处理
+     *
      * @param v
-     *
-     *
-     *
-     *
-     *
      */
     @Override
     public void widgetClick(View v) {
