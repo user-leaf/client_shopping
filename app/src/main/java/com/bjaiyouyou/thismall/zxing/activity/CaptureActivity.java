@@ -445,6 +445,12 @@ public class CaptureActivity extends Activity implements Callback ,View.OnClickL
 //		return formart;
 //	}
 
+	/**
+	 * 获取扫面结果进行处理
+	 * @param requestCode
+	 * @param resultCode
+	 * @param data
+     */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -494,6 +500,7 @@ public class CaptureActivity extends Activity implements Callback ,View.OnClickL
 								data.putExtra("result", recode);
 								setResult(300, data);
 
+								//扫描结果进行处理
 								Intent scanIntent=new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
 								scanIntent.putExtra("productScanID",recode);
 								startActivity(scanIntent);
