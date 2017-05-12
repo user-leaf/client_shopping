@@ -167,8 +167,7 @@
         <activity
             android:name=".activity.AddressAddActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
 
         <!-- ShareSDK begin -->
 
@@ -457,27 +456,23 @@
         <activity
             android:name=".activity.MyExchangeActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- 兑换券充值页面 -->
         <activity
             android:name=".activity.RechargeActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
         </activity>
         <!-- 兑换券兑换页面 -->
         <activity
             android:name=".activity.ExchangeActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
         </activity>
         <!-- 兑换券激活页面 -->
         <activity
             android:name=".activity.ActivateExchangeCertificateActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- 极光推送 -->
@@ -591,6 +586,8 @@
             android:value="${JPUSH_APPKEY}"/>
         <!-- </>值来自开发者平台取得的AppKey -->
 
+        <activity android:name=".activity.MyIncomeActivity">
+        </activity>
     </application>
 
 </manifest>

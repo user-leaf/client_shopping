@@ -43,6 +43,7 @@ import com.bjaiyouyou.thismall.activity.InviteActivity;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.MineBingPhoneNumActivity;
 import com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity;
+import com.bjaiyouyou.thismall.activity.MyIncomeActivity;
 import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.activity.SettingsActivity;
@@ -1592,8 +1593,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
                 break;
             case R.id.rl_mine_income: // 我的收益
+                startActivity(MyIncomeActivity.class);
 
-                Toast.makeText(getActivity(), "我的收益", Toast.LENGTH_SHORT).show();
 //                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
 //                mIntentSafeCode.putExtra("mIntegral", mIntegral);
 //                mIntentSafeCode.putExtra("isLogin", isLogin);
