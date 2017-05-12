@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.bjaiyouyou.thismall.R;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 /**
  * 加载中Dialog
@@ -18,6 +19,7 @@ import com.bjaiyouyou.thismall.R;
 public class LoadingDialog extends Dialog {
 
     private Context context;
+    private ProgressWheel mLoadingView;
 
     private LoadingDialog(Context context) {
         super(context, R.style.loading_dialog);
@@ -34,6 +36,8 @@ public class LoadingDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
 
+        mLoadingView = (ProgressWheel) findViewById(R.id.loading_progress_wheel);
+        mLoadingView.setRimColor(Color.LTGRAY);
     }
 
     @Override
