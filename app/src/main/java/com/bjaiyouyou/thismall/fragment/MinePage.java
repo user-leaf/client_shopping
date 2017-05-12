@@ -43,9 +43,6 @@ import com.bjaiyouyou.thismall.activity.InviteActivity;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.MineBingPhoneNumActivity;
 import com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity;
-import com.bjaiyouyou.thismall.activity.MineMemberCenterActivity;
-import com.bjaiyouyou.thismall.activity.MineMemberCenterIntegralPayActivity;
-import com.bjaiyouyou.thismall.activity.MyExchangeActivity;
 import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.activity.SettingsActivity;
@@ -135,17 +132,17 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private TextView mTVTel;
     //名字
     private TextView mTvName;
-    //积分
-    private TextView mTvIntegral;
-    //UU
-    private TextView mTvGoldCoin;
+
     //用户
     private User mUser;
     private PullToRefreshScrollView mScrollView;
-    //UU布局
-    private LinearLayout mRLGoldCoin;
-    //积分布局
-    private LinearLayout mRLIntegral;
+    //我的收益布局
+    private LinearLayout mRLIncome;
+    //我的佣金布局
+    private LinearLayout mRLCommission;
+    //众汇布局
+    private LinearLayout mRLZhonghui;
+
     private LinearLayout mLLUnNetWork;
     //UU数量
     private long mCoin;
@@ -157,8 +154,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //用户头像
     private CircleImageView mIVUserIcon;
 
-    //要跳转的类
-    private Class mClassJump;
+
     private Intent mIntentSafeCode;
     //记录用户是否设置过安全码
     private boolean mIsHaveSafeCode = false;
@@ -173,26 +169,16 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //安全密码下限制
     private int mSafeCodeMinLimit = 8;
     private int mSafeCodeMaxLimit = 16;
-    private LinearLayout mLLNeedSafe;
     //屏幕高度
     private int mHeight;
-    private TextView mTvBandCardNum;
-    //获得order的返回
-    private Intent mOrderIntent;
     //用户会员图标
     private ImageView mIvMember;
     //第五季图标
     private ImageView mIvMemberFive;
-    //区分用户是否是第五季会员字段
-    private int mMember_type;
-    //判断是否是微信绑定用户
-    private String mOpenId;
-    //是否是测试用户
-    private int isInTestUser;
-    //提现
-    private TextView mTvWithdraw;
+
+
+
     //提现布局
-    private LinearLayout mRLWithdraw;
     //邮箱
     private TextView mTVEmail;
     //供货电话
@@ -273,6 +259,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     };
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -336,8 +323,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mNotLoginView.setLayoutParams(params);
 
 
-        //需要安全码区域背景
-        mLLNeedSafe = ((LinearLayout) layout.findViewById(R.id.ll_mine_safe_code_thing));
         //断网提示
         mLLUnNetWork = ((LinearLayout) layout.findViewById(R.id.ll_mine_un_network));
 //        //个人设置图标
@@ -356,21 +341,16 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mTvName = ((TextView) layout.findViewById(R.id.tv_mine_ll_login_name));
         //电话
         mTVTel = ((TextView) layout.findViewById(R.id.tv_mine_tel));
-        //积分
-        mTvIntegral = ((TextView) layout.findViewById(R.id.tv_mine_integral_num));
-        //UU
-        mTvGoldCoin = ((TextView) layout.findViewById(R.id.tv_mine_goldcoin_num));
-        //提现方式
-        mTvWithdraw = ((TextView) layout.findViewById(R.id.tv_mine_withdraw));
+
         //提现金额
         mTvWithdrawNum = ((TextView) layout.findViewById(R.id.tv_mine_withdraw_num));
 
-        //积分布局
-        mRLIntegral = ((LinearLayout) layout.findViewById(R.id.rl_mine_integral));
-        //UU布局
-        mRLGoldCoin = ((LinearLayout) layout.findViewById(R.id.rl_mine_goldcoin));
+        //我的收益
+        mRLIncome = ((LinearLayout) layout.findViewById(R.id.rl_mine_income));
+        //我的佣金
+        mRLCommission = ((LinearLayout) layout.findViewById(R.id.rl_mine_commission));
         //支付方式布局
-        mRLWithdraw = ((LinearLayout) layout.findViewById(R.id.rl_mine_withdraw));
+        mRLZhonghui = ((LinearLayout) layout.findViewById(R.id.rl_mine_zhonghui));
 
 
         mTVIntegralNum = ((TextView) layout.findViewById(R.id.tv_mine_integral_num));
@@ -399,11 +379,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         gv.setFocusable(false);
         mIVUserIcon.setOnClickListener(this);
 
-        //积分充值禁止进入
-        mRLIntegral.setOnClickListener(this);
-
-        mRLGoldCoin.setOnClickListener(this);
-        mRLWithdraw.setOnClickListener(this);
+        //我的收益
+        mRLIncome.setOnClickListener(this);
+        //我的佣金
+        mRLCommission.setOnClickListener(this);
+        //我的众汇
+        mRLZhonghui.setOnClickListener(this);
 //        titleBar.setRightLayoutClickListener(this);
         mLoginView.setOnClickListener(this);
         mBtLogin.setOnClickListener(this);
@@ -579,13 +560,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             mIsHaveSafeCode = memberBean.isSecurity_code_state();
 
             mCoin = memberBean.getMoney_quantity();
-            mMember_type = memberBean.getMember_type();
             isVip = memberBean.getIs_vip();
-            isInTestUser = memberBean.getIs_in_test_user();
             mTVGoldCoinNum.setText(mCoin + "");
             mIntegral = memberBean.getIntegration();
             mTVIntegralNum.setText(mIntegral + "");
-            mOpenId = memberBean.getOpen_id();
 
 
             String inCome = memberBean.getPush_money();
@@ -949,7 +927,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         } else {
             mIntentSafeCode.putExtra("mUserImgUrl", "");
         }
-        mClassJump = UpdateMineUserMessageActivity.class;
 //        showSafeCodePopWin();
         createSafeCodeDialog();
 //                startActivity(mIntentSafeCode);
@@ -1614,69 +1591,68 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 jump(LoginActivity.class, false);
 
                 break;
-            case R.id.rl_mine_integral: // 积分
-                mClassJump = MineMemberCenterIntegralPayActivity.class;
-//                Toast.makeText(getActivity(), "积分", Toast.LENGTH_SHORT).show();
-                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
-                mIntentSafeCode.putExtra("mIntegral", mIntegral);
-                mIntentSafeCode.putExtra("isLogin", isLogin);
+            case R.id.rl_mine_income: // 我的收益
 
-                if (isLogin) {
-                    //进入不验证安全码
+                Toast.makeText(getActivity(), "我的收益", Toast.LENGTH_SHORT).show();
+//                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterIntegralPayActivity.class);
+//                mIntentSafeCode.putExtra("mIntegral", mIntegral);
+//                mIntentSafeCode.putExtra("isLogin", isLogin);
+//
+//                if (isLogin) {
+//                    //进入不验证安全码
+////                    createSafeCodeDialog();
+//                } else {
+////                    startActivity(mIntentSafeCode);
+//                }
+//
+//                startActivity(mIntentSafeCode);
+                break;
+            case R.id.rl_mine_commission: // 我的佣金
+                Toast.makeText(getActivity(), "我的佣金", Toast.LENGTH_SHORT).show();
+//                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
+//
+//
+//                if (isLogin) {
+//                    //进入的时候不验证安全码
 //                    createSafeCodeDialog();
-                } else {
+//                } else {
 //                    startActivity(mIntentSafeCode);
-                }
-
-                startActivity(mIntentSafeCode);
-                break;
-            case R.id.rl_mine_goldcoin: // UU
-                mClassJump = MineMemberCenterActivity.class;
-//                Toast.makeText(getActivity(), "UU", Toast.LENGTH_SHORT).show();
-                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
-
-
-                if (isLogin) {
-                    //进入的时候不验证安全码
-                    createSafeCodeDialog();
-                } else {
-                    startActivity(mIntentSafeCode);
-                }
-                //不用验证安全码直接跳转
-//               startActivity(mIntentSafeCode);
-
+//                }
+//                //不用验证安全码直接跳转
+////               startActivity(mIntentSafeCode);
+//
                 break;
 
-            case R.id.rl_mine_withdraw: //我的兑换券页面
-//                ToastUtils.showShort("我的兑换券被点击");
+            case R.id.rl_mine_zhonghui: //我的众汇券
+                ToastUtils.showShort("我的众汇券");
                 //没登录去登录页
-                if (!isLogin){
-                    mIntentSafeCode=new Intent(getActivity(),LoginActivity.class);
-                    startActivity(mIntentSafeCode);
-                    return;
-                }
-
-                //已经登录做登录处理
-                mIntentSafeCode = new Intent(getActivity(), MyExchangeActivity.class);
-
-                mClassJump = MyExchangeActivity.class;
-                /**
-                 * 根据mOpenId判断是否绑定微信
-                 * 没绑定弹框提示绑定
-                 * 绑定直接跳转
-                 */
-                //已经绑定的
-                //test
-//                mOpenId=null;
-//                isLogin=false;
-                //没有安全码设置安全码
-                if (TextUtils.isEmpty(mSafeCode)) {
-                    createSafeCodeDialog();
-                } else {
-                //绑定支付宝
-                    getIfBindingAlipay();
-                }
-//                getIfBindingAlipay();
+//                if (!isLogin){
+//                    mIntentSafeCode=new Intent(getActivity(),LoginActivity.class);
+//                    startActivity(mIntentSafeCode);
+//                    return;
+//                }
+//
+//                //已经登录做登录处理
+//                mIntentSafeCode = new Intent(getActivity(), MyExchangeActivity.class);
+//
+//                mClassJump = MyExchangeActivity.class;
+//                /**
+//                 * 根据mOpenId判断是否绑定微信
+//                 * 没绑定弹框提示绑定
+//                 * 绑定直接跳转
+//                 */
+//                //已经绑定的
+//                //test
+////                mOpenId=null;
+////                isLogin=false;
+//                //没有安全码设置安全码
+//                if (TextUtils.isEmpty(mSafeCode)) {
+//                    createSafeCodeDialog();
+//                } else {
+//                //绑定支付宝
+//                    getIfBindingAlipay();
+//                }
+////                getIfBindingAlipay();
 
                 break;
 

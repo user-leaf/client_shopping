@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="@string/controller_four"
-        >
+    >
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         ptr:ptrAnimationStyle="flip"
         ptr:ptrOverScroll="false"
-        >
+    >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:orientation="vertical"
                 android:padding="40dp"
                 android:visibility="visible"
-                >
+            >
 
                 <TextView
                     android:id="@+id/bt_mine_login"
@@ -95,7 +95,7 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="22.5dp"
                 android:visibility="gone"
-                >
+            >
                 <!--头像-->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_mine_head"
@@ -110,12 +110,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    >
+                >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        >
+                    >
 
                         <TextView
                             android:id="@+id/tv_mine_ll_login_name"
@@ -128,28 +128,28 @@
                             android:text="哎呦呦商城"
                             android:textColor="@color/white"
                             android:textSize="17sp"
-                            />
+                        />
                         <!--用户类型标识-->
                         <ImageView
                             android:id="@+id/iv_mine_member"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
+                            android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/tv_mine_ll_login_name"
                             android:src="@mipmap/list_icon_badgea"
-                            android:layout_centerVertical="true"
                             android:visibility="gone"
-                            />
+                        />
 
                         <ImageView
                             android:id="@+id/iv_mine_member_five"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
+                            android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/iv_mine_member"
                             android:src="@mipmap/list_icon_badgeb"
-                            android:layout_centerVertical="true"
                             android:visibility="gone"
-                            />
+                        />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -166,7 +166,7 @@
                             android:text="手机："
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            />
+                        />
 
                         <TextView
                             android:id="@+id/tv_mine_tel"
@@ -176,7 +176,7 @@
                             android:text=""
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            />
+                        />
                     </LinearLayout>
 
                     <LinearLayout
@@ -193,7 +193,7 @@
                             android:text="邮箱："
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            />
+                        />
 
                         <TextView
                             android:id="@+id/tv_mine_email"
@@ -203,17 +203,23 @@
                             android:text=""
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            />
+                        />
                     </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
-
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="5dp"
-                android:visibility="gone"
-                ></View>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:padding="10dp"
+                android:text="我的资产"
+                android:textColor="#222"
+                android:textSize="14sp"
+            />
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="#c8c8c8"/>
 
             <!--积分，uu充值入口 -->
 
@@ -225,17 +231,17 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                >
+                android:paddingTop="15dp"
+            >
 
                 <LinearLayout
-                    android:id="@+id/rl_mine_goldcoin"
+                    android:id="@+id/rl_mine_income"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    >
+                >
 
                     <TextView
                         android:id="@+id/tv_mine_goldcoin_num"
@@ -246,10 +252,10 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="0"
-                        android:textSize="20sp"
                         android:textColor="#e10c28"
+                        android:textSize="20sp"
                         android:visibility="gone"
-                        />
+                    />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -260,21 +266,21 @@
                         <ImageView
                             android:layout_width="22.5dp"
                             android:layout_height="22.5dp"
-                            android:src="@mipmap/list_icon_uu_b"
+                            android:src="@mipmap/wodeshouyi"
                             android:visibility="visible"
-                            />
+                        />
 
                         <TextView
                             android:id="@+id/tv_mine_goldcoin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:layout_gravity="center"
-                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
                             android:gravity="center"
-                            android:text="我的UU"
-                            android:textColor="#222"
-                            />
+                            android:text="我的收益"
+                            android:textColor="#6b6b6b"
+                            android:textSize="10sp"
+                        />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -285,12 +291,12 @@
                     android:gravity="center"/>
 
                 <LinearLayout
-                    android:id="@+id/rl_mine_integral"
+                    android:id="@+id/rl_mine_commission"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    >
+                >
                     <TextView
                         android:id="@+id/tv_mine_integral_num"
                         android:layout_width="match_parent"
@@ -300,10 +306,10 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="0"
-                        android:textSize="20sp"
                         android:textColor="#e10c28"
+                        android:textSize="20sp"
                         android:visibility="gone"
-                        />
+                    />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -313,22 +319,21 @@
                         <ImageView
                             android:layout_width="22.5dp"
                             android:layout_height="22.5dp"
-                            android:src="@mipmap/list_icon_integral_b"
+                            android:src="@mipmap/wodeyongjin"
                             android:visibility="visible"
-                            />
+                        />
 
                         <TextView
                             android:id="@+id/tv_mine_integral"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="我的积分"
-                            android:textSize="10sp"
-                            android:textColor="#222"/>
+                            android:text="我的佣金"
+                            android:textColor="#6b6b6b"
+                            android:textSize="10sp"/>
 
                     </LinearLayout>
                 </LinearLayout>
-
 
 
                 <TextView
@@ -338,13 +343,13 @@
                     android:gravity="center"/>
 
                 <LinearLayout
-                    android:id="@+id/rl_mine_withdraw"
+                    android:id="@+id/rl_mine_zhonghui"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    >
+                >
 
                     <TextView
                         android:id="@+id/tv_mine_withdraw_num"
@@ -358,7 +363,7 @@
                         android:textColor="#e10c28"
                         android:textSize="20sp"
                         android:visibility="gone"
-                        />
+                    />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -368,9 +373,9 @@
                         <ImageView
                             android:layout_width="22.5dp"
                             android:layout_height="22.5dp"
-                            android:src="@mipmap/list_icon_coincertificate"
+                            android:src="@mipmap/zhonghuiquan"
                             android:visibility="visible"
-                            />
+                        />
 
                         <TextView
                             android:id="@+id/tv_mine_withdraw"
@@ -378,18 +383,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
-                            android:text="我的兑换券"
+                            android:text="我的众汇券"
+                            android:textColor="#6b6b6b"
                             android:textSize="10sp"
-                            android:textColor="#222"
-                            />
+                        />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="#c8c8c8"/>
 
-            <View
-                style="@style/entry_divider_bold_line_style"
-                android:layout_height="5dp"
-                ></View>
 
             <!--功能入口列表-->
             <com.bjaiyouyou.thismall.widget.NoScrollGridView
@@ -400,19 +404,20 @@
                 android:horizontalSpacing="2dp"
                 android:numColumns="3"
                 android:verticalSpacing="2dp"
-                />
+                android:layout_marginTop="10dp"
+            />
 
             <LinearLayout
                 android:id="@+id/ll_mine_service_the_phone"
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="18.5dp"
-                >
+            >
 
                 <TextView
                     android:layout_width="0dp"
@@ -425,12 +430,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="start"
+                    android:singleLine="true"
                     android:text="4001-599-586"
                     android:textColor="@color/app_red"
                     android:textSize="14sp"
-                    android:singleLine="true"
-                    android:ellipsize="start"
-                    />
+                />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_mine_supply_the_phone"
@@ -442,7 +447,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="18.5dp"
-                >
+            >
 
                 <TextView
                     android:layout_width="0dp"
@@ -459,7 +464,7 @@
 "
                     android:textColor="#6b6b6b"
                     android:textSize="14sp"
-                    />
+                />
             </LinearLayout>
         </LinearLayout>
 
