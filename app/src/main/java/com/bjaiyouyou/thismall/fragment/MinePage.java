@@ -43,6 +43,7 @@ import com.bjaiyouyou.thismall.activity.InviteActivity;
 import com.bjaiyouyou.thismall.activity.LoginActivity;
 import com.bjaiyouyou.thismall.activity.MineBingPhoneNumActivity;
 import com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity;
+import com.bjaiyouyou.thismall.activity.MyCommissionActivity;
 import com.bjaiyouyou.thismall.activity.MyIncomeActivity;
 import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
@@ -1572,8 +1573,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
             case R.id.rl_mine_commission: // 我的佣金
                 Toast.makeText(getActivity(), "我的佣金", Toast.LENGTH_SHORT).show();
-//                mIntentSafeCode = new Intent(getActivity(), MineMemberCenterActivity.class);
-//
+                mIntentSafeCode = new Intent(getActivity(), MyCommissionActivity.class);
 //
 //                if (isLogin) {
 //                    //进入的时候不验证安全码
@@ -1582,7 +1582,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                    startActivity(mIntentSafeCode);
 //                }
 //                //不用验证安全码直接跳转
-////               startActivity(mIntentSafeCode);
+               startActivity(mIntentSafeCode);
 //
                 break;
 

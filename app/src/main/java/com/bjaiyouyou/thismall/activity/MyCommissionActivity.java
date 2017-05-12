@@ -1,0 +1,250 @@
+package com.bjaiyouyou.thismall.activity;
+
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.utils.CashierInputFilter;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
+import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+
+/**
+ * 我的佣金
+ *author Alice
+ *created at 2017/5/12 14:28
+ */
+public class MyCommissionActivity extends BaseActivity {
+
+    //标题
+    private IUUTitleBar mTitle;
+    //佣金详情入口
+    private TextView mTvIntoCommissionDetail;
+    //申请提取（提取页面入口）
+    private TextView mTvApplyWithdraw;
+    //剩余佣金数量控价
+    private TextView mTvHavaCommissionNum;
+    //已经提取的佣金数量控价
+    private TextView mTvHaveWithdrawNum;
+    //能够提取的佣金数量
+    private double mCommissionCanWithdrawNum;
+    ///////////////////////提取弹框相关变量/////////////////////////
+    //提取弹框
+    private PopupWindow mPopWindow;
+    //提交提取佣金按钮
+    private TextView tvCommissionWithdrawCommit;
+    //可提取佣金数量控件
+    private TextView tvCanUseCommissionNum;
+    //提取佣金输入框
+    private EditText etCommissionNum;
+    //金额可输入长度
+    private int mEtLength = 15;
+    //是否是点击设置全部提取
+    private boolean isSetCommissionNum;
+    //输入的提取佣金的数量
+    private Double mInPutCommissionNum;
+    //输入合格佣金
+    private boolean isCommissionNumOk;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_commission);
+        initView();
+        initData();
+        setupView();
+    }
+
+    private void initView() {
+        //标题
+        mTitle = ((IUUTitleBar) findViewById(R.id.title_commission));
+        //佣金明细入口
+        mTvIntoCommissionDetail = ((TextView) findViewById(R.id.tv_into_commission_detail));
+        //申请提取按钮
+        mTvApplyWithdraw = ((TextView) findViewById(R.id.tv_commission_apply_withdraw));
+        //剩余佣金数量
+        mTvHavaCommissionNum = ((TextView) findViewById(R.id.tv_commission_have_commission));
+        //已经返回佣金总数
+        mTvHaveWithdrawNum = ((TextView) findViewById(R.id.tv_commission_withdraw_amount));
+
+
+    }
+
+    private void setupView() {
+        mTitle.setLeftLayoutClickListener(this);
+        mTvIntoCommissionDetail.setOnClickListener(this);
+        mTvApplyWithdraw.setOnClickListener(this);
+    }
+
+    private void initData() {
+        setData();
+    }
+
+    /**
+     * 根据接口数据进行页面操作
+     */
+    private void setData() {
+        mTvHavaCommissionNum.setText(""+mCommissionCanWithdrawNum);
+        mTvHaveWithdrawNum.setText("");
+        //test
+        mCommissionCanWithdrawNum=0.33;
+
+        if (mCommissionCanWithdrawNum>0){
+            //可以进入提取页面
+            mTvIntoCommissionDetail.setEnabled(true);
+        }else {
+            //不可以进入提取页面
+            mTvIntoCommissionDetail.setEnabled(false);
+
+        }
+
+
+
+    }
+
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        switch (v.getId()){
+            case R.id.left_layout://退出我的佣金页面
+                finish();
+                break;
+            case R.id.tv_into_commission_detail://进入佣金详情页面
+                ToastUtils.showShort("佣金详情");
+                break;
+            case R.id.tv_commission_apply_withdraw://申请提取（提取页面入口）
+                initCommissionWithdraw();
+                ToastUtils.showShort("申请提取");
+                break;
+
+            //////////处理提取弹框页面///////////////////////////////////////
+
+            case R.id.tv_commission_set_all_can_use://全部提取
+                ToastUtils.showShort("全部提取");
+                setExchangeAllCan();
+                break;
+            case R.id.tv_commission_apply_withdraw_commit://申请提取提交
+                ToastUtils.showShort("申请提取提交");
+                break;
+            case R.id.tv_commission_withdraw_back://销毁弹框
+                mPopWindow.dismiss();
+                break;
+
+            default:
+                return;
+
+        }
+    }
+
+    /**
+     * 将全部可兑换金额写入兑换输入框
+     */
+    private void setExchangeAllCan() {
+        isSetCommissionNum = true;
+        etCommissionNum.setText("" + mCommissionCanWithdrawNum);
+    }
+
+    /**
+     * 申请页面入口
+     */
+    private void initCommissionWithdraw() {
+        //进入提取页面
+        if (mCommissionCanWithdrawNum>0){
+            showCommissionWithdrawWindow();
+        }
+        //test
+//        showCommissionWithdrawWindow();
+    }
+
+    /**
+     * 显示兑换弹出页面
+     */
+    private void showCommissionWithdrawWindow() {
+        if (mPopWindow != null) {
+            mPopWindow.dismiss();
+        }
+        //设置contentView
+        View contentView = LayoutInflater.from(MyCommissionActivity.this).inflate(R.layout.item_commission_withdraw_dialog, null);
+        mPopWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        mPopWindow.setContentView(contentView);
+        mPopWindow.setAnimationStyle(R.style.PopWindow_Anim_Style_Up_Down);
+        //设置各个控件的点击响应
+        //取消
+        TextView tvCancle = (TextView) contentView.findViewById(R.id.tv_commission_withdraw_back);
+        //全部提取
+        TextView tvSetAllCanExchange = (TextView) contentView.findViewById(R.id.tv_commission_set_all_can_use);
+
+        tvCommissionWithdrawCommit = (TextView) contentView.findViewById(R.id.tv_commission_apply_withdraw_commit);
+        tvCanUseCommissionNum = (TextView) contentView.findViewById(R.id.tv_commission_withdraw_can_use);
+        etCommissionNum = (EditText) contentView.findViewById(R.id.et_commission_withdraw_input_num);
+
+
+        //设置监听
+        tvCancle.setOnClickListener(this);
+        tvSetAllCanExchange.setOnClickListener(this);
+
+        tvCommissionWithdrawCommit.setOnClickListener(this);
+
+        etCommissionNum.addTextChangedListener(etCommissionInputNumTextWatcher);
+        //添加过滤器，只能输入两位小数，不能连续以0开始
+        InputFilter[] filters={new CashierInputFilter()};
+        etCommissionNum.setFilters(filters);
+
+        //填充数据
+        tvCanUseCommissionNum.setText("" + mCommissionCanWithdrawNum);
+
+
+        //显示PopupWindow
+        View rootview = LayoutInflater.from(MyCommissionActivity.this).inflate(R.layout.activity_commission, null);
+        mPopWindow.showAtLocation(rootview, Gravity.TOP, 0, 0);
+    }
+
+
+
+    /**
+     * 提取佣金输入框监听
+     */
+    TextWatcher etCommissionInputNumTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            //获得输入金额
+            String string = s.toString().trim();
+            //控制光标的位置
+            etCommissionNum.setSelection(string.length());
+
+            //根据需求改变按钮的状态
+            if (!TextUtils.isEmpty(string)) {
+                mInPutCommissionNum = Double.valueOf(string);
+                if (mInPutCommissionNum != 0L&&mInPutCommissionNum<=mCommissionCanWithdrawNum) {
+                    //根据输入判断是否可提现
+                    tvCommissionWithdrawCommit.setEnabled(true);
+                } else {
+                    tvCommissionWithdrawCommit.setEnabled(false);
+                }
+            }else {
+                tvCommissionWithdrawCommit.setEnabled(false);
+            }
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+}

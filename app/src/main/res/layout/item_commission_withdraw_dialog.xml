@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#fff"
+              android:orientation="vertical"
+    >
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        >
+
+        <TextView
+            android:id="@+id/tv_commission_withdraw_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="取消"
+            android:textColor="#222"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提取佣金"
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--内容-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="申请提取金额"
+                    android:textColor="#222"
+                    android:textSize="17sp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textSize="30sp"
+                        android:textColor="#222"
+                        android:text="¥"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/et_commission_withdraw_input_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint=""
+                        android:digits="0123456789."
+                        android:singleLine="true"
+                        android:textColor="#222"
+                        android:textColorHint="#bbb"
+                        android:textCursorDrawable="@drawable/shape_exchange_edittext_cursor"
+                        android:textSize="50sp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+                <View
+                    style="@style/exchange_orange_divider_fine_line_style"
+                    android:layout_marginTop="6dp"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="佣金金额¥"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_commission_withdraw_can_use"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_commission_set_all_can_use"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="全部提取"
+                        android:textColor="#0871f1"
+                        android:textSize="15sp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_commission_apply_withdraw_commit"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/selector_btn_bg"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="@drawable/selector_btn_textcolor"
+                android:textSize="20sp"
+                android:enabled="false"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#222"
+                android:textSize="15sp"
+                android:text="提交申请后7个工作日到账"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

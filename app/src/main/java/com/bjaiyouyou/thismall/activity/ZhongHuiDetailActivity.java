@@ -1,10 +1,11 @@
 package com.bjaiyouyou.thismall.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -14,9 +15,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  *created at 2017/5/12 11:17
  */
 
-public class ZhongHuiDetailActivity extends AppCompatActivity {
+public class ZhongHuiDetailActivity extends BaseActivity {
 
+    //列表
     private PullToRefreshListView mLv;
+    private IUUTitleBar mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +34,12 @@ public class ZhongHuiDetailActivity extends AppCompatActivity {
     private void initView() {
         mLv = ((PullToRefreshListView) findViewById(R.id.ptrlv_zh_detail));
         mLv.setMode(PullToRefreshBase.Mode.BOTH);
+        mTitle = ((IUUTitleBar) findViewById(R.id.title_zh_detail));
     }
 
     private void setupView() {
+        mTitle.setLeftLayoutClickListener(this);
+
         mLv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -56,5 +62,20 @@ public class ZhongHuiDetailActivity extends AppCompatActivity {
 
     private void initCtrl() {
 
+    }
+
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        switch (v.getId()){
+            //退出
+            case R.id.left_layout:
+                finish();
+                break;
+
+            default:
+                return;
+
+        }
     }
 }

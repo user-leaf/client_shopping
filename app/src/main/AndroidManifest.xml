@@ -167,8 +167,7 @@
         <activity
             android:name=".activity.AddressAddActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
 
         <!-- ShareSDK begin -->
 
@@ -587,14 +586,19 @@
             android:value="${JPUSH_APPKEY}"/>
         <!-- </>值来自开发者平台取得的AppKey -->
 
-        <activity android:name=".activity.MyIncomeActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.MyIncomeActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.UserPayActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.UserPayActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.ZhongHuiDetailActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.ZhongHuiDetailActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.MyCommissionActivity">
         </activity>
     </application>
 
