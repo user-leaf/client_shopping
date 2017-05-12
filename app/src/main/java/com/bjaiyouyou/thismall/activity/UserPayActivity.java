@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,14 +16,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.Constants;
+import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.client.Api4Cart;
+import com.bjaiyouyou.thismall.client.BaseClientApi;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
+import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.text.DecimalFormat;
+
+import okhttp3.Call;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
@@ -46,10 +57,15 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     private EditText mEtMoney;             // 金额输入框
     private Button mBtnPayCustomMoney;     // 支付按钮
 
+    private Api4Cart mApi4Cart;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_pay);
+
+        mApi4Cart = (Api4Cart) ClientApiHelper.getInstance().getClientApi(Api4Cart.class);
 
         initView();
         setupView();
@@ -170,12 +186,16 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
 
         View ivClose = inflate.findViewById(R.id.user_pay_dialog_iv_close);
         TextView tvMoney = (TextView) inflate.findViewById(R.id.user_pay_dialog_tv_money);
-        EditText etSafecode = (EditText) inflate.findViewById(R.id.user_pay_dialog_et_psw);
+        final EditText etSafecode = (EditText) inflate.findViewById(R.id.user_pay_dialog_et_psw);
         TextView tvForget = (TextView) inflate.findViewById(R.id.user_pay_dialog_tv_forget);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Utility.isFastDoubleClick()){
+                    return;
+                }
+
                 switch (v.getId()) {
                     case R.id.user_pay_dialog_iv_close:     // 关闭
                         if (payDialog != null && payDialog.isShowing()) {
@@ -194,8 +214,45 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
         tvMoney.setText(String.valueOf(money));
         ivClose.setOnClickListener(onClickListener);
         tvForget.setOnClickListener(onClickListener);
+        etSafecode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                validateSafeCode(payDialog, etSafecode, Constants.CHANNEL_BALANCE);
+
+                return true;
+            }
+        });
 
         payDialog.show();
+    }
+    /**
+     * 验证安全码
+     *
+     * @param pswDialog
+     * @param etPasswordView
+     * @param channel
+     */
+    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final String channel) {
+        String safeCode = etPasswordView.getText().toString();
+
+        mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showException(e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                KeyBoardUtils.closeKeybord(etPasswordView, MainApplication.getContext());
+                pswDialog.dismiss();
+                // 调用支付
+//                mCallback.onPayCallback(channel);
+                String orderNum = "iuu2017";
+                new PaymentTask(UserPayActivity.this, UserPayActivity.this, orderNum, channel, null, TAG)
+                        .execute(new PaymentTask.PaymentRequest(channel, 1));
+            }
+        });
+
     }
 
     /**

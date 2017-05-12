@@ -110,6 +110,7 @@
             android:background="@drawable/shape_user_pay_et_pwd_bg"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:hint="请输入安全码"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLength="16"
             android:singleLine="true"
