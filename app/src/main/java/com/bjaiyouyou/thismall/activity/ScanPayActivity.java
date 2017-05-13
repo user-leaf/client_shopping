@@ -227,6 +227,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         TextView tvMoney = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_money);
         final EditText etSafecode = (EditText) inflate.findViewById(R.id.scan_pay_dialog_et_psw);
         TextView tvForget = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_forget);
+        Button btnCommit = (Button) inflate.findViewById(R.id.scan_pay_dialog_btn_commit);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -246,6 +247,11 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                         payDialog.dismiss();
                         showSafeCodeForgetDialog();
                         break;
+
+                    case R.id.scan_pay_dialog_btn_commit:   // 确定
+                        validateSafeCode(payDialog, etSafecode, Constants.CHANNEL_BALANCE);
+
+                        break;
                 }
             }
         };
@@ -253,6 +259,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         tvMoney.setText(String.valueOf(money));
         ivClose.setOnClickListener(onClickListener);
         tvForget.setOnClickListener(onClickListener);
+        btnCommit.setOnClickListener(onClickListener);
         etSafecode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

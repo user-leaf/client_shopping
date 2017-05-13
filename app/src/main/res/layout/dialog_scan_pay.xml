@@ -35,102 +35,117 @@
         android:background="@color/app_basic"
         />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="17dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="20dp"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="向商家用户（**名）支付"
-            android:textColor="#666666"
-            android:textSize="15sp"
-            />
-
-        <TextView
-            android:id="@+id/scan_pay_dialog_tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="25dp"
-            android:text="100.00"
-            android:textColor="#222222"
-            android:textSize="40sp"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#999999"
-            />
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="17dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp"
             >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/dingdan_zhonghuiquan"
-                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="众汇券"
-                android:textColor="#222222"
+                android:text="向商家用户（**名）支付"
+                android:textColor="#666666"
                 android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/scan_pay_dialog_tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="25dp"
+                android:text="100.00"
+                android:textColor="#222222"
+                android:textSize="40sp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#999999"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/dingdan_zhonghuiquan"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="众汇券"
+                    android:textColor="#222222"
+                    android:textSize="15sp"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#999999"
+                />
+
+            <EditText
+                android:id="@+id/scan_pay_dialog_et_psw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/shape_scan_pay_et_pwd_bg"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="请输入安全码"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:singleLine="true"
+                android:textSize="14sp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                >
+
+                <TextView
+                    android:id="@+id/scan_pay_dialog_tv_forget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="忘记安全码"
+                    />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/scan_pay_dialog_btn_commit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/app_basic"
+                android:text="确定"
+                android:textColor="@color/white"
                 />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#999999"
-            />
-
-        <EditText
-            android:id="@+id/scan_pay_dialog_et_psw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/shape_scan_pay_et_pwd_bg"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:hint="请输入安全码"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLength="16"
-            android:singleLine="true"
-            android:textSize="14sp"
-            />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            >
-
-            <TextView
-                android:id="@+id/scan_pay_dialog_tv_forget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="忘记安全码"
-                />
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
