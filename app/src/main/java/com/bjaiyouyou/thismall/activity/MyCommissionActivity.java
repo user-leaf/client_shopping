@@ -1,5 +1,7 @@
 package com.bjaiyouyou.thismall.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -20,6 +22,7 @@ import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.utils.CashierInputFilter;
+import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
@@ -188,6 +191,21 @@ public class MyCommissionActivity extends BaseActivity {
      * 提取申请提交
      */
     private void applyWithdrawCommit() {
+        Dialog dialog = DialogUtils.createConfirmDialog(getApplicationContext(), "申请提交成功", "我们审核后转账至您绑定的提取账号", "确定", "",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        dialog.show();
     }
 
     /**
