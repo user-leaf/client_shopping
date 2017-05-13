@@ -595,12 +595,12 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.ZhongHuiDetailActivity"
+            android:name=".activity.MyCommissionDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activity.MyCommissionActivity">
         </activity>
-        <activity android:name=".activity.ZhongHuiQuanActivity">
+        <activity android:name=".activity.MyZhongHuiQuanActivity">
         </activity>
     </application>
 

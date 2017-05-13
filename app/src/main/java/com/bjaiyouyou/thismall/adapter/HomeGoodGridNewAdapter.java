@@ -128,6 +128,8 @@ public class HomeGoodGridNewAdapter extends RecyclerView.Adapter<HomeGoodGridNew
                 viewHolder.mTvPrice.setText(price);
                 String integral = "+" + productInfo.getSize().getIntegration_price() + "兑换券";
                 viewHolder.mTvPoints.setText(integral);
+                //去掉兑换券显示
+                viewHolder.mTvPoints.setVisibility(View.GONE);
             }
         }
     }

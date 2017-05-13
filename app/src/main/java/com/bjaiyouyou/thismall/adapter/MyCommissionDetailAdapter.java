@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
-import com.bjaiyouyou.thismall.model.ZhongHuiDetailModle;
+import com.bjaiyouyou.thismall.model.MyCommissionModel;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ import java.util.List;
  * Created by Alice
  * 2017/5/12
  */
-public class ZhongHuiDetailAdapter extends MyBaseAdapter<ZhongHuiDetailModle>{
-    private List<ZhongHuiDetailModle> mList;
+public class MyCommissionDetailAdapter extends MyBaseAdapter<MyCommissionModel.DataBean>{
+    private List<MyCommissionModel.DataBean> mList;
     private Context mContext;
 
-    public ZhongHuiDetailAdapter(List<ZhongHuiDetailModle> datas, Context context) {
+    public MyCommissionDetailAdapter(List<MyCommissionModel.DataBean> datas, Context context) {
         super(datas, context);
         this.mList=datas;
         this.mContext=context;
@@ -43,20 +43,39 @@ public class ZhongHuiDetailAdapter extends MyBaseAdapter<ZhongHuiDetailModle>{
             holder= (ViewHolder) convertView.getTag();
         }
 
-        //填充数据
-
-
-
-
-
+        MyCommissionModel.DataBean dataBean=mList.get(position);
+        if (dataBean!=null){
+            //填充数据
+//            //判断月份的条目是否显示
+//            holder.llType.setVisibility(View.VISIBLE);
+//            holder.tvMonth.setText("");
+//
+//            holder.llType.setVisibility(View.GONE);
+            holder.tvType.setText(dataBean.getWord());
+            holder.tvTime.setText(dataBean.getCreated_at());
+            String money=dataBean.getPush_money();
+            //判断金额的颜色
+            holder.tvMoney.setText(money);
+            if (money!=null){
+                if (money.contains("+")){
+                    holder.tvMoney.setEnabled(true);
+                }else if (money.contains("-")){
+                    holder.tvMoney.setEnabled(false);
+                }
+            }
+        }
         return convertView;
     }
     class ViewHolder{
+        //月份显示
         private LinearLayout llType;
+        //月份显示
         private TextView tvMonth;
-
+        //消费类型
         private TextView tvType;
+        //时间
         private TextView tvTime;
+        //金额
         private TextView tvMoney;
 
     }

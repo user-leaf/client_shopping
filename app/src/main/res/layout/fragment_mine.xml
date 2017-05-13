@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="@string/controller_four"
-    >
+        >
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
 
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         ptr:ptrAnimationStyle="flip"
         ptr:ptrOverScroll="false"
-    >
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,13 +61,12 @@
             <LinearLayout
                 android:id="@+id/ll_mine_head_notlogin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="105dp"
                 android:background="@color/app_basic"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="40dp"
                 android:visibility="visible"
-            >
+                >
 
                 <TextView
                     android:id="@+id/bt_mine_login"
@@ -88,34 +87,33 @@
             <LinearLayout
                 android:id="@+id/rl_mine_head_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="105dp"
                 android:background="@color/app_basic"
                 android:gravity="left"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="22.5dp"
-                android:visibility="gone"
-            >
+                android:visibility="visible"
+                >
                 <!--头像-->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_mine_head"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="17.5dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="18dp"
                     android:src="@mipmap/list_profile_photo"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                >
+                    >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                    >
+                        android:layout_marginTop="23dp"
+                        >
 
                         <TextView
                             android:id="@+id/tv_mine_ll_login_name"
@@ -128,7 +126,7 @@
                             android:text="哎呦呦商城"
                             android:textColor="@color/white"
                             android:textSize="17sp"
-                        />
+                            />
                         <!--用户类型标识-->
                         <ImageView
                             android:id="@+id/iv_mine_member"
@@ -138,7 +136,7 @@
                             android:layout_toRightOf="@+id/tv_mine_ll_login_name"
                             android:src="@mipmap/list_icon_badgea"
                             android:visibility="gone"
-                        />
+                            />
 
                         <ImageView
                             android:id="@+id/iv_mine_member_five"
@@ -149,7 +147,7 @@
                             android:layout_toRightOf="@+id/iv_mine_member"
                             android:src="@mipmap/list_icon_badgeb"
                             android:visibility="gone"
-                        />
+                            />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -166,7 +164,7 @@
                             android:text="手机："
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                        />
+                            />
 
                         <TextView
                             android:id="@+id/tv_mine_tel"
@@ -176,13 +174,13 @@
                             android:text=""
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                        />
+                            />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3.5dp"
+                        android:layout_marginTop="4dp"
                         android:gravity="left"
                         android:orientation="horizontal">
 
@@ -193,7 +191,7 @@
                             android:text="邮箱："
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                        />
+                            />
 
                         <TextView
                             android:id="@+id/tv_mine_email"
@@ -203,11 +201,12 @@
                             android:text=""
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                        />
+                            />
                     </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,10 +215,12 @@
                 android:text="我的资产"
                 android:textColor="#222"
                 android:textSize="14sp"
-            />
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="1dp"
-                      android:background="#c8c8c8"/>
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c8c8c8"/>
 
             <!--积分，uu充值入口 -->
 
@@ -232,7 +233,7 @@
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingTop="15dp"
-            >
+                >
 
                 <LinearLayout
                     android:id="@+id/rl_mine_income"
@@ -241,7 +242,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                >
+                    >
 
                     <TextView
                         android:id="@+id/tv_mine_goldcoin_num"
@@ -255,7 +256,7 @@
                         android:textColor="#e10c28"
                         android:textSize="20sp"
                         android:visibility="gone"
-                    />
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -268,7 +269,7 @@
                             android:layout_height="22.5dp"
                             android:src="@mipmap/wodeshouyi"
                             android:visibility="visible"
-                        />
+                            />
 
                         <TextView
                             android:id="@+id/tv_mine_goldcoin"
@@ -280,7 +281,7 @@
                             android:text="我的收益"
                             android:textColor="#6b6b6b"
                             android:textSize="10sp"
-                        />
+                            />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -296,7 +297,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                >
+                    >
+
                     <TextView
                         android:id="@+id/tv_mine_integral_num"
                         android:layout_width="match_parent"
@@ -309,7 +311,8 @@
                         android:textColor="#e10c28"
                         android:textSize="20sp"
                         android:visibility="gone"
-                    />
+                        />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -321,7 +324,7 @@
                             android:layout_height="22.5dp"
                             android:src="@mipmap/wodeyongjin"
                             android:visibility="visible"
-                        />
+                            />
 
                         <TextView
                             android:id="@+id/tv_mine_integral"
@@ -349,7 +352,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                >
+                    >
 
                     <TextView
                         android:id="@+id/tv_mine_withdraw_num"
@@ -363,7 +366,8 @@
                         android:textColor="#e10c28"
                         android:textSize="20sp"
                         android:visibility="gone"
-                    />
+                        />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -375,7 +379,7 @@
                             android:layout_height="22.5dp"
                             android:src="@mipmap/zhonghuiquan"
                             android:visibility="visible"
-                        />
+                            />
 
                         <TextView
                             android:id="@+id/tv_mine_withdraw"
@@ -386,13 +390,15 @@
                             android:text="我的众汇券"
                             android:textColor="#6b6b6b"
                             android:textSize="10sp"
-                        />
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="1dp"
-                      android:background="#c8c8c8"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c8c8c8"/>
 
 
             <!--功能入口列表-->
@@ -400,12 +406,12 @@
                 android:id="@+id/gv_mine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="#eee"
                 android:horizontalSpacing="2dp"
                 android:numColumns="3"
                 android:verticalSpacing="2dp"
-                android:layout_marginTop="10dp"
-            />
+                />
 
             <LinearLayout
                 android:id="@+id/ll_mine_service_the_phone"
@@ -417,7 +423,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="18.5dp"
-            >
+                >
 
                 <TextView
                     android:layout_width="0dp"
@@ -435,8 +441,9 @@
                     android:text="4001-599-586"
                     android:textColor="@color/app_red"
                     android:textSize="14sp"
-                />
+                    />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_mine_supply_the_phone"
                 android:layout_width="match_parent"
@@ -447,7 +454,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="18.5dp"
-            >
+                >
 
                 <TextView
                     android:layout_width="0dp"
@@ -464,7 +471,7 @@
 "
                     android:textColor="#6b6b6b"
                     android:textSize="14sp"
-                />
+                    />
             </LinearLayout>
         </LinearLayout>
 

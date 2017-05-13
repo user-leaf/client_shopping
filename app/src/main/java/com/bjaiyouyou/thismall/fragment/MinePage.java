@@ -49,7 +49,7 @@ import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.activity.SettingsActivity;
 import com.bjaiyouyou.thismall.activity.UpdateMineUserMessageActivity;
-import com.bjaiyouyou.thismall.activity.ZhongHuiQuanActivity;
+import com.bjaiyouyou.thismall.activity.MyZhongHuiQuanActivity;
 import com.bjaiyouyou.thismall.adapter.MineAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
@@ -315,13 +315,13 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initView() {
         mHeight = ScreenUtils.getScreenHeight(getContext());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mHeight / 5);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mHeight / 5);
         //登录后的头部布局
         mLoginView = layout.findViewById(R.id.rl_mine_head_login);
         //没登录的头部布局
         mNotLoginView = layout.findViewById(R.id.ll_mine_head_notlogin);
-        mLoginView.setLayoutParams(params);
-        mNotLoginView.setLayoutParams(params);
+//        mLoginView.setLayoutParams(params);
+//        mNotLoginView.setLayoutParams(params);
 
 
         //断网提示
@@ -1589,7 +1589,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             case R.id.rl_mine_zhonghui: //我的众汇券
 //                ToastUtils.showShort("我的众汇券");
-                mIntentSafeCode = new Intent(getActivity(), ZhongHuiQuanActivity.class);
+                mIntentSafeCode = new Intent(getActivity(), MyZhongHuiQuanActivity.class);
                 startActivity(mIntentSafeCode);
                 //没登录去登录页
 //                if (!isLogin){

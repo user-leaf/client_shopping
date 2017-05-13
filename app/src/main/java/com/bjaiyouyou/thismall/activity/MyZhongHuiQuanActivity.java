@@ -10,6 +10,7 @@ import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
 import okhttp3.Call;
@@ -19,8 +20,8 @@ import okhttp3.Call;
  *author Alice
  *created at 2017/5/12 18:26
  */
-public class ZhongHuiQuanActivity extends BaseActivity {
-    public static String TAG=ZhongHuiQuanActivity.class.getSimpleName();
+public class MyZhongHuiQuanActivity extends BaseActivity {
+    public static String TAG=MyZhongHuiQuanActivity.class.getSimpleName();
 
     private IUUTitleBar mTitle;
     //众汇券明细入口
@@ -40,6 +41,7 @@ public class ZhongHuiQuanActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zhong_hui_quan);
         initView();
+        initVariable();
         initData();
         setupView();
 
@@ -59,17 +61,22 @@ public class ZhongHuiQuanActivity extends BaseActivity {
         mTvZHQDetail.setOnClickListener(this);
 
     }
+    private void initVariable() {
+        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
+    }
 
     private void initData() {
-        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
-        mApi4Mine.getZhongHuiQuanData(new DataCallback<ZhongHuiQuanModel>(getApplicationContext()) {
+        showLoadingDialog();
+        mApi4Mine.getZhongHuiQuanData(this,new DataCallback<ZhongHuiQuanModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                dismissLoadingDialog();
                 LogUtils.d("getZhongHuiQuanData",e.getMessage());
             }
 
             @Override
             public void onSuccess(Object response, int id) {
+                dismissLoadingDialog();
                 if (response!=null){
                     mZhangHuiQuanModel=(ZhongHuiQuanModel) response;
                     setDate();
@@ -94,7 +101,9 @@ public class ZhongHuiQuanActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_into_zhonghuiquan_detail://进入众汇券明细
-                jump(ZhongHuiDetailActivity.class,false);
+//                DataHolder.getInstance().setData(MyZhongHuiQuanActivity.TAG);
+//                jump(MyCommissionDetailActivity.class,false);
+                ToastUtils.showShort("吊起WebView");
                 break;
             default:
                 return;

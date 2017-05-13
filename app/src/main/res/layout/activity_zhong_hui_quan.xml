@@ -8,7 +8,7 @@
     android:background="#fff"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.ZhongHuiQuanActivity">
+    tools:context=".activity.MyZhongHuiQuanActivity">
     <!--标题-->
     <FrameLayout
         android:layout_width="match_parent"

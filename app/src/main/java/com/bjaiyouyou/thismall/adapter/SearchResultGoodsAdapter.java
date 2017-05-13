@@ -57,6 +57,7 @@ public class SearchResultGoodsAdapter extends RecyclerView.Adapter<SearchResultG
                 holder.tvPrice.setText(price);
                 String integral = "+" + goods.getSize().getIntegration_price() + "兑换券";
                 holder.tvIntegral.setText(integral);
+                holder.tvIntegral.setVisibility(View.GONE);
             }
 
             if (goods.getImage() != null && goods.getImage().getImage_path() != null && goods.getImage().getImage_base_name() != null) {

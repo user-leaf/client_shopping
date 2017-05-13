@@ -13,6 +13,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="#eee"
+        android:visibility="gone"
     >
         <TextView
             android:layout_width="2dp"
@@ -67,6 +68,7 @@
             android:textColor="@drawable/selector_zhonghui_detail_num_txt_color"
             android:textSize="12sp"
             android:text="num"
+            android:enabled="false"
         />
     </RelativeLayout>
     <TextView

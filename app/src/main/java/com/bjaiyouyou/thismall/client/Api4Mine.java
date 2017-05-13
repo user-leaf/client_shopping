@@ -1,13 +1,16 @@
 package com.bjaiyouyou.thismall.client;
 
 import com.bjaiyouyou.thismall.activity.MyCommissionActivity;
-import com.bjaiyouyou.thismall.activity.ZhongHuiQuanActivity;
+import com.bjaiyouyou.thismall.activity.MyCommissionDetailActivity;
+import com.bjaiyouyou.thismall.activity.MyIncomeActivity;
+import com.bjaiyouyou.thismall.activity.MyZhongHuiQuanActivity;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.fragment.MinePage;
 import com.bjaiyouyou.thismall.model.BindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
+import com.bjaiyouyou.thismall.model.MyCommissionModel;
 import com.bjaiyouyou.thismall.model.MyIncomeModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
@@ -153,21 +156,21 @@ public class Api4Mine extends BaseClientApi {
      * 获得我的众汇券数据
      * @param callback
      */
-    public void getZhongHuiQuanData(DataCallback<ZhongHuiQuanModel> callback){
+    public void getZhongHuiQuanData(Object tag,DataCallback<ZhongHuiQuanModel> callback){
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/member/myZhongHuiQuan");
         sb.append("?token=").append(CurrentUserManager.getUserToken());
         String url = sb.toString();
 
-        LogUtils.d(ZhongHuiQuanActivity.TAG, "getZhongHuiQuanData: " + url);
+        LogUtils.d(MyZhongHuiQuanActivity.TAG, "getZhongHuiQuanData: " + url);
 
-        doGet(url, ZhongHuiQuanActivity.TAG, null, callback);
+        doGet(url,tag, null, callback);
     }
     /**
      * 获得我的佣金数据
      * @param callback
      */
-    public void getCommissionData(DataCallback<CommissionModel> callback){
+    public void getCommissionData(Object tag,DataCallback<CommissionModel> callback){
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/member/myPushMoney");
         sb.append("?token=").append(CurrentUserManager.getUserToken());
@@ -175,7 +178,7 @@ public class Api4Mine extends BaseClientApi {
 
         LogUtils.d(MyCommissionActivity.TAG, "getCommissionData: " + url);
 
-        doGet(url, MyCommissionActivity.TAG, null, callback);
+        doGet(url,tag, null, callback);
     }
 
     /**
@@ -189,5 +192,30 @@ public class Api4Mine extends BaseClientApi {
 
         String url = stringBuilder.toString();
         doGet(url, TAG, null, callback);
+    }
+    /**
+     * 获得我的佣金、我的兑换券、我的佣金的详情
+     * @param callback
+     */
+    public void getMyPropertyData(Object tag,String className,int page,DataCallback<MyCommissionModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        if (className!=null){
+            if (MyZhongHuiQuanActivity.TAG.equals(className)){
+                //mTitle.setTitle("众汇券明细");
+                sb.append("api/v1/member/myPushMoney");
+            }else if (MyCommissionActivity.TAG.equals(className)){
+                //mTitle.setTitle("佣金明细");
+                sb.append("api/v1/member/shouyiDetails");
+            }else if (MyIncomeActivity.TAG.equals(className)){
+                //mTitle.setTitle("收益明细");
+                sb.append("api/v1/member/myPushMoney");
+            }
+        }
+        sb.append("?page=").append(page);
+        sb.append("&token=").append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+
+        LogUtils.d(MyCommissionDetailActivity.TAG, "getMyPropertyData: " + url);
+        doGet(url, tag, null, callback);
     }
 }

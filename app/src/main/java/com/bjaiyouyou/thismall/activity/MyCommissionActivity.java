@@ -79,8 +79,13 @@ public class MyCommissionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commission);
         initView();
+        initVariable();
         initData();
         setupView();
+    }
+
+    private void initVariable() {
+        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
     private void initView() {
@@ -105,16 +110,17 @@ public class MyCommissionActivity extends BaseActivity {
     }
 
     private void initData() {
-
-        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
-        mApi4Mine.getCommissionData(new DataCallback<CommissionModel>(getApplicationContext()) {
+        showLoadingDialog();
+        mApi4Mine.getCommissionData(this,new DataCallback<CommissionModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                dismissLoadingDialog();
                 LogUtils.d("getCommissionData",e.getMessage());
             }
 
             @Override
             public void onSuccess(Object response, int id) {
+                dismissLoadingDialog();
                 if (response!=null){
                     mCommissionModel= (CommissionModel) response;
                     setData();
@@ -160,17 +166,19 @@ public class MyCommissionActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_into_commission_detail://进入佣金详情页面
-                ToastUtils.showShort("佣金详情");
+//                DataHolder.getInstance().setData(MyCommissionActivity.TAG);
+//                jump(MyCommissionDetailActivity.class,false);
+                ToastUtils.showShort("吊起WebView");
                 break;
             case R.id.tv_commission_apply_withdraw://申请提取（提取页面入口）
                 initCommissionWithdraw();
-                ToastUtils.showShort("申请提取");
+//                ToastUtils.showShort("申请提取");
                 break;
 
             //////////处理提取弹框页面///////////////////////////////////////
 
             case R.id.tv_commission_set_all_can_use://全部提取
-                ToastUtils.showShort("全部提取");
+//                ToastUtils.showShort("全部提取");
                 setExchangeAllCan();
                 break;
             case R.id.tv_commission_apply_withdraw_commit://申请提取提交
@@ -191,6 +199,9 @@ public class MyCommissionActivity extends BaseActivity {
      * 提取申请提交
      */
     private void applyWithdrawCommit() {
+
+        showLoadingDialog();
+
         Dialog dialog = DialogUtils.createConfirmDialog(getApplicationContext(), "申请提交成功", "我们审核后转账至您绑定的提取账号", "确定", "",
                 new DialogInterface.OnClickListener() {
                     @Override

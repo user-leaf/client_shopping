@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -658,11 +657,12 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         }
                         //单价
                         if (detailBeani.getProduct_size() != null) {
-                            String singleMoney = "￥" + detailBeani.getPrice() + "\n+" + detailBeani.getProduct_size().getIntegration_price() + "兑换券";
+//                            String singleMoney = "￥" + detailBeani.getPrice() + "\n+" + detailBeani.getProduct_size().getIntegration_price() + "兑换券";
+                            String singleMoney = "￥" + detailBeani.getPrice() ;
                             SpannableStringBuilder builderSingleMoney = new SpannableStringBuilder(singleMoney);
                             //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
                             ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
-                            builderSingleMoney.setSpan(redSpan, 0, singleMoney.indexOf("+"), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                            builderSingleMoney.setSpan(redSpan, 0, singleMoney.indexOf("+"), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             //改变颜色
                             holder.tvSingleMoney.setText(builderSingleMoney);
                             //规格
