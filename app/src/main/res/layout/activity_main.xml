@@ -87,29 +87,29 @@
                 android:visibility="invisible" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/btn_container_address_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/btn_container_address_list"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1" >-->
 
-            <RadioButton
-                android:id="@+id/controller_two"
-                style="@style/controller_style"
-                android:drawableTop="@drawable/selector_tab_task"
-                android:text="@string/controller_two"
-                android:onClick="onTabClicked"
-                />
+            <!--<RadioButton-->
+                <!--android:id="@+id/controller_two"-->
+                <!--style="@style/controller_style"-->
+                <!--android:drawableTop="@drawable/selector_tab_task"-->
+                <!--android:text="@string/controller_two"-->
+                <!--android:onClick="onTabClicked"-->
+                <!--/>-->
 
-            <TextView
-                android:id="@+id/unread_address_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/app_unread_dot"
-                android:visibility="invisible" />
-        </RelativeLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/unread_address_number"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:background="@drawable/app_unread_dot"-->
+                <!--android:visibility="invisible" />-->
+        <!--</RelativeLayout>-->
 
         <RelativeLayout
             android:id="@+id/btn_container_discovery"

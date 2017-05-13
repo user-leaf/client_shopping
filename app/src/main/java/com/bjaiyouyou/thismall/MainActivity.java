@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity {
 
     private RadioButton mController0;
     private RadioButton mController1;
-    private RadioButton mController2;
+//    private RadioButton mController2;
     private RadioButton mController3;
     private RadioButton mController4;
 
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
     // 第1页：分类页
     private ClassifyPage mClassifyPage;
     // 第2页：任务页
-    private TaskPage mTaskPage;
+//    private TaskPage mTaskPage;
     // 第3页：购物车页
     private CartPage mCartPage;
     // 第4页：个人页
@@ -82,8 +82,8 @@ public class MainActivity extends BaseActivity {
                     mClassifyPage = (ClassifyPage) fragment;
                     fragments[1] = mClassifyPage;
                 } else if (fragment instanceof TaskPage) {
-                    mTaskPage = (TaskPage) fragment;
-                    fragments[2] = mTaskPage;
+//                    mTaskPage = (TaskPage) fragment;
+//                    fragments[2] = mTaskPage;
                 } else if (fragment instanceof CartPage) {
                     mCartPage = (CartPage) fragment;
                     fragments[3] = mCartPage;
@@ -117,14 +117,12 @@ public class MainActivity extends BaseActivity {
 
         mController0 = (RadioButton) findViewById(R.id.controller_zero);
         mController1 = (RadioButton) findViewById(R.id.controller_one);
-        mController2 = (RadioButton) findViewById(R.id.controller_two);
         mController3 = (RadioButton) findViewById(R.id.controller_three);
         mController4 = (RadioButton) findViewById(R.id.controller_four);
 
         mTabs = new RadioButton[5];
         mTabs[0] = mController0;
         mTabs[1] = mController1;
-        mTabs[2] = mController2;
         mTabs[3] = mController3;
         mTabs[4] = mController4;
 //        mTabs[0].setSelected(true);
@@ -138,13 +136,11 @@ public class MainActivity extends BaseActivity {
         // 将四个页面加入到栈中，并持有第一个页面的引用
         mHomePage = new HomePage();
         mClassifyPage = new ClassifyPage();
-        mTaskPage = new TaskPage();
         mCartPage = new CartPage();
         mMinePage = new MinePage();
 
         fragments[0] = mHomePage;
         fragments[1] = mClassifyPage;
-        fragments[2] = mTaskPage;
         fragments[3] = mCartPage;
         fragments[4] = mMinePage;
 
@@ -176,12 +172,7 @@ public class MainActivity extends BaseActivity {
                     fragments[index] = new ClassifyPage();
                 }
                 break;
-            case R.id.controller_two:
-                index = 2;
-                if (fragments[index] == null) {
-                    fragments[index] = new TaskPage();
-                }
-                break;
+
             case R.id.controller_three:
                 index = 3;
                 if (fragments[index] == null) {
@@ -279,30 +270,30 @@ public class MainActivity extends BaseActivity {
         currentTabIndex = index;
     }
 
-    public void goToTask() {
-        index = 2;
-        if (currentTabIndex != index) {
-            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-            trx.hide(fragments[currentTabIndex]);
-            if (!fragments[index].isAdded()) {
-                trx.add(R.id.container, fragments[index]);
-            }
-//                trx.show(fragments[index]).commit();
-            /**
-             报错Can not perform this action after onSaveInstanceState
-             大致意思是说我使用的 commit方法是在Activity的onSaveInstanceState()之后调用的，这样会出错，因为
-             onSaveInstanceState方法是在该Activity即将被销毁前调用，来保存Activity数据的，如果在保存玩状态后
-             再给它添加Fragment就会出错。解决办法就是把commit（）方法替换成 commitAllowingStateLoss()就行
-             了，其效果是一样的。
-             */
-            trx.show(fragments[index]).commitAllowingStateLoss();
-        }
-
-        mTabs[currentTabIndex].setChecked(false);
-        // 把当前tab设为选中状态
-        mTabs[index].setChecked(true);
-        currentTabIndex = index;
-    }
+//    public void goToTask() {
+//        index = 2;
+//        if (currentTabIndex != index) {
+//            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+//            trx.hide(fragments[currentTabIndex]);
+//            if (!fragments[index].isAdded()) {
+//                trx.add(R.id.container, fragments[index]);
+//            }
+////                trx.show(fragments[index]).commit();
+//            /**
+//             报错Can not perform this action after onSaveInstanceState
+//             大致意思是说我使用的 commit方法是在Activity的onSaveInstanceState()之后调用的，这样会出错，因为
+//             onSaveInstanceState方法是在该Activity即将被销毁前调用，来保存Activity数据的，如果在保存玩状态后
+//             再给它添加Fragment就会出错。解决办法就是把commit（）方法替换成 commitAllowingStateLoss()就行
+//             了，其效果是一样的。
+//             */
+//            trx.show(fragments[index]).commitAllowingStateLoss();
+//        }
+//
+//        mTabs[currentTabIndex].setChecked(false);
+//        // 把当前tab设为选中状态
+//        mTabs[index].setChecked(true);
+//        currentTabIndex = index;
+//    }
 
     //获得intent
     @Override
@@ -313,11 +304,11 @@ public class MainActivity extends BaseActivity {
         if ("order".equals(order)) {
             goToBuyCar();
         }
-        //到任务
-        String intentString=intent.getStringExtra(ACTIVATE_EXCHANGE);
-        if (ACTIVATE_EXCHANGE.equals(intentString)) {
-            goToTask();
-        }
+//        //到任务
+//        String intentString=intent.getStringExtra(ACTIVATE_EXCHANGE);
+//        if (ACTIVATE_EXCHANGE.equals(intentString)) {
+//            goToTask();
+//        }
 
 
     }
