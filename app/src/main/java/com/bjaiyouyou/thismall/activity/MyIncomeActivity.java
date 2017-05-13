@@ -11,9 +11,11 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyIncomeModel;
+import com.bjaiyouyou.thismall.utils.LoadViewHelper;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
+import com.nineoldandroids.view.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,8 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
 
     private View mBackView;
     private View mIncomeDetailView;         // 收益明细
-    private Api4Mine mApi4Mine;
+    private View mBodyView;
+    private View mBottomView;
 
     private TextView mTvIncomeAvailable;    // 可用收益
     private TextView mTvYongjin;            // 佣金
@@ -42,6 +45,9 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
     private NoScrollListView mListView;
     private List<MyIncomeModel.PushMoneyDetailsBean> mList;
     private MyIncomeAdapter mAdapter;
+
+    private Api4Mine mApi4Mine;
+    private LoadViewHelper mLoadViewHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +60,18 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         initView();
         setupView();
         initCtrl();
+
+        mLoadViewHelper = new LoadViewHelper(mBodyView);
+        mLoadViewHelper.showLoading();
+        mBottomView.setVisibility(View.GONE);
         loadData();
     }
 
     private void initView() {
         mBackView = findViewById(R.id.left_layout);
         mIncomeDetailView = findViewById(R.id.right_layout);
+        mBodyView = findViewById(R.id.my_income_body);
+        mBottomView = findViewById(R.id.my_income_bottom_banner);
 
         mTvAllIncome = (TextView) findViewById(R.id.my_income_tv_all_push_money);
         mTvIncomeAvailable = (TextView) findViewById(R.id.my_income_tv_income_available);
@@ -80,18 +92,24 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void loadData() {
-        showLoadingDialog();
         mApi4Mine.getMyIncome(this, new DataCallback<MyIncomeModel>(this) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-                dismissLoadingDialog();
+                mLoadViewHelper.showError(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadData();
+                    }
+                });
+
                 ToastUtils.showException(e);
                 LogUtils.d(TAG, "loadData error: " + e.getMessage());
             }
 
             @Override
             public void onSuccess(Object response, int id) {
-                dismissLoadingDialog();
+                mLoadViewHelper.restore();
+                mBottomView.setVisibility(View.VISIBLE);
 
                 if (response == null) {
                     return;
