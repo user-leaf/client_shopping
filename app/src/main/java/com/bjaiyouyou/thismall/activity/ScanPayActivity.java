@@ -19,30 +19,24 @@ import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.client.Api4Cart;
-import com.bjaiyouyou.thismall.client.BaseClientApi;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
-import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.text.DecimalFormat;
-
 import okhttp3.Call;
-
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
  * 扫码支付页面
  */
-public class UserPayActivity extends Activity implements View.OnClickListener {
+public class ScanPayActivity extends Activity implements View.OnClickListener {
 
-    public static final String TAG = UserPayActivity.class.getSimpleName();
+    public static final String TAG = ScanPayActivity.class.getSimpleName();
     private IUUTitleBar mTitleBar;
     private ImageView mIvHead;  // 头像
     private TextView mTvName;   // 姓名
@@ -63,7 +57,7 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_pay);
+        setContentView(R.layout.activity_scan_pay);
 
         mApi4Cart = (Api4Cart) ClientApiHelper.getInstance().getClientApi(Api4Cart.class);
 
@@ -75,16 +69,16 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.title_bar);
 
-        mIvHead = (ImageView) findViewById(R.id.user_pay_iv_head);
-        mTvName = (TextView) findViewById(R.id.user_pay_tv_name);
+        mIvHead = (ImageView) findViewById(R.id.scan_pay_iv_head);
+        mTvName = (TextView) findViewById(R.id.scan_pay_tv_name);
 
-        mLlPayBanner = findViewById(R.id.user_pay_ll);
-        mTvMoney = (TextView) findViewById(R.id.user_pay_tv_money);
-        mBtnPay = (Button) findViewById(R.id.user_pay_btn_pay);
+        mLlPayBanner = findViewById(R.id.scan_pay_ll);
+        mTvMoney = (TextView) findViewById(R.id.scan_pay_tv_money);
+        mBtnPay = (Button) findViewById(R.id.scan_pay_btn_pay);
 
-        mLlPayBannerCustomMoney = findViewById(R.id.user_pay_ll_custom_money);
-        mEtMoney = (EditText) findViewById(R.id.user_pay_et_money);
-        mBtnPayCustomMoney = (Button) findViewById(R.id.user_pay_btn_pay_custom_money);
+        mLlPayBannerCustomMoney = findViewById(R.id.scan_pay_ll_custom_money);
+        mEtMoney = (EditText) findViewById(R.id.scan_pay_et_money);
+        mBtnPayCustomMoney = (Button) findViewById(R.id.scan_pay_btn_pay_custom_money);
     }
 
     private void setupView() {
@@ -158,11 +152,11 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
                 finish();
                 break;
 
-            case R.id.user_pay_btn_pay: // 固定金额支付
+            case R.id.scan_pay_btn_pay: // 固定金额支付
                 showPayDialog(123.);
                 break;
 
-            case R.id.user_pay_btn_pay_custom_money:    // 自定义金额支付
+            case R.id.scan_pay_btn_pay_custom_money:    // 自定义金额支付
                 String strMoney = mEtMoney.getText().toString();
                 if (TextUtils.isEmpty(strMoney) || "0".equals(strMoney)){
                     ToastUtils.showShort("请输入支付金额");
@@ -179,15 +173,15 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
      * @param money 金额
      */
     private void showPayDialog(Double money) {
-        View inflate = LayoutInflater.from(this).inflate(R.layout.layout_user_pay, null);
+        View inflate = LayoutInflater.from(this).inflate(R.layout.dialog_scan_pay, null);
         final Dialog payDialog = DialogUtils.createRandomDialog(this, null, null, null, null, null,
                 inflate
         );
 
-        View ivClose = inflate.findViewById(R.id.user_pay_dialog_iv_close);
-        TextView tvMoney = (TextView) inflate.findViewById(R.id.user_pay_dialog_tv_money);
-        final EditText etSafecode = (EditText) inflate.findViewById(R.id.user_pay_dialog_et_psw);
-        TextView tvForget = (TextView) inflate.findViewById(R.id.user_pay_dialog_tv_forget);
+        View ivClose = inflate.findViewById(R.id.scan_pay_dialog_iv_close);
+        TextView tvMoney = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_money);
+        final EditText etSafecode = (EditText) inflate.findViewById(R.id.scan_pay_dialog_et_psw);
+        TextView tvForget = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_forget);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -197,13 +191,13 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
                 }
 
                 switch (v.getId()) {
-                    case R.id.user_pay_dialog_iv_close:     // 关闭
+                    case R.id.scan_pay_dialog_iv_close:     // 关闭
                         if (payDialog != null && payDialog.isShowing()) {
                             payDialog.dismiss();
                         }
                         break;
 
-                    case R.id.user_pay_dialog_tv_forget:    // 忘记安全码
+                    case R.id.scan_pay_dialog_tv_forget:    // 忘记安全码
                         payDialog.dismiss();
                         showSafeCodeForgetDialog();
                         break;
@@ -248,7 +242,7 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
                 // 调用支付
 //                mCallback.onPayCallback(channel);
                 String orderNum = "iuu2017";
-                new PaymentTask(UserPayActivity.this, UserPayActivity.this, orderNum, channel, null, TAG)
+                new PaymentTask(ScanPayActivity.this, ScanPayActivity.this, orderNum, channel, null, TAG)
                         .execute(new PaymentTask.PaymentRequest(channel, 1));
             }
         });
@@ -261,15 +255,12 @@ public class UserPayActivity extends Activity implements View.OnClickListener {
     private void showSafeCodeForgetDialog() {
         // 拨打客服电话
         Dialog pswForgetDialog = DialogUtils.createConfirmDialog(
-                UserPayActivity.this,
-                null,
-                "拨打客服电话" + Constants.KEFU_TEL + "进行修改",
-                "拨打",
-                "取消",
+                ScanPayActivity.this,
+                null, "拨打客服电话" + Constants.KEFU_TEL + "进行修改", "拨打", "取消",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DialUtils.callCentre(UserPayActivity.this, DialUtils.CENTER_NUM);
+                        DialUtils.callCentre(ScanPayActivity.this, DialUtils.CENTER_NUM);
                         dialog.dismiss();
                     }
                 },

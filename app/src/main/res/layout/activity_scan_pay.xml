@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.UserPayActivity">
+    tools:context="com.bjaiyouyou.thismall.activity.ScanPayActivity">
 
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
         android:id="@+id/title_bar"
@@ -38,7 +38,7 @@
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_pay_iv_head"
+                android:id="@+id/scan_pay_iv_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7.5dp"
@@ -47,7 +47,7 @@
                 />
 
             <TextView
-                android:id="@+id/user_pay_tv_name"
+                android:id="@+id/scan_pay_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
@@ -55,7 +55,7 @@
                 />
 
             <LinearLayout
-                android:id="@+id/user_pay_ll"
+                android:id="@+id/scan_pay_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -69,7 +69,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/user_pay_tv_money"
+                    android:id="@+id/scan_pay_tv_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100.00"
@@ -82,10 +82,10 @@
                     android:layout_height="80dp"/>
 
                 <Button
-                    android:id="@+id/user_pay_btn_pay"
+                    android:id="@+id/scan_pay_btn_pay"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:background="@drawable/shape_user_pay_btn_bg"
+                    android:background="@drawable/shape_scan_pay_btn_bg"
                     android:gravity="center"
                     android:text="支付"
                     android:textColor="@color/white"
@@ -95,7 +95,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/user_pay_ll_custom_money"
+                android:id="@+id/scan_pay_ll_custom_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -112,7 +112,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/user_pay_et_money"
+                    android:id="@+id/scan_pay_et_money"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -140,10 +140,10 @@
                     android:layout_height="50dp"/>
 
                 <Button
-                    android:id="@+id/user_pay_btn_pay_custom_money"
+                    android:id="@+id/scan_pay_btn_pay_custom_money"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:background="@drawable/shape_user_pay_btn_bg"
+                    android:background="@drawable/shape_scan_pay_btn_bg"
                     android:gravity="center"
                     android:text="支付"
                     android:textColor="@color/white"
