@@ -11,6 +11,7 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyIncomeModel;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
 
 import java.util.ArrayList;
@@ -21,22 +22,22 @@ import okhttp3.Call;
 /**
  * 我的收益（众汇）
  */
-public class MyIncomeActivity extends Activity implements View.OnClickListener {
+public class MyIncomeActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG  = MyIncomeActivity.class.getSimpleName();
 
     private View mBackView;
-    private View mIncomeDetailView;
+    private View mIncomeDetailView;         // 收益明细
     private Api4Mine mApi4Mine;
 
-    private TextView mTvAllIncome;  // 累计获得总收益
     private TextView mTvIncomeAvailable;    // 可用收益
     private TextView mTvYongjin;            // 佣金
     private TextView mTvZhonghuiquan;       // 众汇券
+    private TextView mTvAllIncome;          // 累计获得总收益
 
     // 列表
     private NoScrollListView mListView;
-    private List<MyIncomeModel> mList;
+    private List<MyIncomeModel.PushMoneyDetailsBean> mList;
     private MyIncomeAdapter mAdapter;
 
     @Override
@@ -76,22 +77,45 @@ public class MyIncomeActivity extends Activity implements View.OnClickListener {
     }
 
     private void loadData() {
+        showLoadingDialog();
         mApi4Mine.getMyIncome(TAG, new DataCallback<MyIncomeModel>(this) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-
+                dismissLoadingDialog();
+                ToastUtils.showException(e);
             }
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response != null) {
+                dismissLoadingDialog();
+
+                if (response == null) {
                     return;
                 }
 
                 MyIncomeModel myIncomeModel = (MyIncomeModel) response;
-                int all_push_money = myIncomeModel.getAll_push_money();
-                mTvAllIncome.setText(String.valueOf(all_push_money));
 
+                // 可用收益
+                int usable_push_money = myIncomeModel.getUsable_push_money();
+                mTvIncomeAvailable.setText(String.valueOf(usable_push_money) + ".00");
+
+                // 佣金
+                String push_money = myIncomeModel.getPush_money();
+                mTvYongjin.setText(push_money + "元");
+
+                // 众汇券
+                int zhonghuiquan = myIncomeModel.getZhonghuiquan();
+                mTvZhonghuiquan.setText(String.valueOf(zhonghuiquan) + ".00元");
+
+                // 累计获得收益
+                int all_push_money = myIncomeModel.getAll_push_money();
+                mTvAllIncome.setText(String.valueOf(all_push_money) + ".00");
+
+                // 显示列表
+                List<MyIncomeModel.PushMoneyDetailsBean> push_money_details = myIncomeModel.getPush_money_details();
+                mList.clear();
+                mList.addAll(push_money_details);
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

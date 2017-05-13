@@ -18,9 +18,9 @@ import java.util.List;
 public class MyIncomeAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<MyIncomeModel> mList;
+    private List<MyIncomeModel.PushMoneyDetailsBean> mList;
 
-    public MyIncomeAdapter(Context context, List<MyIncomeModel> list) {
+    public MyIncomeAdapter(Context context, List<MyIncomeModel.PushMoneyDetailsBean> list) {
         mContext = context;
         mList = list;
     }
@@ -67,6 +67,29 @@ public class MyIncomeAdapter extends BaseAdapter {
         }
 
         // 3. 显示数据
+        MyIncomeModel.PushMoneyDetailsBean pushMoneyDetailsBean = mList.get(position);
+        if (pushMoneyDetailsBean != null) {
+            // “直接联盟商家收益”
+            String remarks = pushMoneyDetailsBean.getRemarks();
+            holder.tvTitle.setText(remarks == null ? "" : remarks);
+
+            // “共对接X家”
+            String word1 = pushMoneyDetailsBean.getWord1();
+            int number = pushMoneyDetailsBean.getNumber();
+            String word2 = pushMoneyDetailsBean.getWord2();
+            holder.tvNum.setText(word1 + number + word2);
+
+            // "对接收益：xx(现金) + xx(众汇券)"
+            String word3 = pushMoneyDetailsBean.getWord3();                 // “对接收益”
+            String push_money = pushMoneyDetailsBean.getPush_money();       // 现金
+            String zhonghuiquan = pushMoneyDetailsBean.getZhonghuiquan();   // 众汇券
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(word3).append(": ")
+                    .append(push_money).append("(现金) +")
+                    .append(zhonghuiquan).append("(众汇券)");
+            String desc = stringBuilder.toString();
+            holder.tvDesc.setText(desc);
+        }
 
         return ret;
     }
