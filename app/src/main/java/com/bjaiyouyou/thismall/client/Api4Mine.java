@@ -8,6 +8,7 @@ import com.bjaiyouyou.thismall.model.BindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
+import com.bjaiyouyou.thismall.model.MyIncomeModel;
 import com.bjaiyouyou.thismall.model.User;
 import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
@@ -173,5 +174,18 @@ public class Api4Mine extends BaseClientApi {
         LogUtils.d(MyCommissionActivity.TAG, "getCommissionData: " + url);
 
         doGet(url, MyCommissionActivity.TAG, null, callback);
+    }
+
+    /**
+     * 获取 众汇-我的收益页面 数据
+     * @param TAG
+     */
+    public void getMyIncome(String TAG, DataCallback<MyIncomeModel> callback){
+        StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
+        stringBuilder.append("api/v1/member/pushMoneyDetail")
+                .append("?token=").append(CurrentUserManager.getUserToken());
+
+        String url = stringBuilder.toString();
+        doGet(url, TAG, null, callback);
     }
 }

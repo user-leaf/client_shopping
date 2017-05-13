@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="10dp"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:paddingLeft="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:paddingRight="10dp"
+        >
+
+        <TextView
+            android:id="@+id/my_income_item_title"
+            style="@style/my_income_tv2_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直接对接联盟商家收益"
+            />
+
+        <TextView
+            android:id="@+id/my_income_item_num"
+            style="@style/my_income_tv2_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="共对接1家"
+            />
+    </RelativeLayout>
+
+    <View
+        style="@style/entry_divider_fine_line_style"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:paddingRight="10dp"
+        >
+
+        <TextView
+            android:id="@+id/my_income_item_desc"
+            style="@style/my_income_tv_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="对接收益：1050(现金) +4500.00(众汇券)"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

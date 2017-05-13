@@ -108,6 +108,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/my_income_tv_income_available"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20000.00"
@@ -145,6 +146,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/my_income_tv_yongjin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="14000.00元"
@@ -169,6 +171,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/my_income_tv_zhonghuiquan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="6000.00元"
@@ -182,179 +185,186 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"/>
 
-            <LinearLayout
+            <com.bjaiyouyou.thismall.widget.NoScrollListView
+                android:id="@+id/my_income_listview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:background="@color/white"
-                >
+                android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingRight="10dp"
-                    >
+            </com.bjaiyouyou.thismall.widget.NoScrollListView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="销售众汇卡收益"
-                        style="@style/my_income_tv2_style"
-                        />
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:background="@color/white"-->
+                <!--&gt;-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="共销售3人"
-                        android:layout_alignParentRight="true"
-                        style="@style/my_income_tv2_style"
-                        />
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--android:layout_marginBottom="15dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--&gt;-->
 
-                <View
-                    style="@style/entry_divider_fine_line_style"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="销售众汇卡收益"-->
+                        <!--style="@style/my_income_tv2_style"-->
+                        <!--/>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingRight="10dp"
-                    >
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="共销售3人"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--style="@style/my_income_tv2_style"-->
+                        <!--/>-->
+                <!--</RelativeLayout>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="销售收益：10500(现金) +4500.00(众汇券)"
-                        style="@style/my_income_tv_style"
-                        />
+                <!--<View-->
+                    <!--style="@style/entry_divider_fine_line_style"/>-->
 
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--android:layout_marginBottom="15dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--&gt;-->
 
-            </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="销售收益：10500(现金) +4500.00(众汇券)"-->
+                        <!--style="@style/my_income_tv_style"-->
+                        <!--/>-->
 
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                <!--</RelativeLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:background="@color/white"
-                >
+            <!--</LinearLayout>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingRight="10dp"
-                    >
+            <!--<android.support.v4.widget.Space-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="10dp"/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="直接对接联盟商家收益"
-                        style="@style/my_income_tv2_style"
-                        />
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:background="@color/white"-->
+                <!--&gt;-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="共对接1家"
-                        android:layout_alignParentRight="true"
-                        style="@style/my_income_tv2_style"
-                        />
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--android:layout_marginBottom="15dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--&gt;-->
 
-                <View
-                    style="@style/entry_divider_fine_line_style"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="直接对接联盟商家收益"-->
+                        <!--style="@style/my_income_tv2_style"-->
+                        <!--/>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingRight="10dp"
-                    >
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="共对接1家"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--style="@style/my_income_tv2_style"-->
+                        <!--/>-->
+                <!--</RelativeLayout>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="对接收益：1050(现金) +4500.00(众汇券)"
-                        style="@style/my_income_tv_style"
-                        />
+                <!--<View-->
+                    <!--style="@style/entry_divider_fine_line_style"/>-->
 
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--android:layout_marginBottom="15dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--&gt;-->
 
-            </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="对接收益：1050(现金) +4500.00(众汇券)"-->
+                        <!--style="@style/my_income_tv_style"-->
+                        <!--/>-->
 
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                <!--</RelativeLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:background="@color/white"
-                >
+            <!--</LinearLayout>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingRight="10dp"
-                    >
+            <!--<android.support.v4.widget.Space-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="10dp"/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="协助好友对接联盟商家收益"
-                        style="@style/my_income_tv2_style"
-                        />
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:background="@color/white"-->
+                <!--&gt;-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="共对接4家"
-                        android:layout_alignParentRight="true"
-                        style="@style/my_income_tv2_style"
-                        />
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--android:layout_marginBottom="15dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--&gt;-->
 
-                <View
-                    style="@style/entry_divider_fine_line_style"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="协助好友对接联盟商家收益"-->
+                        <!--style="@style/my_income_tv2_style"-->
+                        <!--/>-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingRight="10dp"
-                    >
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="共对接4家"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--style="@style/my_income_tv2_style"-->
+                        <!--/>-->
+                <!--</RelativeLayout>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="对接收益：4200(现金) +1800.00(众汇券)"
-                        style="@style/my_income_tv_style"
-                        />
+                <!--<View-->
+                    <!--style="@style/entry_divider_fine_line_style"/>-->
 
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--android:layout_marginBottom="15dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--&gt;-->
 
-            </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="对接收益：4200(现金) +1800.00(众汇券)"-->
+                        <!--style="@style/my_income_tv_style"-->
+                        <!--/>-->
 
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="80dp"/>
+                <!--</RelativeLayout>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<android.support.v4.widget.Space-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="80dp"/>-->
 
         </LinearLayout>
     </ScrollView>
@@ -390,6 +400,7 @@
             />
 
         <TextView
+            android:id="@+id/my_income_tv_all_push_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/my_income_tv6_1"
