@@ -21,6 +21,8 @@ import okhttp3.Call;
 
 /**
  * 我的收益（众汇）
+ *
+ * Created by JackB on 2017/5/12.
  */
 public class MyIncomeActivity extends BaseActivity implements View.OnClickListener {
 

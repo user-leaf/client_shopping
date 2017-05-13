@@ -27,14 +27,16 @@ import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+import com.bjaiyouyou.thismall.widget.LoadingDialog;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
 
 /**
  * 扫码支付页面
+ * Created by JackB on 2017/5/12.
  */
-public class ScanPayActivity extends Activity implements View.OnClickListener {
+public class ScanPayActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = ScanPayActivity.class.getSimpleName();
     private IUUTitleBar mTitleBar;
@@ -130,6 +132,7 @@ public class ScanPayActivity extends Activity implements View.OnClickListener {
 
     /**
      * 选择显示支付栏
+     *
      * @param i 1或者2
      */
     private void showBanner(int i) {
@@ -153,23 +156,65 @@ public class ScanPayActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.scan_pay_btn_pay: // 固定金额支付
-                showPayDialog(123.);
+                checkSafeCodeEmpty(v);
                 break;
 
             case R.id.scan_pay_btn_pay_custom_money:    // 自定义金额支付
-                String strMoney = mEtMoney.getText().toString();
-                if (TextUtils.isEmpty(strMoney) || "0".equals(strMoney)){
-                    ToastUtils.showShort("请输入支付金额");
-                    return;
-                }
-                Double aDouble = Double.valueOf(strMoney);
-                showPayDialog(aDouble);
+                checkSafeCodeEmpty(v);
                 break;
         }
     }
 
     /**
+     * 检查安全码是否为空
+     *
+     * @param v
+     */
+    private void checkSafeCodeEmpty(final View v) {
+
+        showLoadingDialog();
+        mApi4Cart.isSafeCodeEmpty(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                dismissLoadingDialog();
+                ToastUtils.showException(e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                dismissLoadingDialog();
+                if (TextUtils.isEmpty(response) || "[]".equals(response)) {
+                    return;
+                }
+
+                if ("1".equals(response)) { // 设置了安全码
+                    switch (v.getId()) {
+                        case R.id.scan_pay_btn_pay: // 固定金额
+                            showPayDialog(123.);
+                            break;
+
+                        case R.id.scan_pay_btn_pay_custom_money:    // 自定义金额
+                            String strMoney = mEtMoney.getText().toString();
+                            if (TextUtils.isEmpty(strMoney) || "0".equals(strMoney)) {
+                                ToastUtils.showShort("请输入支付金额");
+                                return;
+                            }
+                            Double aDouble = Double.valueOf(strMoney);
+                            showPayDialog(aDouble);
+                            break;
+                    }
+
+                } else { // 没有设置安全码
+                    showSafeCodeSettingDialog();
+                }
+            }
+        });
+
+    }
+
+    /**
      * 支付弹窗
+     *
      * @param money 金额
      */
     private void showPayDialog(Double money) {
@@ -186,7 +231,7 @@ public class ScanPayActivity extends Activity implements View.OnClickListener {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.isFastDoubleClick()){
+                if (Utility.isFastDoubleClick()) {
                     return;
                 }
 
@@ -219,6 +264,45 @@ public class ScanPayActivity extends Activity implements View.OnClickListener {
 
         payDialog.show();
     }
+
+
+    /**
+     * 安全码设置
+     */
+    private void showSafeCodeSettingDialog() {
+        View inflateView = LayoutInflater.from(this).inflate(R.layout.dialog_pay_detail_safe_code_setting, null);
+        final EditText etSafeCode = (EditText) inflateView.findViewById(R.id.pay_detail_dialog_et_safe_code);
+        Dialog safeCodeSettingDialog = DialogUtils.createRandomDialog(this, "设置安全码", "确定", "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        String strSafeCode = etSafeCode.getText().toString();
+                        mApi4Cart.setSafeCode(strSafeCode, new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                dialog.dismiss();
+                                ToastUtils.showException(e);
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                dialog.dismiss();
+                                ToastUtils.showShort("安全码设置成功");
+                            }
+                        });
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                },
+                inflateView
+        );
+        safeCodeSettingDialog.show();
+    }
+
     /**
      * 验证安全码
      *
