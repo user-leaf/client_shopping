@@ -21,11 +21,13 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.CommissionModel;
+import com.bjaiyouyou.thismall.model.ResponseModel;
 import com.bjaiyouyou.thismall.utils.CashierInputFilter;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+import com.google.gson.Gson;
 
 import okhttp3.Call;
 
@@ -182,7 +184,7 @@ public class MyCommissionActivity extends BaseActivity {
                 setExchangeAllCan();
                 break;
             case R.id.tv_commission_apply_withdraw_commit://申请提取提交
-                ToastUtils.showShort("申请提取提交");
+//                ToastUtils.showShort("申请提取提交");
                 applyWithdrawCommit();
                 break;
             case R.id.tv_commission_withdraw_back://销毁弹框
@@ -199,24 +201,89 @@ public class MyCommissionActivity extends BaseActivity {
      * 提取申请提交
      */
     private void applyWithdrawCommit() {
-
         showLoadingDialog();
+        String amountString=etCommissionNum.getText().toString();
+        Double amount=Double.valueOf(amountString);
+        mApi4Mine.getCommissiongCommit(this, amount, new DataCallback<String>(getApplicationContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                dismissLoadingDialog();
 
-        Dialog dialog = DialogUtils.createConfirmDialog(getApplicationContext(), "申请提交成功", "我们审核后转账至您绑定的提取账号", "确定", "",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                },
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                dismissLoadingDialog();
+                Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, "申请提交成功", "我们审核后转账至您绑定的提取账号", "确定", "",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPopWindow.dismiss();
+                                initData();
+                                dialog.dismiss();
+                            }
+                        },
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }
+                );
+                dialog.show();
+
+            }
+
+            @Override
+            public void onFail(Call call, String responseBody, int id) {
+                super.onFail(call, responseBody, id);
+                //取消数据加载Loading
+                dismissLoadingDialog();
+
+                if (responseBody != null) {
+                    //输入金额大于可兑换金额
+                    ResponseModel model = new Gson().fromJson(responseBody, ResponseModel.class);
+                    if (model != null) {
+                        int code=model.getCode();
+                        String messageString="";
+                        if (code == 100012) {
+//                                ToastUtils.showShort("不得超出可使用兑换券额");
+                            messageString="额度不足";
+                        }else if (code==100060){
+//                                ToastUtils.showShort("可使用券额需大于100才可兑换哦！");
+                            messageString="添加记录失败";
+
+                        } else if (code==100061){
+//                                ToastUtils.showShort("安全码错误");
+                            messageString="更新用户账户失败";
+
+                        }else {
+                            messageString=model.getMessage();
+                        }
+
+//                        Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, null, messageString, "知道了", "",
+//                                new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        dialog.dismiss();
+//                                    }
+//                                },
+//                                new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        dialog.dismiss();
+//                                    }
+//                                }
+//                        );
+//                        dialog.show();
+
+                        return;
                     }
                 }
-        );
-        dialog.show();
+
+            }
+        });
+
     }
 
     /**

@@ -218,4 +218,19 @@ public class Api4Mine extends BaseClientApi {
         LogUtils.d(MyCommissionDetailActivity.TAG, "getMyPropertyData: " + url);
         doGet(url, tag, null, callback);
     }
+    /**
+     * 提取佣金提交
+     * @param callback
+     */
+    public void getCommissiongCommit(Object tag,double amount,DataCallback<String> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/applyForCash");
+        sb.append("?amount=").append(amount);
+        sb.append("&token=").append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+
+        LogUtils.d(MyCommissionActivity.TAG, "getCommissiongCommit: " + url);
+
+        doGet(url,tag, null, callback);
+    }
 }
