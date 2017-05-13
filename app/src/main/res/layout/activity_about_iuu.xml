@@ -1,108 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context="com.bjaiyouyou.thismall.activity.AboutIUUActivity">
+
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
         android:id="@+id/title_about_iuu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="关于我们"
-        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"/>
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="关于我们"/>
+
     <ImageView
         android:id="@+id/tv_about_iuu_icon"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="50dp"
         android:src="@mipmap/icon_logo"/>
+
     <TextView
         android:id="@+id/tv_about_iuu_versions"
-        android:layout_marginBottom="35dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
         android:gravity="center"
         android:text="版本"
         android:textColor="#000"
         android:textSize="@dimen/text_size_medium"
         />
+
     <TextView
         android:id="@+id/tv_about_iuu_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="北京哎呦呦网络科技有限公司"
         android:textColor="#000"
         android:textSize="@dimen/text_size_medium"
-        android:text="众汇幸福城(北京)实业有限公司"
         />
-    <TextView
-        android:id="@+id/tv_about_iuu_detail"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:textSize="@dimen/text_size_medium"
-        android:textColor="#6b6b6b"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    <LinearLayout
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="25dp"
-        android:gravity="center">
-        <ImageView
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/list_icon_wechatpay"/>
-        <TextView
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="#000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="微信："/>
-        <TextView
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="#000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"/>
-            android:text="微信：哎呦呦商城"/>
-    </LinearLayout>
 
-    <TextView
-        android:layout_marginBottom="5dp"
-        android:id="@+id/tv_about_iuu_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="@dimen/text_size_medium"
-        android:textColor="#6b6b6b"
-        android:text="京ICP证1570771"
-        android:visibility="gone"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="食品流通许可证编号：44535536415543645"
-        android:textSize="@dimen/text_size_tiny"
-        android:textColor="#6b6b6b"
-        android:layout_marginBottom="15dp"
-        android:visibility="gone"
-        />
+    <!--<android.support.v4.widget.Space-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="1"/>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="25dp"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:visibility="gone">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:src="@mipmap/list_icon_wechatpay"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="微信："-->
+    <!--android:textColor="#000"-->
+    <!--android:textSize="@dimen/text_size_medium"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/app_name"-->
+    <!--android:textColor="#000"-->
+    <!--android:textSize="@dimen/text_size_medium"/>-->
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_about_iuu_time"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="京ICP证1570771"-->
+    <!--android:textColor="#6b6b6b"-->
+    <!--android:textSize="@dimen/text_size_medium"-->
+    <!--android:visibility="gone"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="15dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="食品流通许可证编号：44535536415543645"-->
+    <!--android:textColor="#6b6b6b"-->
+    <!--android:textSize="@dimen/text_size_tiny"-->
+    <!--android:visibility="gone"-->
+    <!--/>-->
 
 </LinearLayout>
