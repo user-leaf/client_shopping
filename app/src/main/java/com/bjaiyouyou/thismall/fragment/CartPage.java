@@ -223,9 +223,11 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                 // 合计金额
                 double sum = countTotalPrice();
                 mTvTotalPrice.setText("¥" + ((sum < 10E-6) ? 0 : MathUtil.round(sum, 2)));
-                // 总积分
-                int sumPoint = countTotalPoints();
-                mTvTotalPoint.setText(String.format(Locale.CHINA, "+%d兑换券", sumPoint));
+
+                // 只显示价格20170513
+//                // 总积分
+//                int sumPoint = countTotalPoints();
+//                mTvTotalPoint.setText(String.format(Locale.CHINA, "+%d兑换券", sumPoint));
 
                 /**
                  * 条目按钮-->全选按钮

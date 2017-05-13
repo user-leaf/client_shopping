@@ -142,7 +142,8 @@ public class OrderMakeAdapter extends BaseAdapter {
 
                 }
 
-                holder.points.setText("+" + product_size.getIntegration_price() + "兑换券");
+                // 只显示价格20170513
+//                holder.points.setText("+" + product_size.getIntegration_price() + "兑换券");
 
             }
 

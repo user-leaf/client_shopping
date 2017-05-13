@@ -139,7 +139,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:text="积分"
                         android:textColor="@color/app_dark_gray"
                         android:textSize="@dimen/text_size_tiny"
                         android:layout_toRightOf="@id/cart_item_iv_pic"

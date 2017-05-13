@@ -432,16 +432,20 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         // 商品总额
         sumMoney = MathUtil.round(sumMoney, 2);
         mTvMoneySum.setText("¥" + sumMoney);
-        // 商品总额中的积分数
-        mTvPointsSum.setText("+" + totalPoints + "兑换券");
+
+        // 只显示价格20170513
+//        // 商品总额中的积分数
+//        mTvPointsSum.setText("+" + totalPoints + "众汇券");
         // 本次消费可得UU
 //        mTvGoldSum.setText((int) sumMoney / 10 + "UU");
 
         mFinalPay = sumMoney;
         // 底部实付金额
         mTvTotalPay.setText("¥" + mFinalPay);
-        // 底部实付积分
-        mTvTotalPoints.setText("+" + totalPoints + "兑换券");
+
+        // 只显示价格20170513
+//        // 底部实付积分
+//        mTvTotalPoints.setText("+" + totalPoints + "众汇券");
 
     }
 

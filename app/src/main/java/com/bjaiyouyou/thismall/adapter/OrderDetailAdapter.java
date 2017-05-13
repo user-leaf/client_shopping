@@ -105,6 +105,13 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
             ret.setTag(holder);
         }
 
+        // init
+        holder.tvName.setText("");
+        holder.tvDesc.setText("");
+        holder.tvPrice.setText("");
+        holder.tvJifen.setText("");
+        holder.tvNum.setText("");
+
         // 3. 显示数据
 //        ProductInfo productInfo = mList.get(position).getProductInfo();
 //        if (productInfo != null) {
@@ -133,8 +140,9 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
 
             if (orderDetailBean.getProduct_size() != null) {
                 holder.tvDesc.setText(orderDetailBean.getProduct_size().getName());
-                int points = orderDetailBean.getProduct_size().getIntegration_price();
-                holder.tvJifen.setText("+" + points + "兑换券");
+                // 只显示价格20170513
+//                int points = orderDetailBean.getProduct_size().getIntegration_price();
+//                holder.tvJifen.setText("+" + points + "兑换券");
             }
             holder.tvPrice.setText("¥" + orderDetailBean.getPrice());
             // 数量

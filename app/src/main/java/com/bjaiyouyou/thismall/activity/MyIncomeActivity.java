@@ -11,6 +11,7 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyIncomeModel;
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
 
@@ -85,6 +86,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
                 ToastUtils.showException(e);
+                LogUtils.d(TAG, "loadData error: " + e.getMessage());
             }
 
             @Override

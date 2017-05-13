@@ -69,8 +69,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     // 订单状态
     private TextView mTvOrderStatus;
-    // 消费可得UU栏
-    private View mGoldCoinView;
     // 支付方式栏
     private View mPayView;
 
@@ -122,7 +120,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     private TextView mTvUU;         // 本次消费可获得UU
     private TextView mTvCreateTime; // 下单时间
     private TextView mTvMoney;      // 实付金额
-    private TextView mTvJifen;     // 实付兑换券
+    private TextView mTvJifen;     // 实付众汇券
 
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
@@ -192,7 +190,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void initView() {
         mTvOrderStatus = (TextView) findViewById(R.id.order_detail_order_status);
-        mGoldCoinView = findViewById(R.id.order_detail_rl_gold_coin);
         mPayView = findViewById(R.id.order_detail_rl_pay);
 
         mButtonGroup0 = findViewById(R.id.order_detail_rl_buttongroup0);
@@ -212,7 +209,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 //        mTvExpressCompany = (TextView) findViewById(R.id.order_detail_tv_express_way);
         mTvPostage = (TextView) findViewById(R.id.order_detail_tv_postage);
 
-        mTvUU = (TextView) findViewById(R.id.order_detail_tv_goldcoin);
+//        mTvUU = (TextView) findViewById(R.id.order_detail_tv_goldcoin);
         mTvMoney = (TextView) findViewById(R.id.order_detail_tv_money);
         mTvJifen = (TextView) findViewById(R.id.order_detail_tv_points);
 
@@ -305,10 +302,11 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                             // 实付金额栏
                             mAllAmount = order.getAll_amount();
                             mTvMoney.setText("¥" + mAllAmount);
-                            mTvJifen.setText("+" + order.getDeduct_integration() + "兑换券");
 
-                            // 本次消费可获得UU
-                            mTvUU.setText(order.getGet_gold() + "UU");
+                            // 只显示价格20170513
+//                            mTvJifen.setText("+" + order.getDeduct_integration() + "众汇券");
+//                            // 本次消费可获得UU
+//                            mTvUU.setText(order.getGet_gold() + "UU");
 
                             // 下单时间
                             mTvCreateTime.setText(order.getCreated_at());

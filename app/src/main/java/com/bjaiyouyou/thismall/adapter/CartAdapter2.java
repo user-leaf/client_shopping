@@ -170,7 +170,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
         tvType.setText("--");
         tvSales.setText("--");
         tvPrice.setText("--");
-        tvPoints.setText("--");
+//        tvPoints.setText("--");
         tvCount.setText("-");
         offSaleView.setVisibility(View.GONE);
 
@@ -223,7 +223,8 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 
                     }
 
-                    tvPoints.setText("+" + product_size.getIntegration_price() + "兑换券");
+                    // 只显示价格20170513
+//                    tvPoints.setText("+" + product_size.getIntegration_price() + "兑换券");
 
                 }
 

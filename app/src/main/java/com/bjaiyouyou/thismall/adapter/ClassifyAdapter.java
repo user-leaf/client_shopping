@@ -62,8 +62,9 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ViewHo
             viewHolder.mTvContent.setText(!TextUtils.isEmpty(sizeName) ? sizeName : "");
             String price = sizeBean.getPrice();
             viewHolder.mTvPrice.setText(!TextUtils.isEmpty(price) ? "¥" + price : "");
-            int jifen = sizeBean.getIntegration_price();
-            viewHolder.mTvJifen.setText(!TextUtils.isEmpty(String.valueOf(jifen)) ? "+" + jifen + "兑换券" : "");
+            // 只显示价格20170513
+//            int jifen = sizeBean.getIntegration_price();
+//            viewHolder.mTvJifen.setText(!TextUtils.isEmpty(String.valueOf(jifen)) ? "+" + jifen + "兑换券" : "");
         }
 
         ClassifyProductModel.DataBean.ImageBean imageBean = dataBean.getImage();
