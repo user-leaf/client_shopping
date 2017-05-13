@@ -130,7 +130,6 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
             case R.id.right_layout: // 收益明细
 
                 break;
-
         }
     }
 }

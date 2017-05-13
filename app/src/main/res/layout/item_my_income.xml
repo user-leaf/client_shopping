@@ -35,7 +35,7 @@
 
     <View
         style="@style/entry_divider_fine_line_style"
-        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
         />
 
     <RelativeLayout
