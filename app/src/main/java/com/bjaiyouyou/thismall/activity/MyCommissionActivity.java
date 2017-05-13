@@ -172,6 +172,7 @@ public class MyCommissionActivity extends BaseActivity {
                 break;
             case R.id.tv_commission_apply_withdraw_commit://申请提取提交
                 ToastUtils.showShort("申请提取提交");
+                applyWithdrawCommit();
                 break;
             case R.id.tv_commission_withdraw_back://销毁弹框
                 mPopWindow.dismiss();
@@ -181,6 +182,12 @@ public class MyCommissionActivity extends BaseActivity {
                 return;
 
         }
+    }
+
+    /**
+     * 提取申请提交
+     */
+    private void applyWithdrawCommit() {
     }
 
     /**
