@@ -39,7 +39,7 @@
         android:gravity="center"
         android:textColor="#000"
         android:textSize="@dimen/text_size_medium"
-        android:text="北京哎呦呦网络科技有限公司"
+        android:text="众汇幸福城(北京)实业有限公司"
         />
     <TextView
         android:id="@+id/tv_about_iuu_detail"
