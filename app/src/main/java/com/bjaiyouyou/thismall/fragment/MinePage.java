@@ -49,6 +49,7 @@ import com.bjaiyouyou.thismall.activity.MyOrderActivity;
 import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.activity.SettingsActivity;
 import com.bjaiyouyou.thismall.activity.UpdateMineUserMessageActivity;
+import com.bjaiyouyou.thismall.activity.ZhongHuiQuanActivity;
 import com.bjaiyouyou.thismall.adapter.MineAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
@@ -1572,7 +1573,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                startActivity(mIntentSafeCode);
                 break;
             case R.id.rl_mine_commission: // 我的佣金
-                Toast.makeText(getActivity(), "我的佣金", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "我的佣金", Toast.LENGTH_SHORT).show();
                 mIntentSafeCode = new Intent(getActivity(), MyCommissionActivity.class);
 //
 //                if (isLogin) {
@@ -1587,7 +1588,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
 
             case R.id.rl_mine_zhonghui: //我的众汇券
-                ToastUtils.showShort("我的众汇券");
+//                ToastUtils.showShort("我的众汇券");
+                mIntentSafeCode = new Intent(getActivity(), ZhongHuiQuanActivity.class);
+                startActivity(mIntentSafeCode);
                 //没登录去登录页
 //                if (!isLogin){
 //                    mIntentSafeCode=new Intent(getActivity(),LoginActivity.class);

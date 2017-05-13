@@ -10,13 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.DataCallback;
+import com.bjaiyouyou.thismall.client.Api4Mine;
+import com.bjaiyouyou.thismall.client.ClientApiHelper;
+import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.utils.CashierInputFilter;
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
+
+import okhttp3.Call;
 
 /**
  * 我的佣金
@@ -24,7 +32,7 @@ import com.bjaiyouyou.thismall.widget.IUUTitleBar;
  *created at 2017/5/12 14:28
  */
 public class MyCommissionActivity extends BaseActivity {
-
+    public static String TAG=MyCommissionActivity.class.getSimpleName();
     //标题
     private IUUTitleBar mTitle;
     //佣金详情入口
@@ -54,6 +62,14 @@ public class MyCommissionActivity extends BaseActivity {
     private Double mInPutCommissionNum;
     //输入合格佣金
     private boolean isCommissionNumOk;
+    //输入佣金数值大于可提取金额显示控件
+    private TextView tvCommissionOver;
+    //输入金额不大于可提取金额显示控件
+    private LinearLayout llCommissionInputNotOver;
+
+    private Api4Mine mApi4Mine;
+    private CommissionModel mCommissionModel;
+    private CommissionModel.PushMoneyBean mPushMoneyBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,24 +102,46 @@ public class MyCommissionActivity extends BaseActivity {
     }
 
     private void initData() {
-        setData();
+
+        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
+        mApi4Mine.getCommissionData(new DataCallback<CommissionModel>(getApplicationContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                LogUtils.d("getCommissionData",e.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response!=null){
+                    mCommissionModel= (CommissionModel) response;
+                    setData();
+                }
+            }
+        });
     }
 
     /**
      * 根据接口数据进行页面操作
      */
     private void setData() {
-        mTvHavaCommissionNum.setText(""+mCommissionCanWithdrawNum);
-        mTvHaveWithdrawNum.setText("");
+         mPushMoneyBean=mCommissionModel.getPush_money();
+        if (mPushMoneyBean!=null){
+            mTvHavaCommissionNum.setText(""+mPushMoneyBean.getPush_money());
+            mTvHaveWithdrawNum.setText(""+mPushMoneyBean.getAll_push_money());
+
+            mCommissionCanWithdrawNum=Double.valueOf(mPushMoneyBean.getPush_money());
+
+        }
         //test
-        mCommissionCanWithdrawNum=0.33;
+//        mCommissionCanWithdrawNum=Double.valueOf("10.00");
+        LogUtils.e("mCommissionCanWithdrawNum",mCommissionCanWithdrawNum+"");
 
         if (mCommissionCanWithdrawNum>0){
             //可以进入提取页面
-            mTvIntoCommissionDetail.setEnabled(true);
+            mTvApplyWithdraw.setEnabled(true);
         }else {
             //不可以进入提取页面
-            mTvIntoCommissionDetail.setEnabled(false);
+            mTvApplyWithdraw.setEnabled(false);
 
         }
 
@@ -186,6 +224,8 @@ public class MyCommissionActivity extends BaseActivity {
         tvCommissionWithdrawCommit = (TextView) contentView.findViewById(R.id.tv_commission_apply_withdraw_commit);
         tvCanUseCommissionNum = (TextView) contentView.findViewById(R.id.tv_commission_withdraw_can_use);
         etCommissionNum = (EditText) contentView.findViewById(R.id.et_commission_withdraw_input_num);
+        tvCommissionOver = (TextView) contentView.findViewById(R.id.tv_commission_input_over);
+        llCommissionInputNotOver = (LinearLayout) contentView.findViewById(R.id.LL_commission_input_not_over);
 
 
         //设置监听
@@ -235,6 +275,15 @@ public class MyCommissionActivity extends BaseActivity {
                     tvCommissionWithdrawCommit.setEnabled(true);
                 } else {
                     tvCommissionWithdrawCommit.setEnabled(false);
+                }
+                //输入大于可提取
+                if (mInPutCommissionNum>mCommissionCanWithdrawNum){
+                    tvCommissionOver.setVisibility(View.VISIBLE);
+                    llCommissionInputNotOver.setVisibility(View.GONE);
+                }else {
+                    tvCommissionOver.setVisibility(View.GONE);
+                    llCommissionInputNotOver.setVisibility(View.VISIBLE);
+
                 }
             }else {
                 tvCommissionWithdrawCommit.setEnabled(false);

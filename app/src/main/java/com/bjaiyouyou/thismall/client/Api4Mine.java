@@ -1,11 +1,15 @@
 package com.bjaiyouyou.thismall.client;
 
+import com.bjaiyouyou.thismall.activity.MyCommissionActivity;
+import com.bjaiyouyou.thismall.activity.ZhongHuiQuanActivity;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.fragment.MinePage;
 import com.bjaiyouyou.thismall.model.BindingAlipayModel;
 import com.bjaiyouyou.thismall.model.CheckIfBindingAlipayModel;
+import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.model.ContactMemberModel;
 import com.bjaiyouyou.thismall.model.User;
+import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -139,5 +143,35 @@ public class Api4Mine extends BaseClientApi {
         LogUtils.d(TAG, "withdrawIncome: " + url);
 
         doPost(url, TAG, null, callback);
+    }
+
+
+    /**
+     * 获得我的众汇券数据
+     * @param callback
+     */
+    public void getZhongHuiQuanData(DataCallback<ZhongHuiQuanModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/member/myZhongHuiQuan");
+        sb.append("?token=").append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+
+        LogUtils.d(ZhongHuiQuanActivity.TAG, "getZhongHuiQuanData: " + url);
+
+        doGet(url, ZhongHuiQuanActivity.TAG, null, callback);
+    }
+    /**
+     * 获得我的佣金数据
+     * @param callback
+     */
+    public void getCommissionData(DataCallback<CommissionModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/member/myPushMoney");
+        sb.append("?token=").append(CurrentUserManager.getUserToken());
+        String url = sb.toString();
+
+        LogUtils.d(MyCommissionActivity.TAG, "getCommissionData: " + url);
+
+        doGet(url, MyCommissionActivity.TAG, null, callback);
     }
 }

@@ -600,6 +600,8 @@
         </activity>
         <activity android:name=".activity.MyCommissionActivity">
         </activity>
+        <activity android:name=".activity.ZhongHuiQuanActivity">
+        </activity>
     </application>
 
 </manifest>
