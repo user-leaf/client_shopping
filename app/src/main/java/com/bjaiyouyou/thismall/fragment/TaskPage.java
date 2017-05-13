@@ -319,7 +319,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         });
 
         // 获取用户信息
-        mApi4Mine.getUserMessage(TAG, new DataCallback<User>(getContext()) {
+        mApi4Mine.getUserMessage(getActivity(), new DataCallback<User>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
 

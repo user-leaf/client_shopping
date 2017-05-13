@@ -67,9 +67,9 @@ public class BaseClientApi {
      * @param params   参数列表
      * @param callback
      */
-    public void doGet(String url, String tag, Map<String, String> params, Callback callback) {
+    public void doGet(String url, Object tag, Map<String, String> params, Callback callback) {
         GetBuilder builder = OkHttpUtils.get().url(url);
-        if (!TextUtils.isEmpty(tag)) {
+        if (tag != null) {
             builder.tag(tag);
         }
         if (null != params) {
@@ -103,9 +103,9 @@ public class BaseClientApi {
      * @param params   参数列表
      * @param callback
      */
-    public void doPost(String url, String tag, Map<String, String> params, Callback callback) {
+    public void doPost(String url, Object tag, Map<String, String> params, Callback callback) {
         PostFormBuilder builder = OkHttpUtils.post().url(url);
-        if (!TextUtils.isEmpty(tag)) {
+        if (tag != null) {
             builder.tag(tag);
         }
         if (params != null) {

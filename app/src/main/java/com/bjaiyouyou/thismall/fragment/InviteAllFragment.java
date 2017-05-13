@@ -303,7 +303,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("contacts", jsonList);
 
-                        mApi4Mine.getContactsInfo(TAG, params, new DataCallback<ContactMemberModel>(getContext()) {
+                        mApi4Mine.getContactsInfo(getActivity(), params, new DataCallback<ContactMemberModel>(getContext()) {
 
                             @Override
                             public void onFail(Call call, Exception e, int id) {

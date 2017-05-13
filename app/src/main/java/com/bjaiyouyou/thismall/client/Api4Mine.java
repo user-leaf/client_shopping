@@ -22,12 +22,14 @@ import java.util.Map;
  */
 public class Api4Mine extends BaseClientApi {
 
+    public static final String TAG = Api4Mine.class.getSimpleName();
+
     /**
      * 获取用户个人信息
-     * @param strTag
+     * @param tag
      * @param callback
      */
-    public void getUserMessage(String strTag, DataCallback<User> callback) {
+    public void getUserMessage(Object tag, DataCallback<User> callback) {
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/auth/memberDetail")
                 .append("?token=")
@@ -37,23 +39,23 @@ public class Api4Mine extends BaseClientApi {
         LogUtils.d(TAG, "getUserMessage: " + url);
         LogUtils.e(TAG, "getUserMessage: " + url);
 
-        doGet(url, strTag, null, callback);
+        doGet(url, tag, null, callback);
     }
 
     /**
      * 邀请好友页数据请求
      *
-     * @param strTag
+     * @param tag
      * @param callback
      */
-    public void getContactsInfo(String strTag, Map<String, String> params, DataCallback<ContactMemberModel> callback){
+    public void getContactsInfo(Object tag, Map<String, String> params, DataCallback<ContactMemberModel> callback){
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/auth/isMemberByContacts")
                 .append("?token=")
                 .append(CurrentUserManager.getUserToken());
         String url = sb.toString();
 
-        doPost(url, strTag, params, callback);
+        doPost(url, tag, params, callback);
     }
 
 
@@ -125,13 +127,13 @@ public class Api4Mine extends BaseClientApi {
 
     /**
      * 兑换收益
-     * @param TAG
+     * @param tag
      * @param amount
      * @param name
      * @param safecode
      * @param callback
      */
-    public void withdrawIncome(String TAG, int amount, String name, String safecode, StringCallback callback){
+    public void withdrawIncome(Object tag, int amount, String name, String safecode, StringCallback callback){
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/drawing_push_money");
         sb.append("?token=").append(CurrentUserManager.getUserToken());
@@ -143,7 +145,7 @@ public class Api4Mine extends BaseClientApi {
 
         LogUtils.d(TAG, "withdrawIncome: " + url);
 
-        doPost(url, TAG, null, callback);
+        doPost(url, tag, null, callback);
     }
 
 
@@ -180,7 +182,7 @@ public class Api4Mine extends BaseClientApi {
      * 获取 众汇-我的收益页面 数据
      * @param TAG
      */
-    public void getMyIncome(String TAG, DataCallback<MyIncomeModel> callback){
+    public void getMyIncome(Object TAG, DataCallback<MyIncomeModel> callback){
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
         stringBuilder.append("api/v1/member/pushMoneyDetail")
                 .append("?token=").append(CurrentUserManager.getUserToken());

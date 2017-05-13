@@ -330,7 +330,7 @@ public class IncomeFragment extends BaseFragment {
 
         showLoadingDialog();
 
-        mApi4Mine.withdrawIncome(TAG, amount, strName, strSafecode, new StringCallback() {
+        mApi4Mine.withdrawIncome(this, amount, strName, strSafecode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 dismissLoadingDialog();
