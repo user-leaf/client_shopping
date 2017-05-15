@@ -185,7 +185,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-
             app:kswAnimationDuration="300"
             app:kswBackDrawable="@drawable/ios_back_drawable"
             app:kswThumbDrawable="@drawable/ios_thumb_selector"
