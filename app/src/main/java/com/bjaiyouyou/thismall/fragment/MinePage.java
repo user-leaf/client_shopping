@@ -481,7 +481,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             String tel = memberBean.getPhone().trim();
             if (!TextUtils.isEmpty(tel)) {
-                tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 3, tel.length());
+                tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 4, tel.length());
                 mTVTel.setText(tel);
             } else {
                 mTVTel.setText("");

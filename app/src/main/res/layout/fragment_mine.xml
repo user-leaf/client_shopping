@@ -148,6 +148,16 @@
                             android:src="@mipmap/list_icon_badgeb"
                             android:visibility="gone"
                             />
+                        <ImageView
+                            android:layout_width="17.5dp"
+                            android:layout_height="17.5dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:src="@mipmap/bianji"
+                            android:visibility="visible"
+                            />
                     </RelativeLayout>
 
                     <LinearLayout

@@ -94,6 +94,7 @@
                     android:background="@null"
                     android:gravity="right"
                     android:textCursorDrawable="@null"
+                    android:enabled="false"
                     />
             </LinearLayout>
             <LinearLayout
@@ -101,7 +102,8 @@
                 android:layout_marginTop="1dp"
                 android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_update_user_validate_num"

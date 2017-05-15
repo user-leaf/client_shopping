@@ -367,6 +367,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
                 mPnone = mBean.getPhone();
 //        mEtPhone.setText(mPnone);
+                mPnone = mPnone.substring(0,3)+"****"+mPnone.substring(7,mPnone.length());
                 mEtPhone.setHint(mPnone);
 //        mEtPhone.setSelection(mPnone.length());
 
