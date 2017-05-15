@@ -213,26 +213,20 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
                     ResponseModel responseModel = gson.fromJson(data, ResponseModel.class);
 
                     if (100009 == responseModel.getCode()) { // 兑换券余额不足，是否充值
+
                         final Dialog confirmDialog = DialogUtils.createConfirmDialog(
                                 context,
                                 null,
                                 responseModel.getMessage(),
-                                "去充值",
-                                "取消",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        Intent intent = new Intent(context, RechargeActivity.class);
-                                        context.startActivity(intent);
-                                    }
-                                },
+                                "确定",
+                                null,
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
                                     }
-                                }
+                                },
+                                null
                         );
                         confirmDialog.show();
                     } else {
