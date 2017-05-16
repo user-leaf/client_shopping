@@ -520,7 +520,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             int inComeNum = 0;
             if (!TextUtils.isEmpty(inCome)) {
-                inComeNum = Integer.valueOf(inCome);
+//                inComeNum = Integer.valueOf(inCome);
             }
 
             String canDraw = memberBean.getCan_drawings_amount();

@@ -236,10 +236,30 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 //            scanIntent.putExtra("productScanID", resultString);
 //            startActivity(scanIntent);
 
-            Intent scanIntent2 = new Intent(getApplicationContext(), ScanPayActivity.class);
-            startActivity(scanIntent2);
-
-
+            LogUtils.d("recode", resultString);
+            if (CurrentUserManager.isLoginUser()) {
+//                                    {"shopId":100,"money":100}
+                //扫描的商家付款码
+                if (resultString.contains("shopId")) {
+                    ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultString, ScanPayQRCodeModel.class);
+                    if (scanPayQRCodeModel != null) {
+                        long shopId = scanPayQRCodeModel.getShopId();
+                        int money = scanPayQRCodeModel.getMoney();
+                        ScanPayActivity.actionStart(CaptureActivity.this, shopId, money);
+                    }
+                    //商品详情
+                } else {
+                    //扫描结果进行处理
+                    Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
+                    scanIntent.putExtra("productScanID", resultString);
+                    startActivity(scanIntent);
+                }
+            } else {
+                //扫描结果进行处理
+                Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
+                scanIntent.putExtra("productScanID", resultString);
+                startActivity(scanIntent);
+            }
         }
         CaptureActivity.this.finish();
     }
@@ -508,35 +528,6 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                 Intent data = new Intent();
                                 data.putExtra("result", recode);
                                 setResult(300, data);
-
-                                if (CurrentUserManager.isLoginUser()) {
-//                                    {"shopId":100,"money":100}
-                                    //扫描的商家付款码
-                                    if (recode.contains("shopId")) {
-                                        LogUtils.d("recode",recode);
-                                        ScanPayQRCodeModel scanPayQRCodeModel=new Gson().fromJson(recode,ScanPayQRCodeModel.class);
-                                        if (scanPayQRCodeModel!=null){
-                                            long shopId=scanPayQRCodeModel.getShopId();
-                                            int money=scanPayQRCodeModel.getMoney();
-                                            ScanPayActivity.actionStart(CaptureActivity.this, shopId,money);
-                                        }
-                                        //商品详情
-                                    } else {
-                                        //扫描结果进行处理
-                                        Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-                                        scanIntent.putExtra("productScanID", recode);
-                                        startActivity(scanIntent);
-                                    }
-                                } else {
-                                    //扫描结果进行处理
-                                    Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-                                    scanIntent.putExtra("productScanID", recode);
-                                    startActivity(scanIntent);
-                                }
-
-//
-                                //退出页面返回主页
-                                finish();
                             }
                         }
                     }).start();
