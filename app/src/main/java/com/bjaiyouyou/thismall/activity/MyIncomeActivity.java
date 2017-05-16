@@ -160,11 +160,12 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
      */
     private void intoDetail() {
         StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
-        sb.append("myduihuanquan-role.html");
-        sb.append("?type=");
+        sb.append("myshouyi-detail.html");
+        sb.append("?pageType=");
         sb.append("shouyi");
         sb.append("&token=");
         sb.append(CurrentUserManager.getUserToken());
+        sb.append("&type=android");
 
         String webShowUrl=sb.toString().trim();
         WebShowActivity.actionStart(MyIncomeActivity.this,webShowUrl, null);
