@@ -12,7 +12,7 @@ public class ScanPayQRCodeModel {
      */
 
     private long shopId;
-    private int money;
+    private double money;
 
     public long getShopId() {
         return shopId;
@@ -22,11 +22,11 @@ public class ScanPayQRCodeModel {
         this.shopId = shopId;
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 }

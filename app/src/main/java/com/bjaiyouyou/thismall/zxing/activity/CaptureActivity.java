@@ -207,6 +207,9 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         super.onDestroy();
     }
 
+
+    //////////////////////////////////////处理最终的扫描结果////////////////////////////////////////
+
     /**
      * Handler scan result
      *
@@ -244,7 +247,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                     ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultString, ScanPayQRCodeModel.class);
                     if (scanPayQRCodeModel != null) {
                         long shopId = scanPayQRCodeModel.getShopId();
-                        int money = scanPayQRCodeModel.getMoney();
+                        double money = scanPayQRCodeModel.getMoney();
                         ScanPayActivity.actionStart(CaptureActivity.this, shopId, money);
                     }
                     //商品详情
@@ -263,6 +266,9 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         }
         CaptureActivity.this.finish();
     }
+
+
+
 
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
