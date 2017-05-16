@@ -76,7 +76,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      *
      * @param context
      */
-    public static void actionStart(Context context, long shopId, String money) {
+    public static void actionStart(Context context, long shopId, int money) {
         Intent intent = new Intent(context, ScanPayActivity.class);
         intent.putExtra(PARAM_SHOP_ID, shopId);
         intent.putExtra(PARAM_MONEY, money);

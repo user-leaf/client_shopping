@@ -518,7 +518,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                         if (scanPayQRCodeModel!=null){
                                             long shopId=scanPayQRCodeModel.getShopId();
                                             int money=scanPayQRCodeModel.getMoney();
-                                            ScanPayActivity.actionStart(getApplicationContext(), shopId,money+"");
+                                            ScanPayActivity.actionStart(getApplicationContext(), shopId,money);
                                         }
 
 
