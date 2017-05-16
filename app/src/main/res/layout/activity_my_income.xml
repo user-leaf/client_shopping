@@ -44,6 +44,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:paddingRight="10dp"
+                android:paddingLeft="10dp"
                 android:text="收益明细"
                 android:textColor="#ffffff"
                 />
