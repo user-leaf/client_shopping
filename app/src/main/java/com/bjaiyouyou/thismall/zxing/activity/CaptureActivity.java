@@ -513,15 +513,13 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 //                                    {"shopId":100,"money":100}
                                     //扫描的商家付款码
                                     if (recode.contains("shopId")) {
-                                        LogUtils.e("","");
+                                        LogUtils.d("recode",recode);
                                         ScanPayQRCodeModel scanPayQRCodeModel=new Gson().fromJson(recode,ScanPayQRCodeModel.class);
                                         if (scanPayQRCodeModel!=null){
                                             long shopId=scanPayQRCodeModel.getShopId();
                                             int money=scanPayQRCodeModel.getMoney();
-                                            ScanPayActivity.actionStart(getApplicationContext(), shopId,money);
+                                            ScanPayActivity.actionStart(CaptureActivity.this, shopId,money);
                                         }
-
-
                                         //商品详情
                                     } else {
                                         //扫描结果进行处理
