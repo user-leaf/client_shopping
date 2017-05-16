@@ -15,6 +15,7 @@ public class ShopModel {
     private String avatar_path;
     private String avatar_name;
     private String nick_name;
+    private String user_withdrawable_balance;
 
     public String getAvatar_path() {
         return avatar_path;
@@ -39,4 +40,13 @@ public class ShopModel {
     public void setNick_name(String nick_name) {
         this.nick_name = nick_name;
     }
+
+    public String getUser_withdrawable_balance() {
+        return user_withdrawable_balance;
+    }
+
+    public void setUser_withdrawable_balance(String user_withdrawable_balance) {
+        this.user_withdrawable_balance = user_withdrawable_balance;
+    }
+
 }

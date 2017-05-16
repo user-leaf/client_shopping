@@ -210,7 +210,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private void initVariables() {
         mData = new ArrayList<>();
         // 获取上一页页面类型pageType
-        mPageType = getIntent().getIntExtra("pageType", -1);
+        mPageType = getIntent().getIntExtra(PARAM_PAGE_TYPE, -1);
     }
 
     private void initView() {

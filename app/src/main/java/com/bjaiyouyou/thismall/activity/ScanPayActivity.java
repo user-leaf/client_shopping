@@ -49,7 +49,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     public static final String PARAM_SHOP_ID = "shop_id";
     public static final String PARAM_MONEY = "money";
 
-    private long mShopId;                 // 商户id
+    private long mShopId;                   // 商户id
     private String mShopName;               // 商户名称
     private double mMoney;                  // 收款金额
     private boolean hasMoney;               // 是否有收款金额
@@ -57,6 +57,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     private IUUTitleBar mTitleBar;
     private CircleImageView mIvHead;        // 头像
     private TextView mTvName;               // 姓名
+    private TextView mTvBalance;            // 剩余券额
 
     // 固定金额支付
     private View mLlPayBanner;              // 支付栏
@@ -78,7 +79,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      */
     public static void actionStart(Context context, long shopId, double money) {
         Intent intent = new Intent(context, ScanPayActivity.class);
-        LogUtils.d("ScanPayActivity","shopId:"+shopId+"money:"+money);
+        LogUtils.d(TAG, "actionStart shopId: " + shopId + ", money:" + money);
         intent.putExtra(PARAM_SHOP_ID, shopId);
         intent.putExtra(PARAM_MONEY, money);
         context.startActivity(intent);
@@ -100,8 +101,10 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     private void initVariable() {
         // 解析扫码得到的json
-        mShopId = getIntent().getIntExtra(PARAM_SHOP_ID, -1);
-        mMoney = getIntent().getIntExtra(PARAM_MONEY, 0);
+        mShopId = getIntent().getLongExtra(PARAM_SHOP_ID, -1);
+        mMoney = getIntent().getDoubleExtra(PARAM_MONEY, 0);
+
+        LogUtils.d(TAG, "initVariable shopId: " + mShopId + ", money:" + mMoney);
 //        if (!TextUtils.isEmpty(strJson)) {
 //            Gson gson = new Gson();
 //            ScanPayQRCodeModel scanPayQRCodeModel = gson.fromJson(strJson, ScanPayQRCodeModel.class);
@@ -117,6 +120,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
         mIvHead = (CircleImageView) findViewById(R.id.scan_pay_iv_head);
         mTvName = (TextView) findViewById(R.id.scan_pay_tv_name);
+        mTvBalance = (TextView) findViewById(R.id.scan_pay_tv_balance);
 
         mLlPayBanner = findViewById(R.id.scan_pay_ll);
         mTvMoney = (TextView) findViewById(R.id.scan_pay_tv_money);
@@ -211,6 +215,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
                 mShopName = shopModel.getNick_name();
                 mTvName.setText("向商家用户（" + mShopName + "）支付");
+                mTvBalance.setText("剩余券额" + shopModel.getUser_withdrawable_balance());
+
             }
         });
     }
