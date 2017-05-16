@@ -507,10 +507,17 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                 data.putExtra("result", recode);
                                 setResult(300, data);
 
-                                //扫描结果进行处理
-                                Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-                                scanIntent.putExtra("productScanID", recode);
-                                startActivity(scanIntent);
+//                                {"shopId":100,"money":100}
+                                //扫描的商家付款码
+                                if (recode.contains("shopId")){
+                                    ScanPayActivity.actionStart(getApplicationContext(),recode);
+                                    //商品详情
+                                }else {
+                                    //扫描结果进行处理
+                                    Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
+                                    scanIntent.putExtra("productScanID", recode);
+                                    startActivity(scanIntent);
+                                }
                                 //退出页面返回主页
                                 finish();
                             }
