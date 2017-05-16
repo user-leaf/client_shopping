@@ -51,9 +51,9 @@
             >
 
             <TextView
+                android:id="@+id/scan_pay_dialog_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="向商家用户（**名）支付"
                 android:textColor="#666666"
                 android:textSize="15sp"
                 />

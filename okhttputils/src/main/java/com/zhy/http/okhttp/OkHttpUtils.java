@@ -122,7 +122,10 @@ public class OkHttpUtils {
                     if (!finalCallback.validateReponse(response, id)) {
                         String responseBody = response.body().string();
                         Log.d(TAG, "onResponse: " + responseBody);
-                        // 409
+                        /**
+                         * 1. 解析409错误
+                         * 2. 解析含有自定义code的错误
+                         */
                         try {
                             Gson gson = new Gson();
                             ResponseModel responseModel = gson.fromJson(responseBody, ResponseModel.class);

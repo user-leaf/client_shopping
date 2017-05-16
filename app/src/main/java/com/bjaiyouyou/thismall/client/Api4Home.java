@@ -8,6 +8,8 @@ import com.bjaiyouyou.thismall.model.HomeAdBigModel;
 import com.bjaiyouyou.thismall.model.HomeNavigationItemNew;
 import com.bjaiyouyou.thismall.model.HomeProductModel;
 import com.bjaiyouyou.thismall.model.IsHaveMessageNotRead;
+import com.bjaiyouyou.thismall.model.ScanPayModel;
+import com.bjaiyouyou.thismall.model.ShopModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -137,6 +139,36 @@ public class Api4Home extends BaseClientApi {
 
     }
 
+    /**
+     * 扫码支付 - 获取商户信息
+     * @param tag
+     * @param shopId
+     * @param callback
+     */
+    public void getShopInfo(Object tag, String shopId, DataCallback<ShopModel> callback){
+        StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
+        stringBuilder.append(HttpUrls.URL_SCAN_PAY_SHOP_INFO).append(shopId)
+                .append("?token=").append(CurrentUserManager.getUserToken());
+        String url = stringBuilder.toString();
+        LogUtils.d(TAG, "getShopInfo url: " + url);
 
+        doGet(url, tag, null, callback);
+    }
 
+    /**
+     * 扫码支付 - 支付
+     * @param tag
+     * @param callback
+     */
+    public void payAfterScan(Object tag, double amount, String shopId, DataCallback<ScanPayModel> callback){
+        StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
+        stringBuilder.append(HttpUrls.URL_SCAN_PAY_QRCODEPAY)
+                .append("?amount=").append(amount)
+                .append("&seller_user_id=").append(shopId)
+                .append("&token=").append(CurrentUserManager.getUserToken());
+        String url = stringBuilder.toString();
+        LogUtils.d(TAG, "payAfterScan url: " + url);
+
+        doPost(url, tag, null, callback);
+    }
 }

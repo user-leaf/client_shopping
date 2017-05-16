@@ -98,7 +98,10 @@ public class ToastUtils {
         if (e != null) {
             if (!TextUtils.isEmpty(e.getMessage())) {
 //                Toast.makeText(context, StringUtils.getExceptionMessage(e.getMessage()), Toast.LENGTH_SHORT).show();
-                showToast(context, StringUtils.getExceptionMessage(e.getMessage()), Toast.LENGTH_SHORT);
+                String exceptionMessage = StringUtils.getExceptionMessage(e.getMessage());
+                if (!TextUtils.isEmpty(exceptionMessage)) {
+                    showToast(context, exceptionMessage, Toast.LENGTH_SHORT);
+                }
             }
         }
 

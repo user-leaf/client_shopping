@@ -1,8 +1,9 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,24 +13,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
+import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Cart;
+import com.bjaiyouyou.thismall.client.Api4Home;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
-import com.bjaiyouyou.thismall.task.PaymentTask;
+import com.bjaiyouyou.thismall.model.ScanPayModel;
+import com.bjaiyouyou.thismall.model.ShopModel;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
+import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
-import com.bjaiyouyou.thismall.widget.LoadingDialog;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
 /**
@@ -39,22 +47,40 @@ import okhttp3.Call;
 public class ScanPayActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = ScanPayActivity.class.getSimpleName();
+    public static final String PARAM_JSON = "json";
+
+    private String mShopId;                 // 商户id
+    private String mShopName;               // 商户名称
+    private double mMoney;                  // 收款金额
+    private boolean hasMoney;               // 是否有收款金额
+
     private IUUTitleBar mTitleBar;
-    private ImageView mIvHead;  // 头像
-    private TextView mTvName;   // 姓名
+    private CircleImageView mIvHead;        // 头像
+    private TextView mTvName;               // 姓名
 
     // 固定金额支付
-    private View mLlPayBanner;          // 支付栏
-    private TextView mTvMoney;          // 固定金额
-    private Button mBtnPay;             // 支付按钮
+    private View mLlPayBanner;              // 支付栏
+    private TextView mTvMoney;              // 固定金额
+    private Button mBtnPay;                 // 支付按钮
 
     // 自定义金额支付
-    private View mLlPayBannerCustomMoney;  // 支付栏
-    private EditText mEtMoney;             // 金额输入框
-    private Button mBtnPayCustomMoney;     // 支付按钮
+    private View mLlPayBannerCustomMoney;   // 支付栏
+    private EditText mEtMoney;              // 金额输入框
+    private Button mBtnPayCustomMoney;      // 支付按钮
 
     private Api4Cart mApi4Cart;
+    private Api4Home mApi4Home;
 
+    /**
+     * 启动本页面
+     *
+     * @param context
+     */
+    public static void actionStart(Context context, String json) {
+        Intent intent = new Intent(context, ScanPayActivity.class);
+        intent.putExtra(PARAM_JSON, json);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +88,31 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_scan_pay);
 
         mApi4Cart = (Api4Cart) ClientApiHelper.getInstance().getClientApi(Api4Cart.class);
+        mApi4Home = (Api4Home) ClientApiHelper.getInstance().getClientApi(Api4Home.class);
 
+        initVariable();
         initView();
         setupView();
-        showBanner(2);
+        loadData();
+    }
+
+    private void initVariable() {
+        // 解析扫码得到的json
+        String strJson = getIntent().getStringExtra(PARAM_JSON);
+        if (!TextUtils.isEmpty(strJson)) {
+            Gson gson = new Gson();
+
+        } else {
+            ToastUtils.showShort("出错，请重新扫码[1]");
+        }
+        mShopId = "41487";
+        mMoney = 0.01;
     }
 
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.title_bar);
 
-        mIvHead = (ImageView) findViewById(R.id.scan_pay_iv_head);
+        mIvHead = (CircleImageView) findViewById(R.id.scan_pay_iv_head);
         mTvName = (TextView) findViewById(R.id.scan_pay_tv_name);
 
         mLlPayBanner = findViewById(R.id.scan_pay_ll);
@@ -130,18 +171,58 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+    private void loadData() {
+        LogUtils.d(TAG, "" + mMoney);
+        // 金额
+        if (mMoney > 10E-6) {  // 有收款金额
+            hasMoney = true;
+            LogUtils.d(TAG, "hasMoney: " + hasMoney);
+            mTvMoney.setText(String.valueOf(mMoney));
+            showBanner(0);
+        } else { // 未设定金额，自定义金额
+            hasMoney = false;
+            LogUtils.d(TAG, "hasMoney: " + hasMoney);
+            showBanner(1);
+        }
+
+        // 商户头像、名称
+        mApi4Home.getShopInfo(this, mShopId, new DataCallback<ShopModel>(this) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response == null) {
+                    return;
+                }
+
+                ShopModel shopModel = (ShopModel) response;
+
+                String imgUrl = shopModel.getAvatar_path() + "/" + shopModel.getAvatar_name();
+                LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + imgUrl);
+                Glide.with(ScanPayActivity.this)
+                        .load(ImageUtils.getThumb(imgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
+                        .into(mIvHead);
+
+                mShopName = shopModel.getNick_name();
+                mTvName.setText("向商家用户（" + mShopName + "）支付");
+            }
+        });
+    }
+
     /**
      * 选择显示支付栏
-     *
-     * @param i 1或者2
      */
     private void showBanner(int i) {
         switch (i) {
-            case 1:
+            case 0:
                 mLlPayBanner.setVisibility(View.VISIBLE);
                 mLlPayBannerCustomMoney.setVisibility(View.GONE);
                 break;
-            case 2:
+
+            case 1:
                 mLlPayBanner.setVisibility(View.GONE);
                 mLlPayBannerCustomMoney.setVisibility(View.VISIBLE);
                 break;
@@ -190,7 +271,11 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 if ("1".equals(response)) { // 设置了安全码
                     switch (v.getId()) {
                         case R.id.scan_pay_btn_pay: // 固定金额
-                            showPayDialog(123.);
+                            if (hasMoney) {
+                                showPayDialog(mMoney);
+                            } else {
+                                ToastUtils.showShort("出错，请重新扫码[2]");
+                            }
                             break;
 
                         case R.id.scan_pay_btn_pay_custom_money:    // 自定义金额
@@ -217,13 +302,14 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      *
      * @param money 金额
      */
-    private void showPayDialog(Double money) {
+    private void showPayDialog(final double money) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.dialog_scan_pay, null);
         final Dialog payDialog = DialogUtils.createRandomDialog(this, null, null, null, null, null,
                 inflate
         );
 
         View ivClose = inflate.findViewById(R.id.scan_pay_dialog_iv_close);
+        TextView tvShopName = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_name);
         TextView tvMoney = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_money);
         final EditText etSafecode = (EditText) inflate.findViewById(R.id.scan_pay_dialog_et_psw);
         TextView tvForget = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_forget);
@@ -249,13 +335,14 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                         break;
 
                     case R.id.scan_pay_dialog_btn_commit:   // 确定
-                        validateSafeCode(payDialog, etSafecode, Constants.CHANNEL_BALANCE);
+                        validateSafeCode(payDialog, etSafecode, money);
 
                         break;
                 }
             }
         };
 
+        tvShopName.setText("向商家用户（" + mShopName + "）支付");
         tvMoney.setText(String.valueOf(money));
         ivClose.setOnClickListener(onClickListener);
         tvForget.setOnClickListener(onClickListener);
@@ -263,7 +350,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         etSafecode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                validateSafeCode(payDialog, etSafecode, Constants.CHANNEL_BALANCE);
+                validateSafeCode(payDialog, etSafecode, money);
 
                 return true;
             }
@@ -271,7 +358,6 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
         payDialog.show();
     }
-
 
     /**
      * 安全码设置
@@ -312,13 +398,17 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     /**
      * 验证安全码
-     *
      * @param pswDialog
      * @param etPasswordView
-     * @param channel
+     * @param money
      */
-    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final String channel) {
+    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final double money) {
         String safeCode = etPasswordView.getText().toString();
+
+        if (TextUtils.isEmpty(safeCode)) {
+            ToastUtils.showShort("请输入安全码");
+            return;
+        }
 
         mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
             @Override
@@ -330,11 +420,21 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             public void onResponse(String response, int id) {
                 KeyBoardUtils.closeKeybord(etPasswordView, MainApplication.getContext());
                 pswDialog.dismiss();
-                // 调用支付
-//                mCallback.onPayCallback(channel);
-                String orderNum = "iuu2017";
-                new PaymentTask(ScanPayActivity.this, ScanPayActivity.this, orderNum, channel, null, TAG)
-                        .execute(new PaymentTask.PaymentRequest(channel, 1));
+
+                // 支付
+                mApi4Home.payAfterScan(ScanPayActivity.this, money, mShopId,
+                        new DataCallback<ScanPayModel>(ScanPayActivity.this) {
+                            @Override
+                            public void onFail(Call call, Exception e, int id) {
+                                ToastUtils.showException(e);
+                            }
+
+                            @Override
+                            public void onSuccess(Object response, int id) {
+                                LogUtils.d(TAG, "payAfterScan onResponse(): " + response);
+
+                            }
+                        });
             }
         });
 
