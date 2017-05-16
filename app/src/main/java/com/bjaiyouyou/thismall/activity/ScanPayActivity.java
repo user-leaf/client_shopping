@@ -23,7 +23,6 @@ import com.bjaiyouyou.thismall.client.Api4Cart;
 import com.bjaiyouyou.thismall.client.Api4Home;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ScanPayModel;
-import com.bjaiyouyou.thismall.model.ScanPayQRCodeModel;
 import com.bjaiyouyou.thismall.model.ShopModel;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
@@ -35,7 +34,6 @@ import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -78,7 +76,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      *
      * @param context
      */
-    public static void actionStart(Context context, String shopId, String money) {
+    public static void actionStart(Context context, long shopId, String money) {
         Intent intent = new Intent(context, ScanPayActivity.class);
         intent.putExtra(PARAM_SHOP_ID, shopId);
         intent.putExtra(PARAM_MONEY, money);

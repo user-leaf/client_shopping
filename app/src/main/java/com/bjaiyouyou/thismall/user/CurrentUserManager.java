@@ -68,10 +68,10 @@ public class CurrentUserManager {
         String  token=(String) SPUtils.get(MainApplication.getContext(), SP_USER_TOKEN,"");
         LogUtils.e("TOKEN",token);
 //        Log.e("TOKEN",token);
-//        return token;
+        return token;
 
         //test
-        return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY3NSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0XC9jb3Vwb25hcGlcL0FkbWluXC9wdWJsaWNcL2FwaVwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDk0NTY3NTE1LCJleHAiOjE0OTcxNTk1MTUsIm5iZiI6MTQ5NDU2NzUxNSwianRpIjoiUUx0M3NidGlLT0IxWXg0UiJ9.yn9iRJajuMCDET6193IvLrKWugouGdYDV-Yz6YvqN94";
+//        return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY3NSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0XC9jb3Vwb25hcGlcL0FkbWluXC9wdWJsaWNcL2FwaVwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDk0NTY3NTE1LCJleHAiOjE0OTcxNTk1MTUsIm5iZiI6MTQ5NDU2NzUxNSwianRpIjoiUUx0M3NidGlLT0IxWXg0UiJ9.yn9iRJajuMCDET6193IvLrKWugouGdYDV-Yz6YvqN94";
 
     }
 

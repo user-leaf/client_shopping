@@ -32,6 +32,8 @@ import com.bjaiyouyou.thismall.activity.PermissionsActivity;
 import com.bjaiyouyou.thismall.activity.ScanGoodsDetailActivity;
 import com.bjaiyouyou.thismall.activity.ScanPayActivity;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
+import com.bjaiyouyou.thismall.model.ScanPayQRCodeModel;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.zxing.camera.CameraManager;
 import com.bjaiyouyou.thismall.zxing.decoding.CaptureActivityHandler;
@@ -39,6 +41,7 @@ import com.bjaiyouyou.thismall.zxing.decoding.InactivityTimer;
 import com.bjaiyouyou.thismall.zxing.utils.MyUtils;
 import com.bjaiyouyou.thismall.zxing.utils.RGBLuminanceSource;
 import com.bjaiyouyou.thismall.zxing.view.ViewfinderView;
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -235,7 +238,6 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 
             Intent scanIntent2 = new Intent(getApplicationContext(), ScanPayActivity.class);
             startActivity(scanIntent2);
-
 
 
         }
@@ -507,17 +509,34 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                 data.putExtra("result", recode);
                                 setResult(300, data);
 
-//                                {"shopId":100,"money":100}
-                                //扫描的商家付款码
-                                if (recode.contains("shopId")){
-                                    ScanPayActivity.actionStart(getApplicationContext(),recode);
-                                    //商品详情
-                                }else {
+                                if (CurrentUserManager.isLoginUser()) {
+//                                    {"shopId":100,"money":100}
+                                    //扫描的商家付款码
+                                    if (recode.contains("shopId")) {
+                                        LogUtils.e("","");
+                                        ScanPayQRCodeModel scanPayQRCodeModel=new Gson().fromJson(recode,ScanPayQRCodeModel.class);
+                                        if (scanPayQRCodeModel!=null){
+                                            long shopId=scanPayQRCodeModel.getShopId();
+                                            int money=scanPayQRCodeModel.getMoney();
+                                            ScanPayActivity.actionStart(getApplicationContext(), shopId,money+"");
+                                        }
+
+
+                                        //商品详情
+                                    } else {
+                                        //扫描结果进行处理
+                                        Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
+                                        scanIntent.putExtra("productScanID", recode);
+                                        startActivity(scanIntent);
+                                    }
+                                } else {
                                     //扫描结果进行处理
                                     Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
                                     scanIntent.putExtra("productScanID", recode);
                                     startActivity(scanIntent);
                                 }
+
+//
                                 //退出页面返回主页
                                 finish();
                             }
@@ -612,7 +631,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 
     /**
      * 中文乱码
-     * <p>
+     * <p/>
      * 暂时解决大部分的中文乱码 但是还有部分的乱码无法解决 .
      *
      * @return
