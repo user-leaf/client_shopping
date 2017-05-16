@@ -145,7 +145,7 @@ public class Api4Home extends BaseClientApi {
      * @param shopId
      * @param callback
      */
-    public void getShopInfo(Object tag, String shopId, DataCallback<ShopModel> callback){
+    public void getShopInfo(Object tag, long shopId, DataCallback<ShopModel> callback){
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
         stringBuilder.append(HttpUrls.URL_SCAN_PAY_SHOP_INFO).append(shopId)
                 .append("?token=").append(CurrentUserManager.getUserToken());
@@ -161,7 +161,7 @@ public class Api4Home extends BaseClientApi {
      * @param safecode
      * @param callback
      */
-    public void payAfterScan(Object tag, double amount, String safecode, String shopId, DataCallback<ScanPayModel> callback){
+    public void payAfterScan(Object tag, double amount, String safecode, long shopId, DataCallback<ScanPayModel> callback){
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
         stringBuilder.append(HttpUrls.URL_SCAN_PAY_QRCODEPAY)
                 .append("?amount=").append(amount)
