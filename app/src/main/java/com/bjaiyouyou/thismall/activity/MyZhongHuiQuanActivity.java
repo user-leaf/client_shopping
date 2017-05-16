@@ -7,10 +7,10 @@ import android.widget.TextView;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
+import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
 import okhttp3.Call;
@@ -103,10 +103,21 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
             case R.id.tv_into_zhonghuiquan_detail://进入众汇券明细
 //                DataHolder.getInstance().setData(MyZhongHuiQuanActivity.TAG);
 //                jump(MyCommissionDetailActivity.class,false);
-                ToastUtils.showShort("吊起WebView");
+//                ToastUtils.showShort("吊起WebView");
+                intoDetail();
                 break;
             default:
                 return;
         }
+    }
+    /**
+     * 跳转众汇券详情
+     */
+    private void intoDetail() {
+        StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
+        sb.append("myduihuanquan-role.html");
+
+        String webShowUrl=sb.toString().trim();
+        WebShowActivity.actionStart(MyZhongHuiQuanActivity.this,webShowUrl, null);
     }
 }

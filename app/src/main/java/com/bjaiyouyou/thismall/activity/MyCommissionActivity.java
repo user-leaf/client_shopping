@@ -19,13 +19,13 @@ import android.widget.TextView;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
+import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.model.ResponseModel;
 import com.bjaiyouyou.thismall.utils.CashierInputFilter;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 
@@ -170,7 +170,8 @@ public class MyCommissionActivity extends BaseActivity {
             case R.id.tv_into_commission_detail://进入佣金详情页面
 //                DataHolder.getInstance().setData(MyCommissionActivity.TAG);
 //                jump(MyCommissionDetailActivity.class,false);
-                ToastUtils.showShort("吊起WebView");
+//                ToastUtils.showShort("吊起WebView");
+                intoDetail();
                 break;
             case R.id.tv_commission_apply_withdraw://申请提取（提取页面入口）
                 initCommissionWithdraw();
@@ -202,12 +203,13 @@ public class MyCommissionActivity extends BaseActivity {
      */
     private void applyWithdrawCommit() {
         showLoadingDialog();
-        String amountString=etCommissionNum.getText().toString();
+        String amountString=etCommissionNum.getText().toString().trim();
         Double amount=Double.valueOf(amountString);
         mApi4Mine.getCommissiongCommit(this, amount, new DataCallback<String>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
+                LogUtils.d("getCommissiongCommit",e.getMessage());
 
             }
 
@@ -218,9 +220,9 @@ public class MyCommissionActivity extends BaseActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
                                 mPopWindow.dismiss();
                                 initData();
-                                dialog.dismiss();
                             }
                         },
                         new DialogInterface.OnClickListener() {
@@ -261,21 +263,21 @@ public class MyCommissionActivity extends BaseActivity {
                             messageString=model.getMessage();
                         }
 
-//                        Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, null, messageString, "知道了", "",
-//                                new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                },
-//                                new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                }
-//                        );
-//                        dialog.show();
+                        Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, null, messageString, "知道了", "",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                },
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                        );
+                        dialog.show();
 
                         return;
                     }
@@ -399,4 +401,15 @@ public class MyCommissionActivity extends BaseActivity {
 
         }
     };
+
+    /**
+     * 跳转佣金详情
+     */
+    private void intoDetail() {
+        StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
+        sb.append("myduihuanquan-role.html");
+
+        String webShowUrl=sb.toString().trim();
+        WebShowActivity.actionStart(MyCommissionActivity.this,webShowUrl, null);
+    }
 }

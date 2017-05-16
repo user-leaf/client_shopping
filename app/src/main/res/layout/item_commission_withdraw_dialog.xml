@@ -159,7 +159,7 @@
                 android:layout_marginTop="100dp"
                 android:background="@drawable/selector_btn_bg"
                 android:gravity="center"
-                android:text="提交"
+                android:text="申请提取"
                 android:textColor="@drawable/selector_btn_textcolor"
                 android:textSize="20sp"
                 android:enabled="false"
