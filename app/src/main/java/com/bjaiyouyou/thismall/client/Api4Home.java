@@ -158,12 +158,14 @@ public class Api4Home extends BaseClientApi {
     /**
      * 扫码支付 - 支付
      * @param tag
+     * @param safecode
      * @param callback
      */
-    public void payAfterScan(Object tag, double amount, String shopId, DataCallback<ScanPayModel> callback){
+    public void payAfterScan(Object tag, double amount, String safecode, String shopId, DataCallback<ScanPayModel> callback){
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
         stringBuilder.append(HttpUrls.URL_SCAN_PAY_QRCODEPAY)
                 .append("?amount=").append(amount)
+                .append("&security_code=").append(safecode)
                 .append("&seller_user_id=").append(shopId)
                 .append("&token=").append(CurrentUserManager.getUserToken());
         String url = stringBuilder.toString();

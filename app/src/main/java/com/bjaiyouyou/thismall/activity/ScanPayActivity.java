@@ -403,7 +403,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      * @param money
      */
     private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final double money) {
-        String safeCode = etPasswordView.getText().toString();
+        final String safeCode = etPasswordView.getText().toString();
 
         if (TextUtils.isEmpty(safeCode)) {
             ToastUtils.showShort("请输入安全码");
@@ -422,8 +422,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 pswDialog.dismiss();
 
                 // 支付
-                mApi4Home.payAfterScan(ScanPayActivity.this, money, mShopId,
-                        new DataCallback<ScanPayModel>(ScanPayActivity.this) {
+                mApi4Home.payAfterScan(ScanPayActivity.this, money, safeCode,
+                        mShopId, new DataCallback<ScanPayModel>(ScanPayActivity.this) {
                             @Override
                             public void onFail(Call call, Exception e, int id) {
                                 ToastUtils.showException(e);
