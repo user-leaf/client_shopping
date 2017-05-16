@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -9,13 +8,14 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.MyIncomeAdapter;
 import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4Mine;
+import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyIncomeModel;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LoadViewHelper;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
-import com.nineoldandroids.view.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,8 +150,23 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case R.id.right_layout: // 收益明细
+                intoDetail();
 
                 break;
         }
+    }
+    /**
+     * 跳转收益明细详情
+     */
+    private void intoDetail() {
+        StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
+        sb.append("myduihuanquan-role.html");
+        sb.append("?type=");
+        sb.append("shouyi");
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
+
+        String webShowUrl=sb.toString().trim();
+        WebShowActivity.actionStart(MyIncomeActivity.this,webShowUrl, null);
     }
 }

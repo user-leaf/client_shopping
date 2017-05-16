@@ -23,6 +23,7 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.CommissionModel;
 import com.bjaiyouyou.thismall.model.ResponseModel;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.CashierInputFilter;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
@@ -408,6 +409,11 @@ public class MyCommissionActivity extends BaseActivity {
     private void intoDetail() {
         StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
         sb.append("myduihuanquan-role.html");
+        sb.append("?type=");
+        sb.append("yongjin");
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
+
 
         String webShowUrl=sb.toString().trim();
         WebShowActivity.actionStart(MyCommissionActivity.this,webShowUrl, null);

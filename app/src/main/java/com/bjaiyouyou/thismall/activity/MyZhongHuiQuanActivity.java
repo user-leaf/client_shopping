@@ -10,6 +10,7 @@ import com.bjaiyouyou.thismall.client.Api4Mine;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
+import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
@@ -116,6 +117,10 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
     private void intoDetail() {
         StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
         sb.append("myduihuanquan-role.html");
+        sb.append("?type=");
+        sb.append("zhonghui");
+        sb.append("&token=");
+        sb.append(CurrentUserManager.getUserToken());
 
         String webShowUrl=sb.toString().trim();
         WebShowActivity.actionStart(MyZhongHuiQuanActivity.this,webShowUrl, null);
