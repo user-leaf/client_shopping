@@ -309,70 +309,70 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
-        Dialog loginDialog = DialogUtils.createConfirmDialog(
-                this,
-                null,
-                getString(R.string.login_tip_invite_person),
-                "继续",
-                "取消",
-                new DialogInterface.OnClickListener() {
+
+        showLoadingDialog();
+
+        ClientAPI.postLogin(phone, password, invitationCode, new
+
+                StringCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onError(Call call, Exception e, int id) {
+                        dismissLoadingDialog();
 
-                        showLoadingDialog();
-
-                        ClientAPI.postLogin(phone, password, invitationCode, new
-
-                                StringCallback() {
-                                    @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        dismissLoadingDialog();
-
-                                        if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
-                                            mTipsView.setVisibility(View.VISIBLE);
-                                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
-                                        } else {
-                                            mTipsView.setVisibility(View.VISIBLE);
-                                            mTvTelTips.setText("网络未连接");
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        dismissLoadingDialog();
-
-                                        if (response != null && !"[]".equals(response)) {
-                                            Gson gson = new Gson();
-                                            TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
-                                            if (tokenModel == null) {
-                                                return;
-                                            }
-
-                                            String token = tokenModel.getToken();
-                                            if (token != null) {
-                                                LogUtils.d(TAG, "保存token：" + token);
-                                                CurrentUserManager.setUserToken(token);
-                                                setResult(RESULT_OK);
-                                                finish();
-
-                                            } else {
-                                                ToastUtils.showShort("token为空");
-                                            }
-                                        }
-                                    }
-                                }
-
-                        );
-
+                        if (NetStateUtils.isNetworkAvailable(LoginActivity.this)) {
+                            mTipsView.setVisibility(View.VISIBLE);
+                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
+                        } else {
+                            mTipsView.setVisibility(View.VISIBLE);
+                            mTvTelTips.setText("网络未连接");
+                        }
                     }
-                },
-                new DialogInterface.OnClickListener() {
+
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onResponse(String response, int id) {
+                        dismissLoadingDialog();
+
+                        if (response != null && !"[]".equals(response)) {
+                            Gson gson = new Gson();
+                            TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
+                            if (tokenModel == null) {
+                                return;
+                            }
+
+                            String token = tokenModel.getToken();
+                            if (token != null) {
+                                LogUtils.d(TAG, "保存token：" + token);
+                                CurrentUserManager.setUserToken(token);
+                                setResult(RESULT_OK);
+                                finish();
+
+                            } else {
+                                ToastUtils.showShort("token为空");
+                            }
+                        }
                     }
-                });
-        loginDialog.show();
+                }
+
+        );
+
+//        Dialog loginDialog = DialogUtils.createConfirmDialog(
+//                this,
+//                null,
+//                getString(R.string.login_tip_invite_person),
+//                "继续",
+//                "取消",
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                    }
+//                },
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//        loginDialog.show();
 
     }
 
