@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.OrderDetailModel;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
@@ -144,7 +145,7 @@ public class OrderDetailAdapter extends BaseAdapter implements View.OnClickListe
 //                int points = orderDetailBean.getProduct_size().getIntegration_price();
 //                holder.tvJifen.setText("+" + points + "兑换券");
             }
-            holder.tvPrice.setText("¥" + orderDetailBean.getPrice());
+            holder.tvPrice.setText("¥" + DoubleTextUtils.setDoubleUtils(Double.valueOf(orderDetailBean.getPrice())));
             // 数量
             holder.tvNum.setText("X" + orderDetailBean.getNumber());
 

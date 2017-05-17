@@ -5,14 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.bjaiyouyou.thismall.Constants;
+import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
@@ -27,13 +26,12 @@ import com.bjaiyouyou.thismall.model.PayResultEvent;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.PayUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
-import com.bigkoo.alertview.AlertView;
-import com.bigkoo.alertview.OnItemClickListener;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -41,11 +39,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import okhttp3.Call;
 
@@ -297,11 +292,11 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                             mAdapter.setData(order_detail);
 
                             // 运费
-                            mTvPostage.setText(order.getPostage() + "元");
+                            mTvPostage.setText("（含运费￥" + DoubleTextUtils.setDoubleUtils(order.getPostage())+ "）");
 
                             // 实付金额栏
                             mAllAmount = order.getAll_amount();
-                            mTvMoney.setText("¥" + mAllAmount);
+                            mTvMoney.setText("¥" + DoubleTextUtils.setDoubleUtils(mAllAmount));
 
                             // 只显示价格20170513
 //                            mTvJifen.setText("+" + order.getDeduct_integration() + "众汇券");
