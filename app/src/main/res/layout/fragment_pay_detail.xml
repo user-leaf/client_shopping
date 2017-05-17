@@ -127,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/app_red"
+            android:background="@color/app_basic"
             android:text="立即支付"
             android:textColor="#ffffff"
             android:textSize="17sp"
