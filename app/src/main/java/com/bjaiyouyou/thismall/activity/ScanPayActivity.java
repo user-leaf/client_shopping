@@ -51,6 +51,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     private long mShopId;                   // 商户id
     private String mShopName;               // 商户名称
+    private String mShopImgUrl;             // 商户头像
     private double mMoney;                  // 收款金额
     private boolean hasMoney;               // 是否有收款金额
 
@@ -207,10 +208,10 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
                 ShopModel shopModel = (ShopModel) response;
 
-                String imgUrl = shopModel.getAvatar_path() + "/" + shopModel.getAvatar_name();
-                LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + imgUrl);
+                mShopImgUrl = shopModel.getAvatar_path() + "/" + shopModel.getAvatar_name();
+                LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + mShopImgUrl);
                 Glide.with(ScanPayActivity.this)
-                        .load(ImageUtils.getThumb(imgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
+                        .load(ImageUtils.getThumb(mShopImgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
                         .into(mIvHead);
 
                 mShopName = shopModel.getNick_name();
@@ -419,29 +420,35 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
+        showLoadingDialog();
         mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                dismissLoadingDialog();
                 ToastUtils.showException(e);
             }
 
             @Override
             public void onResponse(String response, int id) {
+                dismissLoadingDialog();
                 KeyBoardUtils.closeKeybord(etPasswordView, MainApplication.getContext());
                 pswDialog.dismiss();
 
+                showLoadingDialog();
                 // 支付
                 mApi4Home.payAfterScan(ScanPayActivity.this, money, safeCode,
                         mShopId, new DataCallback<ScanPayModel>(ScanPayActivity.this) {
                             @Override
                             public void onFail(Call call, Exception e, int id) {
+                                dismissLoadingDialog();
                                 ToastUtils.showException(e);
                             }
 
                             @Override
                             public void onSuccess(Object response, int id) {
-                                LogUtils.d(TAG, "payAfterScan onResponse(): " + response);
-
+                                dismissLoadingDialog();
+                                ScanPaySuccessActivity.actionStart(ScanPayActivity.this, money, mShopImgUrl, mShopName);
+                                finish();
                             }
                         });
             }

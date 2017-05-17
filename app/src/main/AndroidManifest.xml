@@ -602,6 +602,8 @@
         </activity>
         <activity android:name=".activity.MyZhongHuiQuanActivity">
         </activity>
+        <activity android:name=".activity.ScanPaySuccessActivity">
+        </activity>
     </application>
 
 </manifest>
