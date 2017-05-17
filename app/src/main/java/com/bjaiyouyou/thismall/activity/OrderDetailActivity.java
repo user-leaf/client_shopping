@@ -292,7 +292,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                             mAdapter.setData(order_detail);
 
                             // 运费
-                            mTvPostage.setText("（含运费¥" + DoubleTextUtils.setDoubleUtils(order.getPostage())+ "）");
+                            mTvPostage.setText("¥" + DoubleTextUtils.setDoubleUtils(order.getPostage()));
 
                             // 实付金额栏
                             mAllAmount = order.getAll_amount();
