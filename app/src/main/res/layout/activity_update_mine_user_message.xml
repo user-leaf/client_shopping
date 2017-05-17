@@ -251,9 +251,9 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
+                android:textColor="@drawable/selector_btn_textcolor"
                 android:text="保存"
-                android:background="@drawable/shape_copy_button_bg_red"/>
+                android:background="@drawable/selector_btn_bg"/>
 
         </LinearLayout>
     </ScrollView>

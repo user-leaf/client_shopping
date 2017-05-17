@@ -56,8 +56,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@drawable/selector_email_verification_bg"
-        android:textColor="@android:color/white"
+        android:background="@drawable/selector_btn_bg"
+        android:textColor="@drawable/selector_btn_textcolor"
         android:textSize="@dimen/text_size_xxlarge"
         android:text="确认"/>
     <LinearLayout
