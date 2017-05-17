@@ -580,7 +580,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 mTvPostage.setText("");
                 if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
                     mTvPostage.setText("¥" + response);
-                    mTvTotalPay.setText(String.valueOf(mFinalPay + Double.valueOf(response)));
+                    mFinalPay += Double.valueOf(response);
+                    mTvTotalPay.setText(String.valueOf(mFinalPay));
                 }
             }
         });
