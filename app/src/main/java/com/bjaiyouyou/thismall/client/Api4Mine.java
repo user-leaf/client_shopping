@@ -183,15 +183,16 @@ public class Api4Mine extends BaseClientApi {
 
     /**
      * 获取 众汇-我的收益页面 数据
-     * @param TAG
+     * @param tag
      */
-    public void getMyIncome(Object TAG, DataCallback<MyIncomeModel> callback){
+    public void getMyIncome(Object tag, DataCallback<MyIncomeModel> callback){
         StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
         stringBuilder.append("api/v1/member/pushMoneyDetail")
                 .append("?token=").append(CurrentUserManager.getUserToken());
 
         String url = stringBuilder.toString();
-        doGet(url, TAG, null, callback);
+        LogUtils.d(TAG, "getMyIncome url: " + url);
+        doGet(url, tag, null, callback);
     }
     /**
      * 获得我的佣金、我的兑换券、我的佣金的详情

@@ -118,20 +118,20 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
                 MyIncomeModel myIncomeModel = (MyIncomeModel) response;
 
                 // 可用收益
-                int usable_push_money = myIncomeModel.getUsable_push_money();
-                mTvIncomeAvailable.setText(String.valueOf(usable_push_money) + ".00");
+                double usable_push_money = myIncomeModel.getUsable_push_money();
+                mTvIncomeAvailable.setText(String.format("%.2f", usable_push_money));
 
                 // 佣金
                 String push_money = myIncomeModel.getPush_money();
                 mTvYongjin.setText(push_money + "元");
 
                 // 众汇券
-                int zhonghuiquan = myIncomeModel.getZhonghuiquan();
-                mTvZhonghuiquan.setText(String.valueOf(zhonghuiquan) + ".00元");
+                double zhonghuiquan = myIncomeModel.getZhonghuiquan();
+                mTvZhonghuiquan.setText(String.format("%.2f元", zhonghuiquan));
 
                 // 累计获得收益
-                int all_push_money = myIncomeModel.getAll_push_money();
-                mTvAllIncome.setText(String.valueOf(all_push_money) + ".00");
+                double all_push_money = myIncomeModel.getAll_push_money();
+                mTvAllIncome.setText(String.format("%.2f", all_push_money));
 
                 // 显示列表
                 List<MyIncomeModel.PushMoneyDetailsBean> push_money_details = myIncomeModel.getPush_money_details();

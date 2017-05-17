@@ -80,7 +80,6 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      */
     public static void actionStart(Context context, long shopId, double money) {
         Intent intent = new Intent(context, ScanPayActivity.class);
-        LogUtils.d(TAG, "actionStart shopId: " + shopId + ", money:" + money);
         intent.putExtra(PARAM_SHOP_ID, shopId);
         intent.putExtra(PARAM_MONEY, money);
         context.startActivity(intent);
@@ -101,19 +100,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initVariable() {
-        // 解析扫码得到的json
         mShopId = getIntent().getLongExtra(PARAM_SHOP_ID, -1);
         mMoney = getIntent().getDoubleExtra(PARAM_MONEY, 0);
-
-        LogUtils.d(TAG, "initVariable shopId: " + mShopId + ", money:" + mMoney);
-//        if (!TextUtils.isEmpty(strJson)) {
-//            Gson gson = new Gson();
-//            ScanPayQRCodeModel scanPayQRCodeModel = gson.fromJson(strJson, ScanPayQRCodeModel.class);
-//            mShopId = scanPayQRCodeModel.getShopId();
-//            mMoney = scanPayQRCodeModel.getMoney();
-//        } else {
-//            ToastUtils.showShort("出错，请重新扫码[1]");
-//        }
     }
 
     private void initView() {
@@ -346,7 +334,6 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
                     case R.id.scan_pay_dialog_btn_commit:   // 确定
                         validateSafeCode(payDialog, etSafecode, money);
-
                         break;
                 }
             }

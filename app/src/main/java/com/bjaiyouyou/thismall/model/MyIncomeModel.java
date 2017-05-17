@@ -16,10 +16,10 @@ public class MyIncomeModel {
      * push_money_details : [{"push_money":"11000.00","type":1,"zhonghuiquan":"3100","remarks":"直接联盟商家收益","number":3,"word1":"共对接","word2":"家","word3":"对接收益"},{"push_money":"1000.00","type":2,"zhonghuiquan":"100","remarks":"协助好友对接联盟商家收益","number":1,"word1":"共对接","word2":"家","word3":"对接收益"}]
      */
 
-    private int usable_push_money;
+    private double usable_push_money;
     private String push_money;
-    private int zhonghuiquan;
-    private int all_push_money;
+    private double zhonghuiquan;
+    private double all_push_money;
     /**
      * push_money : 11000.00
      * type : 1
@@ -33,11 +33,11 @@ public class MyIncomeModel {
 
     private List<PushMoneyDetailsBean> push_money_details;
 
-    public int getUsable_push_money() {
+    public double getUsable_push_money() {
         return usable_push_money;
     }
 
-    public void setUsable_push_money(int usable_push_money) {
+    public void setUsable_push_money(double usable_push_money) {
         this.usable_push_money = usable_push_money;
     }
 
@@ -49,19 +49,19 @@ public class MyIncomeModel {
         this.push_money = push_money;
     }
 
-    public int getZhonghuiquan() {
+    public double getZhonghuiquan() {
         return zhonghuiquan;
     }
 
-    public void setZhonghuiquan(int zhonghuiquan) {
+    public void setZhonghuiquan(double zhonghuiquan) {
         this.zhonghuiquan = zhonghuiquan;
     }
 
-    public int getAll_push_money() {
+    public double getAll_push_money() {
         return all_push_money;
     }
 
-    public void setAll_push_money(int all_push_money) {
+    public void setAll_push_money(double all_push_money) {
         this.all_push_money = all_push_money;
     }
 
@@ -147,4 +147,5 @@ public class MyIncomeModel {
             this.word3 = word3;
         }
     }
+
 }
