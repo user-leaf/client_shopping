@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
 
-        <!--标题栏上边工具栏的颜色-->
+        <!--页面切换标题栏的颜色-->
         <item name="colorPrimary">@color/app_basic</item>
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--标题栏上边工具栏的颜色-->
