@@ -26,6 +26,7 @@ import com.bjaiyouyou.thismall.model.ResponseModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.CashierInputFilter;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
@@ -138,10 +139,10 @@ public class MyCommissionActivity extends BaseActivity {
     private void setData() {
          mPushMoneyBean=mCommissionModel.getPush_money();
         if (mPushMoneyBean!=null){
-            mTvHavaCommissionNum.setText(""+mPushMoneyBean.getPush_money());
-            mTvHaveWithdrawNum.setText(""+mPushMoneyBean.getAll_push_money());
+            mTvHavaCommissionNum.setText(""+ DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
+            mTvHaveWithdrawNum.setText(""+DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getAll_push_money().toString())));
 
-            mCommissionCanWithdrawNum=Double.valueOf(mPushMoneyBean.getPush_money());
+            mCommissionCanWithdrawNum=Double.valueOf(DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
 
         }
         //test
@@ -294,7 +295,7 @@ public class MyCommissionActivity extends BaseActivity {
      */
     private void setExchangeAllCan() {
         isSetCommissionNum = true;
-        etCommissionNum.setText("" + mCommissionCanWithdrawNum);
+        etCommissionNum.setText("" + DoubleTextUtils.setDoubleUtils(mCommissionCanWithdrawNum));
     }
 
     /**
@@ -346,7 +347,7 @@ public class MyCommissionActivity extends BaseActivity {
         etCommissionNum.setFilters(filters);
 
         //填充数据
-        tvCanUseCommissionNum.setText("" + mCommissionCanWithdrawNum);
+        tvCanUseCommissionNum.setText("" + DoubleTextUtils.setDoubleUtils(mCommissionCanWithdrawNum));
 
 
         //显示PopupWindow

@@ -12,6 +12,6 @@ public class DoubleTextUtils {
         if (amount != 0) {
             return String.format("%.2f", amount);
         }
-        return "";
+        return "0.00";
     }
 }

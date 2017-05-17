@@ -11,6 +11,7 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.ZhongHuiQuanModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 
@@ -89,9 +90,9 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
     }
 
     private void setDate() {
-        mTvZHQNum.setText(mZhangHuiQuanModel.getAll_balance()+"");
-        mTvZHQCanUse.setText(mZhangHuiQuanModel.getCan_use_balance()+"");
-        mTvZHQDongjieNum.setText(mZhangHuiQuanModel.getFreeze_balance()+"");
+        mTvZHQNum.setText(DoubleTextUtils.setDoubleUtils(Double.valueOf(mZhangHuiQuanModel.getAll_balance()))+"");
+        mTvZHQCanUse.setText(DoubleTextUtils.setDoubleUtils(mZhangHuiQuanModel.getCan_use_balance())+"");
+        mTvZHQDongjieNum.setText(DoubleTextUtils.setDoubleUtils(mZhangHuiQuanModel.getFreeze_balance())+"");
     }
 
     @Override
