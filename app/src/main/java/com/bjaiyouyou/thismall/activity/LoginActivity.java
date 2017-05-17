@@ -98,7 +98,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     // 手机号输入框中的删除按钮
     private ImageView mIvDelete;
     // 邀请码
-    private EditText mEtInviteCode;
+//    private EditText mEtInviteCode;
     private TextView mTvAgree;
 
     @Override
@@ -126,7 +126,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mEtTel = (EditText) findViewById(R.id.login_et_tel);
         mIvDelete = (ImageView) findViewById(R.id.login_iv_delete);
         mEtVeriCode = ((EditText) findViewById(R.id.login_et_veri_code));
-        mEtInviteCode = (EditText) findViewById(R.id.login_et_invite_code);
+//        mEtInviteCode = (EditText) findViewById(R.id.login_et_invite_code);
         mBtnLogin = (TextView) findViewById(R.id.login_btn_login);
 
         // 60秒
@@ -295,7 +295,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private void doLogin() {
         final String phone = mEtTel.getText().toString();
         final String password = mEtVeriCode.getText().toString();
-        final String invitationCode = mEtInviteCode.getText().toString();
+//        final String invitationCode = mEtInviteCode.getText().toString();
 
         if (!ValidatorsUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
@@ -303,16 +303,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
-        if (!TextUtils.isEmpty(invitationCode) && !ValidatorsUtils.validateUserPhone(invitationCode)) {
-            mTipsView.setVisibility(View.VISIBLE);
-            mTvTelTips.setText("邀请人号码有误");
-            return;
-        }
+//        if (!TextUtils.isEmpty(invitationCode) && !ValidatorsUtils.validateUserPhone(invitationCode)) {
+//            mTipsView.setVisibility(View.VISIBLE);
+//            mTvTelTips.setText("邀请人号码有误");
+//            return;
+//        }
 
 
         showLoadingDialog();
 
-        ClientAPI.postLogin(phone, password, invitationCode, new
+        ClientAPI.postLogin(phone, password, null, new
 
                 StringCallback() {
                     @Override
