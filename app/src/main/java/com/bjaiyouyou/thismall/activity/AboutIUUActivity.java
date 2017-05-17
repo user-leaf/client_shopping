@@ -56,7 +56,7 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.tv_about_iuu_company:
 //                jump(MineRechargeSuccessActivity.class, false);
-                jump(ScanPayActivity.class, false);
+//                jump(ScanPayActivity.class, false);
                 break;
         }
     }
