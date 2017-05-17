@@ -42,6 +42,7 @@ import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.PayUtils;
@@ -658,13 +659,16 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         //单价
                         if (detailBeani.getProduct_size() != null) {
 //                            String singleMoney = "￥" + detailBeani.getPrice() + "\n+" + detailBeani.getProduct_size().getIntegration_price() + "兑换券";
-                            String singleMoney = "￥" + detailBeani.getPrice() ;
+                            String singleMoney = detailBeani.getPrice() ;
+                            double singleMoneys=Double.valueOf(singleMoney);
+                            singleMoney= DoubleTextUtils.setDoubleUtils(singleMoneys);
+
                             SpannableStringBuilder builderSingleMoney = new SpannableStringBuilder(singleMoney);
                             //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
                             ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
 //                            builderSingleMoney.setSpan(redSpan, 0, singleMoney.indexOf("+"), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             //改变颜色
-                            holder.tvSingleMoney.setText(builderSingleMoney);
+                            holder.tvSingleMoney.setText( "￥" +builderSingleMoney);
                             //规格
                             holder.tvDimension.setText(detailBeani.getProduct_size().getName());
                         }
@@ -703,9 +707,15 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
             holder.tvGoodsNum.setText("共" + item.getNumber() + "件商品  合计:");
             //总钱数
             String allMoney = null;
+
             mAmount= item.getAll_amount();
-            allMoney = "￥" + mAmount;
+
+            allMoney = "￥" + DoubleTextUtils.setDoubleUtils(mAmount);
             holder.tvAllMoney.setText(allMoney);
+
+            double travelMoney=item.getPostage();
+
+            holder.tvTravel.setText("(含运费￥"+DoubleTextUtils.setDoubleUtils(travelMoney)+")");
 
 //        SpannableStringBuilder builderAllMoney = new SpannableStringBuilder(allMoney);
             //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色

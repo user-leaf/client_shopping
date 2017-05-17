@@ -18,6 +18,7 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
 import com.bjaiyouyou.thismall.model.OrderPayFail;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
@@ -168,10 +169,12 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
         mTVAddress.setText(mOrder.getAddress());
         mTvGetIntegral.setText(mOrder.getGet_gold()+"");
         mTvIntegral.setText(mOrder.getDeduct_integration()+"");
-        mTVMoney.setText(mOrder.getAmount()+"");
+
+        mTVMoney.setText("￥"+DoubleTextUtils.setDoubleUtils(mOrder.getAmount())+"");
+
         mTVOrderNum.setText(mOrder.getOrder_number());
         mTvTime.setText(mOrder.getCreated_at());
-        mDistributionMethod.setText(mOrder.getPostage()+"元");
+        mDistributionMethod.setText(DoubleTextUtils.setDoubleUtils(mOrder.getPostage())+")");
 
     }
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.OrderPayFail;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bumptech.glide.Glide;
 
@@ -56,7 +57,8 @@ public class OrderPayFailAdapter extends MyBaseAdapter<OrderPayFail.OrderBean.Or
             if (order.getProduct_size()!=null&&order.getProduct_size().getName()!=null){
                 holder.tvDimension.setText(order.getProduct_size().getName());
             }
-            holder.tvIntegral.setText("￥"+order.getPrice()+"+"+order.getDeduct_integration()+"兑换券");
+
+            holder.tvIntegral.setText("￥"+ DoubleTextUtils.setDoubleUtils(Double.valueOf(order.getPrice())));
             //        网络加载图片
             if (order.getProduct_image()!=null&& order.getProduct_image().getImage_path()!=null&&order.getProduct_image().getImage_base_name()!=null){
 

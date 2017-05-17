@@ -188,7 +188,7 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
                 <TextView
                     android:layout_width="0dp"
@@ -199,7 +199,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="运费"/>
+                    android:text="（含运费￥"/>
                 <TextView
                     android:id="@+id/tv_orderpayfail_distribution_method"
                     android:layout_width="wrap_content"
@@ -211,7 +211,9 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3.5dp">
+                android:layout_marginBottom="3.5dp"
+                android:visibility="gone"
+                >
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -247,16 +249,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+"/>
+                    android:text="+"
+                    android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tv_orderpayfail_pay_integral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"/>
+                    android:text="0"
+                    android:visibility="gone"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="兑换券"/>
+                    android:text="兑换券"
+                    android:visibility="gone"/>
             </LinearLayout>
             <LinearLayout
                 android:padding="10dp"
