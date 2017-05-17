@@ -19,6 +19,7 @@ import com.bjaiyouyou.thismall.widget.NoScrollListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 
@@ -119,7 +120,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
 
                 // 可用收益
                 double usable_push_money = myIncomeModel.getUsable_push_money();
-                mTvIncomeAvailable.setText(String.format("%.2f", usable_push_money));
+                mTvIncomeAvailable.setText(String.format(Locale.CHINA, "%.2f", usable_push_money));
 
                 // 佣金
                 String push_money = myIncomeModel.getPush_money();
@@ -127,11 +128,11 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
 
                 // 众汇券
                 double zhonghuiquan = myIncomeModel.getZhonghuiquan();
-                mTvZhonghuiquan.setText(String.format("%.2f元", zhonghuiquan));
+                mTvZhonghuiquan.setText(String.format(Locale.CHINA, "%.2f元", zhonghuiquan));
 
                 // 累计获得收益
                 double all_push_money = myIncomeModel.getAll_push_money();
-                mTvAllIncome.setText(String.format("%.2f", all_push_money));
+                mTvAllIncome.setText(String.format(Locale.CHINA, "%.2f", all_push_money));
 
                 // 显示列表
                 List<MyIncomeModel.PushMoneyDetailsBean> push_money_details = myIncomeModel.getPush_money_details();
