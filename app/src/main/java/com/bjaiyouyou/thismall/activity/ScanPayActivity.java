@@ -407,7 +407,6 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-        showLoadingDialog();
         mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -417,7 +416,6 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onResponse(String response, int id) {
-                dismissLoadingDialog();
                 KeyBoardUtils.closeKeybord(etPasswordView, MainApplication.getContext());
                 pswDialog.dismiss();
 
