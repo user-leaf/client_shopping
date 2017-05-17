@@ -9,17 +9,19 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.OrderPayFailAdapter;
 import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
+import com.bjaiyouyou.thismall.fragment.PayDetailFragment;
 import com.bjaiyouyou.thismall.model.OrderPayFail;
+import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.PayUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
@@ -44,6 +46,7 @@ import okhttp3.Call;
 
 public class OrderPayFailActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener,OnItemClickListener{
     public static final String PARAM_ORDER_NUMBER = "mOrderNumber";
+    private static String TAG=OrderPayFailActivity.class.getSimpleName();
     // 订单商品列表
     private NoScrollListView mLv;
     //  标题
@@ -247,12 +250,29 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
 
 
     ///////////////////////////////////ping++支付
-    // 调用ping++去付款
-    private void doPayByPingpp() {
-
+      private void doPayByPingpp() {
         // https://github.com/saiwu-bigkoo/Android-AlertView
-        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance)
-        }, this, AlertView.Style.ActionSheet, this).show();
+
+//        new AlertView("选择支付方式", null, "取消", null, new String[]{context.getString(R.string.pay_alipay), context.getString(R.string.pay_balance), context.getString(R.string.pay_hx)
+//        }, activity, AlertView.Style.ActionSheet, this).show();
+
+        double amount=mOrder.getAll_amount();
+
+        PayUtils.pay(MyOrderActivity.mFragmentManager, MyOrderPaymentFragment.TAG, amount, new PayDetailFragment.PayCallback() {
+            @Override
+            public void onPayCallback(String channel) {
+                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                new PaymentTask(
+                        getApplicationContext(),
+                        OrderPayFailActivity.this,
+                        mOrderNumber,
+                        channel,
+                       mBtOtherPay2,
+                        OrderPayFailActivity.TAG
+                ).execute(new PaymentTask.PaymentRequest(channel, amount));
+
+            }
+        });
     }
 
     //  https://github.com/saiwu-bigkoo/Android-AlertView
@@ -260,7 +280,8 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onItemClick(Object o, int position) {
         //调用父类的方法给出提示
-        super.onItemClick(o,position);
+//        super.onItemClick(o,position);
+
 
         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
         switch (position) {
@@ -269,17 +290,20 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
                 toPay();
                 break;
             case 1: // 余额支付
-
+                ToastUtils.showShort("正在开通中...");
                 break;
-            case 2: // 环迅支付
 
+            case 2: // 环迅支付
+                ToastUtils.showShort("正在开通中...");
                 break;
             default:
                 return;
         }
+
     }
+
     private void toPay() {
-        new com.bjaiyouyou.thismall.task.PaymentTask(this, this, mOrderNumber, mChannel, mBtOtherPay2, MyOrderPaymentFragment.TAG)
+        new com.bjaiyouyou.thismall.task.PaymentTask(getApplicationContext(), this, mOrderNumber, mChannel, mBtOtherPay2, OrderPayFailActivity.TAG)
                 .execute(new com.bjaiyouyou.thismall.task.PaymentTask.PaymentRequest(mChannel, 1));
     }
 
