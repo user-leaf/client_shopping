@@ -32,6 +32,7 @@ import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
 import com.bjaiyouyou.thismall.model.ProductDetail;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -403,7 +404,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             } else {
                 isSizeHave = false;
             }
-            mTVChooseNum.setText("" + mProductNum);
+            mTVChooseNum.setText(""+ mProductNum);
         }
         //数据为空，商品不存在
         else {
@@ -515,7 +516,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             }
 
 
-            mTVMoney.setText(mMoney + "");
+            mTVMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney)+ "");
 
             mIntegral = mSizeBeans.get(i).getIntegration_price();
             mTVIntegral.setText(mIntegral + "");
