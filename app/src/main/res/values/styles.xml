@@ -4,9 +4,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
 
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--标题栏上边工具栏的颜色-->
+        <item name="colorPrimary">@color/app_basic</item>
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <item name="colorPrimaryDark">@color/app_red</item>
+        <!--标题栏上边工具栏的颜色-->
+        <item name="colorPrimaryDark">@color/app_basic</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/app_common_bg</item>
     </style>
