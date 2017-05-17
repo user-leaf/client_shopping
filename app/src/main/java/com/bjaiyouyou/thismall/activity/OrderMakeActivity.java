@@ -35,6 +35,7 @@ import com.bjaiyouyou.thismall.model.PayResultEvent;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -430,8 +431,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         // 重量
         mTvWeight.setText(MathUtil.round(mSumWeight, 2) + "kg");
         // 商品总额
-        sumMoney = MathUtil.round(sumMoney, 2);
-        mTvMoneySum.setText("¥" + sumMoney);
+        mTvMoneySum.setText("¥" + DoubleTextUtils.setDoubleUtils(sumMoney));
 
         // 只显示价格20170513
 //        // 商品总额中的积分数
@@ -579,9 +579,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 LogUtils.d(TAG, "onResponse: " + response);
                 mTvPostage.setText("");
                 if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
-                    mTvPostage.setText("¥" + response);
+                    mTvPostage.setText("¥" + DoubleTextUtils.setDoubleUtils(Double.valueOf(response)));
                     mFinalPay += Double.valueOf(response);
-                    mTvTotalPay.setText(String.valueOf(mFinalPay));
+                    mTvTotalPay.setText(String.valueOf(DoubleTextUtils.setDoubleUtils(mFinalPay)));
                 }
             }
         });
