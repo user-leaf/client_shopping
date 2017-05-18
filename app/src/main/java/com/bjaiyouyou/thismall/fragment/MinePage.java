@@ -807,6 +807,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             etSateCodeInput.setText("");
             tvSateCodeMode.setText("输入安全码");
             tvSateCodeMode.setGravity(Gravity.CENTER);
+            tvSateCodeForget.setVisibility(View.VISIBLE);
             tvSateCodeForget.setEnabled(true);
             tvSateCodeForget.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
             etSateCodeMakeSure.setVisibility(View.GONE);
@@ -816,12 +817,14 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             if (isHaveEmail) {
                 tvSateCodeMode.setText("设置安全码");
                 tvSateCodeMode.setGravity(Gravity.CENTER);
+                tvSateCodeForget.setVisibility(View.INVISIBLE);
                 tvSateCodeForget.setEnabled(false);
                 etSateCodeMakeSure.setVisibility(View.GONE);
                 etSateCodeInput.setHint("8~16位，数字、字母组合");
                 mLLSetEmail.setVisibility(View.GONE);
             } else {
                 tvSateCodeMode.setText("设置安全码");
+                tvSateCodeForget.setVisibility(View.INVISIBLE);
                 tvSateCodeForget.setEnabled(false);
                 etSateCodeMakeSure.setVisibility(View.GONE);
                 etSateCodeInput.setHint("8~16位，数字、字母组合");
