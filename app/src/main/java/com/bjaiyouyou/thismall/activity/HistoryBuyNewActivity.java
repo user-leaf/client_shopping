@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.HistoryBuyRecycleViewAdapter;
@@ -21,6 +20,7 @@ import com.bjaiyouyou.thismall.model.HistoryBuy;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -139,7 +139,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
                     LogUtils.e("historyBuy", "数据为空");
                 } else {
                     //1、当网络不可用的时候、显示网络不可用
-                    Toast.makeText(getApplicationContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShort("当前网络不可用，请检查网络设置");
                     unNetWorkView();
                 }
                 //停止刷新
@@ -268,7 +268,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
                 break;
             case R.id.tv_get_data_again:
                 LogUtils.e("重新加载", "重新加载");
-                initData();
+                onRecycleViewRefresh();
                 break;
         }
     }

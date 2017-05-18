@@ -25,6 +25,7 @@ import com.bjaiyouyou.thismall.model.MyOrder;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -235,6 +236,7 @@ public class MyOrderNotFinishFragment extends BaseFragment {
                 } else {
                     //1、当网络不可用的时候、显示网络不可用
                     unNetWorkView();
+                    ToastUtils.showShort("当前网络不可用，请检查网络设置");
                 }
                 lv.loadMoreComplete();
                 lv.refreshComplete();
