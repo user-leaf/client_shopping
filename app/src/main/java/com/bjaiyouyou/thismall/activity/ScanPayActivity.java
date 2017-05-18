@@ -26,9 +26,11 @@ import com.bjaiyouyou.thismall.model.ScanPayModel;
 import com.bjaiyouyou.thismall.model.ShopModel;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.Utility;
@@ -100,8 +102,9 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initVariable() {
-        mShopId = getIntent().getLongExtra(PARAM_SHOP_ID, -1);
-        mMoney = getIntent().getDoubleExtra(PARAM_MONEY, 0);
+        Intent intent = getIntent();
+        mShopId = intent.getLongExtra(PARAM_SHOP_ID, -1);
+        mMoney = MathUtil.round(intent.getDoubleExtra(PARAM_MONEY, 0), 2); // 取两位小数
     }
 
     private void initView() {
