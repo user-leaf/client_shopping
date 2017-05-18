@@ -289,8 +289,8 @@
                             android:layout_marginTop="5dp"
                             android:gravity="center"
                             android:text="我的收益"
-                            android:textColor="#6b6b6b"
-                            android:textSize="10sp"
+                            android:textColor="#5a5a5a"
+                            android:textSize="14sp"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -342,8 +342,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="我的佣金"
-                            android:textColor="#6b6b6b"
-                            android:textSize="10sp"/>
+                            android:textColor="#5a5a5a"
+                            android:textSize="14sp"
+                            />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -398,8 +399,8 @@
                             android:layout_marginTop="5dp"
                             android:gravity="center"
                             android:text="我的众汇券"
-                            android:textColor="#6b6b6b"
-                            android:textSize="10sp"
+                            android:textColor="#5a5a5a"
+                            android:textSize="14sp"
                             />
                     </LinearLayout>
                 </LinearLayout>

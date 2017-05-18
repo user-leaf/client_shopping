@@ -213,7 +213,8 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
             @Override
             public void onPaySuccess() {
 //                fPayment.refreshData();
-                fPayment.mRefreshHandler.sendEmptyMessage(0);
+//                fPayment.mRefreshHandler.sendEmptyMessage(0);
+                EventBus.getDefault().post(new PayResultEvent(true));
                 LogUtils.e("立即支付","Activity支付成功onActivityResult");
             }
 
@@ -281,7 +282,8 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         if (event.isPaySuccess()) {
             //刷新数据
 //            fPayment.refreshData();
-            fPayment.mRefreshHandler.sendEmptyMessage(0);
+//            fPayment.mRefreshHandler.sendEmptyMessage(0);
+            EventBus.getDefault().post(new PayResultEvent(true));
 
             LogUtils.e("立即支付","Activity支付成功onBalancePayEvent");
 

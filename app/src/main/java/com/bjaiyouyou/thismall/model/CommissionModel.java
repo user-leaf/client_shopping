@@ -26,14 +26,14 @@ public class CommissionModel {
          * push_money : 0
          */
 
-        private Object all_push_money;
+        private String  all_push_money;
         private String push_money;
 
-        public Object getAll_push_money() {
+        public String getAll_push_money() {
             return all_push_money;
         }
 
-        public void setAll_push_money(Object all_push_money) {
+        public void setAll_push_money(String all_push_money) {
             this.all_push_money = all_push_money;
         }
 

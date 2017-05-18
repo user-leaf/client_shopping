@@ -140,7 +140,7 @@ public class MyCommissionActivity extends BaseActivity {
          mPushMoneyBean=mCommissionModel.getPush_money();
         if (mPushMoneyBean!=null){
             mTvHavaCommissionNum.setText(""+ DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
-            mTvHaveWithdrawNum.setText(""+DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getAll_push_money().toString())));
+            mTvHaveWithdrawNum.setText(""+DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getAll_push_money())));
 
             mCommissionCanWithdrawNum=Double.valueOf(DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
 

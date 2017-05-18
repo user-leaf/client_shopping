@@ -22,11 +22,15 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyOrder;
+import com.bjaiyouyou.thismall.model.PayResultEvent;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
 import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +116,13 @@ public class MyOrderPaymentFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        mLvHeight=getArguments().getInt("mHeight");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -388,4 +399,19 @@ public class MyOrderPaymentFragment extends BaseFragment {
 //        startActivity(intentPayFail);
 ////        activity.finish();
 //    }
+
+    /**
+     * 余额支付回调
+     * @param event
+     */
+    @Subscribe
+    public void onBalancePayEvent(PayResultEvent event){
+        LogUtils.e("立即支付","Activity支付成功onBalancePayEvent_out");
+        if (event.isPaySuccess()) {
+            refreshData();
+        }else {
+            //跳转到支付失败页面,传递订单号
+
+        }
+    }
 }
