@@ -410,7 +410,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
             public void run() {
                 mHandler.sendEmptyMessage(PAY_REFRESH);
             }
-        }, 1000);
+        }, 500);
 //        if (event.isPaySuccess()){
 ////            refreshData();
 //            adapter.payFinshRefreshi();
