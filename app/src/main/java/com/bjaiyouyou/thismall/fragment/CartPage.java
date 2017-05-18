@@ -78,7 +78,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     private View mBottomView;
     private CheckBox mChbAll;
     private TextView mTvTotalPrice;
-    private TextView mTvTotalPoint;
+//    private TextView mTvTotalPoint;
     private Button mBtnOrder;
 
     // flag
@@ -168,7 +168,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         mBodyView = (LinearLayout) layout.findViewById(R.id.body);
         mRefreshListView = (PullToRefreshListView) layout.findViewById(R.id.cart_listview);
         mTvTotalPrice = (TextView) layout.findViewById(R.id.cart_tv_total_fee);
-        mTvTotalPoint = (TextView) layout.findViewById(R.id.cart_tv_total_points);
+//        mTvTotalPoint = (TextView) layout.findViewById(R.id.cart_tv_total_points);
         mChbAll = (CheckBox) layout.findViewById(R.id.cart_chb_choose_all);
         mBtnOrder = (Button) layout.findViewById(R.id.cart_btn_order);
         mEmptyView = layout.findViewById(R.id.cart_empty);
