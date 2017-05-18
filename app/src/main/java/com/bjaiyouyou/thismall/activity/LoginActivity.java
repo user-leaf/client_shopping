@@ -356,25 +356,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
         );
 
-//        Dialog loginDialog = DialogUtils.createConfirmDialog(
-//                this,
-//                null,
-//                getString(R.string.login_tip_invite_person),
-//                "继续",
-//                "取消",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                },
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//        loginDialog.show();
-
     }
 
     //根据那个平台进行登录
