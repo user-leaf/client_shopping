@@ -99,7 +99,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private ImageView mIvDelete;
     // 邀请码
 //    private EditText mEtInviteCode;
-    private TextView mTvAgree;
+
+    private TextView mTvAgree2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.login_title_bar);
-        mTvAgree = (TextView) findViewById(R.id.login_tv_agree);
+        mTvAgree2 = (TextView) findViewById(R.id.login_tv_agree2);
         mBtnGetVeriCode = (TextView) findViewById(R.id.login_btn_get_veri_code);
         mTipsView = findViewById(R.id.login_ll_tips);
         mTvTelTips = (TextView) findViewById(R.id.login_tv_tips);
@@ -208,7 +209,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      * 设置 用户服务协议 字段
      */
     private void setAgreeData() {
-        String str1 = "温馨提示：未注册的手机号，登录时将自动注册，且代表您已经同意";
+        String str1 = "同意";
         String str2 = "《用户服务协议》";
         String text = str1 + str2;
         SpannableString spannableString = new SpannableString(text);
@@ -228,10 +229,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             }
         };
 
-        avoidHintColor(mTvAgree);
+        avoidHintColor(mTvAgree2);
         spannableString.setSpan(clickableSpan, str1.length(), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTvAgree.setText(spannableString);
-        mTvAgree.setMovementMethod(LinkMovementMethod.getInstance());
+        mTvAgree2.setText(spannableString);
+        mTvAgree2.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
