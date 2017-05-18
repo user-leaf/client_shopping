@@ -491,7 +491,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             mEmail = memberBean.getEmail().trim();
             if (!TextUtils.isEmpty(mEmail)) {
                 isHaveEmail = true;
-                String email = mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
+                String email;
+                if (mEmail.length()>=3){
+                     email= mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
+                }else {
+                    email=mEmail;
+                }
                 mTVEmail.setText(email);
             } else {
                 isHaveEmail = false;
