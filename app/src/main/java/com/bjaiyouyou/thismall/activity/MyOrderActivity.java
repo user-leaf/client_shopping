@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.MyOrderRecycleViewAdapter;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.fragment.MyOrderFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderNotFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
@@ -208,21 +209,20 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         //电话授权检测
         callPermissionsResult(requestCode,resultCode);
 
-//        //处理adapter立即支付处理
-//        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
-//            @Override
-//            public void onPaySuccess() {
-//
-//            }
-//
-//            @Override
-//            public void onPayFail() {
-//                //跳转到支付失败页面,传递订单号
-//                orderPayFail();
-//
-//            }
-//        });
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+//                fPayment.refreshData();
+                fPayment.mRefreshHandler.sendEmptyMessage(0);
+                LogUtils.e("立即支付","Activity支付成功onActivityResult");
+            }
 
+            @Override
+            public void onPayFail() {
+                //跳转到支付失败页面,传递订单号
+//                orderPayFail();
+            }
+        });
     }
 
     /**
@@ -277,9 +277,13 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
      */
     @Subscribe
     public void onBalancePayEvent(PayResultEvent event){
+        LogUtils.e("立即支付","Activity支付成功onBalancePayEvent_out");
         if (event.isPaySuccess()) {
             //刷新数据
-            fPayment.refreshData();
+//            fPayment.refreshData();
+            fPayment.mRefreshHandler.sendEmptyMessage(0);
+
+            LogUtils.e("立即支付","Activity支付成功onBalancePayEvent");
 
         }else {
             //跳转到支付失败页面,传递订单号
