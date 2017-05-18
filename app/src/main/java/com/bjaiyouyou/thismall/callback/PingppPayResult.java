@@ -10,12 +10,12 @@ import com.pingplusplus.android.Pingpp;
 
 /**
  * 支付结果
- *
+ * <p>
  * Created by JackB on 2017/3/23.
  */
 public class PingppPayResult {
 
-    public static void setOnPayResultCallback(int requestCode, int resultCode, Intent data, OnPayResultCallback callback){
+    public static void setOnPayResultCallback(int requestCode, int resultCode, Intent data, OnPayResultCallback callback) {
 
         //支付页面返回处理
         if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
@@ -39,15 +39,14 @@ public class PingppPayResult {
                     callback.onPaySuccess();
 
                 } else if ("fail".equals(result)) {
-//                    if ("invalid_charge_no_credential".contains(errorMsg)){
                     //无效的交易证书
-                    if (!TextUtils.isEmpty(errorMsg)&&errorMsg.contains("invalid_charge_no_credential")){
-                        ToastUtils.showLong("支付功能正在升级，暂停支付功能，给您造成不便，敬请谅解");
-                    }else {
+                    if (!TextUtils.isEmpty(errorMsg) && errorMsg.contains("invalid_charge_no_credential")) {
+                        ToastUtils.showShort("无效的交易");
+                    } else {
                         ToastUtils.showShort("支付失败");
                     }
                     callback.onPayFail();
-                    LogUtils.e("errorMsg", errorMsg+" **********resultCode:"+resultCode+ "extraMsg" + extraMsg);
+                    LogUtils.e("errorMsg", errorMsg + " **********resultCode:" + resultCode + "extraMsg" + extraMsg);
 
                 } else if ("cancel".equals(result)) {
                     ToastUtils.showShort("已取消支付");
@@ -99,6 +98,7 @@ public class PingppPayResult {
 
     public interface OnPayResultCallback {
         void onPaySuccess();
+
         void onPayFail();
     }
 }

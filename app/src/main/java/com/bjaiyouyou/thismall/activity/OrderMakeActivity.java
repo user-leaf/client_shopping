@@ -105,7 +105,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private TextView mTvWeight;             // 重量
     private double mSumWeight;              // 商品总重量
 
-//    private TextView mTvGoldSum;            // 本次消费可得积分
+    //    private TextView mTvGoldSum;            // 本次消费可得积分
     private TextView mTvMoneySum;           // 商品总额
     private TextView mTvPointsSum;          // 商品总额中的积分
 
@@ -123,9 +123,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private String mAddress;
     private String mPhone;
 
-    // 地址是否是选择返回过来的
+    // 标志：地址是否是选择返回过来的
     private boolean isAddressSelected = false;
-    // 接口返回的地址中是否有默认地址
+    // 标志：接口返回的地址中是否有默认地址
     private boolean hasDefaultAddress = false;
 
     // 法1，由于loadListData()中包含loadData()，为防止第一次加载时重复执行loadData()，
@@ -134,6 +134,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 法2，判断是否已执行完hasLoadListData()，未执行完则不执行loadData()，
     // 防止重复执行(但是loadListData()先执行的话并不能避免，不过一般不会发生，因为要请求完毕之后才会执行)
     private boolean hasLoadListData = false;
+
+    // 标志：限制总额中的邮费只累加1次
+    private int flagPostagePlusOnlyOnce = -1;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
@@ -580,7 +583,10 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 mTvPostage.setText("");
                 if (!TextUtils.isEmpty(response) && !"[]".equals(response)) {
                     mTvPostage.setText("¥" + DoubleTextUtils.setDoubleUtils(Double.valueOf(response)));
-                    mFinalPay += Double.valueOf(response);
+                    if (flagPostagePlusOnlyOnce != 1) {
+                        flagPostagePlusOnlyOnce = 1;
+                        mFinalPay += Double.valueOf(response);
+                    }
                     mTvTotalPay.setText(String.valueOf(DoubleTextUtils.setDoubleUtils(mFinalPay)));
                 }
             }
@@ -619,7 +625,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.order_confirm_tv_pay: // 去付款
-                if (Utility.isFastDoubleClick()){
+                if (Utility.isFastDoubleClick()) {
                     return;
                 }
 
@@ -1075,17 +1081,18 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     /**
      * 支付成功后的操作
      */
-    private void paySuccess(){
+    private void paySuccess() {
         OrderPaySuccessActivity.actionStart(OrderMakeActivity.this, mName, mPhone, mAddress, mStrOrderNum);
         mHandler.sendEmptyMessage(0); // 销毁页面
     }
 
     /**
      * 余额支付后的“回调”
+     *
      * @param event
      */
     @Subscribe
-    public void onPayEvent(PayResultEvent event){
+    public void onPayEvent(PayResultEvent event) {
         if (event.isPaySuccess()) {
             paySuccess();
         }
@@ -1093,6 +1100,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     /**
      * 第三方支付后的“回调”
+     *
      * @param requestCode
      * @param resultCode
      * @param data
