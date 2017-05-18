@@ -123,6 +123,8 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
         sb.append("&token=");
         sb.append(CurrentUserManager.getUserToken());
         sb.append("&type=android");
+        sb.append("&vt=").append(System.currentTimeMillis());
+
         String webShowUrl=sb.toString().trim();
         WebShowActivity.actionStart(MyZhongHuiQuanActivity.this,webShowUrl, null);
     }

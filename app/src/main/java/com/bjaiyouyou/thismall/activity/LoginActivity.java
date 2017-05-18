@@ -310,7 +310,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 //            return;
 //        }
 
-
         showLoadingDialog();
 
         ClientAPI.postLogin(phone, password, null, new

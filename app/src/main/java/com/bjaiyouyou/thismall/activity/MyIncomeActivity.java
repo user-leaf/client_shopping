@@ -20,6 +20,7 @@ import com.bjaiyouyou.thismall.widget.NoScrollListView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import okhttp3.Call;
 
@@ -151,15 +152,16 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case R.id.right_layout: // 收益明细
-                intoDetail();
+                gotoDetail();
 
                 break;
         }
     }
+
     /**
-     * 跳转收益明细详情
+     * 跳转到收益明细页面
      */
-    private void intoDetail() {
+    private void gotoDetail() {
         StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
         sb.append("myshouyi-detail.html");
         sb.append("?pageType=");
@@ -167,6 +169,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         sb.append("&token=");
         sb.append(CurrentUserManager.getUserToken());
         sb.append("&type=android");
+        sb.append("&vt=").append(System.currentTimeMillis());
 
         String webShowUrl=sb.toString().trim();
         WebShowActivity.actionStart(MyIncomeActivity.this,webShowUrl, null);

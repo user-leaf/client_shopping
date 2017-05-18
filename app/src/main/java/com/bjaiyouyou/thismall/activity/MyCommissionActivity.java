@@ -415,7 +415,7 @@ public class MyCommissionActivity extends BaseActivity {
         sb.append("&token=");
         sb.append(CurrentUserManager.getUserToken());
         sb.append("&type=android");
-
+        sb.append("&vt=").append(System.currentTimeMillis());
 
         String webShowUrl=sb.toString().trim();
         WebShowActivity.actionStart(MyCommissionActivity.this,webShowUrl, null);
