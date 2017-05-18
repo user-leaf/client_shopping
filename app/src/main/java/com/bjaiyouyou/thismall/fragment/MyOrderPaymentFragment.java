@@ -91,6 +91,8 @@ public class MyOrderPaymentFragment extends BaseFragment {
     private boolean isPullDown = false;
     private Api4ClientOther mClientApi;
 
+    public static int PAY_REFRESH=2222;
+
     //ListView控件的高度
 //    private int mLvHeight;
     //用于Adapter更新页面
@@ -98,7 +100,11 @@ public class MyOrderPaymentFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            initData();
+            if (msg.arg1==PAY_REFRESH){
+                refreshData();
+            }else {
+                initData();
+            }
         }
     };
 
@@ -399,7 +405,12 @@ public class MyOrderPaymentFragment extends BaseFragment {
     @Subscribe
     public void onEventMainThread(PayResultMyOrderRefreshEvent event) {
         LogUtils.e("立即支付", "onEventMainThread");
-        refreshData();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mHandler.sendEmptyMessage(PAY_REFRESH);
+            }
+        }, 1000);
 //        if (event.isPaySuccess()){
 ////            refreshData();
 //            adapter.payFinshRefreshi();
