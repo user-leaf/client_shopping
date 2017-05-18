@@ -124,6 +124,8 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
 //        initDeleteDialog();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private OnItemClickListener mListener;
         private OnItemLongClickListener mLongClickListener;
@@ -1092,4 +1094,18 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.mItemLongClickListener = listener;
     }
+
+    /**
+     * 完成立即支付刷新
+     */
+    public void payFinshRefreshi() {
+        LogUtils.e("立即支付","payFinshRefreshi+nowPosition:"+nowPosition);
+        //页面移除
+        orders.remove(nowPosition);
+        notifyDataSetChanged();
+        if (getItemCount() == 0) {
+            mHandler.sendEmptyMessage(1);
+        }
+    }
+
 }

@@ -23,6 +23,7 @@ import com.bjaiyouyou.thismall.fragment.MyOrderFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderNotFinishFragment;
 import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
 import com.bjaiyouyou.thismall.model.PayResultEvent;
+import com.bjaiyouyou.thismall.model.PayResultMyOrderRefreshEvent;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
@@ -214,7 +215,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
             public void onPaySuccess() {
 //                fPayment.refreshData();
 //                fPayment.mRefreshHandler.sendEmptyMessage(0);
-                EventBus.getDefault().post(new PayResultEvent(true));
+                EventBus.getDefault().post(new PayResultMyOrderRefreshEvent(true));
                 LogUtils.e("立即支付","Activity支付成功onActivityResult");
             }
 
@@ -283,7 +284,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
             //刷新数据
 //            fPayment.refreshData();
 //            fPayment.mRefreshHandler.sendEmptyMessage(0);
-            EventBus.getDefault().post(new PayResultEvent(true));
+            EventBus.getDefault().post(new PayResultMyOrderRefreshEvent(true));
 
             LogUtils.e("立即支付","Activity支付成功onBalancePayEvent");
 

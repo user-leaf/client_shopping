@@ -85,6 +85,8 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
     private String mOrderNumber;
     //支付方式
     private String mChannel;
+    //总价格
+    private double mAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,17 +169,23 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
 
     }
     private void setData() {
-        mTVName.setText(mOrder.getAddressee());
-        mTVPhone.setText(mOrder.getPhone());
-        mTVAddress.setText(mOrder.getAddress());
-        mTvGetIntegral.setText(mOrder.getGet_gold()+"");
-        mTvIntegral.setText(mOrder.getDeduct_integration()+"");
+        if (mOrder!=null){
+            mTVName.setText(mOrder.getAddressee());
+            mTVPhone.setText(mOrder.getPhone());
+            mTVAddress.setText(mOrder.getAddress());
+            mTvGetIntegral.setText(mOrder.getGet_gold()+"");
+            mTvIntegral.setText(mOrder.getDeduct_integration()+"");
+            mAmount=mOrder.getAll_amount();
+            String amountString=DoubleTextUtils.setDoubleUtils(mAmount);
 
-        mTVMoney.setText("￥"+DoubleTextUtils.setDoubleUtils(mOrder.getAmount())+"");
+            mAmount=Double.valueOf(mAmount);
 
-        mTVOrderNum.setText(mOrder.getOrder_number());
-        mTvTime.setText(mOrder.getCreated_at());
-        mDistributionMethod.setText(DoubleTextUtils.setDoubleUtils(mOrder.getPostage())+")");
+            mTVMoney.setText("￥"+ amountString);
+
+            mTVOrderNum.setText(mOrder.getOrder_number());
+            mTvTime.setText(mOrder.getCreated_at());
+            mDistributionMethod.setText(DoubleTextUtils.setDoubleUtils(mOrder.getPostage())+")");
+        }
 
     }
 
@@ -256,9 +264,8 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
 //        new AlertView("选择支付方式", null, "取消", null, new String[]{context.getString(R.string.pay_alipay), context.getString(R.string.pay_balance), context.getString(R.string.pay_hx)
 //        }, activity, AlertView.Style.ActionSheet, this).show();
 
-        double amount=mOrder.getAll_amount();
 
-        PayUtils.pay(MyOrderActivity.mFragmentManager, MyOrderPaymentFragment.TAG, amount, new PayDetailFragment.PayCallback() {
+        PayUtils.pay(MyOrderActivity.mFragmentManager, MyOrderPaymentFragment.TAG, mAmount, new PayDetailFragment.PayCallback() {
             @Override
             public void onPayCallback(String channel) {
                 int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效

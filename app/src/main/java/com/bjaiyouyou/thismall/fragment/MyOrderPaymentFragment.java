@@ -22,7 +22,7 @@ import com.bjaiyouyou.thismall.callback.DataCallback;
 import com.bjaiyouyou.thismall.client.Api4ClientOther;
 import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.MyOrder;
-import com.bjaiyouyou.thismall.model.PayResultEvent;
+import com.bjaiyouyou.thismall.model.PayResultMyOrderRefreshEvent;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
 import com.bjaiyouyou.thismall.utils.SpaceItemDecoration;
@@ -102,17 +102,6 @@ public class MyOrderPaymentFragment extends BaseFragment {
         }
     };
 
-    public  Handler mRefreshHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            refreshData();
-        }
-    };
-
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +118,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+//        LogUtils.e("立即支付","onResume");
         refreshData();
     }
 
@@ -403,17 +393,17 @@ public class MyOrderPaymentFragment extends BaseFragment {
 //    }
 
     /**
-     * 余额支付回调
+     * 立即支付成功后及时刷新数据
      * @param event
      */
     @Subscribe
-    public void onBalancePayEvent(PayResultEvent event){
-        LogUtils.e("立即支付","Activity支付成功onBalancePayEvent_out");
-        if (event.isPaySuccess()) {
-            refreshData();
-        }else {
-            //跳转到支付失败页面,传递订单号
-
-        }
+    public void onEventMainThread(PayResultMyOrderRefreshEvent event) {
+        LogUtils.e("立即支付", "onEventMainThread");
+        refreshData();
+//        if (event.isPaySuccess()){
+////            refreshData();
+//            adapter.payFinshRefreshi();
+//            LogUtils.e("立即支付", "onEventMainThread_true");
+//        }
     }
 }
