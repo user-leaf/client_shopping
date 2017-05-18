@@ -62,6 +62,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
     //获取相册照片的请求码
     private static final int PHOTO_REQUEST_GALLERY = 111;
+//    private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
     private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
     private static final int PHOTO_REQUEST_CAMERA = 112;
     private static final int PHOTO_REQUEST_CUT = 113;
@@ -773,14 +774,12 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 crop(uri);
             }
 
-        } else if (requestCode == PHOTO_REQUEST_CAMERA) {
+        } else if (requestCode == PHOTO_REQUEST_CAMERA && resultCode==RESULT_OK) {
             if (hasSdcard()) {
                 tempFile = new File(Environment.getExternalStorageDirectory(),
                         PHOTO_FILE_NAME);
                 uri = Uri.fromFile(tempFile);
                 crop(uri);
-            } else {
-
             }
 
         } else if (requestCode == PHOTO_REQUEST_CUT) {
