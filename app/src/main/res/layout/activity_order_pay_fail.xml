@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
-        app:iuuTitleBarTitle="等待付款">
+        app:iuuTitleBarTitle="支付失败">
 
     </com.bjaiyouyou.thismall.widget.IUUTitleBar>
     <ScrollView
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:text="您还未付款"
+                    android:text="支付失败"
                     />
                 <TextView
                     android:id="@+id/tv_pay_fail_text2"
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:text="订单我们将为您保存24小时"
+                    android:text=""
                     />
 
                 <ImageView
@@ -313,10 +313,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/shape_copy_button_bg_stroke_gray"
                     android:textColor="@android:color/darker_gray"
                     android:text="取消订单"
+                    android:visibility="gone"
                     />
                 <TextView
                     android:id="@+id/bt_orderpay_fail_otherpay2"
