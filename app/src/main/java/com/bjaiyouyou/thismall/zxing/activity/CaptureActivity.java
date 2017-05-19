@@ -201,7 +201,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
     }
 
 
-    //////////////////////////////////////处理最终的扫描结果////////////////////////////////////////
+    //////////////////////////////////////直接扫描处理最终的扫描结果////////////////////////////////////////
 
     /**
      * Handler scan result
@@ -226,46 +226,43 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
             e("scan", resultString);
             resultIntent.putExtras(bundle);
             this.setResult(RESULT_OK, resultIntent);
+            //调用扫描结果处理方法
+            dealWithScanResult(resultString);
+        }
+        CaptureActivity.this.finish();
+    }
 
-            //将扫描结果传递到扫描结果页面
-//            Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-//            scanIntent.putExtra("productScanID", resultString);
-//            startActivity(scanIntent);
-
-            //对二维码解密
-            String resultStringPay= new String (Base64.decode(resultString));
-            //将扫描结果传递到其他处理页面
+    private void dealWithScanResult(String resultString ) {
+        //对二维码解密
+        String resultStringPay= new String (Base64.decode(resultString));
+        //将扫描结果传递到其他处理页面
 
 
-            LogUtils.d("recode", resultString);
-            if (CurrentUserManager.isLoginUser()) {
+        LogUtils.d("recode", resultString);
+        if (CurrentUserManager.isLoginUser()) {
 //                                    {"shopId":100,"money":100}
-                //扫描的商家付款码
-                if (resultStringPay.contains("shopId")) {
-                    ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultStringPay, ScanPayQRCodeModel.class);
-                    if (scanPayQRCodeModel != null) {
-                        long shopId = scanPayQRCodeModel.getShopId();
-                        double money = scanPayQRCodeModel.getMoney();
-                        ScanPayActivity.actionStart(CaptureActivity.this, shopId, money);
-                    }
-                    //商品详情
-                } else {
-                    //扫描结果进行处理
-                    Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-                    scanIntent.putExtra("productScanID", resultString);
-                    startActivity(scanIntent);
+            //扫描的商家付款码
+            if (resultStringPay.contains("shopId")) {
+                ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultStringPay, ScanPayQRCodeModel.class);
+                if (scanPayQRCodeModel != null) {
+                    long shopId = scanPayQRCodeModel.getShopId();
+                    double money = scanPayQRCodeModel.getMoney();
+                    ScanPayActivity.actionStart(CaptureActivity.this, shopId, money);
                 }
+                //商品详情
             } else {
                 //扫描结果进行处理
                 Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
                 scanIntent.putExtra("productScanID", resultString);
                 startActivity(scanIntent);
             }
+        } else {
+            //扫描结果进行处理
+            Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
+            scanIntent.putExtra("productScanID", resultString);
+            startActivity(scanIntent);
         }
-        CaptureActivity.this.finish();
     }
-
-
 
 
     private void initCamera(SurfaceHolder surfaceHolder) {
@@ -378,6 +375,9 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
      * @param resultCode
      * @param data
      */
+
+
+    /////////////////////////////////////相册扫描结果处理/////////////////////////////
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -426,6 +426,10 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                 Intent data = new Intent();
                                 data.putExtra("result", recode);
                                 setResult(300, data);
+                                //调用扫描结果处理方法
+                                dealWithScanResult(recode);
+                                CaptureActivity.this.finish();
+
                             }
                         }
                     }).start();
