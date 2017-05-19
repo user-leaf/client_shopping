@@ -17,6 +17,7 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bjaiyouyou.thismall.MainActivity;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.callback.DataCallback;
@@ -28,6 +29,7 @@ import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.model.HomeAdModel;
 import com.bjaiyouyou.thismall.model.ProductDetail;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -142,6 +144,11 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     public static final String TAG=ScanGoodsDetailActivity.class.getSimpleName();
 
     private Api4ClientOther mClient;
+    private ImageView mIvGoToCar;
+    //判断规格是否存在
+    private boolean isSizeHave = false;
+    private LinearLayout mLLSize;
+    private LinearLayout mLLDone;
 
 
     @Override
@@ -160,6 +167,12 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
      */
 
     private void initView() {
+        //最下方操作按钮布局
+        mLLDone = ((LinearLayout) findViewById(R.id.ll_scan_goods_have_done));
+        //规格
+        mLLSize = ((LinearLayout) findViewById(R.id.ll_scan_goods_detail_size));
+
+        mIvGoToCar = ((ImageView) findViewById(R.id.iv_scan_goods_details_addtocar));
         //抢票状态
         mLLISRushState = ((LinearLayout) findViewById(R.id.ll_is_rush_scan_good_details));
         //操作控价所在布局
@@ -209,6 +222,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
      * 设置监听
      */
     private void setUpView() {
+        mIvGoToCar.setOnClickListener(this);
         mTvGetDataAgain.setOnClickListener(this);
         mTitleBar.setLeftLayoutClickListener(this);
         mTitleBar.setRightLayoutClickListener(this);
@@ -295,37 +309,58 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     }
 
     private void setData() {
-        //获取轮播图片地址集合
-        mNetImages = new ArrayList<HomeAdModel>();
-        List<ProductDetail.ProductBean.ImagesBean> imgList= mProduct.getImages();
-        int imgSize=imgList.size();
-        if (imgSize==0||imgList==null){
-            mTVLoading.setText("暂无图片介绍");
-            mTVLoading.setVisibility(View.VISIBLE);
-        }else {
-            mTVLoading.setVisibility(View.GONE);
-            mTVLoading.setText("数据加载中。。。");
+        //商品存在
+        if (mProduct != null) {
+            mNetImages = new ArrayList<HomeAdModel>();
+            //获取轮播图片地址集合
+            List<ProductDetail.ProductBean.ImagesBean> imgList = mProduct.getImages();
+            //轮播图片不为null
+            if (imgList != null) {
+                int imgSize = imgList.size();
+                //轮播图片不存在
+                if (imgSize == 0 || imgList == null) {
+                    mTVLoading.setText("暂无图片介绍");
+                } else {
+                    //轮播图片存在
+                    mTVLoading.setVisibility(View.GONE);
+                    ProductDetail.ProductBean.ImagesBean imagesBean;
+                    HomeAdModel homeAdModel;
+                    for (int i = 0; i < imgSize; i++) {
+                        imagesBean = imgList.get(i);
+                        homeAdModel = new HomeAdModel(null, imagesBean.getImage_path(), imagesBean.getImage_base_name());
+                        mNetImages.add(homeAdModel);
+                    }
+                    //实现图片轮播
+                    initImgs(mNetImages);
+                }
+            } else {
+                mTVLoading.setText("暂无图片介绍");
+            }
+            //填充数据
+            mTitleBar.setTitle(mProduct.getName());
+            mTVName.setText(mProduct.getName());
+            mTVScore.setText(mProduct.getScore() + "分");
+            //随着规格改变的，获得规格集合
+            mSizeBeans = mProduct.getSizes();
+            if (mSizeBeans != null && mSizeBeans.size() != 0) {
+                isSizeHave = true;
+                //规格部分显示
+                mLLSize.setVisibility(View.VISIBLE);
+                //初始与规格相关的页面
+                setSize(0);
+                //处理规格显示页面
+                initSize();
+            } else {
+                isSizeHave = false;
+            }
+            mTVChooseNum.setText(""+ mProductNum);
         }
-        ProductDetail.ProductBean.ImagesBean imagesBean;
-        HomeAdModel homeAdModel;
-        for (int i=0;i<imgSize;i++){
-            imagesBean=imgList.get(i);
-            homeAdModel=new HomeAdModel(null,imagesBean.getImage_path(),imagesBean.getImage_base_name());
-            mNetImages.add(homeAdModel);
+        //数据为空，商品不存在
+        else {
+            Toast.makeText(getApplicationContext(), "商品详情信息暂时不存在", Toast.LENGTH_SHORT).show();
+            mLLDone.setVisibility(View.GONE);
+            mTVLoading.setText("商品详情信息暂时不存在");
         }
-        //实现图片轮播
-        initImgs(mNetImages);
-        //填充数据
-        mTitleBar.setTitle(mProduct.getName());
-        mTVName.setText(mProduct.getName());
-        mTVScore.setText(mProduct.getScore()+"分");
-        //随着规格改变的，获得规格集合
-        mSizeBeans=mProduct.getSizes();
-        //初始与规格相关的页面
-        setSize(0);
-        //处理规格显示页面
-        initSize();
-        mTVChooseNum.setText(""+mProductNum);
     }
 
     /**
@@ -403,7 +438,8 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
                 mLLISRushState.setVisibility(View.GONE);
             }
             mMoney=Double.valueOf(mSizeBeans.get(i).getPrice());
-            mTVMoney.setText(mMoney+"");
+
+            mTVMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney)+ "");
 
             mIntegral=mSizeBeans.get(i).getIntegration_price();
             mTVIntegral.setText(mIntegral+"");
@@ -414,6 +450,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
             mTVGetIntegral.setText(mGetIntegral+"");
 
             mSizeID=mSizeBeans.get(i).getId();
+            mTVScore.setText(mSizeBeans.get(i).getWeight() + "kg");
             countMoney();
         }
     }
@@ -487,7 +524,11 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
                 break;
             //添加到购物车
             case R.id.tv_scan_goods_details_addtocar:
-                addToCar();
+                if (isSizeHave) {
+                    addToCar();
+                } else {
+                    Toast.makeText(getApplicationContext(), "该商品暂不支持购买，sorry！", Toast.LENGTH_SHORT).show();
+                }
                 break;
             //去付款
             case R.id.ll_scan_goods_detail_pay:
@@ -496,6 +537,12 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
             //再次获取数据
             case R.id.tv_get_data_again:
                 initData();
+                break;
+            //跳转到购物车页面
+            case R.id.iv_scan_goods_details_addtocar:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra(MainActivity.PARAM_ORDER, "order");
+                jump(intent, false);
                 break;
         }
     }
@@ -606,7 +653,8 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-               UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+//               UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                checkError(e);
             }
             @Override
             public void onResponse(String response, int id) {
@@ -614,6 +662,22 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
             }
         });
 
+    }
+    //对网络异常进行判断
+    private void checkError(Exception e) {
+        String eString = e.toString().trim();
+        LogUtils.e("eString:", eString + "");
+//        eString=eString.substring(eString.length()-3,eString.length())
+
+        if (eString != null) {
+            if (eString.contains("400") || eString.contains("401")) {
+//                Toast.makeText(getApplicationContext(), "请登录后再次操作", Toast.LENGTH_SHORT).show();
+                jump(LoginActivity.class, false);
+            } else {
+//                Toast.makeText(context,"提交失败"+e.toString(),Toast.LENGTH_SHORT).show();
+                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+            }
+        }
     }
 
     /**

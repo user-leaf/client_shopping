@@ -785,7 +785,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
         if (eString != null) {
             if (eString.contains("400") || eString.contains("401")) {
-                Toast.makeText(getApplicationContext(), "请登录后再次操作", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "请登录后再次操作", Toast.LENGTH_SHORT).show();
                 jump(LoginActivity.class, false);
             } else {
 //                Toast.makeText(context,"提交失败"+e.toString(),Toast.LENGTH_SHORT).show();

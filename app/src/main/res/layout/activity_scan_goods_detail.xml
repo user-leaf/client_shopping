@@ -6,6 +6,7 @@
               android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
+              android:background="#fff"
               tools:context="com.bjaiyouyou.thismall.activity.SearchResultsActivity">
     <com.bjaiyouyou.thismall.widget.IUUTitleBar
         android:id="@+id/title_scan_goods_details"
@@ -52,8 +53,9 @@
                 android:id="@+id/ll_scan_goods_detail_on_net"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:visibility="gone"
-                android:orientation="vertical">
+                >
                 <!-- 商品图片无限轮播，广告位容器 -->
                 <RelativeLayout
                     android:id="@+id/rl_scan_goods_details_imgs"
@@ -84,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="NAME"/>
+                        android:text="哎呦呦商品"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -100,27 +102,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/red"
-                        android:text="MONEY"/>
+                        android:text="0.00"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+"/>
+                        android:text="+"
+                        android:visibility="gone"
+                        />
                     <TextView
                         android:id="@+id/tv_scan_goods_details_integral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="INTEGRAL"/>
+                        android:text="INTEGRAL"
+                        android:visibility="gone"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="兑换券"/>
+                        android:text="兑换券"
+                        android:visibility="gone"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    >
                     <TextView
                         android:id="@+id/tv_scan_goods_details_sold_num"
                         android:layout_width="wrap_content"
@@ -146,6 +156,7 @@
                     android:layout_height="1dp"/>
 
                 <LinearLayout
+                    android:id="@+id/ll_scan_goods_detail_size"
                     android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,7 +202,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="整体评分"/>
+                        android:text="单件重量"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -201,7 +212,7 @@
                         android:id="@+id/tv_scan_goods_details_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SCORE"
+                        android:text="0kg"
                         />
                 </LinearLayout>
 
@@ -253,10 +264,16 @@
             android:src="@mipmap/list_subtraction"/>
         <TextView
             android:id="@+id/tv_scan_goods_details_choose_num"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
+            android:gravity="center"
+            android:singleLine="true"
             android:layout_height="wrap_content"
+            android:maxLength="4"
+            android:ellipsize="middle"
             android:text="1"/>
         <ImageView
             android:id="@+id/iv_scan_goods_detail_add"
@@ -264,17 +281,32 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/list_addition"/>
 
-        <TextView
-            android:id="@+id/tv_scan_goods_details_addtocar"
-            android:layout_marginLeft="10dp"
-            android:padding="10dp"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/app_red"
-            android:background="@drawable/shape_copy_button_bg_stroke_red"
-            android:text="加入购物车"/>
+            android:gravity="center_vertical"
+            >
+            <TextView
+                android:id="@+id/tv_scan_goods_details_addtocar"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/app_basic"
+                android:background="@drawable/shape_copy_button_bg_stroke_red"
+                android:text="加入购物车"/>
+            <ImageView
+                android:id="@+id/iv_scan_goods_details_addtocar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/tab_shoppingcart_sel"
+                android:layout_toLeftOf="@+id/tv_scan_goods_details_addtocar"
+                />
+        </RelativeLayout>
         <LinearLayout
             android:padding="10dp"
             android:layout_marginLeft="10dp"
@@ -284,12 +316,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:background="@drawable/shape_copy_button_bg_red"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="@color/white"
-                android:text="去付款"/>
+                android:text="去付款"
+                />
             <TextView
                 android:id="@+id/tv_scan_goods_details_money_all"
                 android:layout_width="wrap_content"
