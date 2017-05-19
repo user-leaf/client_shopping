@@ -233,7 +233,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 //            startActivity(scanIntent);
 
             //对二维码解密
-            resultString= new String (Base64.decode(resultString));
+            String resultStringPay= new String (Base64.decode(resultString));
             //将扫描结果传递到其他处理页面
 
 
@@ -241,8 +241,8 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
             if (CurrentUserManager.isLoginUser()) {
 //                                    {"shopId":100,"money":100}
                 //扫描的商家付款码
-                if (resultString.contains("shopId")) {
-                    ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultString, ScanPayQRCodeModel.class);
+                if (resultStringPay.contains("shopId")) {
+                    ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultStringPay, ScanPayQRCodeModel.class);
                     if (scanPayQRCodeModel != null) {
                         long shopId = scanPayQRCodeModel.getShopId();
                         double money = scanPayQRCodeModel.getMoney();
