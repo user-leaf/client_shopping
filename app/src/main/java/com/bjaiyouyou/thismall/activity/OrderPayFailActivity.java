@@ -1,6 +1,5 @@
 package com.bjaiyouyou.thismall.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,10 +12,11 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.adapter.OrderPayFailAdapter;
+import com.bjaiyouyou.thismall.callback.PingppPayResult;
 import com.bjaiyouyou.thismall.client.ClientAPI;
-import com.bjaiyouyou.thismall.fragment.MyOrderPaymentFragment;
 import com.bjaiyouyou.thismall.fragment.PayDetailFragment;
 import com.bjaiyouyou.thismall.model.OrderPayFail;
+import com.bjaiyouyou.thismall.model.PayResultEvent;
 import com.bjaiyouyou.thismall.task.PaymentTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
@@ -27,9 +27,11 @@ import com.bjaiyouyou.thismall.utils.UNNetWorkUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.bjaiyouyou.thismall.widget.NoScrollListView;
 import com.google.gson.Gson;
-import com.pingplusplus.android.Pingpp;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,10 +94,18 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_pay_fail);
+        //注册evenbus处理余额支付解决处理
+        EventBus.getDefault().register(this);
         initView();
         initData();
         initControl();
         setViewUp();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //取消余额支付回调处理的EvenBus
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -184,7 +194,7 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
 
             mTVOrderNum.setText(mOrder.getOrder_number());
             mTvTime.setText(mOrder.getCreated_at());
-            mDistributionMethod.setText(DoubleTextUtils.setDoubleUtils(mOrder.getPostage())+")");
+//            mDistributionMethod.setText(DoubleTextUtils.setDoubleUtils(mOrder.getPostage())+")");
         }
 
     }
@@ -265,12 +275,12 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
 //        }, activity, AlertView.Style.ActionSheet, this).show();
 
 
-        PayUtils.pay(MyOrderActivity.mFragmentManager, MyOrderPaymentFragment.TAG, mAmount, new PayDetailFragment.PayCallback() {
+        PayUtils.pay(getSupportFragmentManager(), OrderPayFailActivity.TAG, mAmount, new PayDetailFragment.PayCallback() {
             @Override
             public void onPayCallback(String channel) {
                 int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
                 new PaymentTask(
-                        getApplicationContext(),
+                        OrderPayFailActivity.this,
                         OrderPayFailActivity.this,
                         mOrderNumber,
                         channel,
@@ -323,30 +333,39 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
         mBtOtherPay1.setOnClickListener(this);
         mBtOtherPay2.setOnClickListener(this);
 
-        //支付页面返回处理
-        if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-                /* 处理返回值
-                 * "success" - payment succeed
-                 * "fail"    - payment failed
-                 * "cancel"  - user canceld
-                 * "invalid" - payment plugin not installed
-                 */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
-
-                if ("success".equals(result)) {
-                    ToastUtils.showShort("支付成功");
-                } else if ("fail".equals(result)) {
-                    ToastUtils.showShort("支付失败");
-                } else if ("cancel".equals(result)) {
-                    ToastUtils.showShort("用户取消");
-                } else if ("invalid".equals(result)) {
-                    ToastUtils.showShort("失效");
-                }
+        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
+            @Override
+            public void onPaySuccess() {
+//                fPayment.refreshData();
+//                fPayment.mRefreshHandler.sendEmptyMessage(0);
+                LogUtils.e("立即支付","Activity支付成功onActivityResult");
+                finish();
             }
+
+            @Override
+            public void onPayFail() {
+                //跳转到支付失败页面,传递订单号
+//                orderPayFail();
+            }
+        });
+    }
+    /**
+     * 余额支付回调
+     * @param event
+     */
+    @Subscribe
+    public void onBalancePayEvent(PayResultEvent event){
+        LogUtils.e("立即支付","Activity支付成功onBalancePayEvent_out");
+        if (event.isPaySuccess()) {
+            //刷新数据
+//            fPayment.refreshData();
+//            fPayment.mRefreshHandler.sendEmptyMessage(0);
+            finish();
+            LogUtils.e("立即支付","Activity支付成功onBalancePayEvent");
+
+        }else {
+            //跳转到支付失败页面,传递订单号
+
         }
     }
 }

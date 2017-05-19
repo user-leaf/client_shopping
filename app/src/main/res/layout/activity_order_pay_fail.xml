@@ -116,7 +116,9 @@
                 android:text="收货地址"
                 android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
             <LinearLayout
                 android:padding="10dp"
                 android:background="@color/white"
@@ -199,7 +201,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="（含运费￥"/>
+                    android:text="韵达快递"/>
                 <TextView
                     android:id="@+id/tv_orderpayfail_distribution_method"
                     android:layout_width="wrap_content"
@@ -329,7 +331,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:background="@drawable/shape_copy_button_bg_red"
-                    android:text="其他支付方式"
+                    android:text="继续支付"
                     />
             </LinearLayout>
 
