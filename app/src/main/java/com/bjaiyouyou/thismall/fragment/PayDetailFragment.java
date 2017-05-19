@@ -346,6 +346,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showException(e);
+                etPasswordView.getText().clear();
             }
 
             @Override
