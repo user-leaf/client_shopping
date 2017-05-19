@@ -106,6 +106,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private TextView mTvWeight;             // 重量
     private double mSumWeight;              // 商品总重量
 
+    private TextView mTvProductCount;       // 商品数量
     //    private TextView mTvGoldSum;            // 本次消费可得积分
     private TextView mTvMoneySum;           // 商品总额
     private TextView mTvPointsSum;          // 商品总额中的积分
@@ -238,6 +239,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         mTvPostage = (TextView) findViewById(R.id.order_make_tv_postage);
         mTvPostageExtra = (TextView) findViewById(R.id.order_make_tv_postage_extra);
 //        mTvGoldSum = (TextView) findViewById(R.id.order_make_gold_sum);
+        mTvProductCount = (TextView) findViewById(R.id.order_confirm_tv_product_count);
         mTvMoneySum = (TextView) findViewById(R.id.order_make_tv_money_sum);
         mTvPointsSum = (TextView) findViewById(R.id.order_make_tv_points_sum);
 
@@ -376,6 +378,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         double sumMoney = 0;
         // 底部实付积分
         int totalPoints = 0;
+        // 商品数量
+        int productCount = 0;
 
         // 统计该订单的总金额、总积分、总重量
         for (CartItem2 item : goodList) {
@@ -386,6 +390,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             if (cartModel == null) {
                 continue;
             }
+
+            productCount += cartModel.getNumber();
+
             CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
             if (product_size != null) {
@@ -432,6 +439,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             }
         }
 
+        // 商品数量
+        mTvProductCount.setText("共" + productCount + "件产品");
         // 重量
         mTvWeight.setText(MathUtil.round(mSumWeight, 2) + "kg");
         // 商品总额
@@ -450,6 +459,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         // 只显示价格20170513
 //        // 底部实付积分
 //        mTvTotalPoints.setText("+" + totalPoints + "众汇券");
+
 
     }
 
