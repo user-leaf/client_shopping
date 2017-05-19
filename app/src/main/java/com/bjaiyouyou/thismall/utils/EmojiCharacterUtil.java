@@ -181,4 +181,17 @@ public class EmojiCharacterUtil {
         return sb.toString();
     }
 
+    public static boolean containsEmoji(String src){
+        boolean ret = false;
+        if (src == null){
+            return ret;
+        }
+        for (int i = 0; i < src.length(); i++){
+            if (isEmojiCharacter(src.charAt(i))){
+                ret = true;
+                break;
+            }
+        }
+        return ret;
+    }
 }

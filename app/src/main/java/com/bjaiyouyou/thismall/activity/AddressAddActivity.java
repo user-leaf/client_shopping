@@ -150,9 +150,9 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
 
 //        LogUtils.d("AddressAddActivity", "name=" + name + ",tel=" + tel + ",province" + province + ",city=" + city + ",county=" + county + ",street=" + street);
 
-        name = EmojiCharacterUtil.filter(name);
-        tel = EmojiCharacterUtil.filter(tel);
-        street = EmojiCharacterUtil.filter(street);
+//        name = EmojiCharacterUtil.filter(name);
+//        tel = EmojiCharacterUtil.filter(tel);
+//        street = EmojiCharacterUtil.filter(street);
 
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "请填写收货人姓名", Toast.LENGTH_SHORT).show();
@@ -196,6 +196,21 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
 
         if (street.length()>60){
             ToastUtils.showShort("街道地址至多60个汉字");
+            return;
+        }
+
+        if (EmojiCharacterUtil.containsEmoji(name)){
+            ToastUtils.showShort("姓名中含有非法字符，请重新填写");
+            return;
+        }
+
+        if (EmojiCharacterUtil.containsEmoji(tel)){
+            ToastUtils.showShort("电话中含有非法字符，请重新填写");
+            return;
+        }
+
+        if (EmojiCharacterUtil.containsEmoji(street)){
+            ToastUtils.showShort("地址中含有非法字符，请重新填写");
             return;
         }
 
