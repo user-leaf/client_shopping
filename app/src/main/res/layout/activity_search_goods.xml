@@ -52,6 +52,7 @@
                    android:layout_weight="1"
                    android:background="@drawable/shape_home_top_bar_et_bg"
                    android:padding="3dp"
+                   android:maxLength="50"
                    >
                </EditText>
                <ImageView
