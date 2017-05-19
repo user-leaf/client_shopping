@@ -726,8 +726,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             @Override
             public void onResponse(String response, int id) {
                 if (!TextUtils.isEmpty(response)) {
+                    Context context=getContext();
                     String pushMessages = response.trim();
-                    if (pushMessages!=null){
+                    if (pushMessages!=null&&context!=null){
                         SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_ONE, pushMessages);
                         //获取第二页
                         mClientApi.getPushMessage(2, new StringCallback() {

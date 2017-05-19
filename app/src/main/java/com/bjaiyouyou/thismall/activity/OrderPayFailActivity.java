@@ -194,7 +194,7 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
 
             mTVOrderNum.setText(mOrder.getOrder_number());
             mTvTime.setText(mOrder.getCreated_at());
-//            mDistributionMethod.setText(DoubleTextUtils.setDoubleUtils(mOrder.getPostage())+")");
+            mDistributionMethod.setText("￥"+DoubleTextUtils.setDoubleUtils(mOrder.getPostage()));
         }
 
     }
