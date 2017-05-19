@@ -233,11 +233,28 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         mLLToPay.setOnClickListener(this);
 
         mFLModelOne.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 setSize(position);
-                //获得规格角标
-                mSizePosition=position;
+                mSizePosition = position;
+
+                //添加条件保证必须有一个条目被选
+//                view.setEnabled(false);
+//                view.setClickable(true);
+                int count = parent.getChildCount();
+                LogUtils.e("count", "" + count);
+//                if (count==1){
+//                    parent.getChildAt(0).setClickable(true);
+////                    parent.getChildAt(0).setBackground(getDrawable(R.drawable.shape_copy_button_bg_stroke_red));
+//                }else {
+                for (int i = 0; i < count; i++) {
+                    if (i != position) {
+//                        parent.getChildAt(i).setEnabled(true);
+                        parent.getChildAt(i).setClickable(false);
+                    } else {
+                        parent.getChildAt(i).setClickable(true);
+                    }
+                }
+//                }
                 return true;
             }
         });
@@ -388,6 +405,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         };
         //填充适配器
         mFLModelOne.setAdapter(sizeModelAdapterOne);
+        mFLModelOne.getChildAt(0).setClickable(true);
 
     }
     /**
