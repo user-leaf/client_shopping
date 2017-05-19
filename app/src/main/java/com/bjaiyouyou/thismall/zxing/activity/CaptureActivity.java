@@ -232,6 +232,10 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         CaptureActivity.this.finish();
     }
 
+    /**
+     * 处理二维码扫描结果
+     * @param resultString
+     */
     private void dealWithScanResult(String resultString ) {
         //对二维码解密
         String resultStringPay= new String (Base64.decode(resultString));
