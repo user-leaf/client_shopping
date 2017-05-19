@@ -277,7 +277,7 @@
                         <ImageView
                             android:layout_width="22.5dp"
                             android:layout_height="22.5dp"
-                            android:src="@mipmap/Personal_Centeriocn_icon_my_Profit"
+                            android:src="@mipmap/ic_launcher"
                             android:visibility="visible"
                             />
 
@@ -332,7 +332,7 @@
                         <ImageView
                             android:layout_width="22.5dp"
                             android:layout_height="22.5dp"
-                            android:src="@mipmap/Personal_Centeriocn_icon_my_Commission"
+                            android:src="@mipmap/ic_launcher"
                             android:visibility="visible"
                             />
 
@@ -388,7 +388,7 @@
                         <ImageView
                             android:layout_width="22.5dp"
                             android:layout_height="22.5dp"
-                            android:src="@mipmap/Personal_Centeriocn_icon_my_Coupon"
+                            android:src="@mipmap/ic_launcher"
                             android:visibility="visible"
                             />
 
