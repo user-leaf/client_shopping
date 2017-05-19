@@ -176,7 +176,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         if (mMoney > 10E-6) {  // 有收款金额
             hasMoney = true;
             LogUtils.d(TAG, "hasMoney: " + hasMoney);
-            mTvMoney.setText(String.valueOf(mMoney));
+            mTvMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney));
             showBanner(0);
         } else { // 未设定金额，自定义金额
             hasMoney = false;
@@ -343,7 +343,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         };
 
         tvShopName.setText("向商家用户（" + mShopName + "）支付");
-        tvMoney.setText(String.valueOf(money));
+        tvMoney.setText(DoubleTextUtils.setDoubleUtils(money));
         ivClose.setOnClickListener(onClickListener);
         tvForget.setOnClickListener(onClickListener);
         btnCommit.setOnClickListener(onClickListener);
