@@ -34,6 +34,7 @@ import com.bjaiyouyou.thismall.activity.ScanPayActivity;
 import com.bjaiyouyou.thismall.model.PermissionsChecker;
 import com.bjaiyouyou.thismall.model.ScanPayQRCodeModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.Base64;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.zxing.camera.CameraManager;
 import com.bjaiyouyou.thismall.zxing.decoding.CaptureActivityHandler;
@@ -230,6 +231,10 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 //            Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
 //            scanIntent.putExtra("productScanID", resultString);
 //            startActivity(scanIntent);
+
+            //对二维码解密
+            resultString= new String (Base64.decode(resultString));
+            //将扫描结果传递到其他处理页面
 
             LogUtils.d("recode", resultString);
             if (CurrentUserManager.isLoginUser()) {
