@@ -95,6 +95,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="3dp"
+            android:maxLength="50"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/ll_home_scan"
             android:layout_toLeftOf="@id/ll_home_push_message"
