@@ -19,11 +19,12 @@ public class Api4Cart extends BaseClientApi {
     /**
      * 生成订单
      * @param url
+     * @param tag
      * @param params
      * @param callback
      */
-    public void commitOrder(String url, Map<String, String> params, DataCallback<OrderMakeOrderNumberModel> callback){
-        doPost(url, params, callback);
+    public void commitOrder(String url, Object tag, Map<String, String> params, DataCallback<OrderMakeOrderNumberModel> callback){
+        doPost(url, tag, params, callback);
     }
 
     /**

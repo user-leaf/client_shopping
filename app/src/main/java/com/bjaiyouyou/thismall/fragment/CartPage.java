@@ -146,7 +146,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         }
 
         if (!isHidden()) {
-            initData();
+             initData();
         }
 
     }

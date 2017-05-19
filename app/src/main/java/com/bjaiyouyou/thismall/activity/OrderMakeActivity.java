@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bjaiyouyou.thismall.ActivityCollector;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.MainApplication;
 import com.bjaiyouyou.thismall.R;
@@ -153,14 +154,14 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         }
     };
 
-    private Api4Cart mClientApi;
+    private Api4Cart mApi4Cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_make);
 
-        mClientApi = (Api4Cart) ClientApiHelper.getInstance().getClientApi(Api4Cart.class);
+        mApi4Cart = (Api4Cart) ClientApiHelper.getInstance().getClientApi(Api4Cart.class);
         EventBus.getDefault().register(this);
 
         initException();
@@ -808,7 +809,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             paramsMap.put("addressee", mName);
             paramsMap.put("product_list", productListJson);
 
-            mClientApi.commitOrder(url, paramsMap, new DataCallback<OrderMakeOrderNumberModel>(this) {
+            mApi4Cart.commitOrder(url, this, paramsMap, new DataCallback<OrderMakeOrderNumberModel>(this) {
                 @Override
                 public void onFail(Call call, Exception e, int id) {
                     dismissLoadingDialog();
@@ -822,7 +823,10 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                                     dialog.dismiss();
                                 }
                             });
-                    dialog.show();
+
+                    if (ActivityCollector.sActivities.contains(this) && !dialog.isShowing() && !isFinishing()) {
+                        dialog.show();
+                    }
                 }
 
                 @Override
