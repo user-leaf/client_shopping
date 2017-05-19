@@ -948,7 +948,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
 
         double amount=0;
         if (orders.get(nowPosition)!=null){
-            amount=orders.get(nowPosition).getAmount();
+            amount=orders.get(nowPosition).getAll_amount();
         }
         LogUtils.e("amount","position**"+nowPosition+"amount**"+amount);
 
