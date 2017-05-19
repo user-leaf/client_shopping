@@ -346,8 +346,8 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     private void initPicker() {
         picker = new OptionPicker((Activity) context, new String[]
                 {"我不想买了", "信息填写错误重新拍", "其他原因"});
-        picker.setOffset(2);
-        picker.setSelectedIndex(1);
+        picker.setOffset(1);
+        picker.setSelectedIndex(0);
         picker.setTextSize(20);
         picker.setTextColor(Color.BLACK);
 //        处理选择事件
