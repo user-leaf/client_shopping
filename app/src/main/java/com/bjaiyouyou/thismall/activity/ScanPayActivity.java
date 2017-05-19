@@ -205,7 +205,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                         .load(ImageUtils.getThumb(mShopImgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
                         .into(mIvHead);
 
-                mShopName = shopModel.getNick_name();
+                mShopName = shopModel.getCompany_name();
                 mTvName.setText("向商家用户（" + mShopName + "）支付");
                 mTvBalance.setText("剩余券额" + shopModel.getUser_withdrawable_balance());
 
