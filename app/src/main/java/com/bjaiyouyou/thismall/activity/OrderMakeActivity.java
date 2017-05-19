@@ -1121,7 +1121,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 Intent intent = new Intent(OrderMakeActivity.this, OrderPayFailActivity.class);
                 intent.putExtra(OrderPayFailActivity.PARAM_ORDER_NUMBER, mStrOrderNum);
                 startActivity(intent);
-
+                OrderMakeActivity.this.finish();
             }
         });
 

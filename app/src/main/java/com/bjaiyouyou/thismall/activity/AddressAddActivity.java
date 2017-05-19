@@ -13,6 +13,7 @@ import com.bjaiyouyou.thismall.client.ClientAPI;
 import com.bjaiyouyou.thismall.model.AddressInfo2;
 import com.bjaiyouyou.thismall.task.AddressInitTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.EmojiCharacterUtil;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.utils.ValidatorsUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
@@ -148,6 +149,10 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
         String street = mEtAddress.getText().toString().trim();
 
 //        LogUtils.d("AddressAddActivity", "name=" + name + ",tel=" + tel + ",province" + province + ",city=" + city + ",county=" + county + ",street=" + street);
+
+        name = EmojiCharacterUtil.filter(name);
+        tel = EmojiCharacterUtil.filter(tel);
+        street = EmojiCharacterUtil.filter(street);
 
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "请填写收货人姓名", Toast.LENGTH_SHORT).show();
