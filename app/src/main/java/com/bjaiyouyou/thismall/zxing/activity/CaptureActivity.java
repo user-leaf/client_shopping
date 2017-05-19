@@ -236,6 +236,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
             resultString= new String (Base64.decode(resultString));
             //将扫描结果传递到其他处理页面
 
+
             LogUtils.d("recode", resultString);
             if (CurrentUserManager.isLoginUser()) {
 //                                    {"shopId":100,"money":100}
