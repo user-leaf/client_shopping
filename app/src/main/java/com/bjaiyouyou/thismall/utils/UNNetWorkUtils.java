@@ -155,7 +155,7 @@ public class UNNetWorkUtils {
             }
         }else {
             if (context!=null){
-                Toast.makeText(context,"网络连接失败，请检查网络设置后再次操作",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"当前网络不可用，请检查网络设置",Toast.LENGTH_SHORT).show();
             }
         }
     }
