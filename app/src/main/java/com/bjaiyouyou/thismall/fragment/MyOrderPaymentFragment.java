@@ -361,42 +361,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
         }
 //        refreshData();
     }
-//
-//    /**
-//     * 处理支付结果
-//     * @param requestCode
-//     * @param resultCode
-//     * @param data
-//     */
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        //处理adapter立即支付处理
-//        PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
-//            @Override
-//            public void onPaySuccess() {
-//                refreshData();
-//                LogUtils.e("立即支付","Fragment支付成功");
-//            }
-//
-//            @Override
-//            public void onPayFail() {
-//                //跳转到支付失败页面,传递订单号
-//                orderPayFail();
-//            }
-//        });
-//
-//    }
-//
-//    /**
-//     * 支付失败调用的跳转方法
-//     */
-//    private void orderPayFail() {
-//        Intent intentPayFail = new Intent(getContext(), OrderPayFailActivity.class);
-//        intentPayFail.putExtra("mOrderNumber", MyOrderRecycleViewAdapter.getOrderNum());
-//        startActivity(intentPayFail);
-////        activity.finish();
-//    }
+
 
     /**
      * 立即支付成功后及时刷新数据
