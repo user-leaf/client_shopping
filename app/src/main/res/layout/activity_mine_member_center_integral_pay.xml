@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.MineMemberCenterIntegralPayActivity">
+    tools:context="shop.imake.activity.MineMemberCenterIntegralPayActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        <shop.imake.widget.IUUTitleBar
             android:id="@+id/title_member_center_integral"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

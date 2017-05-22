@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.AboutIUUActivity">
+    tools:context="shop.imake.activity.AboutIUUActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_about_iuu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,13 +5,13 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="@string/controller_three"
         >
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <View
         style="@style/entry_divider_fine_line_style"

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.MyCommissionDetailActivity"
+    tools:context="shop.imake.activity.MyCommissionDetailActivity"
     android:orientation="vertical"
     >
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_zh_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

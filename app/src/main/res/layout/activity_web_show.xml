@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.WebShowActivity">
+    tools:context="shop.imake.activity.WebShowActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/web_show_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <TextView
         android:id="@+id/web_show_refresh"

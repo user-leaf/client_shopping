@@ -7,8 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eee"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.CheckTheLogisticsActivity">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    tools:context="shop.imake.activity.CheckTheLogisticsActivity">
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_check_the_logistics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:layout_height="20px"
                 android:background="#eee"
                 />
-            <com.bjaiyouyou.thismall.widget.NoScrollListView
+            <shop.imake.widget.NoScrollListView
                 android:layout_marginTop="20px"
                 android:paddingLeft="40px"
                 android:paddingRight="40px"

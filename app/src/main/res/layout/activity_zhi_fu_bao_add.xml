@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bjaiyouyou.thismall.activity.ZhiFuBaoAddActivity"
+    tools:context="shop.imake.activity.ZhiFuBaoAddActivity"
     android:orientation="vertical">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,16 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="com.bjaiyouyou.thismall.activity.WechatAddActivity"
+        tools:context="shop.imake.activity.WechatAddActivity"
         android:orientation="vertical">
-        <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        <shop.imake.widget.IUUTitleBar
             android:id="@+id/title_zhifubao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:iuuTitleBarTitle="绑定支付宝"
             app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
             android:background="#eee">
-        </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+        </shop.imake.widget.IUUTitleBar>
         <LinearLayout
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

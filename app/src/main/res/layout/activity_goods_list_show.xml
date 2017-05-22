@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.GoodsListShowActivity"
+    tools:context="shop.imake.activity.GoodsListShowActivity"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_purhchase_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         app:iuuTitleBarTitle="限时抢购"
         >
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

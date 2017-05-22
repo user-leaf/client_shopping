@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.MyOrderActivity"
+    tools:context="shop.imake.activity.MyOrderActivity"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/my_order_title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
         app:iuuTitleBarTitle="我的订单"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white">
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <TextView
         android:id="@+id/tv_confirm_receiving_reminder"
         android:layout_width="match_parent"

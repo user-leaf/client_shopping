@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.SelectTheDefaultOfPaymentActivity"
+    tools:context="shop.imake.activity.SelectTheDefaultOfPaymentActivity"
     android:background="#eee"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_select_default_Payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="选择默认支付方式"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white">
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <FrameLayout
         android:id="@+id/fl_weixin"
         android:layout_width="match_parent"

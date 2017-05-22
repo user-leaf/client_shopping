@@ -7,13 +7,13 @@
               android:background="#ffffff"
               android:orientation="vertical">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="@string/controller_four"
         >
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
@@ -413,7 +413,7 @@
 
 
             <!--功能入口列表-->
-            <com.bjaiyouyou.thismall.widget.NoScrollGridView
+            <shop.imake.widget.NoScrollGridView
                 android:id="@+id/gv_mine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

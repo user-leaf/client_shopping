@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.IntegralDetailActivity"
+    tools:context="shop.imake.activity.IntegralDetailActivity"
     android:orientation="vertical"
     android:background="#eee"
     >
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_integral_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

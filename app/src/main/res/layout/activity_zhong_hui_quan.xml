@@ -8,14 +8,14 @@
     android:background="#fff"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".activity.MyZhongHuiQuanActivity">
+    tools:context="shop.imake.activity.MyZhongHuiQuanActivity">
     <!--标题-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
-        <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        <shop.imake.widget.IUUTitleBar
             android:id="@+id/title_zhonghuiquan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

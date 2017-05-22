@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.MineRechargeSuccessActivity">
+    tools:context="shop.imake.activity.MineRechargeSuccessActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/recharge_success_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         >
 
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <RelativeLayout
         android:layout_width="match_parent"

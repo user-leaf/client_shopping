@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.InviteActivity">
+    tools:context="shop.imake.activity.InviteActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/invite_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <View
         style="@style/entry_divider_fine_line_style"/>

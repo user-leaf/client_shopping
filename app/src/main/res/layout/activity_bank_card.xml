@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.BindingModeOfPaymentActivity"
+    tools:context="shop.imake.activity.BindingModeOfPaymentActivity"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_bank_card"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         app:iuuTitleBarTitle="银行卡">
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

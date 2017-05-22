@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.OrderReturnActivity">
+    tools:context="shop.imake.activity.OrderReturnActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/order_return_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <Space
         android:layout_width="match_parent"
@@ -34,12 +34,12 @@
             android:orientation="vertical"
             >
 
-            <com.bjaiyouyou.thismall.widget.NoScrollListView
+            <shop.imake.widget.NoScrollListView
                 android:id="@+id/order_return_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </com.bjaiyouyou.thismall.widget.NoScrollListView>
+            </shop.imake.widget.NoScrollListView>
 
             <Space
                 android:layout_width="match_parent"

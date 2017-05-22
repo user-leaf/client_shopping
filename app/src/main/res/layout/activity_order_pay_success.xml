@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.OrderPaySuccessActivity">
+    tools:context="shop.imake.activity.OrderPaySuccessActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/order_pay_success_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                 style="@style/entry_divider_fine_line_style"
                 />
 
-            <com.bjaiyouyou.thismall.widget.NoScrollGridView
+            <shop.imake.widget.NoScrollGridView
                 android:id="@+id/order_pay_success_gridview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                 android:visibility="gone"
                 >
 
-            </com.bjaiyouyou.thismall.widget.NoScrollGridView>
+            </shop.imake.widget.NoScrollGridView>
 
         </LinearLayout>
     </ScrollView>

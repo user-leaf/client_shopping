@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.WithDrawSucceedActivity">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    tools:context="shop.imake.activity.WithDrawSucceedActivity">
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_withdraw_succeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

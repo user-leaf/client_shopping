@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.BankcardInformationAddActivity"
+    tools:context="shop.imake.activity.BankcardInformationAddActivity"
     android:background="#eee"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_bank_card_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="填写银行卡信息"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white">
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <TextView
         android:layout_margin="10dp"
         android:layout_width="match_parent"

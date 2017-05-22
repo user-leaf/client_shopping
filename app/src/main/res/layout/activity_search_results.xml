@@ -6,15 +6,15 @@
               android:background="#eee"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
-              tools:context="com.bjaiyouyou.thismall.activity.SearchResultsActivity">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+              tools:context="shop.imake.activity.SearchResultsActivity">
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_search_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         app:iuuTitleBarTitle="我的搜索"
         >
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                     android:gravity="center"
                     android:textColor="#FA9843"
                     android:text="/ 大家都在买 /" />
-                <com.bjaiyouyou.thismall.widget.NoScrollGridView
+                <shop.imake.widget.NoScrollGridView
                     android:id="@+id/gv_search_result_null"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -3,13 +3,13 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.bjaiyouyou.thismall.fragment.InviteMineFragment">
+              tools:context="shop.imake.fragment.InviteMineFragment">
 
     <include layout="@layout/net_fail_layout"/>
 
     <include layout="@layout/no_login_layout"/>
 
-    <com.bjaiyouyou.thismall.widget.ClearEditText
+    <shop.imake.widget.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:textSize="30.0dip"
             android:visibility="invisible"/>
 
-        <com.bjaiyouyou.thismall.widget.SideBar
+        <shop.imake.widget.SideBar
             android:id="@+id/sidebar"
             android:layout_width="20dp"
             android:layout_height="match_parent"

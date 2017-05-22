@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.bjaiyouyou.thismall.fragment.ClassifyPage"
+             tools:context="shop.imake.fragment.ClassifyPage"
               android:background="@color/app_common_bg"
               android:orientation="vertical"
     >
@@ -34,7 +34,7 @@
             android:singleLine="true"
             android:drawableLeft="@mipmap/nav_icon_seach"
             />
-        <com.bjaiyouyou.thismall.widget.IconCenterEditText
+        <shop.imake.widget.IconCenterEditText
             android:id="@+id/icon_center_editText_search_classify"
             android:gravity="center"
             android:layout_marginLeft="20dp"

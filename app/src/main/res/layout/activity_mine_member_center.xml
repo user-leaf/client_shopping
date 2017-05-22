@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/app_common_bg"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.MineMemberCenterActivity">
+    tools:context="shop.imake.activity.MineMemberCenterActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.bjaiyouyou.thismall.widget.IUUTitleBar
+        <shop.imake.widget.IUUTitleBar
             android:id="@+id/member_center_title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

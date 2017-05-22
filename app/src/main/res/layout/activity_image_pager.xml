@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent" >
 
-    <com.bjaiyouyou.thismall.widget.HackyViewPager
+    <shop.imake.widget.HackyViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

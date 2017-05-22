@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.bjaiyouyou.thismall">
+          package="shop.imake">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <!--
@@ -77,11 +77,11 @@
     <!-- 极光推送 -->
     <!-- Required -->
     <permission
-        android:name="com.bjaiyouyou.thismall.permission.JPUSH_MESSAGE"
+        android:name="shop.imake.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
 
     <!-- Required  一些系统要求的权限，如访问网络等 -->
-    <uses-permission android:name="com.bjaiyouyou.thismall.permission.JPUSH_MESSAGE"/>
+    <uses-permission android:name="shop.imake.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -105,7 +105,7 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
-        android:name=".MainApplication"
+        android:name="shop.imake.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_logo"
         android:label="@string/app_name"
@@ -120,7 +120,7 @@
         <!-- <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/> -->
 
         <activity
-            android:name=".MainActivity"
+            android:name="shop.imake.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -128,26 +128,26 @@
 
         <!-- 搜索商品页面 -->
         <activity
-            android:name=".activity.SearchGoodsActivity"
+            android:name="shop.imake.activity.SearchGoodsActivity"
             android:screenOrientation="portrait"/>
 
         <!-- 拍照页面 -->
         <activity
-            android:name=".activity.TakePhotoActivity"
+            android:name="shop.imake.activity.TakePhotoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensor"/>
         <!-- 搜索结果 -->
         <activity
-            android:name=".activity.SearchResultsActivity"
+            android:name="shop.imake.activity.SearchResultsActivity"
             android:screenOrientation="portrait"/>
         <!-- 商品详情 -->
         <activity
-            android:name=".activity.GoodsDetailsActivity"
+            android:name="shop.imake.activity.GoodsDetailsActivity"
             android:screenOrientation="portrait"/>
 
         <!-- 扫描页面 -->
         <activity
-            android:name=".zxing.activity.CaptureActivity"
+            android:name="shop.imake.zxing.activity.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -155,17 +155,17 @@
 
         <!-- 个人-设置页面 -->
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name="shop.imake.activity.SettingsActivity"
             android:screenOrientation="portrait"/>
 
         <!-- 地址管理页面 -->
         <activity
-            android:name=".activity.AddressManagerActivity"
+            android:name="shop.imake.activity.AddressManagerActivity"
             android:screenOrientation="portrait"/>
 
         <!-- 添加地址页面 -->
         <activity
-            android:name=".activity.AddressAddActivity"
+            android:name="shop.imake.activity.AddressAddActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
@@ -201,99 +201,99 @@
         <!-- ShareSDK end -->
 
         <activity
-            android:name=".activity.MyOrderActivity"
+            android:name="shop.imake.activity.MyOrderActivity"
             android:screenOrientation="portrait"/>
         <!-- 历史购买记录 -->
         <activity
-            android:name=".activity.GoodsListShowActivity"
+            android:name="shop.imake.activity.GoodsListShowActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!-- 新的收货地址管理页 -->
         <activity
-            android:name=".activity.AddressManagerNewActivity"
+            android:name="shop.imake.activity.AddressManagerNewActivity"
             android:screenOrientation="portrait"/>
         <!-- 下订单页 -->
         <activity
-            android:name=".activity.OrderMakeActivity"
+            android:name="shop.imake.activity.OrderMakeActivity"
             android:screenOrientation="portrait"/>
         <!-- 地址选择页 -->
-        <activity android:name=".activity.ChooseTheMethodOfPaymentActivity"/>
-        <activity android:name=".activity.BankCardAddActivity"/>
-        <activity android:name=".activity.BankcardInformationAddActivity"/>
+        <activity android:name="shop.imake.activity.ChooseTheMethodOfPaymentActivity"/>
+        <activity android:name="shop.imake.activity.BankCardAddActivity"/>
+        <activity android:name="shop.imake.activity.BankcardInformationAddActivity"/>
         <!-- 申请退款页 -->
         <activity
-            android:name=".activity.OrderReturnActivity"
+            android:name="shop.imake.activity.OrderReturnActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <!-- 个人中心 - 客服页 -->
         <activity
-            android:name=".activity.MineCustomerServiceActivity"
+            android:name="shop.imake.activity.MineCustomerServiceActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 客服 - 意见建议 -->
         <activity
-            android:name=".activity.MineCustomerServiceSuggestionActivity"
+            android:name="shop.imake.activity.MineCustomerServiceSuggestionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <!-- 登录页 -->
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="shop.imake.activity.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.SelectTheDefaultOfPaymentActivity"
+            android:name="shop.imake.activity.SelectTheDefaultOfPaymentActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 处理退款申请页 -->
         <activity
-            android:name=".activity.OrderReturnDealActivity"
+            android:name="shop.imake.activity.OrderReturnDealActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 会员中心页 充值页 -->
         <activity
-            android:name=".activity.MineMemberCenterActivity"
+            android:name="shop.imake.activity.MineMemberCenterActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 订单详情页 -->
         <activity
-            android:name=".activity.OrderDetailActivity"
+            android:name="shop.imake.activity.OrderDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 绑定支付方式 -->
         <activity
-            android:name=".activity.BindingModeOfPaymentActivity"
+            android:name="shop.imake.activity.BindingModeOfPaymentActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 添加微信 -->
         <activity
-            android:name=".activity.WechatAddActivity"
+            android:name="shop.imake.activity.WechatAddActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 添加支付宝 -->
         <activity
-            android:name=".activity.ZhiFuBaoAddActivity"
+            android:name="shop.imake.activity.ZhiFuBaoAddActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 订单支付失败 -->
         <activity
-            android:name=".activity.OrderPayFailActivity"
+            android:name="shop.imake.activity.OrderPayFailActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 订单支付成功 -->
         <activity
-            android:name=".activity.OrderPaySuccessActivity"
+            android:name="shop.imake.activity.OrderPaySuccessActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 网页 -->
         <activity
-            android:name=".activity.WebShowActivity"
+            android:name="shop.imake.activity.WebShowActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="shop.imake.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppSplash">
             <intent-filter>
@@ -303,14 +303,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.GuideActivity"
+            android:name="shop.imake.activity.GuideActivity"
             android:screenOrientation="portrait">
 
             <!-- 去掉了theme -->
 
         </activity>
         <activity
-            android:name=".activity.MobileContactActivity"
+            android:name="shop.imake.activity.MobileContactActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 提现 -->
@@ -327,26 +327,26 @@
 
         <!-- 积分充值 -->
         <activity
-            android:name=".activity.HistoryBuyNewActivity"
+            android:name="shop.imake.activity.HistoryBuyNewActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 历史购买 -->
         <activity
-            android:name=".activity.MineMemberCenterIntegralPayActivity"
+            android:name="shop.imake.activity.MineMemberCenterIntegralPayActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 金币充值成功页 -->
         <activity
-            android:name=".activity.MineRechargeSuccessActivity"
+            android:name="shop.imake.activity.MineRechargeSuccessActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 邀请好友页 -->
         <activity
-            android:name=".activity.InviteActivity"
+            android:name="shop.imake.activity.InviteActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.ScanGoodsDetailActivity"
+            android:name="shop.imake.activity.ScanGoodsDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <!--
@@ -355,22 +355,22 @@
         android:windowSoftInputMode="stateHidden"  隐藏页面的软件盘
         -->
         <activity
-            android:name=".activity.UpdateMineUserMessageActivity"
+            android:name="shop.imake.activity.UpdateMineUserMessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
         </activity>
-        <activity android:name=".activity.SafeCodeForgetActivity">
+        <activity android:name="shop.imake.activity.SafeCodeForgetActivity">
         </activity>
         <!-- 关于我们 -->
         <activity
-            android:name=".activity.AboutIUUActivity"
+            android:name="shop.imake.activity.AboutIUUActivity"
             android:screenOrientation="portrait"/>
         <!-- 授权页面 -->
         <activity
-            android:name=".activity.PermissionsActivity"
+            android:name="shop.imake.activity.PermissionsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MineBingPhoneNumActivity"
+            android:name="shop.imake.activity.MineBingPhoneNumActivity"
             android:screenOrientation="portrait">
         </activity>
 
@@ -413,65 +413,65 @@
 
 
         <!-- Ping++支付 end -->
-        <activity android:name=".activity.CheckTheLogisticsActivity">
+        <activity android:name="shop.imake.activity.CheckTheLogisticsActivity">
         </activity>
         <!-- 图片播放器页面 -->
         <activity
-            android:name=".activity.ImagePagerActivity"
+            android:name="shop.imake.activity.ImagePagerActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- 提现 -->
         <!-- 提现详请页面 -->
         <activity
-            android:name=".activity.WithdrawRecordActivity"
+            android:name="shop.imake.activity.WithdrawRecordActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 会员收益页面 -->
         <activity
-            android:name=".activity.UserIncomeActivity"
+            android:name="shop.imake.activity.UserIncomeActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 提现成功页面 -->
         <activity
-            android:name=".activity.WithDrawSucceedActivity"
+            android:name="shop.imake.activity.WithDrawSucceedActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- UU详情 -->
         <activity
-            android:name=".activity.UUDetailActivity"
+            android:name="shop.imake.activity.UUDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 积分详情 -->
         <activity
-            android:name=".activity.IntegralDetailActivity"
+            android:name="shop.imake.activity.IntegralDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 系统消息列表 -->
         <activity
-            android:name=".activity.SystemPushMessageActivity"
+            android:name="shop.imake.activity.SystemPushMessageActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 我的兑换券 -->
         <activity
-            android:name=".activity.MyExchangeActivity"
+            android:name="shop.imake.activity.MyExchangeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- 兑换券充值页面 -->
         <activity
-            android:name=".activity.RechargeActivity"
+            android:name="shop.imake.activity.RechargeActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 兑换券兑换页面 -->
         <activity
-            android:name=".activity.ExchangeActivity"
+            android:name="shop.imake.activity.ExchangeActivity"
             android:screenOrientation="portrait">
         </activity>
         <!-- 兑换券激活页面 -->
         <activity
-            android:name=".activity.ActivateExchangeCertificateActivity"
+            android:name="shop.imake.activity.ActivateExchangeCertificateActivity"
             android:screenOrientation="portrait">
         </activity>
 
@@ -493,7 +493,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="com.bjaiyouyou.thismall"/>
+                <category android:name="shop.imake"/>
             </intent-filter>
         </activity>
         <!-- Required  SDK核心功能 -->
@@ -526,7 +526,7 @@
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService"/>
 
-                <category android:name="com.bjaiyouyou.thismall"/>
+                <category android:name="shop.imake"/>
             </intent-filter>
         </service>
 
@@ -537,7 +537,7 @@
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
                 <!-- Required  显示通知栏 -->
-                <category android:name="com.bjaiyouyou.thismall"/>
+                <category android:name="shop.imake"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
@@ -559,7 +559,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
-            android:name=".receiver.MyJPushReceiver"
+            android:name="shop.imake.receiver.MyJPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -573,7 +573,7 @@
                 <!-- Required  用户打开自定义通知栏的intent -->
                 <action android:name="cn.jpush.android.intent.CONNECTION"/>
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.bjaiyouyou.thismall"/>
+                <category android:name="shop.imake"/>
             </intent-filter>
         </receiver>
 
@@ -587,22 +587,22 @@
         <!-- </>值来自开发者平台取得的AppKey -->
 
         <activity
-            android:name=".activity.MyIncomeActivity"
+            android:name="shop.imake.activity.MyIncomeActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.ScanPayActivity"
+            android:name="shop.imake.activity.ScanPayActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.MyCommissionDetailActivity"
+            android:name="shop.imake.activity.MyCommissionDetailActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.MyCommissionActivity">
+        <activity android:name="shop.imake.activity.MyCommissionActivity">
         </activity>
-        <activity android:name=".activity.MyZhongHuiQuanActivity">
+        <activity android:name="shop.imake.activity.MyZhongHuiQuanActivity">
         </activity>
-        <activity android:name=".activity.ScanPaySuccessActivity">
+        <activity android:name="shop.imake.activity.ScanPaySuccessActivity">
         </activity>
     </application>
 

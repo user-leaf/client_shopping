@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:background="@color/app_common_bg"
     android:orientation="vertical"
-    tools:context=".activity.OrderMakeActivity">
+    tools:context="shop.imake.activity.OrderMakeActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/order_make_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:iuuTitleBarTitle="确认订单"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <include layout="@layout/net_fail_layout"/>
 
@@ -235,7 +235,7 @@
                 <View
                     style="@style/entry_divider_fine_line_style"/>
 
-                <com.bjaiyouyou.thismall.widget.NoScrollListView
+                <shop.imake.widget.NoScrollListView
                     android:id="@+id/order_make_listview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -243,7 +243,7 @@
                     android:scrollbars="none"
                     >
 
-                </com.bjaiyouyou.thismall.widget.NoScrollListView>
+                </shop.imake.widget.NoScrollListView>
 
                 <android.support.v4.widget.Space
                     android:layout_width="match_parent"

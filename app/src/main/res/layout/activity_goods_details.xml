@@ -7,8 +7,8 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:background="#fff"
-              tools:context="com.bjaiyouyou.thismall.activity.SearchResultsActivity">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+              tools:context="shop.imake.activity.SearchResultsActivity">
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_goods_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eee"
-    tools:context=".activity.OrderPayFailActivity"
+    tools:context="shop.imake.activity.OrderPayFailActivity"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_orderpay_fail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         app:iuuTitleBarTitle="支付失败">
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -177,14 +177,14 @@
                     android:textColor="@color/black"
                     android:text="商品详情"/>
             </LinearLayout>
-            <com.bjaiyouyou.thismall.widget.NoScrollListView
+            <shop.imake.widget.NoScrollListView
                 android:id="@+id/lv_orderpay_fail"
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="3.5dp"
                 android:layout_marginTop="1dp">
-            </com.bjaiyouyou.thismall.widget.NoScrollListView>
+            </shop.imake.widget.NoScrollListView>
             <LinearLayout
                 android:padding="10dp"
                 android:background="@color/white"

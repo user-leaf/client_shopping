@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.MineCustomerServiceSuggestionActivity">
+    tools:context="shop.imake.activity.MineCustomerServiceSuggestionActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/service_suggestion_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                     android:layout_below="@id/service_suggestion_tv1"
                     />
 
-                <com.bjaiyouyou.thismall.widget.FlowRadioGroup
+                <shop.imake.widget.FlowRadioGroup
                     android:id="@+id/service_suggestion_flow_rg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="#eee"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.WithdrawActivity"
+    tools:context="shop.imake.activity.WithdrawActivity"
     android:orientation="vertical">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_withdraw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

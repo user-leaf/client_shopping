@@ -5,20 +5,20 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="通讯录朋友"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <include layout="@layout/net_fail_layout"/>
 
     <include layout="@layout/no_login_layout"/>
 
-    <com.bjaiyouyou.thismall.widget.ClearEditText
+    <shop.imake.widget.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:textSize="30.0dip"
             android:visibility="invisible"/>
 
-        <com.bjaiyouyou.thismall.widget.SideBar
+        <shop.imake.widget.SideBar
             android:id="@+id/sidebar"
             android:layout_width="30dp"
             android:layout_height="fill_parent"

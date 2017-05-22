@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.OrderDetailActivity">
+    tools:context="shop.imake.activity.OrderDetailActivity">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/order_detail_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:iuuTitleBarTitle="订单详情"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                 />
 
             <!-- 商品详情 -->
-            <com.bjaiyouyou.thismall.widget.NoScrollListView
+            <shop.imake.widget.NoScrollListView
                 android:id="@+id/order_detail_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -237,7 +237,7 @@
                 android:divider="@color/app_gray"
                 >
 
-            </com.bjaiyouyou.thismall.widget.NoScrollListView>
+            </shop.imake.widget.NoScrollListView>
 
             <View
                 style="@style/entry_divider_fine_line_style"

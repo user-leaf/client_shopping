@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.MyIncomeActivity">
+    tools:context="shop.imake.activity.MyIncomeActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -187,12 +187,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"/>
 
-            <com.bjaiyouyou.thismall.widget.NoScrollListView
+            <shop.imake.widget.NoScrollListView
                 android:id="@+id/my_income_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </com.bjaiyouyou.thismall.widget.NoScrollListView>
+            </shop.imake.widget.NoScrollListView>
 
             <!--<LinearLayout-->
             <!--android:layout_width="match_parent"-->

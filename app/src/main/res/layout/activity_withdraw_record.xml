@@ -7,8 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eee"
     android:orientation="vertical"
-    tools:context="com.bjaiyouyou.thismall.activity.WithdrawRecordActivity">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    tools:context="shop.imake.activity.WithdrawRecordActivity">
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_withdraw_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

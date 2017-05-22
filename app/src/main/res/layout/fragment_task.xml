@@ -5,13 +5,13 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="@string/controller_two"
         >
 
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
 
     <Space
         style="@style/entry_divider_fine_line_style"
@@ -498,7 +498,7 @@
                     android:layout_marginBottom="10dp"
                     />
 
-                <com.bjaiyouyou.thismall.widget.NoScrollGridView
+                <shop.imake.widget.NoScrollGridView
                     android:id="@+id/task_gridview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -507,7 +507,7 @@
                     android:verticalSpacing="1dp"
                     >
 
-                </com.bjaiyouyou.thismall.widget.NoScrollGridView>
+                </shop.imake.widget.NoScrollGridView>
 
             </LinearLayout>
         </com.handmark.pulltorefresh.library.PullToRefreshScrollView>

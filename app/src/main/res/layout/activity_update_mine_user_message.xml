@@ -7,8 +7,8 @@
     android:orientation="vertical"
     android:background="#eee"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.UpdateMineUserMessageActivity">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    tools:context="shop.imake.activity.UpdateMineUserMessageActivity">
+    <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_update_mine_user_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

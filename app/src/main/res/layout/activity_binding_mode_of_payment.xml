@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.bjaiyouyou.thismall.activity.BindingModeOfPaymentActivity"
+    tools:context="shop.imake.activity.BindingModeOfPaymentActivity"
     android:orientation="vertical"
     android:background="#eee">
-    <com.bjaiyouyou.thismall.widget.IUUTitleBar
+    <shop.imake.widget.IUUTitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarTitle="绑定支付方式"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white">
-    </com.bjaiyouyou.thismall.widget.IUUTitleBar>
+    </shop.imake.widget.IUUTitleBar>
     <ListView
         android:id="@+id/lv_bangdingmodeofpayment"
         android:layout_width="match_parent"
