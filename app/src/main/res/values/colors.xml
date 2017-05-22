@@ -32,7 +32,7 @@
 
     <color name="btn_default">#FF5A27</color>
     <color name="btn_pressed">#E13811</color>
-    <color name="btn_unenable">#DCDCDC</color>
+    <color name="btn_disable">#DCDCDC</color>
 
     <color name="side_bar_text">#4A4A4A</color>
     <color name="shadow_bg">#66000000</color>
