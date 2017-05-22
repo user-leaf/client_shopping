@@ -15,6 +15,7 @@ import com.bjaiyouyou.thismall.task.AddressInitTask;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
 import com.bjaiyouyou.thismall.utils.EmojiCharacterUtil;
 import com.bjaiyouyou.thismall.utils.ToastUtils;
+import com.bjaiyouyou.thismall.utils.Utility;
 import com.bjaiyouyou.thismall.utils.ValidatorsUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.kyleduo.switchbutton.SwitchButton;
@@ -140,6 +141,10 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
      * 保存
      */
     private void doSave() {
+        if (Utility.isFastDoubleClick()){
+            return;
+        }
+
         // 输入检查
         String name = mEtName.getText().toString().trim();
         String tel = mEtTel.getText().toString().trim();
