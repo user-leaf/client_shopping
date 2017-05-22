@@ -577,7 +577,7 @@ public class ClientAPI {
         }
 
         String url = sb.toString();
-        LogUtils.d(TAG, "postLogin: " + url);
+        LogUtils.e(TAG, "postLogin: " + url);
         OkHttpUtils.post()
                 .url(url)
                 .build()
