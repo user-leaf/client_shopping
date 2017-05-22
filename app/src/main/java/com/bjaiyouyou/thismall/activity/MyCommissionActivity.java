@@ -148,6 +148,7 @@ public class MyCommissionActivity extends BaseActivity {
         //test
 //        mCommissionCanWithdrawNum=Double.valueOf("10.00");
         LogUtils.e("mCommissionCanWithdrawNum",mCommissionCanWithdrawNum+"");
+        LogUtils.e("mCommissionHaveWithdrawNum",mPushMoneyBean.getAll_push_money()+"");
 
         if (mCommissionCanWithdrawNum>0){
             //可以进入提取页面
@@ -224,18 +225,22 @@ public class MyCommissionActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                mPopWindow.dismiss();
+                                initData();
                             }
                         },
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                mPopWindow.dismiss();
+                                initData();
                             }
                         }
                 );
+                dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
-                mPopWindow.dismiss();
-                initData();
+
 
             }
 
@@ -274,15 +279,18 @@ public class MyCommissionActivity extends BaseActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
+//                                        mPopWindow.dismiss();
                                     }
                                 },
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
+//                                        mPopWindow.dismiss();
                                     }
                                 }
                         );
+                        dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
 
                         return;
