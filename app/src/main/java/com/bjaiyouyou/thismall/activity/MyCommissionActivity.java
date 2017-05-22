@@ -220,7 +220,7 @@ public class MyCommissionActivity extends BaseActivity {
             @Override
             public void onSuccess(Object response, int id) {
                 dismissLoadingDialog();
-                Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, "申请提交成功", "我们审核后转账至您绑定的提取账号", "确定", "",
+                Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, "申请提交成功", "我们会审核后转账至您绑定的提取账号", "确定", "",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+    >
+    <TextView
+        android:id="@+id/tv_mycommission_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="申请提交成功"
+        android:gravity="center"
+        android:paddingTop="22.5dp"
+        android:textColor="#000001"
+        android:textSize="15sp"
+        />
+    <TextView
+        android:id="@+id/tv_mycommission_dialog_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我们审核后转账至您绑定的提取账号"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="22.5dp"
+        android:textColor="#000001"
+        android:textSize="15sp"
+        android:lineSpacingExtra="44px"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#666"
+        />
+    <TextView
+        android:id="@+id/tv_mycommission_dialog_commit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="确定"
+        android:textColor="#4d97ee"
+        android:textSize="15sp"
+        />
+
+
+</LinearLayout>
