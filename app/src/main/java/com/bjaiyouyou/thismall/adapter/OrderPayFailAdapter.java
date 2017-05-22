@@ -10,6 +10,7 @@ import com.bjaiyouyou.thismall.R;
 import com.bjaiyouyou.thismall.model.OrderPayFail;
 import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
+import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -63,12 +64,15 @@ public class OrderPayFailAdapter extends MyBaseAdapter<OrderPayFail.OrderBean.Or
             if (order.getProduct_image()!=null&& order.getProduct_image().getImage_path()!=null&&order.getProduct_image().getImage_base_name()!=null){
 
                 String imgUrl=order.getProduct_image().getImage_path()+"/"+order.getProduct_image().getImage_base_name();
+                LogUtils.e("imgUrl",imgUrl);
                 Glide.with(context)
 //                        .load(imgUrl)
                         .load(ImageUtils.getThumb(imgUrl, holder.iv.getWidth(), 0))
                         .error(R.mipmap.list_image_loading)
                         .placeholder(R.mipmap.list_image_loading)
                         .into(holder.iv);
+            }else {
+                LogUtils.d("imgUrl","图片路径有为空项");
             }
 
         }

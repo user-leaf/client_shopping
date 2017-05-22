@@ -28,6 +28,7 @@ import com.bjaiyouyou.thismall.utils.CashierInputFilter;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
+import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 
@@ -204,6 +205,7 @@ public class MyCommissionActivity extends BaseActivity {
      * 提取申请提交
      */
     private void applyWithdrawCommit() {
+        ToastUtils.showShort("申请提取提交");
         showLoadingDialog();
         String amountString=etCommissionNum.getText().toString().trim();
         Double amount=Double.valueOf(amountString);
@@ -211,7 +213,8 @@ public class MyCommissionActivity extends BaseActivity {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
-                LogUtils.d("getCommissiongCommit",e.getMessage());
+                ToastUtils.showShort(e.getMessage());
+                LogUtils.e("getCommissiongCommit",e.getMessage());
 
             }
 
@@ -223,8 +226,6 @@ public class MyCommissionActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                mPopWindow.dismiss();
-                                initData();
                             }
                         },
                         new DialogInterface.OnClickListener() {
@@ -235,6 +236,8 @@ public class MyCommissionActivity extends BaseActivity {
                         }
                 );
                 dialog.show();
+                mPopWindow.dismiss();
+                initData();
 
             }
 

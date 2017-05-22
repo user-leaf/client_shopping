@@ -1130,7 +1130,7 @@ public class ClientAPI {
                 .append(CurrentUserManager.getUserToken());
         String url = sb.toString();
 
-        LogUtils.d(TAG, "getOrderDetail: " + url);
+        LogUtils.e(TAG, "getOrderDetail: " + url);
 
         GetBuilder builder = OkHttpUtils.get().url(url);
         if (!TextUtils.isEmpty(pageTag)) {
