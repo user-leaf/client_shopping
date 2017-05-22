@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.bjaiyouyou.thismall.ActivityCollector;
 import com.bjaiyouyou.thismall.Constants;
 import com.bjaiyouyou.thismall.activity.MineMemberCenterActivity;
 import com.bjaiyouyou.thismall.activity.MineMemberCenterIntegralPayActivity;
@@ -169,7 +170,7 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
 
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtils.e("paymenttask",e.toString()+"");
+            LogUtils.e("paymenttask", e.toString() + "");
         }
         return data;
     }
@@ -257,11 +258,23 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
         if (null != msg2 && msg2.length() != 0) {
             str += "\n" + msg2;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(str);
-        builder.setTitle("提示");
-        builder.setPositiveButton("知道了", null);
-        builder.create().show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        builder.setMessage(str);
+//        builder.setTitle("提示");
+//        builder.setPositiveButton("知道了", null);
+//        builder.create().show();
+
+        Dialog tipDialog = DialogUtils.createConfirmDialog(context, "提示", str, "知道了", null,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }, null);
+
+        if (ActivityCollector.sActivities.contains(context) && !tipDialog.isShowing()) {
+            tipDialog.show();
+        }
     }
 
     private static String postJson(String url, String json) throws IOException {
