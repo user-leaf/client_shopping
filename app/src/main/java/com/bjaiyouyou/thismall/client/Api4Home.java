@@ -129,7 +129,7 @@ public class Api4Home extends BaseClientApi {
         sb.append("?token=" + CurrentUserManager.getUserToken());
 //        sb.append("&device_type=" + "android");
         String url = sb.toString();
-        LogUtils.d("deletePushMessage",url);
+        LogUtils.e("deletePushMessage",url);
 
         OkHttpUtils
                 .get()
