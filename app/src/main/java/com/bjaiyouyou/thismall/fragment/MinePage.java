@@ -572,7 +572,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
 //           if (memberBean.getMember_type()==4){
             if (memberBean.getMember_type() == 5) {
-                mIvMemberFive.setVisibility(View.VISIBLE);
+                mIvMemberFive.setVisibility(View.GONE);
             } else {
                 mIvMemberFive.setVisibility(View.GONE);
             }
@@ -581,7 +581,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
 //           if (memberBean.getIs_vip()==0){
             if (memberBean.getIs_vip() == 2) {
-                mIvMember.setVisibility(View.VISIBLE);
+                mIvMember.setVisibility(View.GONE);
             } else {
                 mIvMember.setVisibility(View.GONE);
             }
