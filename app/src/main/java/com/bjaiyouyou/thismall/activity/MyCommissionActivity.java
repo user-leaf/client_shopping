@@ -28,7 +28,6 @@ import com.bjaiyouyou.thismall.utils.CashierInputFilter;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
-import com.bjaiyouyou.thismall.utils.ToastUtils;
 import com.bjaiyouyou.thismall.widget.IUUTitleBar;
 import com.google.gson.Gson;
 
@@ -205,7 +204,7 @@ public class MyCommissionActivity extends BaseActivity {
      * 提取申请提交
      */
     private void applyWithdrawCommit() {
-        ToastUtils.showShort("申请提取提交");
+//        ToastUtils.showShort("申请提取提交");
         showLoadingDialog();
         String amountString=etCommissionNum.getText().toString().trim();
         Double amount=Double.valueOf(amountString);
@@ -213,7 +212,6 @@ public class MyCommissionActivity extends BaseActivity {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
-                ToastUtils.showShort(e.getMessage());
                 LogUtils.e("getCommissiongCommit",e.getMessage());
 
             }
@@ -264,7 +262,10 @@ public class MyCommissionActivity extends BaseActivity {
 //                                ToastUtils.showShort("安全码错误");
                             messageString="更新用户账户失败";
 
-                        }else {
+                        }else if (code==100013){
+                            messageString="操作频繁，稍后再试";
+                        }
+                        else {
                             messageString=model.getMessage();
                         }
 

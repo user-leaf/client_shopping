@@ -79,13 +79,14 @@
                         android:textColor="#222"
                         android:text="¥"
                         android:textStyle="bold"
+                        android:gravity="center"
                         />
                     <EditText
                         android:id="@+id/et_commission_withdraw_input_num"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:gravity="center_vertical"
+                        android:gravity="top"
                         android:hint=""
                         android:digits="0123456789."
                         android:singleLine="true"
