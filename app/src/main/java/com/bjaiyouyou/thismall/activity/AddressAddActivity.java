@@ -235,6 +235,7 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
 
         String url = sb.toString();
 
+        showLoadingDialog();
         OkHttpUtils.post()
                 .url(url)
                 .addParams("is_default",""+(mSbIsDefault.isChecked()==true? 1:0))
@@ -248,11 +249,13 @@ public class AddressAddActivity extends BaseActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        dismissLoadingDialog();
                         ToastUtils.showException(e);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        dismissLoadingDialog();
                         finish();
                     }
                 });
