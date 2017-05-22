@@ -454,7 +454,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
         mFinalPay = sumMoney;
         // 底部实付金额
-        mTvTotalPay.setText("¥" + mFinalPay);
+        mTvTotalPay.setText("¥" + DoubleTextUtils.setDoubleUtils(mFinalPay));
 
         // 只显示价格20170513
 //        // 底部实付积分
@@ -834,7 +834,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                                 }
                             });
 
-                    if (ActivityCollector.sActivities.contains(this) && !dialog.isShowing() && !isFinishing()) {
+                    if (ActivityCollector.sActivities.contains(OrderMakeActivity.this) && !dialog.isShowing() && !isFinishing()) {
                         dialog.show();
                     }
                 }

@@ -29,6 +29,7 @@ import com.bjaiyouyou.thismall.utils.DialogUtils;
 import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.ImageUtils;
 import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
+import com.bjaiyouyou.thismall.utils.LoadViewHelper;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.ScreenUtils;
@@ -58,9 +59,11 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     private boolean hasMoney;               // 是否有收款金额
 
     private IUUTitleBar mTitleBar;
+    private View mBodyView;
     private CircleImageView mIvHead;        // 头像
     private TextView mTvName;               // 姓名
     private TextView mTvBalance;            // 剩余券额
+    private String mUserBalance;            // 用户剩余券额
 
     // 固定金额支付
     private View mLlPayBanner;              // 支付栏
@@ -74,6 +77,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     private Api4Cart mApi4Cart;
     private Api4Home mApi4Home;
+    private LoadViewHelper mLoadViewHelper;
 
     /**
      * 启动本页面
@@ -98,6 +102,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         initVariable();
         initView();
         setupView();
+        mLoadViewHelper = new LoadViewHelper(mBodyView);
+        mLoadViewHelper.showLoading();
         loadData();
     }
 
@@ -109,6 +115,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.title_bar);
+
+        mBodyView = findViewById(R.id.scan_pay_body);
 
         mIvHead = (CircleImageView) findViewById(R.id.scan_pay_iv_head);
         mTvName = (TextView) findViewById(R.id.scan_pay_tv_name);
@@ -157,6 +165,16 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                         return;
                     }
                 }
+
+                // 判断按钮是否可以点击
+                double input = Double.valueOf(TextUtils.isEmpty(s.toString()) ? "0" : s.toString());
+                double max = Double.valueOf(mUserBalance);
+                LogUtils.d(TAG, "input: " + input + ", max: " + max);
+                if (input > 10E-6 && input <= max){
+                    mBtnPayCustomMoney.setEnabled(true);
+                }else {
+                    mBtnPayCustomMoney.setEnabled(false);
+                }
             }
 
             @Override
@@ -186,13 +204,20 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
         // 商户头像、名称
         mApi4Home.getShopInfo(this, mShopId, new DataCallback<ShopModel>(this) {
+
             @Override
             public void onFail(Call call, Exception e, int id) {
-
+                mLoadViewHelper.showError(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadData();
+                    }
+                });
             }
 
             @Override
             public void onSuccess(Object response, int id) {
+                mLoadViewHelper.restore();
                 if (response == null) {
                     return;
                 }
@@ -207,7 +232,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
                 mShopName = shopModel.getCompany_name();
                 mTvName.setText("向商家用户（" + mShopName + "）支付");
-                mTvBalance.setText("剩余券额" + shopModel.getUser_withdrawable_balance());
+                mUserBalance = shopModel.getUser_withdrawable_balance();
+                mTvBalance.setText("剩余券额" + mUserBalance);
 
             }
         });
