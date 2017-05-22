@@ -166,7 +166,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                     }
                 }
 
-                // 判断按钮是否可以点击
+                // 判断支付按钮是否可以点击
                 double input = Double.valueOf(TextUtils.isEmpty(s.toString()) ? "0" : s.toString());
                 double max = Double.valueOf(mUserBalance);
                 LogUtils.d(TAG, "input: " + input + ", max: " + max);

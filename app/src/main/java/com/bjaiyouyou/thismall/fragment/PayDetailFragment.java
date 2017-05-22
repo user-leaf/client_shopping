@@ -35,6 +35,7 @@ import com.bjaiyouyou.thismall.client.ClientApiHelper;
 import com.bjaiyouyou.thismall.model.PayWayModel;
 import com.bjaiyouyou.thismall.utils.DialUtils;
 import com.bjaiyouyou.thismall.utils.DialogUtils;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.KeyBoardUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.PayUtils;
@@ -151,7 +152,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         mLvPayWay.setOnItemClickListener(this);
 
         // 设置数据
-        tvMoney.setText(String.valueOf(mMoney) + "元");
+        tvMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney) + "元");
     }
 
     @Override

@@ -28,6 +28,7 @@ import com.bjaiyouyou.thismall.model.CartBigModel;
 import com.bjaiyouyou.thismall.model.CartItem2;
 import com.bjaiyouyou.thismall.model.CartModel;
 import com.bjaiyouyou.thismall.user.CurrentUserManager;
+import com.bjaiyouyou.thismall.utils.DoubleTextUtils;
 import com.bjaiyouyou.thismall.utils.LogUtils;
 import com.bjaiyouyou.thismall.utils.MathUtil;
 import com.bjaiyouyou.thismall.utils.NetStateUtils;
@@ -222,7 +223,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
                 // 合计金额
                 double sum = countTotalPrice();
-                mTvTotalPrice.setText("¥" + ((sum < 10E-6) ? 0 : MathUtil.round(sum, 2)));
+                mTvTotalPrice.setText("¥" + ((sum < 10E-6) ? 0 : DoubleTextUtils.setDoubleUtils(sum)));
 
                 // 只显示价格20170513
 //                // 总积分
