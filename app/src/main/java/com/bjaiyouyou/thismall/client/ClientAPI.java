@@ -40,7 +40,7 @@ public class ClientAPI {
 //    public static final String API_POINT = "https://testapi3.bjaiyouyou.com/";
 
     // 任务页视频播放地址
-    public static final String URL_WX_H5 = "http://zhweb.bjaiyouyou.com/";
+    public static final String URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
 //    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
 
     //*****************************************************************************
