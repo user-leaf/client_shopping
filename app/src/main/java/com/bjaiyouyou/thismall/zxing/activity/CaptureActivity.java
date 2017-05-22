@@ -216,7 +216,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         String resultString = result.getText();
         //FIXME
         if (resultString.equals("")) {
-            Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CaptureActivity.this, "扫码失败!", Toast.LENGTH_SHORT).show();
         } else {
 //			System.out.println("Result:"+resultString);
             Intent resultIntent = new Intent();
@@ -242,7 +242,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         //将扫描结果传递到其他处理页面
 
 
-        LogUtils.d("recode", resultString);
+        LogUtils.e("recode", resultString);
         if (CurrentUserManager.isLoginUser()) {
 //                                    {"shopId":100,"money":100}
             //扫描的商家付款码
