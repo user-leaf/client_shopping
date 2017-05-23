@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
 import shop.imake.R;
 import shop.imake.model.MyIncomeModel;
-
-import java.util.List;
 
 /**
  * 我的收益（众汇）
@@ -85,7 +85,7 @@ public class MyIncomeAdapter extends BaseAdapter {
             String zhonghuiquan = pushMoneyDetailsBean.getZhonghuiquan();   // 众汇券
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(word3).append(": ")
-                    .append(push_money).append("(现金) +")
+                    .append(push_money).append("(佣金) +")
                     .append(zhonghuiquan).append("(众汇券)");
             String desc = stringBuilder.toString();
             holder.tvDesc.setText(desc);
