@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -25,6 +26,21 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import shop.imake.Constants;
 import shop.imake.R;
@@ -42,20 +58,6 @@ import shop.imake.zxing.decoding.InactivityTimer;
 import shop.imake.zxing.utils.MyUtils;
 import shop.imake.zxing.utils.RGBLuminanceSource;
 import shop.imake.zxing.view.ViewfinderView;
-import com.google.gson.Gson;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.Result;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.util.Hashtable;
-import java.util.Vector;
 
 import static shop.imake.utils.LogUtils.e;
 
@@ -84,6 +86,16 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
     private ImageView btScanHistory;
     //private Button cancelScanButton;
 
+    public static int SCAN_EMPTY=1111111;
+
+    private Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Toast.makeText(CaptureActivity.this, "扫码失败!", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     //////////////////////授权变量// 所需的全部权限
 
 
@@ -92,7 +104,8 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
 //			Manifest.permission.RECORD_AUDIO,
-//			Manifest.permission.WRITE_EXTERNAL_STORAGE,
+			Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//			Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
 //			Manifest.permission.VIBRATE,
 //			Manifest.permission.INTERNET
     };
@@ -391,7 +404,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 
             switch (requestCode) {
 
-                case REQUEST_CODE:
+                case REQUEST_CODE://打开相册
 
                     String[] proj = {MediaStore.Images.Media.DATA};
                     // 获取选中图片的路径
@@ -412,6 +425,9 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 
                     new Thread(new Runnable() {
 
+                        /**
+                         *
+                         */
                         @Override
                         public void run() {
 
@@ -427,11 +443,25 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                 // 返回扫描结果
                                 String recode = recode(result.getText().toString().trim());
 
-                                Intent data = new Intent();
-                                data.putExtra("result", recode);
-                                setResult(300, data);
-                                //调用扫描结果处理方法
-                                dealWithScanResult(recode);
+                               if (!TextUtils.isEmpty(recode)){
+                                   Intent data = new Intent();
+                                   data.putExtra("result", recode);
+                                   setResult(300, data);
+                                   //调用扫描结果处理方法
+                                   dealWithScanResult(recode);
+
+                               }else {
+                                   runOnUiThread(new Runnable() {
+                                       @Override
+                                       public void run() {
+//                                           mHandler.sendEmptyMessage(SCAN_EMPTY);
+                                           Toast.makeText(CaptureActivity.this, "扫码失败!", Toast.LENGTH_SHORT).show();
+                                       }
+                                   });
+
+                                   LogUtils.e("扫码失败","相册扫描结果为空字符串");
+
+                               }
                                 CaptureActivity.this.finish();
 
                             }
@@ -567,7 +597,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
     }
 
     /**
-     * 在OnActivityResult()方法中调用，检查MyOrderAdapter中授权结果
+     * 在OnActivityResult()方法中调用
      *
      * @param requestCode
      * @param resultCode
