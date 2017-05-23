@@ -337,7 +337,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
             public void run() {
                 KeyBoardUtils.openKeybord(etPasswordView, mContext);
             }
-        }, 500);
+        }, 300);
     }
 
     /**
