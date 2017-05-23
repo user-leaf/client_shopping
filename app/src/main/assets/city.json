@@ -14039,33 +14039,5 @@
         ]
       }
     ]
-  },
-  {
-    "areaId": "700000",
-    "areaName": "其他",
-    "cities": [
-      {
-        "areaId": "700000",
-        "areaName": "其他",
-        "counties": [
-          {
-            "areaId": "700001",
-            "areaName": "香港"
-          },
-          {
-            "areaId": "700002",
-            "areaName": "澳门"
-          },
-          {
-            "areaId": "700003",
-            "areaName": "台湾"
-          },
-          {
-            "areaId": "700004",
-            "areaName": "海外"
-          }
-        ]
-      }
-    ]
   }
 ]
