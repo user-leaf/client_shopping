@@ -56,6 +56,7 @@ public class ScanPaySuccessActivity extends Activity implements View.OnClickList
         tvMoney.setText(String.valueOf(money));
         Glide.with(this)
                 .load(ImageUtils.getThumb(strHeadImagePath, ScreenUtils.getScreenWidth(this) / 4, 0))
+                .error(R.mipmap.list_profile_photo)
                 .into(ivHead);
         tvName.setText(strShopName);
     }
