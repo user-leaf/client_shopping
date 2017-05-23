@@ -107,7 +107,7 @@
     <application
         android:name="shop.imake.MainApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/icon_logo"
+        android:icon="@mipmap/nav_back_white"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
