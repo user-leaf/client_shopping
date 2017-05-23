@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shop.imake.Constants;
 import shop.imake.MainApplication;
@@ -36,6 +37,7 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.IUUTitleBar;
+
 import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -170,9 +172,9 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 double input = Double.valueOf(TextUtils.isEmpty(s.toString()) ? "0" : s.toString());
                 double max = Double.valueOf(mUserBalance);
                 LogUtils.d(TAG, "input: " + input + ", max: " + max);
-                if (input > 10E-6 && input <= max){
+                if (input > 10E-6 && input <= max) {
                     mBtnPayCustomMoney.setEnabled(true);
-                }else {
+                } else {
                     mBtnPayCustomMoney.setEnabled(false);
                 }
             }
@@ -207,6 +209,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Call call, Exception e, int id) {
+                ToastUtils.showException(e);
                 mLoadViewHelper.showError(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -228,10 +231,11 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + mShopImgUrl);
                 Glide.with(ScanPayActivity.this)
                         .load(ImageUtils.getThumb(mShopImgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
+                        .error(R.mipmap.list_profile_photo)
                         .into(mIvHead);
 
                 mShopName = shopModel.getCompany_name();
-                mTvName.setText("向商家用户（" + mShopName + "）支付");
+                mTvName.setText("向商家用户(" + (mShopName == null ? "爱每刻用户" : mShopName) + ")支付");
                 mUserBalance = shopModel.getUser_withdrawable_balance();
                 mTvBalance.setText("剩余券额" + mUserBalance);
 
@@ -368,7 +372,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             }
         };
 
-        tvShopName.setText("向商家用户（" + mShopName + "）支付");
+        tvShopName.setText("向商家用户(" + (mShopName == null ? "爱每刻用户" : mShopName) + ")支付");
         tvMoney.setText(DoubleTextUtils.setDoubleUtils(money));
         ivClose.setOnClickListener(onClickListener);
         tvForget.setOnClickListener(onClickListener);
@@ -424,6 +428,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     /**
      * 验证安全码
+     *
      * @param pswDialog
      * @param etPasswordView
      * @param money
