@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -42,6 +43,7 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.LoadingDialog;
+
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
@@ -264,6 +266,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
 
     /**
      * 安全码输入
+     *
      * @param channel
      */
     private void showPasswordDialog(final String channel) {
@@ -329,7 +332,12 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         });
 
         pswDialog.show();
-        KeyBoardUtils.openKeybord(etPasswordView, mContext);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                KeyBoardUtils.openKeybord(etPasswordView, mContext);
+            }
+        }, 500);
     }
 
     /**
