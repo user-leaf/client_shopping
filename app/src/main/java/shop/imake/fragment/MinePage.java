@@ -26,6 +26,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
@@ -61,17 +72,6 @@ import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollGridView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
 
 /**
  * 个人页
@@ -1209,7 +1209,14 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //跳转到忘记密码处理, popWin
             case R.id.tv_safe_code_forget:
                 dialogDismiss(mSafeCodeDialog);
-                createFindSafeCodeDialog();
+                //存在邮箱，邮箱验证弹框
+                if (isHaveEmail){
+                    createFindSafeCodeDialog();
+                    //没有邮箱直接拨打电话
+                }else {
+                    //拨打客服电话
+                    DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                }
                 break;
             //关闭安全码验证的窗口
             case R.id.iv_safe_code_close:
@@ -1272,7 +1279,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                callCustomerServerPhone();
                 DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
                 break;
-            case R.id.ll_mine_service_the_phone: //拨打供货电话
+            case R.id.ll_mine_service_the_phone: //拨打客服电话
 //                ToastUtils.showShort("拨打供货电话");
 //                callCustomerServerPhone();
                 DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
