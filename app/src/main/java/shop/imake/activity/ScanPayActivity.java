@@ -65,7 +65,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     private CircleImageView mIvHead;        // 头像
     private TextView mTvName;               // 姓名
     private TextView mTvBalance;            // 剩余券额
-    private String mUserBalance;            // 用户剩余券额
+    private double mUserBalance;            // 用户剩余券额
 
     // 固定金额支付
     private View mLlPayBanner;              // 支付栏
@@ -170,7 +170,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
                 // 判断支付按钮是否可以点击
                 double input = Double.valueOf(TextUtils.isEmpty(s.toString()) ? "0" : s.toString());
-                double max = Double.valueOf(mUserBalance);
+                double max = mUserBalance;
                 LogUtils.d(TAG, "input: " + input + ", max: " + max);
                 if (input > 10E-6 && input <= max) {
                     mBtnPayCustomMoney.setEnabled(true);
@@ -237,7 +237,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 mShopName = shopModel.getCompany_name();
                 mTvName.setText("向商家用户(" + (mShopName == null ? "爱每刻用户" : mShopName) + ")支付");
                 mUserBalance = shopModel.getUser_withdrawable_balance();
-                mTvBalance.setText("剩余券额" + mUserBalance);
+                mTvBalance.setText("剩余券额" + DoubleTextUtils.setDoubleUtils(mUserBalance));
 
             }
         });

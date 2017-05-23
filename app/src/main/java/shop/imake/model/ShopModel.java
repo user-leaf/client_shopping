@@ -15,7 +15,7 @@ public class ShopModel {
     private String avatar_path;
     private String avatar_name;
     private String nick_name;
-    private String user_withdrawable_balance;
+    private double user_withdrawable_balance;
     /**
      * company_name : 阿斯顿撒旦撒
      */
@@ -46,11 +46,11 @@ public class ShopModel {
         this.nick_name = nick_name;
     }
 
-    public String getUser_withdrawable_balance() {
+    public double getUser_withdrawable_balance() {
         return user_withdrawable_balance;
     }
 
-    public void setUser_withdrawable_balance(String user_withdrawable_balance) {
+    public void setUser_withdrawable_balance(double user_withdrawable_balance) {
         this.user_withdrawable_balance = user_withdrawable_balance;
     }
 
