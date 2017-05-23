@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="北京哎呦呦网络科技有限公司"
+        android:text="爱每刻商城"
         android:textColor="#000"
         android:textSize="@dimen/text_size_medium"
         />
