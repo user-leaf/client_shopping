@@ -12,6 +12,7 @@ import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.MyIncomeModel;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LoadViewHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
@@ -124,7 +125,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
 
                 // 佣金
                 String push_money = myIncomeModel.getPush_money();
-                mTvYongjin.setText(push_money + "元");
+                mTvYongjin.setText(DoubleTextUtils.setDoubleUtils(Double.valueOf(push_money)) + "元");
 
                 // 众汇券
                 double zhonghuiquan = myIncomeModel.getZhonghuiquan();

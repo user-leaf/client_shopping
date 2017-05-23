@@ -222,7 +222,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 
                 // 合计金额
                 double sum = countTotalPrice();
-                mTvTotalPrice.setText("¥" + ((sum < 10E-6) ? 0 : DoubleTextUtils.setDoubleUtils(sum)));
+                mTvTotalPrice.setText("¥" + DoubleTextUtils.setDoubleUtils(sum));
 
                 // 只显示价格20170513
 //                // 总积分

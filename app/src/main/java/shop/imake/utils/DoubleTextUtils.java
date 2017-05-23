@@ -9,7 +9,7 @@ public class DoubleTextUtils {
      * @param amount
      */
     public static String setDoubleUtils( double amount){
-        if (amount != 0) {
+        if (amount > 10E-6) {
             return String.format("%.2f", amount);
         }
         return "0.00";
