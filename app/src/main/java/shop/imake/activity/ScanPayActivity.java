@@ -446,6 +446,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             public void onError(Call call, Exception e, int id) {
                 dismissLoadingDialog();
                 ToastUtils.showException(e);
+                etPasswordView.getText().clear();
             }
 
             @Override
