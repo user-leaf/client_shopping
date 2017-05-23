@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import shop.imake.MainActivity;
 import shop.imake.R;
@@ -30,6 +34,8 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        ImageView ivSplash = (ImageView) findViewById(R.id.splash);
+
         // 是否是首次加载
 //        int isFirst = (int) SPUtils.get(this, PARAM_GUIDE, 0);
 
@@ -44,6 +50,7 @@ public class SplashActivity extends BaseActivity {
             finish();
 
         } else {
+            Glide.with(this).load(R.drawable.splash).into(ivSplash);
             // 开屏页2秒
             mHandler.sendEmptyMessageDelayed(0, 2000);
         }

@@ -22,6 +22,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginBottom="20dp"
+        android:visibility="gone"
         >
 
         <ImageView
@@ -49,11 +50,11 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
         android:background="#00ffffff"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="175dp"
         />
 </RelativeLayout>

@@ -7,9 +7,9 @@
     tools:context="shop.imake.activity.SplashActivity">
 
     <ImageView
+        android:id="@+id/splash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/splash"
         />
 </RelativeLayout>

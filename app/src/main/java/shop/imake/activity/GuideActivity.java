@@ -117,12 +117,13 @@ public class GuideActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                // 对“大小点”进行设置
-                for (int i = 0; i < mLinearLayoutView.getChildCount(); i++) {
-                    mLinearLayoutView.getChildAt(i).setSelected(false);
-                }
-                mLinearLayoutView.getChildAt(position).setSelected(true);
-                if (position < 2) {
+//                // 对“大小点”进行设置
+//                for (int i = 0; i < mLinearLayoutView.getChildCount(); i++) {
+//                    mLinearLayoutView.getChildAt(i).setSelected(false);
+//                }
+//                mLinearLayoutView.getChildAt(position).setSelected(true);
+
+                if (position < mList.size() - 1) {
                     mButton.setClickable(false);
                 } else {
                     mButton.setClickable(true);
