@@ -1,21 +1,24 @@
 package shop.imake.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import shop.imake.MainActivity;
-import shop.imake.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import shop.imake.MainActivity;
+import shop.imake.R;
+import shop.imake.utils.ScreenUtils;
 
 public class GuideActivity extends BaseActivity {
     private List<ImageView> mList;
@@ -23,6 +26,8 @@ public class GuideActivity extends BaseActivity {
     private PagerAdapter mAdapter;
     private Button mButton;
     private LinearLayout mLinearLayoutView;
+    //当前选中页
+    private int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +78,52 @@ public class GuideActivity extends BaseActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GuideActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                startApp();//切换界面
+
             }
         });
 
+
+        //设置ViewPager的滑动监听,为了滑动到最后一页,继续滑动实现页面的跳转
+        mPager.setOnTouchListener(new View.OnTouchListener() {
+            float startX;
+
+            float endX;
+
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getX();
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        endX = event.getX();
+                        //获取屏幕的宽度
+                        int width = ScreenUtils.getScreenWidth(getApplicationContext());
+                        //根据滑动的距离来切换界面
+                        if (currentPage == 2 && startX - endX >= (width / 5)) {
+
+                            startApp();//切换界面
+                        }
+
+                        break;
+                }
+                return false;
+            }
+        });
+
+    }
+
+    /**
+     * 进入主页
+     */
+
+    private void startApp() {
+        Intent intent = new Intent(GuideActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 
@@ -122,6 +167,7 @@ public class GuideActivity extends BaseActivity {
 //                    mLinearLayoutView.getChildAt(i).setSelected(false);
 //                }
 //                mLinearLayoutView.getChildAt(position).setSelected(true);
+                currentPage = position;
 
                 if (position < mList.size() - 1) {
                     mButton.setClickable(false);
