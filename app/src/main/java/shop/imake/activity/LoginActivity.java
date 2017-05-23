@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      * 设置 用户服务协议 字段
      */
     private void setAgreeData() {
-        String str1 = "同意";
+        String str1 = "阅读并同意";
         String str2 = "《用户服务协议》";
         String text = str1 + str2;
         SpannableString spannableString = new SpannableString(text);
