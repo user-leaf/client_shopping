@@ -120,6 +120,7 @@
                     android:singleLine="true"
                     android:textColor="#222222"
                     android:textSize="50dp"
+                    android:hint="请输入金额"
                     />
 
                 <View
