@@ -16,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Mine;
@@ -29,9 +32,6 @@ import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.google.gson.Gson;
-
-import okhttp3.Call;
 
 /**
  * 我的佣金
@@ -430,6 +430,8 @@ public class MyCommissionActivity extends BaseActivity {
         sb.append("&vt=").append(System.currentTimeMillis());
 
         String webShowUrl=sb.toString().trim();
+        LogUtils.e("webShowUrl",webShowUrl);
+
         WebShowActivity.actionStart(MyCommissionActivity.this,webShowUrl, null);
     }
 }

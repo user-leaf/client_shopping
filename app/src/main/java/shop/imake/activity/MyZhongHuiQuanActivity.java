@@ -126,6 +126,7 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
         sb.append("&vt=").append(System.currentTimeMillis());
 
         String webShowUrl=sb.toString().trim();
+        LogUtils.e("webShowUrl",webShowUrl);
         WebShowActivity.actionStart(MyZhongHuiQuanActivity.this,webShowUrl, null);
     }
 }

@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.adapter.MyIncomeAdapter;
 import shop.imake.callback.DataCallback;
@@ -17,12 +22,6 @@ import shop.imake.utils.LoadViewHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.widget.NoScrollListView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import okhttp3.Call;
 
 /**
  * 我的收益（众汇）
@@ -172,6 +171,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         sb.append("&vt=").append(System.currentTimeMillis());
 
         String webShowUrl=sb.toString().trim();
+        LogUtils.e("webShowUrl",webShowUrl);
         WebShowActivity.actionStart(MyIncomeActivity.this,webShowUrl, null);
     }
 }
