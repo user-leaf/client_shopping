@@ -304,6 +304,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.left_layout:
+                KeyBoardUtils.closeKeybord(mEtMoney, this);
                 finish();
                 break;
 
