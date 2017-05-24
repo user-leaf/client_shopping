@@ -17,6 +17,7 @@ import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
 import shop.imake.model.OrderReturnDealModel;
+import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.widget.IUUTitleBar;
@@ -220,7 +221,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                         mTvWay.setText(way);
 
                         // 退款金额
-                        mTvMoney.setText("" + ((double)orderReturnDealModel.getAmount() / 100) + "元");
+                        mTvMoney.setText("¥" + DoubleTextUtils.setDoubleUtils((double)orderReturnDealModel.getAmount() / 100));
 
                         // 退款状态
                         String status = orderReturnDealModel.getStatus();

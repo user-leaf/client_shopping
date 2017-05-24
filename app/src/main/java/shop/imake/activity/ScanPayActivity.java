@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import shop.imake.Constants;
 import shop.imake.MainApplication;
@@ -56,6 +55,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     public static final String TAG = ScanPayActivity.class.getSimpleName();
     public static final String PARAM_SHOP_ID = "shop_id";
     public static final String PARAM_MONEY = "money";
+
+    private int customMoneyPageFlag = -1;       // 是否是自定义金额页面
 
     private long mShopId;                   // 商户id
     private String mShopName;               // 商户名称
@@ -193,6 +194,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+
     private void loadData() {
         LogUtils.d(TAG, "" + mMoney);
         // 金额
@@ -206,6 +208,8 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             hasMoney = false;
             LogUtils.d(TAG, "hasMoney: " + hasMoney);
             showBanner(1);
+
+            customMoneyPageFlag = 1;
 
             /**
              * 如果清单文件中设为stateVisible，那么有收款金额没有输入框的时候也会弹出软键盘
@@ -233,15 +237,6 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 }
             });
 
-            mEtMoney.setFocusable(true);
-            mEtMoney.setFocusableInTouchMode(true);
-            mEtMoney.requestFocus();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    KeyBoardUtils.openKeybord(mEtMoney, ScanPayActivity.this);
-                }
-            }, 300);
         }
 
         // 商户头像、名称
@@ -279,6 +274,17 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 mUserBalance = shopModel.getUser_withdrawable_balance();
                 mTvBalance.setText("剩余券额" + DoubleTextUtils.setDoubleUtils(mUserBalance));
 
+                if (customMoneyPageFlag == 1) { // 如果自定义金额页面，则et获取焦点
+                    mEtMoney.setFocusable(true);
+                    mEtMoney.setFocusableInTouchMode(true);
+                    mEtMoney.requestFocus();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            KeyBoardUtils.openKeybord(mEtMoney, ScanPayActivity.this);
+                        }
+                    }, 300);
+                }
             }
         });
     }
