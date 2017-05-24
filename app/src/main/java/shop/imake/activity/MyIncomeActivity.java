@@ -35,12 +35,11 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
     private View mBackView;
     private View mIncomeDetailView;         // 收益明细
     private View mBodyView;
-    private View mBottomView;
 
-    private TextView mTvIncomeAvailable;    // 可用收益
+    private TextView mTvIncomeAvailable;    // 累计收益
     private TextView mTvYongjin;            // 佣金
     private TextView mTvZhonghuiquan;       // 众汇券
-    private TextView mTvAllIncome;          // 累计获得总收益
+//    private TextView mTvAllIncome;          // 累计获得总收益
 
     // 列表
     private NoScrollListView mListView;
@@ -64,7 +63,6 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
 
         mLoadViewHelper = new LoadViewHelper(mBodyView);
         mLoadViewHelper.showLoading();
-        mBottomView.setVisibility(View.GONE);
         loadData();
     }
 
@@ -72,9 +70,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         mBackView = findViewById(R.id.left_layout);
         mIncomeDetailView = findViewById(R.id.right_layout);
         mBodyView = findViewById(R.id.my_income_body);
-        mBottomView = findViewById(R.id.my_income_bottom_banner);
 
-        mTvAllIncome = (TextView) findViewById(R.id.my_income_tv_all_push_money);
         mTvIncomeAvailable = (TextView) findViewById(R.id.my_income_tv_income_available);
         mTvYongjin = (TextView) findViewById(R.id.my_income_tv_yongjin);
         mTvZhonghuiquan = (TextView) findViewById(R.id.my_income_tv_zhonghuiquan);
@@ -110,7 +106,6 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onSuccess(Object response, int id) {
                 mLoadViewHelper.restore();
-                mBottomView.setVisibility(View.VISIBLE);
 
                 if (response == null) {
                     return;
@@ -118,21 +113,21 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
 
                 MyIncomeModel myIncomeModel = (MyIncomeModel) response;
 
-                // 可用收益
+                // 累计收益
                 double usable_push_money = myIncomeModel.getUsable_push_money();
                 mTvIncomeAvailable.setText(String.format(Locale.CHINA, "%.2f", usable_push_money));
 
                 // 佣金
                 String push_money = myIncomeModel.getPush_money();
-                mTvYongjin.setText(DoubleTextUtils.setDoubleUtils(Double.valueOf(push_money)) + "元");
+                mTvYongjin.setText(DoubleTextUtils.setDoubleUtils(Double.valueOf(push_money)));
 
                 // 众汇券
                 double zhonghuiquan = myIncomeModel.getZhonghuiquan();
-                mTvZhonghuiquan.setText(String.format(Locale.CHINA, "%.2f元", zhonghuiquan));
+                mTvZhonghuiquan.setText(String.format(Locale.CHINA, "%.2f", zhonghuiquan));
 
-                // 累计获得收益
-                double all_push_money = myIncomeModel.getAll_push_money();
-                mTvAllIncome.setText(String.format(Locale.CHINA, "%.2f", all_push_money));
+                // 累计获得收益 去掉了-20170524
+//                double all_push_money = myIncomeModel.getAll_push_money();
+//                mTvAllIncome.setText(String.format(Locale.CHINA, "%.2f", all_push_money));
 
                 // 显示列表
                 List<MyIncomeModel.PushMoneyDetailsBean> push_money_details = myIncomeModel.getPush_money_details();
