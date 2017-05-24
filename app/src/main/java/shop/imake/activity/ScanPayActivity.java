@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
+import shop.imake.callback.KeyboardChangeListener;
 import shop.imake.client.Api4Cart;
 import shop.imake.client.Api4Home;
 import shop.imake.client.ClientApiHelper;
@@ -61,7 +64,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     private boolean hasMoney;               // 是否有收款金额
 
     private IUUTitleBar mTitleBar;
-    private View mBodyView;
+    private ScrollView mBodyView;
     private CircleImageView mIvHead;        // 头像
     private TextView mTvName;               // 姓名
     private TextView mTvBalance;            // 剩余券额
@@ -118,7 +121,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.title_bar);
 
-        mBodyView = findViewById(R.id.scan_pay_body);
+        mBodyView = (ScrollView) findViewById(R.id.scan_pay_body);
 
         mIvHead = (CircleImageView) findViewById(R.id.scan_pay_iv_head);
         mTvName = (TextView) findViewById(R.id.scan_pay_tv_name);
@@ -198,10 +201,47 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             LogUtils.d(TAG, "hasMoney: " + hasMoney);
             mTvMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney));
             showBanner(0);
+
         } else { // 未设定金额，自定义金额
             hasMoney = false;
             LogUtils.d(TAG, "hasMoney: " + hasMoney);
             showBanner(1);
+
+            /**
+             * 如果清单文件中设为stateVisible，那么有收款金额没有输入框的时候也会弹出软键盘
+             */
+//            mEtMoney.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    if (hasFocus) {
+//                        new Handler().postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mBodyView.fullScroll(ScrollView.FOCUS_DOWN);
+//                            }
+//                        }, 500);
+//                    }
+//                }
+//            });
+
+            new KeyboardChangeListener(this).setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+                @Override
+                public void onKeyboardChange(boolean isShow, int keyboardHeight) {
+                    if (isShow) {
+                        mBodyView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                }
+            });
+
+            mEtMoney.setFocusable(true);
+            mEtMoney.setFocusableInTouchMode(true);
+            mEtMoney.requestFocus();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    KeyBoardUtils.openKeybord(mEtMoney, ScanPayActivity.this);
+                }
+            }, 300);
         }
 
         // 商户头像、名称
