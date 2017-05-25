@@ -1,6 +1,7 @@
 package shop.imake.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,16 +12,22 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
+import shop.imake.callback.KeyboardChangeListener;
 import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
@@ -77,6 +84,10 @@ public class MyCommissionActivity extends BaseActivity {
     private Api4Mine mApi4Mine;
     private CommissionModel mCommissionModel;
     private CommissionModel.PushMoneyBean mPushMoneyBean;
+    private ScrollView mScrlViewPop;
+    private boolean isCancel=false;
+    //弹框的布局
+    private View contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +115,10 @@ public class MyCommissionActivity extends BaseActivity {
         //已经返回佣金总数
         mTvHaveWithdrawNum = ((TextView) findViewById(R.id.tv_commission_withdraw_amount));
 
+        //设置contentView
+        contentView = LayoutInflater.from(MyCommissionActivity.this).inflate(R.layout.item_commission_withdraw_dialog, null);
+        mScrlViewPop = ((ScrollView) contentView.findViewById(R.id.srcl_commission_pop));
+
 
     }
 
@@ -111,6 +126,17 @@ public class MyCommissionActivity extends BaseActivity {
         mTitle.setLeftLayoutClickListener(this);
         mTvIntoCommissionDetail.setOnClickListener(this);
         mTvApplyWithdraw.setOnClickListener(this);
+
+        //键盘监听，当键盘弹出的时候将页面滑动到最上边
+        new KeyboardChangeListener(MyCommissionActivity.this).setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+            @Override
+            public void onKeyboardChange(boolean isShow, int keyboardHeight) {
+                if (isShow) {
+                    mScrlViewPop.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            }
+        });
+
     }
 
     private void initData() {
@@ -192,6 +218,8 @@ public class MyCommissionActivity extends BaseActivity {
                 applyWithdrawCommit();
                 break;
             case R.id.tv_commission_withdraw_back://销毁弹框
+//                isCancel=true;
+                closeKeyboard(getApplicationContext(),etCommissionNum);
                 mPopWindow.dismiss();
                 break;
 
@@ -329,8 +357,8 @@ public class MyCommissionActivity extends BaseActivity {
         if (mPopWindow != null) {
             mPopWindow.dismiss();
         }
-        //设置contentView
-        View contentView = LayoutInflater.from(MyCommissionActivity.this).inflate(R.layout.item_commission_withdraw_dialog, null);
+
+
         mPopWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         mPopWindow.setContentView(contentView);
         mPopWindow.setAnimationStyle(R.style.PopWindow_Anim_Style_Up_Down);
@@ -343,9 +371,15 @@ public class MyCommissionActivity extends BaseActivity {
         tvCommissionWithdrawCommit = (TextView) contentView.findViewById(R.id.tv_commission_apply_withdraw_commit);
         tvCanUseCommissionNum = (TextView) contentView.findViewById(R.id.tv_commission_withdraw_can_use);
         etCommissionNum = (EditText) contentView.findViewById(R.id.et_commission_withdraw_input_num);
+        etCommissionNum.setText("");
+
+
+        //默认数字键盘
+//        etCommissionNum.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+
+
         tvCommissionOver = (TextView) contentView.findViewById(R.id.tv_commission_input_over);
         llCommissionInputNotOver = (LinearLayout) contentView.findViewById(R.id.LL_commission_input_not_over);
-
 
         //设置监听
         tvCancle.setOnClickListener(this);
@@ -353,22 +387,42 @@ public class MyCommissionActivity extends BaseActivity {
 
         tvCommissionWithdrawCommit.setOnClickListener(this);
 
+        //填充数据
+        tvCanUseCommissionNum.setText("" + DoubleTextUtils.setDoubleUtils(mCommissionCanWithdrawNum));
+
+
         etCommissionNum.addTextChangedListener(etCommissionInputNumTextWatcher);
         //添加过滤器，只能输入两位小数，不能连续以0开始
         InputFilter[] filters={new CashierInputFilter()};
         etCommissionNum.setFilters(filters);
 
-        //填充数据
-        tvCanUseCommissionNum.setText("" + DoubleTextUtils.setDoubleUtils(mCommissionCanWithdrawNum));
-
+        //弹出页面直接显示键盘
+        etCommissionNum.setFocusable(true);
+        etCommissionNum.setFocusableInTouchMode(true);
+        etCommissionNum.requestFocus();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+                           public void run() {
+                               InputMethodManager inputManager =
+                                       (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                               inputManager.showSoftInput(etCommissionNum, 0);
+                           }
+                       },
+                200);
 
         //显示PopupWindow
         View rootview = LayoutInflater.from(MyCommissionActivity.this).inflate(R.layout.activity_commission, null);
         mPopWindow.showAtLocation(rootview, Gravity.TOP, 0, 0);
     }
 
+    /**
+     * 关闭软件盘
+     */
 
-
+    public static void closeKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     /**
      * 提取佣金输入框监听
      */
