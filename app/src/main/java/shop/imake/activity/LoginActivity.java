@@ -214,7 +214,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onClick(View widget) {
                 Intent intent = new Intent(LoginActivity.this, WebShowActivity.class);
-                intent.putExtra(WebShowActivity.PARAM_URLPATH, "http://wxweb.bjaiyouyou.com/user-instructions.html");
+                intent.putExtra(WebShowActivity.PARAM_URLPATH, ClientAPI.URL_WX_H5 + "user-instructions.html");
                 startActivity(intent);
             }
 
