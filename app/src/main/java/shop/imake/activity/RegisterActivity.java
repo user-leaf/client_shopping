@@ -182,7 +182,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case R.id.register_iv_delete:          // 手机号输入框中的删除按钮
-                mEtTel.setText("");
+                mEtTel.getText().clear();
                 break;
 
             case R.id.register_tv_login:        // 去登录

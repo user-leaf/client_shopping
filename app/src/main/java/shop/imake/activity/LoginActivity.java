@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 break;
 
             case R.id.login_iv_delete: // 手机号输入框中的删除按钮
-                mEtTel.setText("");
+                mEtTel.getText().clear();
                 break;
 
         }
