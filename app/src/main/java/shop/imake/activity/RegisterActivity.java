@@ -255,7 +255,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 //                LogUtils.d(TAG, "token：" + token);
 //                CurrentUserManager.setUserToken(token);
 //                setResult(RESULT_OK);
-//                finish();
+                finish();
             }
 
         });

@@ -200,7 +200,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
 
-                LogUtils.d(TAG, "保存token：" + token);
+                LogUtils.d(TAG, "token：" + token);
                 CurrentUserManager.setUserToken(token);
                 setResult(RESULT_OK);
                 finish();
