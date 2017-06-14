@@ -193,10 +193,10 @@
         android:id="@+id/login_btn_login"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:alpha="0.5"
-        android:background="@color/app_basic"
+        android:background="@drawable/selector_long_btn_bg"
         android:gravity="center"
         android:text="登录"
+        android:enabled="false"
         android:textColor="@color/white"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"
@@ -227,48 +227,5 @@
         android:layout_marginTop="10dp"
         android:drawablePadding="5dp"
         />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="第三方账号登录"
-            android:visibility="gone"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/iv_login_QQ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/list_share_qqzone"/>
-
-            <ImageView
-                android:id="@+id/iv_login_wechat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:src="@mipmap/list_share_wechat"/>
-
-            <ImageView
-                android:id="@+id/iv_login_sina"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/list_signinblog"/>
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

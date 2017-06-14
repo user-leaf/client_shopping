@@ -77,11 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void setupView() {
         mTitleBar.setLeftLayoutClickListener(this);
         mBtnGetVeriCode.setOnClickListener(this);
-
         mBtnLogin.setOnClickListener(this);
-        // 在xml中把Button、TextView设置为android:clickable="false"不起作用
-        mBtnLogin.setClickable(false);
-
         mIvDelete.setOnClickListener(this);
         mEtTel.addTextChangedListener(new TextWatcher() {
             @Override
@@ -163,12 +159,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
      * 检查输入完整性，都输入了，则登录按钮变红
      */
     private void checkInputComplete() {
-        if (!TextUtils.isEmpty(mEtTel.getText().toString()) && !TextUtils.isEmpty(mEtVeriCode.getText().toString())) {
-            mBtnLogin.setAlpha(1);
-            mBtnLogin.setClickable(true);
+        if (!TextUtils.isEmpty(mEtTel.getText().toString())
+                && !TextUtils.isEmpty(mEtVeriCode.getText().toString())) {
+            mBtnLogin.setEnabled(true);
         } else {
-            mBtnLogin.setAlpha(0.5f);
-            mBtnLogin.setClickable(false);
+            mBtnLogin.setEnabled(false);
         }
     }
 
