@@ -1,5 +1,7 @@
 package shop.imake.client;
 
+import android.text.TextUtils;
+
 import shop.imake.activity.MyCommissionActivity;
 import shop.imake.activity.MyCommissionDetailActivity;
 import shop.imake.activity.MyIncomeActivity;
@@ -12,10 +14,13 @@ import shop.imake.model.CommissionModel;
 import shop.imake.model.ContactMemberModel;
 import shop.imake.model.MyCommissionModel;
 import shop.imake.model.MyIncomeModel;
+import shop.imake.model.TokenModel;
 import shop.imake.model.User;
 import shop.imake.model.ZhongHuiQuanModel;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
+
+import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Map;
@@ -233,5 +238,62 @@ public class Api4Mine extends BaseClientApi {
         LogUtils.d(MyCommissionActivity.TAG, "getCommissiongCommit: " + url);
 
         doGet(url,tag, null, callback);
+    }
+
+    /**
+     * 登录
+     * @param phone
+     * @param password
+     * @param callback
+     */
+    public void login(String phone, String password, DataCallback<TokenModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/auth/login");
+        sb.append("?phone=").append(phone);
+        sb.append("&password=").append(password);
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "login url: " + url);
+
+        doPost(url, null, callback);
+    }
+
+    /**
+     * 登录页面获取验证码
+     * @param phone
+     * @param callback
+     */
+    public void getVeriCode(String phone, StringCallback callback){
+
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/auth/getRandPassword")
+                .append("?phone=")
+                .append(phone.trim());
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "getVeriCode url: " + url);
+
+        doGet(url, null, callback);
+    }
+
+    /**
+     * 注册
+     * @param phone
+     * @param password
+     * @param invite
+     * @param callback
+     */
+    public void register(String phone, String password, String invite, DataCallback<TokenModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/auth/login");
+        sb.append("?phone=").append(phone);
+        sb.append("&password=").append(password);
+        sb.append("&invitation_code=").append(invite);
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "register url: " + url);
+
+        doPost(url, null, callback);
+
     }
 }

@@ -22,7 +22,11 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
 import shop.imake.R;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4Mine;
+import shop.imake.client.BaseClientApi;
 import shop.imake.client.ClientAPI;
+import shop.imake.client.ClientApiHelper;
 import shop.imake.model.TokenModel;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.CountDownButtonHelper;
@@ -46,11 +50,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private View mBtnLogin;             // 登录按钮
     private TextView mTvAgree2;
     private View mTvGotoLogin;
+    private Api4Mine mApi4Mine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
 
         initView();
         setupView();
@@ -213,47 +220,46 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         showLoadingDialog();
 
-        ClientAPI.postLogin(phone, password, null, new
+        mApi4Mine.register(phone, password, invitationCode, new DataCallback<TokenModel>(this) {
 
-                StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        dismissLoadingDialog();
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                dismissLoadingDialog();
 
-                        if (NetStateUtils.isNetworkAvailable(RegisterActivity.this)) {
-                            mTipsView.setVisibility(View.VISIBLE);
-                            mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
-                        } else {
-                            mTipsView.setVisibility(View.VISIBLE);
-                            mTvTelTips.setText("网络未连接");
-                        }
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        dismissLoadingDialog();
-
-                        if (response != null && !"[]".equals(response)) {
-                            Gson gson = new Gson();
-                            TokenModel tokenModel = gson.fromJson(response, TokenModel.class);
-                            if (tokenModel == null) {
-                                return;
-                            }
-
-                            String token = tokenModel.getToken();
-                            if (token != null) {
-                                LogUtils.d(TAG, "保存token：" + token);
-                                CurrentUserManager.setUserToken(token);
-                                setResult(RESULT_OK);
-                                finish();
-
-                            } else {
-                                ToastUtils.showShort("token为空");
-                            }
-                        }
-                    }
+                if (NetStateUtils.isNetworkAvailable(RegisterActivity.this)) {
+                    mTipsView.setVisibility(View.VISIBLE);
+                    mTvTelTips.setText(StringUtils.getExceptionMessage(e.getMessage()));
+                } else {
+                    mTipsView.setVisibility(View.VISIBLE);
+                    mTvTelTips.setText("网络未连接");
                 }
-        );
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+
+                dismissLoadingDialog();
+
+//                if (response == null) {
+//                    return;
+//                }
+//
+//                TokenModel tokenModel = (TokenModel) response;
+//                String token = tokenModel.getToken();
+//
+//                if (TextUtils.isEmpty(token)) {
+//                    ToastUtils.showShort("token为空");
+//                    return;
+//                }
+//
+//                LogUtils.d(TAG, "token：" + token);
+//                CurrentUserManager.setUserToken(token);
+//                setResult(RESULT_OK);
+//                finish();
+            }
+
+        });
+
     }
 
     /**
