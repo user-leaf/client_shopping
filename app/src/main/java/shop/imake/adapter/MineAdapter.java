@@ -10,11 +10,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import shop.imake.R;
 import shop.imake.model.MyMine;
-import shop.imake.utils.ScreenUtils;
-
-import java.util.List;
 
 /**
  *
@@ -28,7 +27,7 @@ public class MineAdapter extends BaseAdapter {
     private GridView mGv;
     private List<MyMine> data;
 
-    public static int ROW_NUMBER = 3;
+    public static int ROW_NUMBER = 4;
 
     public MineAdapter(Context context, GridView mGv, List<MyMine> data) {
         this.context = context;
@@ -60,7 +59,7 @@ public class MineAdapter extends BaseAdapter {
 
             //高度计算,使得每个Item都是正方形
             AbsListView.LayoutParams param = new AbsListView.LayoutParams
-                    (ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.getScreenWidth(context)/ROW_NUMBER);
+                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             convertView.setLayoutParams(param);
 
             holder.tv= (TextView) convertView.findViewById(R.id.tv_mineGridView);

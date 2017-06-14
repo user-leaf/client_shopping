@@ -3,14 +3,6 @@ package shop.imake.client;
 import android.text.TextUtils;
 import android.util.Log;
 
-import shop.imake.Constants;
-import shop.imake.MainApplication;
-import shop.imake.callback.DataCallback;
-import shop.imake.task.TaskCallback;
-import shop.imake.task.TaskResult;
-import shop.imake.user.CurrentUserManager;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.UNNetWorkUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.GetBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -21,6 +13,14 @@ import java.util.Map;
 import java.util.Set;
 
 import okhttp3.Call;
+import shop.imake.Constants;
+import shop.imake.MainApplication;
+import shop.imake.callback.DataCallback;
+import shop.imake.task.TaskCallback;
+import shop.imake.task.TaskResult;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.UNNetWorkUtils;
 
 /**
  * 网络请求(旧)
@@ -36,12 +36,12 @@ public class ClientAPI {
     public static final String TAG = ClientAPI.class.getSimpleName();
 
     //*****************************************************************************
-    public static final String API_POINT = "https://zhapi.bjaiyouyou.com/";
-//    public static final String API_POINT = "https://testapi3.bjaiyouyou.com/";
+//    public static final String API_POINT = "https://zhapi.bjaiyouyou.com/";
+    public static final String API_POINT = "https://testapi3.bjaiyouyou.com/";
 
     // 任务页视频播放地址
-    public static final String URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
-//    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
+//    public static final String URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
+    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
 
     //*****************************************************************************
 

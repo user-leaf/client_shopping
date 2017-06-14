@@ -1,12 +1,6 @@
 package shop.imake.activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,16 +12,20 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+
+import java.util.Set;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
-import shop.imake.model.PermissionsChecker;
-import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
@@ -35,16 +33,6 @@ import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.FlowRadioGroup;
 import shop.imake.widget.IUUTitleBar;
-import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import okhttp3.Call;
 
 /**
  * 客服-意见反馈
@@ -81,20 +69,8 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     private LinearLayout mLLUnNetWork;
     private TextView mTVGoToLogin;
     private LinearLayout mLLLogin;
-
-    ////////////拨打电话权限变量初始化
-    private static final int REQUEST_CODE = 0; // 请求码
-
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.INTERNET
-    };
-
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
     //意见反馈的容器
     private FlowRadioGroup mRadioGroup;
-    private List<RadioButton> mRadioButtons;
     //重新获取数据
     private TextView mTvGetAgain;
 
@@ -104,7 +80,7 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_customer_service_suggestion);
         //初始化权限检查器
-        mPermissionsChecker = new PermissionsChecker(this);
+//        mPermissionsChecker = new PermissionsChecker(this);
         initView();
         setupView();
         loadData();
@@ -172,33 +148,8 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
 
     private void loadData() {
         mVals = new String[]{"产品种类", "商品品质", "软件功能", "促销活动", "配送服务", "其它问题"};
-//        initSize();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void initSize() {
-
-        mRadioButtons = new ArrayList<>();
-        for (int i = 0; i < mVals.length; i++) {
-            RadioButton radioButton = new RadioButton(this);
-            //代码去掉选项圈
-            Bitmap a = null;
-            radioButton.setButtonDrawable(new BitmapDrawable(a));
-            radioButton.setBackground(getDrawable(R.drawable.selector_goodsdetail_size_item_bg));
-            radioButton.setText(mVals[i]);
-            //设置radioButton的内外间距
-            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(20, 20, 20, 20);
-            radioButton.setPadding(20, 20, 20, 20);
-
-            mRadioButtons.add(radioButton);
-            mRadioGroup.addView(radioButton, params);
-        }
-        //初始化默认选中状态
-        if (mRadioGroup.getChildCount() != 0) {
-            mRadioButtons.get(0).setChecked(true);
-        }
-    }
 
     private void initCtrl() {
         mTagAdapter = new TagAdapter<String>(mVals) {
@@ -221,20 +172,15 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
 
     @Override
     public boolean onTagClick(View view, int position, FlowLayout parent) {
-//        ToastUtils.showShort(mVals[position]);
         mType = position;
         //添加条件保证必须有一个条目被选
-//                view.setEnabled(false);
-//                view.setClickable(true);
         for (int i = 0; i < parent.getChildCount(); i++) {
             if (i != position) {
-//                        parent.getChildAt(i).setEnabled(true);
                 parent.getChildAt(i).setClickable(false);
             } else {
                 parent.getChildAt(i).setClickable(true);
             }
         }
-//        ToastUtils.showShort(mType+"");
         return true;
     }
 
@@ -276,8 +222,6 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
      */
     private void submitOpinion(String content) {
         //意见内容
-
-        String token = CurrentUserManager.getUserToken();
         LogUtils.e("submitOpinion", "content:" + content + "type:" + mType);
         ClientAPI.postSubmitOpinion(mType, content, new StringCallback() {
             @Override
@@ -346,37 +290,6 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     public void onSelected(Set<Integer> selectPosSet) {
     }
 
-    ////////////////////////////////////////////处理拨打打电话
-
-    /**
-     * 拨打客服电话
-     */
-    private void callCustomerServerPhone() {
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            LogUtils.e("缺少拨打电话权限", "");
-            startPermissionsActivity();
-        } else {
-            //已经授权直接拨打电话
-            DialUtils.callCentre(this, DialUtils.CENTER_NUM);
-        }
-    }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            Toast.makeText(getApplicationContext(), "未授权，不能拨打电话", Toast.LENGTH_SHORT).show();
-//            finish();
-        } else if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
-            DialUtils.callCentre(this, DialUtils.CENTER_NUM);
-        }
-    }
 
     /**
      * 网络检查

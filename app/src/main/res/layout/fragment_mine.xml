@@ -219,20 +219,21 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
                 android:background="#fff"
                 android:padding="10dp"
-                android:text="我的资产"
-                android:textColor="#222"
-                android:textSize="14sp"
+                android:text="必备工具"
+                android:textColor="#333"
+                android:textSize="16sp"
                 />
 
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c8c8c8"/>
+                android:layout_height="1px"
+                android:background="#ccc"/>
 
-            <!--积分，uu充值入口 -->
+            <!--收益，佣金，我的众汇券入口 -->
 
             <LinearLayout
                 android:id="@+id/ll_mine_safe_code_thing"
@@ -243,8 +244,10 @@
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingTop="15dp"
+                android:visibility="gone"
                 >
 
+                <!--收益入口 -->
                 <LinearLayout
                     android:id="@+id/rl_mine_income"
                     android:layout_width="0dp"
@@ -301,6 +304,7 @@
                     android:background="#c8c8c8"
                     android:gravity="center"/>
 
+                <!--佣金入口 -->
                 <LinearLayout
                     android:id="@+id/rl_mine_commission"
                     android:layout_width="0dp"
@@ -356,6 +360,7 @@
                     android:background="#c8c8c8"
                     android:gravity="center"/>
 
+                <!--我的众汇券入口 -->
                 <LinearLayout
                     android:id="@+id/rl_mine_zhonghui"
                     android:layout_width="0dp"
@@ -406,24 +411,47 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c8c8c8"/>
-
-
-            <!--功能入口列表-->
+            <!--列表功能入口1-->
             <shop.imake.widget.NoScrollGridView
                 android:id="@+id/gv_mine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="#eee"
-                android:horizontalSpacing="2dp"
-                android:numColumns="3"
-                android:verticalSpacing="2dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="#fff"
+                android:numColumns="4"
+                android:paddingBottom="25dp"
                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:background="#fff"
+                android:padding="10dp"
+                android:text="其他服务"
+                android:textColor="#333"
+                android:textSize="16sp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#ccc"/>
+
+            <!--列表功能入口1-->
+            <shop.imake.widget.NoScrollGridView
+                android:id="@+id/gv_mine_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:numColumns="4"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="25dp"
+                />
+
+            <!--客服电话-->
             <LinearLayout
                 android:id="@+id/ll_mine_service_the_phone"
                 android:layout_width="match_parent"
@@ -434,6 +462,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="18.5dp"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -455,11 +484,12 @@
                     />
             </LinearLayout>
 
+            <!--招商电话-->
             <LinearLayout
                 android:id="@+id/ll_mine_supply_the_phone"
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
-
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:paddingLeft="10dp"

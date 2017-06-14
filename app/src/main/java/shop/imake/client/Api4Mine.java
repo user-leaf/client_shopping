@@ -1,6 +1,8 @@
 package shop.imake.client;
 
-import android.text.TextUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.Map;
 
 import shop.imake.activity.MyCommissionActivity;
 import shop.imake.activity.MyCommissionDetailActivity;
@@ -14,16 +16,12 @@ import shop.imake.model.CommissionModel;
 import shop.imake.model.ContactMemberModel;
 import shop.imake.model.MyCommissionModel;
 import shop.imake.model.MyIncomeModel;
+import shop.imake.model.MyMineOther;
 import shop.imake.model.TokenModel;
 import shop.imake.model.User;
 import shop.imake.model.ZhongHuiQuanModel;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
-
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.Map;
 
 /**
  * 个人中心模块网络请求
@@ -236,6 +234,21 @@ public class Api4Mine extends BaseClientApi {
         String url = sb.toString();
 
         LogUtils.d(MyCommissionActivity.TAG, "getCommissiongCommit: " + url);
+
+        doGet(url,tag, null, callback);
+    }
+
+
+    /**
+     * 获取个人中心图标信息
+     * @param callback
+     */
+    public void getMyMineOther(Object tag,DataCallback<MyMineOther> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/threeService");
+
+        String url = sb.toString();
+        LogUtils.d(MinePage.TAG, "getMyMineOther: " + url);
 
         doGet(url,tag, null, callback);
     }

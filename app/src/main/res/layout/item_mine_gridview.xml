@@ -9,9 +9,10 @@
 
     <ImageView
         android:id="@+id/iv_mineGridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="15dp"
         android:src="@mipmap/ic_launcher"
         />
 
@@ -20,5 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="名称"/>
+        android:layout_marginBottom="10dp"
+        android:text="名称"
+        android:textColor="#5a5a5a"
+        android:textSize="14sp"
+        />
 </LinearLayout>

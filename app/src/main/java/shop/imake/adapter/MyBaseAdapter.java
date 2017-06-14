@@ -26,9 +26,9 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (datas==null){
-           return 0;
-        }else {
+        if (datas == null) {
+            return 0;
+        } else {
 
             return datas.size();
         }
@@ -46,28 +46,32 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getItemView(position,convertView,parent);
+        return getItemView(position, convertView, parent);
     }
 
     public abstract View getItemView(int position, View convertView, ViewGroup parent);
 
     /**
      * 添加一个集合
+     *
      * @param dd
      */
-    public void addAll(List<T> dd)
-    {
-        datas.addAll(dd);
-        notifyDataSetChanged();
+    public void addAll(List<T> dd) {
+        if (datas!=null){
+            datas.addAll(dd);
+            notifyDataSetChanged();
+        }
     }
 
     /**
      * 清空数据源
      */
 
-    public void clear()
-    {
-        datas.clear();
+    public void clear() {
+        if (datas != null) {
+            datas.clear();
+        }
+
 //        notifyDataSetChanged();
     }
 

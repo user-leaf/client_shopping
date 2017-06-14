@@ -15,8 +15,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,22 +41,22 @@ import shop.imake.R;
 import shop.imake.activity.AboutIUUActivity;
 import shop.imake.activity.AddressManagerNewActivity;
 import shop.imake.activity.HistoryBuyNewActivity;
-import shop.imake.activity.InviteActivity;
 import shop.imake.activity.LoginActivity;
 import shop.imake.activity.MineCustomerServiceSuggestionActivity;
 import shop.imake.activity.MyCommissionActivity;
 import shop.imake.activity.MyIncomeActivity;
 import shop.imake.activity.MyOrderActivity;
 import shop.imake.activity.MyZhongHuiQuanActivity;
-import shop.imake.activity.PermissionsActivity;
 import shop.imake.activity.SettingsActivity;
 import shop.imake.activity.UpdateMineUserMessageActivity;
 import shop.imake.adapter.MineAdapter;
+import shop.imake.adapter.MineOtherAdapter;
 import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.MyMine;
+import shop.imake.model.MyMineOther;
 import shop.imake.model.PermissionsChecker;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
@@ -70,7 +68,6 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.utils.ValidatorsUtils;
-import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollGridView;
 
 /**
@@ -84,12 +81,9 @@ import shop.imake.widget.NoScrollGridView;
 public class MinePage extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
     public static final String TAG = MinePage.class.getSimpleName();
 
-    private IUUTitleBar mTitle;
     //    功能列表
     private NoScrollGridView gv;
 
-    //记录用户积分，网络请求
-    private int integral;
     //  功能按钮数据
     private List<MyMine> dataListLogin;
     private List<MyMine> dataListNotLogin;
@@ -105,12 +99,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //    未登录的头部
     private View mNotLoginView;
 
-    //最高级会员需要的UU数
-    private int mGoldCoinAll = 3000;
-    //UU的数量
-    private int mGoldCoinNum = 0;
-    //会员等级  网络获取
-    private int mLevel;
     //会员头像地址
     private String mImgUrl;
 
@@ -212,6 +200,13 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     private static final int SDK_AUTH_FLAG = 2;
+    private NoScrollGridView mGvOther;
+    //网络加载
+    private Api4Mine mClient;
+    //其他服务部分的适配器
+    private MineOtherAdapter mMyMineOtherAdapter;
+    //其他服务数据
+    private List<MyMineOther.ThreeServicesBean> myMineList;
 
 
     @Nullable
@@ -227,10 +222,44 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //初始化权限检查器
         mPermissionsChecker = new PermissionsChecker(getContext());
-
+        initVariate();
         initView();
         setupView();
+        initCtl();
         initData();
+        initOtherData();
+
+    }
+
+    /**
+     * 加载其他服务数据
+     */
+
+    private void initOtherData() {
+
+        //获取其他服务图标信息
+        mClient.getMyMineOther(getActivity(), new DataCallback<MyMineOther>(getActivity()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                ToastUtils.showException(e);
+
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response != null) {
+                    MyMineOther myMineOther = (MyMineOther) response;
+                    myMineList = myMineOther.getThree_services();
+                    mMyMineOtherAdapter.clear();
+                    mMyMineOtherAdapter.addAll(myMineList);
+                }
+            }
+        });
+    }
+
+
+    private void initVariate() {
+        mClient = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
     @Override
@@ -245,10 +274,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             isLogin = false;
             mLoginView.setVisibility(View.GONE);
             mNotLoginView.setVisibility(View.VISIBLE);
-            initGridViewChange();
-//            initGridView();
-//            gv.setAlpha(0.6f);
-//            mLLNeedSafe.setAlpha(0.6f);
+//            initGridViewChange();
             mTVIntegralNum.setText("" + 0);
             mTVGoldCoinNum.setText("" + 0);
             mTvWithdrawNum.setText("" + 0);
@@ -268,21 +294,19 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initView() {
         mHeight = ScreenUtils.getScreenHeight(getContext());
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mHeight / 5);
         //登录后的头部布局
         mLoginView = layout.findViewById(R.id.rl_mine_head_login);
         //没登录的头部布局
         mNotLoginView = layout.findViewById(R.id.ll_mine_head_notlogin);
-//        mLoginView.setLayoutParams(params);
-//        mNotLoginView.setLayoutParams(params);
-
 
         //断网提示
         mLLUnNetWork = ((LinearLayout) layout.findViewById(R.id.ll_mine_un_network));
-//        //个人设置图标
-//        titleBar.setRightImageResource(R.mipmap.nav_set);
         //功能列表
         gv = ((NoScrollGridView) layout.findViewById(R.id.gv_mine));
+
+        mGvOther = ((NoScrollGridView) layout.findViewById(R.id.gv_mine_other));
+
+
         initGridView();
         //未登录布局中的登录按钮
         mBtLogin = ((TextView) layout.findViewById(R.id.bt_mine_login));
@@ -339,7 +363,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mRLCommission.setOnClickListener(this);
         //我的众汇
         mRLZhonghui.setOnClickListener(this);
-//        titleBar.setRightLayoutClickListener(this);
         mLoginView.setOnClickListener(this);
         mBtLogin.setOnClickListener(this);
         mScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
@@ -348,12 +371,38 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 if (mScrollView.isRefreshing()) {
                     mScrollView.onRefreshComplete();
                     initData();
+                    initOtherData();
                 }
             }
         });
 
         mLLSupplyPhone.setOnClickListener(this);
         mLLServicePhone.setOnClickListener(this);
+
+        //其他服务点击事件
+        mGvOther.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                goToHtml(position);
+            }
+        });
+    }
+
+    /**
+     * 跳转到其他相应的Ｈ５页面
+     *
+     * @param position
+     */
+    private void goToHtml(int position) {
+        if (myMineList != null && position < myMineList.size()) {
+            MyMineOther.ThreeServicesBean threeServicesBean = myMineList.get(position);
+            if (threeServicesBean != null) {
+                String htmlUrl = threeServicesBean.getRequest_url();
+                ToastUtils.showShort(htmlUrl);
+
+
+            }
+        }
     }
 
     /**
@@ -380,6 +429,14 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     }
 
+
+    private void initCtl() {
+        myMineList = new ArrayList<>();
+        mMyMineOtherAdapter = new MineOtherAdapter(myMineList, getContext());
+        mGvOther.setAdapter(mMyMineOtherAdapter);
+
+    }
+
     /**
      * 获取用户信息
      */
@@ -390,7 +447,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mClientApi = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
 
         //模拟我的邀请好友假数据
-//        friendList=new ArrayList<>();
         String token = CurrentUserManager.getUserToken();
         if (token != null) {
             mClientApi.getUserMessage(TAG, new DataCallback<User>(getContext()) {
@@ -406,7 +462,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         if (eString != null) {
                             if (eString.contains("400") || eString.contains("401")) {
                             } else {
-//                Toast.makeText(context,"提交失败"+e.toString(),Toast.LENGTH_SHORT).show();
                                 ToastUtils.showException(e, getContext());
                             }
                         }
@@ -418,11 +473,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     mTVIntegralNum.setText("" + 0);
                     mTVGoldCoinNum.setText("" + 0);
                     mTvWithdrawNum.setText("" + 0);
-                    initGridViewChange();
-//                    gv.setAlpha(0.6f);
-//                    mLLNeedSafe.setAlpha(0.6f);
-                    //取消数据加载Loading
-//                    dismissLoadingDialog();
+//                    initGridViewChange();
                 }
 
                 @Override
@@ -433,39 +484,24 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     mLoginView.setVisibility(View.VISIBLE);
                     mNotLoginView.setVisibility(View.GONE);
                     if (response != null) {
-//                        mUser = new Gson().fromJson((JsonElement) response, User.class);
                         mUser = (User) response;
                         setData();
-                        //本地存储个人信息
-                        /**
-                         * 频繁报错
-                         */
-//                        SPUtils.put(getContext(), Constants.USER, response+"");
-//                        ACache aCache=ACache.get(getActivity());
-//                        aCache.put(Constants.USER,mUser);
-//                        SPUtils.put(MainApplication.getContext(), Constants.USER, mUser + "");
                     } else {
                         ToastUtils.showShort("数据加载错误");
                     }
-//                    dismissLoadingDialog();
 
                 }
             });
         } else {
             Toast.makeText(getActivity(), "请先登录后再回来哦", Toast.LENGTH_SHORT).show();
-//            dismissLoadingDialog();
         }
-
-        //设置背景透明度
-//        initGridView();
     }
 
     private void setData() {
-//        dismissLoadingDialog();
         //重新设置头像为默认头像
 
         User.MemberBean memberBean = mUser.getMember();
-        initGridViewChange();
+//        initGridViewChange();
 
 
 //        //用户名
@@ -492,10 +528,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             if (!TextUtils.isEmpty(mEmail)) {
                 isHaveEmail = true;
                 String email;
-                if (mEmail.length()>=3){
-                     email= mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
-                }else {
-                    email=mEmail;
+                if (mEmail.length() >= 3) {
+                    email = mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
+                } else {
+                    email = mEmail;
                 }
                 mTVEmail.setText(email);
             } else {
@@ -503,8 +539,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 mTVEmail.setText("");
             }
 
-            //test
-//            mSafeCode = "11";
 
             if (!TextUtils.isEmpty(mSafeCode)) {
                 mIsHaveSafeCode = true;
@@ -524,9 +558,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             String inCome = memberBean.getPush_money();
 
             int inComeNum = 0;
-            if (!TextUtils.isEmpty(inCome)) {
-//                inComeNum = Integer.valueOf(inCome);
-            }
 
             String canDraw = memberBean.getCan_drawings_amount();
 
@@ -564,13 +595,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 isHaveImg = false;
             }
 
-            mLevel = memberBean.getMember_level();
-
 
             //根据数据判断显示图标
             LogUtils.e("getMember_type", "" + memberBean.getMember_type());
-            //test
-//           if (memberBean.getMember_type()==4){
             if (memberBean.getMember_type() == 5) {
                 mIvMemberFive.setVisibility(View.GONE);
             } else {
@@ -578,8 +605,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             }
 
             LogUtils.e("getIs_vip", "" + memberBean.getIs_vip());
-            //test
-//           if (memberBean.getIs_vip()==0){
             if (memberBean.getIs_vip() == 2) {
                 mIvMember.setVisibility(View.GONE);
             } else {
@@ -592,7 +617,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 布局功能控价列表
      */
     private void initGridView() {
-        initNotLoginGv();
+        initLoginGv();
+//        initNotLoginGv();
     }
 
     /**
@@ -603,7 +629,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             initLoginGv();
 
         } else {
-            initNotLoginGv();
+//            initNotLoginGv();
+            initLoginGv();
         }
     }
 
@@ -620,13 +647,13 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine2);
         MyMine mine3 = new MyMine("收货地址", R.mipmap.list_icon_address);
         dataListLogin.add(mine3);
-        MyMine mine4 = new MyMine("邀请好友", R.mipmap.list_addfriend);
+        MyMine mine4 = new MyMine("我的众汇券", R.mipmap.list_addfriend);
         dataListLogin.add(mine4);
         MyMine mine5 = new MyMine("关于我们", R.mipmap.list_aiyouyou);
         dataListLogin.add(mine5);
         MyMine mine6 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice);
         dataListLogin.add(mine6);
-        MyMine mine7 = new MyMine("通用设置", R.mipmap.list_set);
+        MyMine mine7 = new MyMine("设置", R.mipmap.list_set);
         dataListLogin.add(mine7);
         //test
 //        MyMine mine8 = new MyMine("我的兑换券", R.mipmap.list_set);
@@ -634,6 +661,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         adapter = new MineAdapter(getActivity(), gv, dataListLogin);
         gv.setAdapter(adapter);
+
+
     }
 
     /**
@@ -680,9 +709,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         } else {
             mIntentSafeCode.putExtra("mUserImgUrl", "");
         }
-//        showSafeCodePopWin();
         createSafeCodeDialog();
-//                startActivity(mIntentSafeCode);
     }
 
     /**
@@ -791,9 +818,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         ivSateCodeClose.setOnClickListener(this);
         tvSateCodeSubmit.setOnClickListener(this);
         tvSateCodeForget.setOnClickListener(this);
-//        ivSateCodeClose.setOnClickListener(this);
-//        tvSateCodeSubmit.setOnClickListener(this);
-//        tvSateCodeForget.setOnClickListener(this);
 
 
         //判断存不存在安全码进行页面显示变化
@@ -842,7 +866,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
     private void emailValidate() {
         String emailReset = etSateCodeReGetEmailInput.getText().toString().trim();
-//        tvSateCodeFindSubmit.setEnabled(false);
         LogUtils.e("emailReset----", mEmail);
         if (isHaveEmail) {
             if (mEmail.equals(emailReset)) {
@@ -852,10 +875,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     ClientAPI.sendEmailResetCode(token, mEmail, new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-//                            createSafeCodeForgetPopWin.tvSateCodeSubmit.setEnabled(true);
                             UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                             dialogDismiss(mFindSafeCodeDialog);
-//                            tvSateCodeFindSubmit.setEnabled(true);
                         }
 
                         @Override
@@ -864,7 +885,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                             //创建发送成功对话框
                             dialogDismiss(mFindSafeCodeDialog);
                             createEmailSendSucceedDialog();
-//                            tvSateCodeFindSubmit.setEnabled(true);
                             return;
                         }
                     });
@@ -872,12 +892,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             } else {
                 Toast.makeText(getContext(), "输入邮箱与预设邮箱不相符", Toast.LENGTH_SHORT).show();
-//                tvSateCodeFindSubmit.setEnabled(true);
                 return;
             }
         } else {
             Toast.makeText(getContext(), "未设置预设邮箱，请直接拨打客服找回安全码", Toast.LENGTH_SHORT).show();
-//            tvSateCodeFindSubmit.setEnabled(true);
             return;
         }
     }
@@ -1026,18 +1044,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         tvSateCodeCallCentre.setOnClickListener(this);
         //关闭窗体
         ivSateCodeFindClose.setOnClickListener(this);
-        // 设置按钮监听确定
-//        tvSateCodeFindSubmit.setOnClickListener(this);
-//        //联系客服
-//        tvSateCodeCallCentre.setOnClickListener(this);
-//        //关闭窗体
-//        ivSateCodeFindClose.setOnClickListener(this);
-        //根据状态设置页面显示
-        //登录、添加过
 
-//        //test
-//        mEmail="111111999@dhh.com";
-//        isHaveEmail=true;
         if (isHaveEmail) {
             String email = mEmail.substring(0, 2) + "****" + mEmail.substring(mEmail.indexOf("@"), mEmail.length());
 
@@ -1071,57 +1078,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         ivEmailSendSucceedClose = ((ImageView) view.findViewById(R.id.iv_email_send_succeed));
         ivEmailSendSucceedClose.setOnClickListener(this);
-//        ivEmailSendSucceedClose.setOnClickListener(this);
 
         mEmailSendSucceedDialog.show();
 
-    }
-
-
-    ////////////////////////////////////////////处理拨打打电话////////////////////////////////////////////////////
-
-    /**
-     * 拨打客服电话
-     */
-    private void callCustomerServerPhone() {
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            LogUtils.e("缺少拨打电话权限", "");
-            startPermissionsActivity();
-        } else {
-            //已经授权直接拨打电话
-            DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
-        }
-    }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(getActivity(), DialUtils.REQUEST_CODE, PERMISSIONS);
-    }
-
-    // 提示去公众号绑定微信的
-    private void showBindingWeChatDialog() {
-        final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                .customView(R.layout.notify_binding_wechat_dialog_item, false)
-                .build();
-        View view = dialog.getCustomView();
-        dialog.setCancelable(false);
-        ImageView ivClose = (ImageView) view.findViewById(R.id.iv_mine_member_dialog_close);
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        // 修改窗口大小
-        // http://blog.csdn.net/misly_vinky/article/details/19109517
-        Window dialogWindow = dialog.getWindow();
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-
-        dialogWindow.setGravity(Gravity.CENTER);
-
-        dialog.show();
     }
 
 
@@ -1148,26 +1107,26 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 startActivity(phIntent);
                 break;
             case 2:
-                //Toast.makeText(getActivity(), "收货地址", Toast.LENGTH_SHORT).show();
+                //收货地址"
 
                 jump(AddressManagerNewActivity.class, false);
                 break;
             case 3:
-                //Toast.makeText(getActivity(), "邀请好友", Toast.LENGTH_SHORT).show();
-//                jump(MobileContactActivity.class,false);
-                jump(InviteActivity.class, false);
+                //我的众汇券，WebView
+
+
                 break;
             case 4:
-                // Toast.makeText(getActivity(), "关于我们", Toast.LENGTH_SHORT).show();
+                // 关于我们"
                 jump(AboutIUUActivity.class, false);
                 break;
             case 5:
-                //Toast.makeText(getActivity(), "意见反馈", Toast.LENGTH_SHORT).show();
-//                jump(MineCustomerServiceActivity.class, false);
+                //意见反馈"
+
                 jump(MineCustomerServiceSuggestionActivity.class, false);
                 break;
             case 6:
-                //Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
+                //设置
                 jump(SettingsActivity.class, false);
 
                 break;
@@ -1210,10 +1169,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             case R.id.tv_safe_code_forget:
                 dialogDismiss(mSafeCodeDialog);
                 //存在邮箱，邮箱验证弹框
-                if (isHaveEmail){
+                if (isHaveEmail) {
                     createFindSafeCodeDialog();
                     //没有邮箱直接拨打电话
-                }else {
+                } else {
                     //拨打客服电话
                     DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
                 }
@@ -1275,13 +1234,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
 
             case R.id.ll_mine_supply_the_phone: //拨打供货电话
-//                ToastUtils.showShort("拨打供货电话");
-//                callCustomerServerPhone();
                 DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
                 break;
             case R.id.ll_mine_service_the_phone: //拨打客服电话
-//                ToastUtils.showShort("拨打供货电话");
-//                callCustomerServerPhone();
                 DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
                 break;
         }
@@ -1298,9 +1253,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         if (!NetStateUtils.isNetworkAvailable(getContext())) {
             ToastUtils.showShort("当前网络不可用，请检查网络设置");
         } else {
-            if (!CurrentUserManager.isLoginUser()){
+            if (!CurrentUserManager.isLoginUser()) {
                 startActivity(LoginActivity.class);
-            }else {
+            } else {
                 startActivity(mIntentSafeCode);
             }
         }
