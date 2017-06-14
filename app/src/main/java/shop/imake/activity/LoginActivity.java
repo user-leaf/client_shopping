@@ -50,7 +50,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private EditText mEtVeriCode;       // 验证码
     private Button mBtnGetVeriCode;     // 获取验证码
     private View mBtnLogin;             // 登录按钮
-    private TextView mTvAgree2;
+    private View mTvGotoRegister;       // 去注册
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.login_title_bar);
-        mTvAgree2 = (TextView) findViewById(R.id.login_tv_agree2);
         mBtnGetVeriCode = (Button) findViewById(R.id.login_btn_get_veri_code);
         mTipsView = findViewById(R.id.login_ll_tips);
         mTvTelTips = (TextView) findViewById(R.id.login_tv_tips);
@@ -71,7 +70,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         mIvDelete = (ImageView) findViewById(R.id.login_iv_delete);
         mEtVeriCode = ((EditText) findViewById(R.id.login_et_veri_code));
         mBtnLogin = findViewById(R.id.login_btn_login);
-
+        mTvGotoRegister = findViewById(R.id.login_tv_register);
     }
 
     private void setupView() {
@@ -79,6 +78,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         mBtnGetVeriCode.setOnClickListener(this);
         mBtnLogin.setOnClickListener(this);
         mIvDelete.setOnClickListener(this);
+        mTvGotoRegister.setOnClickListener(this);
         mEtTel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -115,49 +115,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             }
         });
 
-        setAgreeData();
     }
 
-    /**
-     * 设置 用户服务协议 字段
-     */
-    private void setAgreeData() {
-        String str1 = "阅读并同意";
-        String str2 = "《用户服务协议》";
-        String text = str1 + str2;
-        SpannableString spannableString = new SpannableString(text);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                Intent intent = new Intent(LoginActivity.this, WebShowActivity.class);
-                intent.putExtra(WebShowActivity.PARAM_URLPATH, ClientAPI.URL_WX_H5 + "user-instructions.html");
-                startActivity(intent);
-            }
-
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setColor(getResources().getColor(R.color.app_red));
-                ds.setUnderlineText(false);
-            }
-        };
-
-        avoidHintColor(mTvAgree2);
-        spannableString.setSpan(clickableSpan, str1.length(), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTvAgree2.setText(spannableString);
-        mTvAgree2.setMovementMethod(LinkMovementMethod.getInstance());
-
-    }
-
-    private void avoidHintColor(View view) {
-        if (view instanceof TextView) {
-            ((TextView) view).setHighlightColor(getResources().getColor(android.R.color.transparent));
-        }
-    }
-
-    /**
-     * 检查输入完整性，都输入了，则登录按钮变红
-     */
     private void checkInputComplete() {
         if (!TextUtils.isEmpty(mEtTel.getText().toString())
                 && !TextUtils.isEmpty(mEtVeriCode.getText().toString())) {
@@ -170,7 +129,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.left_layout: // 返回
+            case R.id.left_layout:          // 返回
                 finish();
                 break;
 
@@ -178,14 +137,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 sendVeriCode();
                 break;
 
-            case R.id.login_btn_login: //短信验证登录
+            case R.id.login_btn_login:      // 短信验证登录
                 doLogin();
                 break;
 
-            case R.id.login_iv_delete: // 手机号输入框中的删除按钮
+            case R.id.login_iv_delete:      // 手机号输入框中的删除按钮
                 mEtTel.getText().clear();
                 break;
 
+            case R.id.login_tv_register:    // 去注册
+                jump(RegisterActivity.class, false);
+                break;
+
+            default:
+                break;
         }
     }
 

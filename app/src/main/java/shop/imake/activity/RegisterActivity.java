@@ -33,7 +33,7 @@ import shop.imake.utils.ToastUtils;
 import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     private IUUTitleBar mTitleBar;
 
     private View mTipsView;             // 提示栏
@@ -42,11 +42,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private ImageView mIvDelete;        // 手机号输入框中的删除按钮
     private EditText mEtVeriCode;       // 验证码
     private Button mBtnGetVeriCode;     // 获取验证码
+    private EditText mEtInviteCode;     // 邀请码
     private View mBtnLogin;             // 登录按钮
     private TextView mTvAgree2;
     private View mTvGotoLogin;
-    // 邀请码
-//    private EditText mEtInviteCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.register_title_bar);
-        mTvAgree2 = (TextView) findViewById(R.id.register_tv_agree2);
+        mTvAgree2 = (TextView) findViewById(R.id.register_tv_agree);
         mBtnGetVeriCode = (Button) findViewById(R.id.register_btn_get_veri_code);
         mTipsView = findViewById(R.id.register_ll_tips);
         mTvTelTips = (TextView) findViewById(R.id.register_tv_tips);
@@ -68,7 +67,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mEtVeriCode = ((EditText) findViewById(R.id.register_et_veri_code));
         mBtnLogin = findViewById(R.id.register_btn_login);
         mTvGotoLogin = findViewById(R.id.register_tv_login);
-        //        mEtInviteCode = (EditText) findViewById(R.id.login_et_invite_code);
+        mEtInviteCode = (EditText) findViewById(R.id.register_et_invite_code);
 
     }
 
@@ -121,7 +120,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * 设置 用户服务协议 字段
      */
     private void setAgreeData() {
-        String str1 = "阅读并同意";
+        String str1 = "注册即同意";
         String str2 = "《用户服务协议》";
         String text = str1 + str2;
         SpannableString spannableString = new SpannableString(text);
@@ -136,7 +135,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
-                ds.setColor(getResources().getColor(R.color.app_red));
+                ds.setColor(getResources().getColor(R.color.blue));
                 ds.setUnderlineText(false);
             }
         };
@@ -155,7 +154,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * 检查输入完整性，都输入了，则登录按钮变红
+     * 检查输入完整性，都输入了，则登录按钮变亮
      */
     private void checkInputComplete() {
         if (!TextUtils.isEmpty(mEtTel.getText().toString())
@@ -169,7 +168,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.left_layout:              // 返回
+            case R.id.left_layout:          // 返回
                 finish();
                 break;
 
@@ -177,16 +176,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 sendVeriCode();
                 break;
 
-            case R.id.register_btn_login:          //短信验证登录
+            case R.id.register_btn_login:   //短信验证登录
                 doLogin();
                 break;
 
-            case R.id.register_iv_delete:          // 手机号输入框中的删除按钮
+            case R.id.register_iv_delete:   // 手机号输入框中的删除按钮
                 mEtTel.getText().clear();
                 break;
 
-            case R.id.register_tv_login:        // 去登录
+            case R.id.register_tv_login:    // 去登录
                 finish();
+                break;
+
+            default:
                 break;
         }
     }
@@ -195,7 +197,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void doLogin() {
         final String phone = mEtTel.getText().toString();
         final String password = mEtVeriCode.getText().toString();
-//        final String invitationCode = mEtInviteCode.getText().toString();
+        final String invitationCode = mEtInviteCode.getText().toString();
 
         if (!ValidatorsUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
@@ -203,11 +205,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return;
         }
 
-//        if (!TextUtils.isEmpty(invitationCode) && !ValidatorsUtils.validateUserPhone(invitationCode)) {
-//            mTipsView.setVisibility(View.VISIBLE);
-//            mTvTelTips.setText("邀请人号码有误");
-//            return;
-//        }
+        if (!TextUtils.isEmpty(invitationCode) && !ValidatorsUtils.validateUserPhone(invitationCode)) {
+            mTipsView.setVisibility(View.VISIBLE);
+            mTvTelTips.setText("邀请人号码有误");
+            return;
+        }
 
         showLoadingDialog();
 
