@@ -57,6 +57,7 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_about_iuu_company:
 //                jump(MineRechargeSuccessActivity.class, false);
 //                jump(ScanPayActivity.class, false);
+//                WebShowActivity.actionStart(this, "http://192.168.8.140:8080?vt=" + System.currentTimeMillis(), WebShowActivity.PARAM_PAGE_HIDE);
                 break;
         }
     }

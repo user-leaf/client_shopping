@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
@@ -33,6 +34,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
     private static final java.lang.String TAG = WebShowActivity.class.getSimpleName();
     public static final String PARAM_URLPATH = "urlpath";
+    public static final String PARAM_PAGE_HIDE = "隐藏标题栏";
     public static final String PARAM_TITLE = "title";
 
     private int isCustomTitle = -1;
@@ -41,19 +43,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     private ProgressBar mProgressBar;
     private WebView mWebView;
     private View mRefreshView;
-
-    /**
-     * 启动本页面
-     * @param context
-     * @param url
-     * @param title     传null，则用网页默认标题
-     */
-    public static void actionStart(Context context, String url, String title) {
-        Intent intent = new Intent(context, WebShowActivity.class);
-        intent.putExtra(PARAM_URLPATH, url);
-        intent.putExtra(PARAM_TITLE, title);
-        context.startActivity(intent);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +54,9 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
         // 如果传过来标题，则用自定义标题，否则用默认标题
         String title = getIntent().getStringExtra(PARAM_TITLE);
-        if (title != null) {
+        if (PARAM_PAGE_HIDE.equals(title)) {
+            mTitleBar.setVisibility(View.GONE);
+        } else if (title != null) {
             mTitleBar.setTitle(title);
             isCustomTitle = 1;
         }
@@ -73,6 +64,34 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         initWebView();
         loadUrl();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mWebView != null) {
+            ViewGroup parent = (ViewGroup) mWebView.getParent();
+            if (parent != null) {
+                parent.removeView(mWebView);
+            }
+            mWebView.removeAllViews();
+            mWebView.destroy();
+        }
+
+        super.onDestroy();
+    }
+
+    /**
+     * 启动本页面
+     *
+     * @param context
+     * @param url
+     * @param title   传null，则用网页默认标题
+     */
+    public static void actionStart(Context context, String url, String title) {
+        Intent intent = new Intent(context, WebShowActivity.class);
+        intent.putExtra(PARAM_URLPATH, url);
+        intent.putExtra(PARAM_TITLE, title);
+        context.startActivity(intent);
     }
 
     private void initView() {
@@ -178,6 +197,8 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
         });
 
+        // JS调用Native方法
+        mWebView.addJavascriptInterface(new JsInterface(), "android");
     }
 
     private void loadUrl() {
@@ -226,18 +247,10 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         return false;
     }
 
-    @Override
-    public void onDestroy() {
-        if (mWebView != null) {
-            ViewGroup parent = (ViewGroup) mWebView.getParent();
-            if (parent != null) {
-                parent.removeView(mWebView);
-            }
-            mWebView.removeAllViews();
-            mWebView.destroy();
+    public class JsInterface {
+        @JavascriptInterface
+        public void backpage() {
+            finish();
         }
-
-        super.onDestroy();
     }
-
 }
