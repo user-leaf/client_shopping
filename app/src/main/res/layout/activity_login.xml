@@ -126,7 +126,7 @@
         android:paddingRight="10dp"
         >
 
-        <TextView
+        <Button
             android:id="@+id/login_btn_get_veri_code"
             android:layout_width="wrap_content"
             android:layout_height="35dp"

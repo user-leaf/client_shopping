@@ -20,9 +20,6 @@ import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UpdateUtils;
 import com.bumptech.glide.Glide;
 
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.onekeyshare.OnekeyShare;
-
 /**
  * 设置
  *
@@ -31,14 +28,10 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  */
 public class SettingsActivity extends BaseActivity implements View.OnClickListener {
 
-//    public static SettingsActivity instance;
-
     // 缓存大小
     private TextView mTvCache;
     // 清除缓存
     private View mCleanCacheView;
-    // 分享
-    private View mShareView;
     // 返回
     private View mBackView;
     // 退出登录
@@ -53,9 +46,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        ShareSDK.initSDK(this);
-
-//        instance = this;
         mUpdateUtils = new UpdateUtils();
 
         initView();
@@ -79,7 +69,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         mBackView = findViewById(R.id.left_layout);
         mCleanCacheView = findViewById(R.id.settings_rl_cache);
         mTvCache = (TextView) findViewById(R.id.settings_tv_cache);
-        mShareView = findViewById(R.id.settings_share);
         mBtnLogout = (Button) findViewById(R.id.settings_btn_logout);
         mUpdateView = findViewById(R.id.settings_update);
     }
@@ -87,7 +76,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private void setupView() {
         mBackView.setOnClickListener(this);
         mCleanCacheView.setOnClickListener(this);
-        mShareView.setOnClickListener(this);
         mBtnLogout.setOnClickListener(this);
         mUpdateView.setOnClickListener(this);
 
@@ -103,10 +91,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.left_layout: // 返回
                 finish();
-                break;
-
-            case R.id.settings_share: // 分享
-                showShare();
                 break;
 
             case R.id.settings_rl_cache: // 清除缓存，并显示清扫后的缓存大小
@@ -161,39 +145,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    /**
-     * 分享
-     */
-    private void showShare() {
-//        ShareSDK.initSDK(this); // 添加到了 onCreate()
-        OnekeyShare oks = new OnekeyShare();
-        //关闭sso授权
-        oks.disableSSOWhenAuthorize();
-
-        // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
-        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
-        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle("我是分享小达人");
-        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-        oks.setTitleUrl("http://sharesdk.cn");
-        // text是分享文本，所有平台都需要这个字段
-        oks.setText("我是分享文本");
-        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-        oks.setImageUrl("https://www.baidu.com/img/bd_logo1.png");
-        // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://sharesdk.cn");
-        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-        oks.setComment("我是测试评论文本");
-        // site是分享此内容的网站名称，仅在QQ空间使用
-        oks.setSite(getString(R.string.app_name));
-        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl("http://sharesdk.cn");
-
-        // 启动分享GUI
-        oks.show(this);
     }
 
 }

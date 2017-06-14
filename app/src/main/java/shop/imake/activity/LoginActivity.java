@@ -2,7 +2,6 @@ package shop.imake.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -11,17 +10,17 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import shop.imake.MainActivity;
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
 import shop.imake.model.TokenModel;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.CountDownButtonHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.StringUtils;
@@ -32,131 +31,52 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.sina.weibo.SinaWeibo;
-import cn.sharesdk.tencent.qzone.QZone;
-import cn.sharesdk.wechat.friends.Wechat;
 import okhttp3.Call;
 
 /**
  * 登录页
  *
- * @author JackB
  * @date 2016/6/18
- * @author Alice
- * UpDate 2016/6/25 10:12
- * <p/>
- * 添加三方登录的入口
- * 添加第三方登录的方法
  */
-
-/**
- * @author Alice
- *         UpDate 2016/6/25 10:12
- *         <p/>
- *         添加三方登录的入口
- *         添加第三方登录的方法
- */
-
-/**
- *  修改登录方法
- * @author Alice
- *Creare 2016/8/30 20:17
- *
- *
- */
-public class LoginActivity extends BaseActivity implements View.OnClickListener, PlatformActionListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private IUUTitleBar mTitleBar;
-    private TextView mBtnGetVeriCode;
-    // 倒计时
-    private CountDownTimer mCountDownTimer;
-    //三方登录的入口
-    private ImageView mIVQQ;
-    private ImageView mIVWetch;
-    private ImageView mIvSina;
-    //数据获取电话
-//    private EditText mEtTel;
-    private EditText mEtTel;
-    //数据获取验证码
-    private EditText mEtVeriCode;
-    private View mBtnLogin;
-    // 提示栏
-    private View mTipsView;
-    // 手机号输入框上方的提示
-    private TextView mTvTelTips;
-    // 手机号输入框中的删除按钮
-    private ImageView mIvDelete;
-    // 邀请码
-//    private EditText mEtInviteCode;
 
+    private View mTipsView;             // 提示栏
+    private TextView mTvTelTips;        // 提示
+    private EditText mEtTel;            // 手机号
+    private ImageView mIvDelete;        // 手机号输入框中的删除按钮
+    private EditText mEtVeriCode;       // 验证码
+    private Button mBtnGetVeriCode;     // 获取验证码
+    private View mBtnLogin;             // 登录按钮
     private TextView mTvAgree2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ShareSDK.initSDK(this);
 
         initView();
         setupView();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mCountDownTimer.cancel();
-    }
-
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.login_title_bar);
         mTvAgree2 = (TextView) findViewById(R.id.login_tv_agree2);
-        mBtnGetVeriCode = (TextView) findViewById(R.id.login_btn_get_veri_code);
+        mBtnGetVeriCode = (Button) findViewById(R.id.login_btn_get_veri_code);
         mTipsView = findViewById(R.id.login_ll_tips);
         mTvTelTips = (TextView) findViewById(R.id.login_tv_tips);
         mEtTel = (EditText) findViewById(R.id.login_et_tel);
         mIvDelete = (ImageView) findViewById(R.id.login_iv_delete);
         mEtVeriCode = ((EditText) findViewById(R.id.login_et_veri_code));
-//        mEtInviteCode = (EditText) findViewById(R.id.login_et_invite_code);
-        mBtnLogin = (TextView) findViewById(R.id.login_btn_login);
-
-        // 60秒
-        mCountDownTimer = new CountDownTimer(60 * 1000, 1 * 1000 - 10) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // 第一次调用会有1-10ms的误差，因此需要+15ms，防止第一个数不显示，第二个数显示2s
-                mBtnGetVeriCode.setText("再次获取(" + ((millisUntilFinished + 15) / 1000) + "秒)");
-            }
-
-            @Override
-            public void onFinish() {
-                mBtnGetVeriCode.setEnabled(true);
-                mBtnGetVeriCode.setText("再次获取");
-            }
-        };
-//        三方登录入口控件
-        mIVQQ = ((ImageView) findViewById(R.id.iv_login_QQ));
-        mIVWetch = ((ImageView) findViewById(R.id.iv_login_wechat));
-        mIvSina = ((ImageView) findViewById(R.id.iv_login_sina));
+        mBtnLogin = findViewById(R.id.login_btn_login);
 
     }
 
     private void setupView() {
         mTitleBar.setLeftLayoutClickListener(this);
         mBtnGetVeriCode.setOnClickListener(this);
-
-//       添加注册监听
-        mIVQQ.setOnClickListener(this);
-        mIVWetch.setOnClickListener(this);
-        mIvSina.setOnClickListener(this);
 
         mBtnLogin.setOnClickListener(this);
         // 在xml中把Button、TextView设置为android:clickable="false"不起作用
@@ -267,21 +187,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 doLogin();
                 break;
 
-            case R.id.iv_login_QQ:
-                login(new QZone(this));
-                break;
-
-            case R.id.iv_login_wechat:
-//                login(ShareSDK.getPlatform(this, Wechat.NAME));
-                Platform wechat = ShareSDK.getPlatform(this, Wechat.NAME);
-                wechat.setPlatformActionListener(this);
-                wechat.authorize();
-                break;
-
-            case R.id.iv_login_sina:
-                login(new SinaWeibo(this));
-                break;
-
             case R.id.login_iv_delete: // 手机号输入框中的删除按钮
                 mEtTel.setText("");
                 break;
@@ -289,23 +194,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    //处理登录
+    // 处理登录
     private void doLogin() {
         final String phone = mEtTel.getText().toString();
         final String password = mEtVeriCode.getText().toString();
-//        final String invitationCode = mEtInviteCode.getText().toString();
 
         if (!ValidatorsUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
             mTvTelTips.setText("手机号码有误");
             return;
         }
-
-//        if (!TextUtils.isEmpty(invitationCode) && !ValidatorsUtils.validateUserPhone(invitationCode)) {
-//            mTipsView.setVisibility(View.VISIBLE);
-//            mTvTelTips.setText("邀请人号码有误");
-//            return;
-//        }
 
         showLoadingDialog();
 
@@ -349,99 +247,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         }
                     }
                 }
-
         );
-
-    }
-
-    //根据那个平台进行登录
-    private void login(Platform platform) {
-
-        String userID = platform.getDb().getUserId();
-
-        if (TextUtils.isEmpty(userID)) {
-            //对平台进行验证
-            platform.SSOSetting(true);
-
-            //对平台监听
-            platform.setPlatformActionListener(this);
-
-            //要功能不要数据   没有用户管理平台
-            platform.authorize();
-
-            //要数据  不要功能  有用户管理平台
-            //  platform.showUser(null);
-        } else {
-            //不为空  说明  可以登录   直接跳转到主界面
-
-            //对平台进行验证
-            platform.SSOSetting(true);
-
-            //对平台监听
-            platform.setPlatformActionListener(this);
-
-            //要功能不要数据   没有用户管理平台
-            platform.authorize();
-
-            //要数据  不要功能  有用户管理平台
-            //  platform.showUser(null);
-
-//            Intent intent = new Intent(MainActivity.this,Main2Activity.class);
-//            startActivity(intent);
-        }
-
-
-    }
-
-    /**
-     * 登录成功后回调
-     *
-     * @param platform 平台
-     * @param i        i表示  是那种方式进行登录    1,要数据不要功能  2,要功能不要数据
-     * @param hashMap  保存数据
-     */
-    @Override
-    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        if (i == Platform.ACTION_AUTHORIZING) {//要功能不要数据
-            Log.e("AAA", "登录成功");
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-
-        } else if (i == Platform.ACTION_USER_INFOR) {//要数据不要功能
-            Iterator<Map.Entry<String, Object>> iterator = hashMap.entrySet().iterator();
-
-            while (iterator.hasNext()) {
-                Map.Entry<String, Object> map = iterator.next();
-                String key = map.getKey();
-                Object values = map.getValue();
-
-                //发送到后台....
-                Log.e("AAA", "==key==" + key + "==values=" + values);
-
-            }
-        }
-    }
-
-    /*
-     * 登录失败  回调此方法
-     * @param platform
-     * @param i
-     * @param throwable
-     */
-    @Override
-    public void onError(Platform platform, int i, Throwable throwable) {
-        Log.e("AAA", "用户名或者密码错误");
-    }
-
-    /**
-     * 取消
-     *
-     * @param platform
-     * @param i
-     */
-    @Override
-    public void onCancel(Platform platform, int i) {
-        Log.e("AAA", "取消");
     }
 
     /**
@@ -463,7 +269,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
 
         mBtnGetVeriCode.setEnabled(false);
-        mCountDownTimer.start();
+
+        CountDownButtonHelper helper = new CountDownButtonHelper(mBtnGetVeriCode,
+                "获取验证码", 60, 1);
+        helper.setOnFinishListener(new CountDownButtonHelper.OnFinishListener() {
+
+            @Override
+            public void finish() {
+                mBtnGetVeriCode.setEnabled(true);
+                mBtnGetVeriCode.setText("再次获取");
+            }
+        });
+        helper.start();
+
 
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/auth/getRandPassword")
@@ -488,7 +306,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                     @Override
                     public void onResponse(String response, int id) {
-//                                Toast.makeText(LoginActivity.this, "已发送", Toast.LENGTH_SHORT).show();
                     }
                 });
 
