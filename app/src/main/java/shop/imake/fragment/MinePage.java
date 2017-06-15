@@ -248,7 +248,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             @Override
             public void onFail(Call call, Exception e, int id) {
                 ToastUtils.showException(e);
-                initOtherData();
             }
 
             @Override

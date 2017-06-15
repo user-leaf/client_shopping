@@ -145,6 +145,8 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 mWebView.setVisibility(View.GONE);
                 mRefreshView.setVisibility(View.VISIBLE);
+                //网络不畅通加载本地html
+                mWebView.loadUrl("file:///android_asset/webviewreload.html");
             }
 
             @Override
