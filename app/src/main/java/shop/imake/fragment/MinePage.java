@@ -48,7 +48,6 @@ import shop.imake.activity.MyIncomeActivity;
 import shop.imake.activity.MyOrderActivity;
 import shop.imake.activity.MyZhongHuiQuanActivity;
 import shop.imake.activity.SettingsActivity;
-import shop.imake.activity.SystemPushMessageActivity;
 import shop.imake.activity.UpdateMineUserMessageActivity;
 import shop.imake.activity.WebShowActivity;
 import shop.imake.adapter.MineAdapter;
@@ -649,10 +648,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine3);
         MyMine mine4 = new MyMine("我的众汇券", R.mipmap.personal_centeriocn_icon_my_assets);
         dataListLogin.add(mine4);
-        MyMine mine5 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
+        MyMine mine5 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
         dataListLogin.add(mine5);
-        MyMine mine6 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
+        MyMine mine6 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
         dataListLogin.add(mine6);
+
         MyMine mine7 = new MyMine("设置", R.mipmap.list_set_nor);
         dataListLogin.add(mine7);
         //test
@@ -1121,14 +1121,15 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
                 break;
             case 4:
-                // 关于我们"
-                jump(AboutIUUActivity.class, false);
-                break;
-            case 5:
                 //意见反馈"
 
                 jump(MineCustomerServiceSuggestionActivity.class, false);
                 break;
+            case 5:
+                // 关于我们"
+                jump(AboutIUUActivity.class, false);
+                break;
+
             case 6:
                 //设置
                 jump(SettingsActivity.class, false);
