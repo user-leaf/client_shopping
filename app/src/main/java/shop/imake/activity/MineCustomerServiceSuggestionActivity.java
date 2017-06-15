@@ -297,7 +297,6 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     public void checkNet(){
         if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
             UNNetWorkUtils.isNetHaveConnect(getApplicationContext(), mRLNotLogin, mLLLogin, mLLUnNetWork);
-            ToastUtils.showShort("当前网络不可用，请检查网络设置");
         }else {
             mRLNotLogin.setVisibility(View.GONE);
             mLLUnNetWork.setVisibility(View.GONE);
