@@ -41,7 +41,7 @@ import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
 import shop.imake.activity.AboutIUUActivity;
-import shop.imake.activity.AddressManagerNewActivity;
+import shop.imake.activity.AddressManagerActivity;
 import shop.imake.activity.HistoryBuyNewActivity;
 import shop.imake.activity.LoginActivity;
 import shop.imake.activity.MineCustomerServiceSuggestionActivity;
@@ -1144,7 +1144,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 }
                 //收货地址"
 
-                jump(AddressManagerNewActivity.class, false);
+                jump(AddressManagerActivity.class, false);
                 break;
             case 3:
                 if (!CurrentUserManager.isLoginUser()){

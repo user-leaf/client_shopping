@@ -161,9 +161,6 @@
             android:screenOrientation="portrait"/>
 
         <!-- 地址管理页面 -->
-        <activity
-            android:name=".activity.AddressManagerActivity"
-            android:screenOrientation="portrait"/>
 
         <!-- 添加地址页面 -->
         <activity
@@ -212,7 +209,7 @@
             android:screenOrientation="portrait"/>
         <!-- 新的收货地址管理页 -->
         <activity
-            android:name=".activity.AddressManagerNewActivity"
+            android:name=".activity.AddressManagerActivity"
             android:screenOrientation="portrait"/>
         <!-- 下订单页 -->
         <activity

@@ -630,8 +630,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
             case R.id.order_make_ll_no_address:// 没有收货地址，去添加
             case R.id.order_make_address: // 选择收货地址
-                Intent intent = new Intent(this, AddressManagerNewActivity.class);
-                intent.putExtra(AddressManagerNewActivity.EXTRA_PAGE_NAME, TAG);
+                Intent intent = new Intent(this, AddressManagerActivity.class);
+                intent.putExtra(AddressManagerActivity.EXTRA_PAGE_NAME, TAG);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
 

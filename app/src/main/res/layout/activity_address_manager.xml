@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="shop.imake.activity.AddressManagerActivity">
 
@@ -12,30 +12,39 @@
         android:id="@+id/address_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="管理收货地址"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="收货地址"
         >
 
     </shop.imake.widget.IUUTitleBar>
 
-    <ListView
-        android:id="@+id/address_listview"
+    <LinearLayout
+        android:id="@+id/body"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-    </ListView>
+        <ListView
+            android:id="@+id/address_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
 
-    <TextView
-        android:id="@+id/address_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="添加新地址"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:padding="15dp"
-        android:background="#FF6666"
-        />
+        </ListView>
+
+        <TextView
+            android:id="@+id/address_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_basic"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="添加新地址"
+            android:textColor="#ffffff"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
