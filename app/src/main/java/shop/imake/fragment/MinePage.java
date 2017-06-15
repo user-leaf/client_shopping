@@ -48,7 +48,9 @@ import shop.imake.activity.MyIncomeActivity;
 import shop.imake.activity.MyOrderActivity;
 import shop.imake.activity.MyZhongHuiQuanActivity;
 import shop.imake.activity.SettingsActivity;
+import shop.imake.activity.SystemPushMessageActivity;
 import shop.imake.activity.UpdateMineUserMessageActivity;
+import shop.imake.activity.WebShowActivity;
 import shop.imake.adapter.MineAdapter;
 import shop.imake.adapter.MineOtherAdapter;
 import shop.imake.callback.DataCallback;
@@ -397,10 +399,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         if (myMineList != null && position < myMineList.size()) {
             MyMineOther.ThreeServicesBean threeServicesBean = myMineList.get(position);
             if (threeServicesBean != null) {
-                String htmlUrl = threeServicesBean.getRequest_url();
-                ToastUtils.showShort(htmlUrl);
-
-
+                String htmlUrl = threeServicesBean.getRequest_url() + "&vt=" + System.currentTimeMillis();
+                WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
             }
         }
     }
@@ -1113,7 +1113,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
             case 3:
                 //我的众汇券，WebView
-
+                StringBuilder stringBuilder = new StringBuilder(ClientAPI.URL_WX_H5);
+                stringBuilder.append("myzhonghui.html?token=").append(CurrentUserManager.getUserToken())
+                        .append("&type=android&vt=").append(System.currentTimeMillis());
+                String zhonghuiquanUrl = stringBuilder.toString();
+                WebShowActivity.actionStart(getContext(), zhonghuiquanUrl, WebShowActivity.PARAM_PAGE_HIDE);
 
                 break;
             case 4:
