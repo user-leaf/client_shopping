@@ -219,9 +219,6 @@
             android:name=".activity.OrderMakeActivity"
             android:screenOrientation="portrait"/>
         <!-- 地址选择页 -->
-        <activity android:name=".activity.ChooseTheMethodOfPaymentActivity"/>
-        <activity android:name=".activity.BankCardAddActivity"/>
-        <activity android:name=".activity.BankcardInformationAddActivity"/>
         <!-- 申请退款页 -->
         <activity
             android:name=".activity.OrderReturnActivity"
@@ -264,10 +261,6 @@
             android:screenOrientation="portrait">
         </activity>
         <!-- 绑定支付方式 -->
-        <activity
-            android:name=".activity.BindingModeOfPaymentActivity"
-            android:screenOrientation="portrait">
-        </activity>
         <!-- 添加微信 -->
         <activity
             android:name=".activity.WechatAddActivity"
@@ -467,15 +460,7 @@
             android:screenOrientation="portrait">
         </activity>
         <!-- 兑换券兑换页面 -->
-        <activity
-            android:name=".activity.ExchangeActivity"
-            android:screenOrientation="portrait">
-        </activity>
         <!-- 兑换券激活页面 -->
-        <activity
-            android:name=".activity.ActivateExchangeCertificateActivity"
-            android:screenOrientation="portrait">
-        </activity>
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
