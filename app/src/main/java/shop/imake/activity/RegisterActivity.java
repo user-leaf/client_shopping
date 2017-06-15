@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -24,16 +23,12 @@ import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Mine;
-import shop.imake.client.BaseClientApi;
 import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.TokenModel;
-import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.CountDownButtonHelper;
-import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.StringUtils;
-import shop.imake.utils.ToastUtils;
 import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 
@@ -321,7 +316,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
         sb.append("api/v1/auth/getRandPassword")
                 .append("?phone=")
-                .append(phone.trim());
+                .append(phone.trim())
+                .append("&type=register");
         String url = sb.toString();
 
         OkHttpUtils.get()

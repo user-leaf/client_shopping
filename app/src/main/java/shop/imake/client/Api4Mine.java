@@ -298,7 +298,7 @@ public class Api4Mine extends BaseClientApi {
      */
     public void register(String phone, String password, String invite, DataCallback<TokenModel> callback){
         StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
-        sb.append("api/v1/auth/login");
+        sb.append("api/v1/auth/register");
         sb.append("?phone=").append(phone);
         sb.append("&password=").append(password);
         sb.append("&invitation_code=").append(invite);
