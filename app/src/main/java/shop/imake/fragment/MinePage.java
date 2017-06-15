@@ -388,6 +388,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mGvOther.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (!CurrentUserManager.isLoginUser()){
+                    jump(LoginActivity.class,false);
+                    return;
+                }
                 goToHtml(position);
             }
         });
