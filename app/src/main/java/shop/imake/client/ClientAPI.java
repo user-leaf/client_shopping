@@ -25,25 +25,34 @@ import shop.imake.utils.UNNetWorkUtils;
 /**
  * 网络请求(旧)
  *
- * @see ClientApiHelper
- * ClientApiHelper.getInstance().getClientApi(Api4XXX.class).xxx()
- *
  * @author JackB
  * @date 2016/6/1
+ * @see ClientApiHelper
+ * ClientApiHelper.getInstance().getClientApi(Api4XXX.class).xxx()
  */
 public class ClientAPI {
 
     public static final String TAG = ClientAPI.class.getSimpleName();
 
-    //*****************************************************************************
-//    public static final String API_POINT = "https://zhapi.bjaiyouyou.com/";
-    public static final String API_POINT = "https://testapi3.bjaiyouyou.com/";
+    public static String API_POINT;
+    public static String URL_WX_H5;
 
-    // 任务页视频播放地址
-//    public static final String URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
-    public static final String URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
+    /**
+     * false 正式环境  true 测试环境
+     */
+    private static boolean flag_test = true;
 
-    //*****************************************************************************
+    static {
+        if (flag_test) {    // 测试环境
+            API_POINT = "https://testapi3.bjaiyouyou.com/";
+            URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/";
+
+        } else {    // 正式环境
+            API_POINT = "https://zhapi.bjaiyouyou.com/";
+            URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
+
+        }
+    }
 
     private ClientAPI() {
     }
@@ -631,6 +640,7 @@ public class ClientAPI {
                 .execute(callback);
 
     }
+
     /**
      * 充值
      *
@@ -766,9 +776,10 @@ public class ClientAPI {
 
     /**
      * 获取提现信息
+     *
      * @param callback
      */
-    public static void getWithdraw( StringCallback callback) {
+    public static void getWithdraw(StringCallback callback) {
 
         StringBuilder sb = new StringBuilder(API_POINT);
         sb.append("api/v1/member/getDrawingsInfo");
@@ -785,7 +796,7 @@ public class ClientAPI {
     /**
      * 提现
      */
-    public static void withdraw(String token,  double amount, String userName, String safeCode, DataCallback callback) {
+    public static void withdraw(String token, double amount, String userName, String safeCode, DataCallback callback) {
         StringBuilder sb = new StringBuilder(API_POINT);
         sb.append("api/v1/transfer");
         sb.append("?token=").append(token);
@@ -1142,7 +1153,7 @@ public class ClientAPI {
      *
      * @param callback
      */
-    public static void getOrderMakeAddressList(String pageTag, StringCallback callback){
+    public static void getOrderMakeAddressList(String pageTag, StringCallback callback) {
         getAddressList(pageTag, callback);
 
     }

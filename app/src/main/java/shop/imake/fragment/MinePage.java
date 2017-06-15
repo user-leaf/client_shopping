@@ -405,7 +405,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             if (threeServicesBean != null) {
                 int type=threeServicesBean.getIs_open();
                 if (type==1){
-                    String htmlUrl = threeServicesBean.getRequest_url() + "&vt=" + System.currentTimeMillis();
+                    StringBuilder stringBuilder = new StringBuilder(threeServicesBean.getRequest_url());
+                    stringBuilder.append("?token=").append(CurrentUserManager.getUserToken())
+                            .append("&type=android").append("&vt=").append(System.currentTimeMillis());
+                    String htmlUrl = stringBuilder.toString();
+
                     WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
                 }else if (type==0){
                     Dialog dialog = DialogUtils.createMessageDialog(
