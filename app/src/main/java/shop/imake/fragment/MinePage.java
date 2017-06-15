@@ -641,19 +641,19 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         //已经登录的布局初始化
         dataListLogin = new ArrayList<>();
 
-        MyMine mine1 = new MyMine("我的订单", R.mipmap.list_order);
+        MyMine mine1 = new MyMine("我的订单", R.mipmap.list_order_nor);
         dataListLogin.add(mine1);
-        MyMine mine2 = new MyMine("历史购物", R.mipmap.list_historyrecorde);
+        MyMine mine2 = new MyMine("历史购物", R.mipmap.list_historyrecorde_nor);
         dataListLogin.add(mine2);
-        MyMine mine3 = new MyMine("收货地址", R.mipmap.list_icon_address);
+        MyMine mine3 = new MyMine("收货地址", R.mipmap.list_addressinformation_nor);
         dataListLogin.add(mine3);
-        MyMine mine4 = new MyMine("我的众汇券", R.mipmap.list_addfriend);
+        MyMine mine4 = new MyMine("我的众汇券", R.mipmap.personal_centeriocn_icon_my_assets);
         dataListLogin.add(mine4);
-        MyMine mine5 = new MyMine("关于我们", R.mipmap.list_aiyouyou);
+        MyMine mine5 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
         dataListLogin.add(mine5);
-        MyMine mine6 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice);
+        MyMine mine6 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
         dataListLogin.add(mine6);
-        MyMine mine7 = new MyMine("设置", R.mipmap.list_set);
+        MyMine mine7 = new MyMine("设置", R.mipmap.list_set_nor);
         dataListLogin.add(mine7);
         //test
 //        MyMine mine8 = new MyMine("我的兑换券", R.mipmap.list_set);

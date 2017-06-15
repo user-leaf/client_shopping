@@ -31,6 +31,12 @@
         <item name="android:background">#DCDCDC</item> <!-- 88CCCCCC --><!-- EEEEEE -->
     </style>
 
+    <style name="entry_divider_fine_line_ccc_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_fine</item>
+        <item name="android:background">#CCCCCC</item> <!-- 88CCCCCC --><!-- EEEEEE -->
+    </style>
+
     <!-- 通用分割线style粗线-->
     <style name="entry_divider_bold_line_style">
         <item name="android:layout_width">match_parent</item>

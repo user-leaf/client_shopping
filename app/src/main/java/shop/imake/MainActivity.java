@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import shop.imake.R;
+import java.util.List;
 
 import shop.imake.activity.BaseActivity;
 import shop.imake.activity.PermissionsActivity;
@@ -25,8 +25,6 @@ import shop.imake.fragment.TaskPage;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.UpdateUtils;
-
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
 

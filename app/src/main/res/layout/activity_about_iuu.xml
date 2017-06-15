@@ -18,22 +18,22 @@
 
     <ImageView
         android:id="@+id/tv_about_iuu_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="50dp"
-        android:src="@mipmap/icon_logo"/>
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        android:src="@mipmap/imake_icon"
+        android:scaleType="centerInside"
+        />
 
 
     <!--版本号-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="51dp"
+        android:layout_height="49dp"
         android:layout_marginBottom="10dp"
         android:background="@color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="18.5dp"
+        android:gravity="center"
         >
 
         <TextView
@@ -65,65 +65,76 @@
         android:visibility="gone"
         />
 
-    <!--客服电话-->
     <LinearLayout
-        android:id="@+id/ll_service_the_phone"
         android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="18.5dp"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#fff">
+        <!--客服电话-->
+        <LinearLayout
+            android:id="@+id/ll_service_the_phone"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="客服电话"
-            android:textColor="#333"
-            android:textSize="14sp"/>
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="start"
-            android:singleLine="true"
-            android:text="4001-599-586"
-            android:textColor="#4d97ee"
-            android:textSize="14sp"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="客服电话"
+                android:textColor="#333"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="start"
+                android:singleLine="true"
+                android:text="4001-599-586"
+                android:textColor="#4d97ee"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+
+
+        <View
+            style="@style/entry_divider_fine_line_ccc_style"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             />
+
+        <!--招商电话-->
+        <LinearLayout
+            android:id="@+id/ll_supply_the_phone"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="对接电话"
+                android:textColor="#333"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="010-53654225"
+                android:textColor="#4d97ee"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <!--招商电话-->
-    <LinearLayout
-        android:id="@+id/ll_supply_the_phone"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-
-        android:layout_marginBottom="10dp"
-        android:background="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="18.5dp"
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="对接电话"
-            android:textColor="#6b6b6b"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="010-53654225"
-            android:textColor="#4d97ee"
-            android:textSize="14sp"
-            />
-    </LinearLayout>
-
 </LinearLayout>
