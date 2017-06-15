@@ -14,6 +14,7 @@ import java.util.List;
 import shop.imake.R;
 import shop.imake.model.MyMineOther;
 import shop.imake.utils.ImageUtils;
+import shop.imake.utils.LogUtils;
 
 /**
  * @author Alice
@@ -59,9 +60,11 @@ public class MineOtherAdapter extends MyBaseAdapter<MyMineOther.ThreeServicesBea
 
             String imgUrl=myMine.getIcon();
 
+            LogUtils.d("img","holder.iv.getWidth()"+holder.iv.getHeight()+"holder.iv.getHeight()"+holder.iv.getHeight());
+
             //加载网络图片
             Glide.with(context)
-                    .load(ImageUtils.getThumb(imgUrl,holder.iv.getWidth(),holder.iv.getHeight()))
+                    .load(ImageUtils.getThumb(imgUrl,140,140))
 //                    .load(imgUrl)
                     .placeholder(R.mipmap.list_image_loading)
                     .error(R.mipmap.list_image_loading)

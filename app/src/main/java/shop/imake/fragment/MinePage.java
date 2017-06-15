@@ -1,6 +1,8 @@
 package shop.imake.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -62,6 +64,7 @@ import shop.imake.model.PermissionsChecker;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialUtils;
+import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SPUtils;
@@ -230,7 +233,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         initData();
         initOtherData();
 
+
     }
+
 
     /**
      * 加载其他服务数据
@@ -243,7 +248,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             @Override
             public void onFail(Call call, Exception e, int id) {
                 ToastUtils.showException(e);
-
+                initOtherData();
             }
 
             @Override
@@ -398,8 +403,23 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         if (myMineList != null && position < myMineList.size()) {
             MyMineOther.ThreeServicesBean threeServicesBean = myMineList.get(position);
             if (threeServicesBean != null) {
-                String htmlUrl = threeServicesBean.getRequest_url() + "&vt=" + System.currentTimeMillis();
-                WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
+                int type=threeServicesBean.getIs_open();
+                if (type==1){
+                    String htmlUrl = threeServicesBean.getRequest_url() + "&vt=" + System.currentTimeMillis();
+                    WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
+                }else if (type==0){
+                    Dialog dialog = DialogUtils.createMessageDialog(
+                            getActivity(), null, "暂未开通相关服务，敬请期待～", "确定",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }
+                    );
+                    dialog.show();
+
+                }
             }
         }
     }
