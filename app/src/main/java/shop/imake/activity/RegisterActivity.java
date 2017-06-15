@@ -258,7 +258,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             public void onSuccess(Object response, int id) {
 
                 dismissLoadingDialog();
-                ToastUtils.showLong("注册成功");
+                ToastUtils.showShort("注册成功");
 //                if (response == null) {
 //                    return;
 //                }
