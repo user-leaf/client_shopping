@@ -1097,21 +1097,37 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
+                if (!CurrentUserManager.isLoginUser()){
+                    jump(LoginActivity.class,false);
+                    return;
+                }
                 // 我的订单
                 jump(MyOrderActivity.class, false);
                 break;
             case 1:
+                if (!CurrentUserManager.isLoginUser()){
+                    jump(LoginActivity.class,false);
+                    return;
+                }
                 Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
                 //携带数据接口
                 phIntent.putExtra("title", "历史购买");
                 startActivity(phIntent);
                 break;
             case 2:
+                if (!CurrentUserManager.isLoginUser()){
+                    jump(LoginActivity.class,false);
+                    return;
+                }
                 //收货地址"
 
                 jump(AddressManagerNewActivity.class, false);
                 break;
             case 3:
+                if (!CurrentUserManager.isLoginUser()){
+                    jump(LoginActivity.class,false);
+                    return;
+                }
                 //我的众汇券，WebView
                 StringBuilder stringBuilder = new StringBuilder(ClientAPI.URL_WX_H5);
                 stringBuilder.append("myzhonghui.html?token=").append(CurrentUserManager.getUserToken())
@@ -1153,6 +1169,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                break;
         }
     }
+
+
 
 
     /**
