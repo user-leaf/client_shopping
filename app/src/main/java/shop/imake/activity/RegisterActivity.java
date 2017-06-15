@@ -29,6 +29,7 @@ import shop.imake.model.TokenModel;
 import shop.imake.utils.CountDownButtonHelper;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.StringUtils;
+import shop.imake.utils.ToastUtils;
 import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 
@@ -197,7 +198,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case R.id.register_btn_login:   //短信验证登录
-                doLogin();
+                doRegister();
                 break;
 
             case R.id.register_iv_delete:   // 手机号输入框中的删除按钮
@@ -214,7 +215,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     // 处理登录
-    private void doLogin() {
+    private void doRegister() {
         final String phone = mEtTel.getText().toString();
         final String password = mEtVeriCode.getText().toString();
         final String invitationCode = mEtInviteCode.getText().toString();
@@ -257,7 +258,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             public void onSuccess(Object response, int id) {
 
                 dismissLoadingDialog();
-
+                ToastUtils.showLong("注册成功");
 //                if (response == null) {
 //                    return;
 //                }
