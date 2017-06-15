@@ -37,7 +37,7 @@ public class UpdateManager {
     private Context mContext;
     //    private UpdateInfo updateInfo;
     private UpdateInfo2.PackageBean mUpdateInfo2;
-    private final String APK_NAME = "aiyouyoumall.apk";
+    private final String APK_NAME = "shop.imake.apk";
 
     public UpdateManager(Context context) {
         this.mContext = context;
