@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="#ffffff"
-            android:hint="邀请人的手机号(选填，一经确认无法更改)"
+            android:hint="请输入邀请人的手机号（必填）"
             android:inputType="number"
             android:singleLine="true"
             android:textSize="@dimen/text_size_small"

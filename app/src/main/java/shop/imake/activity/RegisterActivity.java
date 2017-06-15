@@ -120,6 +120,23 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+        mEtInviteCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputComplete();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         setAgreeData();
     }
 
@@ -165,7 +182,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      */
     private void checkInputComplete() {
         if (!TextUtils.isEmpty(mEtTel.getText().toString())
-                && !TextUtils.isEmpty(mEtVeriCode.getText().toString())) {
+                && !TextUtils.isEmpty(mEtVeriCode.getText().toString())
+                && !TextUtils.isEmpty(mEtInviteCode.getText().toString())) {
             mBtnLogin.setEnabled(true);
         } else {
             mBtnLogin.setEnabled(false);
@@ -209,6 +227,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (!ValidatorsUtils.validateUserPhone(phone)) {
             mTipsView.setVisibility(View.VISIBLE);
             mTvTelTips.setText("手机号码有误");
+            return;
+        }
+        if (TextUtils.isEmpty(invitationCode)) {
+            mTipsView.setVisibility(View.VISIBLE);
+            mTvTelTips.setText("请输入邀请人手机号");
             return;
         }
 
