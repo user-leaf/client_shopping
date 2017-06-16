@@ -23,10 +23,9 @@ import static shop.imake.R.id.ll_supply_the_phone;
 public class AboutIUUActivity extends BaseActivity implements View.OnClickListener{
 
     private IUUTitleBar mTitleBar;
-    private View mCompanyView;
-    private TextView mTvVersions;
-    private LinearLayout mLLServerPhone;
-    private LinearLayout mLLSupplyPhone;
+    private TextView mTvVersions;//版本
+    private LinearLayout mLLServerPhone;//客服电话
+    private LinearLayout mLLSupplyPhone;//供货电话
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,6 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
 
     private void initView() {
         mTitleBar = ((IUUTitleBar) findViewById(R.id.title_about_iuu));
-        mCompanyView = findViewById(R.id.tv_about_iuu_company);
         mTvVersions = ((TextView) findViewById(R.id.tv_about_iuu_versions));
         mLLServerPhone = ((LinearLayout) findViewById(ll_service_the_phone));
         mLLSupplyPhone = ((LinearLayout) findViewById(ll_supply_the_phone));
@@ -50,7 +48,6 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
 
     private void setUpView() {
         mTitleBar.setLeftLayoutClickListener(this);
-        mCompanyView.setOnClickListener(this);
         mLLServerPhone.setOnClickListener(this);
         mLLSupplyPhone.setOnClickListener(this);
     }
@@ -63,12 +60,6 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()){
             case R.id.left_layout:
                 finish();
-                break;
-
-            case R.id.tv_about_iuu_company:
-//                jump(MineRechargeSuccessActivity.class, false);
-//                jump(ScanPayActivity.class, false);
-//                WebShowActivity.actionStart(this, "http://192.168.8.140:8080?vt=" + System.currentTimeMillis(), WebShowActivity.PARAM_PAGE_HIDE);
                 break;
 
             case R.id.ll_service_the_phone://客服电话

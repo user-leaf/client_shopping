@@ -54,17 +54,6 @@
             />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_about_iuu_company"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="爱每刻商城"
-        android:textColor="#000"
-        android:textSize="@dimen/text_size_medium"
-        android:visibility="gone"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
