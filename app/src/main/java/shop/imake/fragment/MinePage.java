@@ -1,6 +1,5 @@
 package shop.imake.fragment;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -60,7 +59,6 @@ import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.MyMine;
 import shop.imake.model.MyMineOther;
-import shop.imake.model.PermissionsChecker;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialUtils;
@@ -172,14 +170,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private MaterialDialog mFindSafeCodeDialog;
     //邮件发送成功对话框
     private MaterialDialog mEmailSendSucceedDialog;
-
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.INTERNET
-    };
-
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
     //用户头像名称
     private String mImgName;
     //用户头像路径
@@ -189,21 +179,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //可提金额
     private TextView mTvWithdrawNum;
 
-    //2为已升级为vip
-    private int isVip;
-
-
     //网络请求对象
     private Api4Mine mClientApi;
     //拨打客服电话
     private LinearLayout mLLServicePhone;
-
-
-    //是否绑定支付宝
-    private boolean isBindingAlipay = false;
-
-
-    private static final int SDK_AUTH_FLAG = 2;
+    //其他服务布局
     private NoScrollGridView mGvOther;
     //网络加载
     private Api4Mine mClient;
@@ -223,9 +203,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //初始化权限检查器
-        mPermissionsChecker = new PermissionsChecker(getContext());
         initVariate();
         initView();
         setupView();
@@ -235,6 +212,36 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mIVUserIcon.setImageResource(R.mipmap.list_profile_photo);
+
+        //判断登录与否隐藏显示头部和添加好友按钮
+        String token = CurrentUserManager.getUserToken();
+        if (TextUtils.isEmpty(token)) {
+            isLogin = false;
+            mLoginView.setVisibility(View.GONE);
+            mNotLoginView.setVisibility(View.VISIBLE);
+//            initGridViewChange();
+            mTVIntegralNum.setText("" + 0);
+            mTVGoldCoinNum.setText("" + 0);
+            mTvWithdrawNum.setText("" + 0);
+        } else {
+            mLoginView.setVisibility(View.VISIBLE);
+            mNotLoginView.setVisibility(View.GONE);
+            //清空本地存储
+            SPUtils.put(getContext(), Constants.USER, "");
+            initData();
+        }
+        dialogDismiss(mFindSafeCodeDialog);
+        dialogDismiss(mEmailSendSucceedDialog);
+        dialogDismiss(mSafeCodeDialog);
+
+    }
+
 
 
     /**
@@ -267,34 +274,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mClient = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mIVUserIcon.setImageResource(R.mipmap.list_profile_photo);
-
-        //判断登录与否隐藏显示头部和添加好友按钮
-        String token = CurrentUserManager.getUserToken();
-        if (TextUtils.isEmpty(token)) {
-            isLogin = false;
-            mLoginView.setVisibility(View.GONE);
-            mNotLoginView.setVisibility(View.VISIBLE);
-//            initGridViewChange();
-            mTVIntegralNum.setText("" + 0);
-            mTVGoldCoinNum.setText("" + 0);
-            mTvWithdrawNum.setText("" + 0);
-        } else {
-            mLoginView.setVisibility(View.VISIBLE);
-            mNotLoginView.setVisibility(View.GONE);
-            //清空本地存储
-            SPUtils.put(getContext(), Constants.USER, "");
-            initData();
-        }
-        dialogDismiss(mFindSafeCodeDialog);
-        dialogDismiss(mEmailSendSucceedDialog);
-        dialogDismiss(mSafeCodeDialog);
-
-    }
 
 
     private void initView() {
@@ -575,7 +554,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             mIsHaveSafeCode = memberBean.isSecurity_code_state();
 
             mCoin = memberBean.getMoney_quantity();
-            isVip = memberBean.getIs_vip();
             mTVGoldCoinNum.setText(mCoin + "");
             mIntegral = memberBean.getIntegration();
             mTVIntegralNum.setText(mIntegral + "");
@@ -1258,17 +1236,17 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
             case R.id.rl_mine_income: // 我的收益
                 mIntentSafeCode = new Intent(getActivity(), MyIncomeActivity.class);
-                chechUerState();
+                checKUserState();
 
                 break;
             case R.id.rl_mine_commission: // 我的佣金
                 mIntentSafeCode = new Intent(getActivity(), MyCommissionActivity.class);
-                chechUerState();
+                checKUserState();
                 break;
 
             case R.id.rl_mine_zhonghui: //我的众汇券
                 mIntentSafeCode = new Intent(getActivity(), MyZhongHuiQuanActivity.class);
-                chechUerState();
+                checKUserState();
 
                 break;
 
@@ -1291,7 +1269,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     /**
      * 检查网络状态，用户是否登录
      */
-    private void chechUerState() {
+    private void checKUserState() {
         /**
          * 网络检查
          */
