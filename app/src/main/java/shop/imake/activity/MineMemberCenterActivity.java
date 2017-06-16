@@ -27,6 +27,16 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.google.gson.Gson;
+import com.kyleduo.switchbutton.SwitchButton;
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
@@ -41,16 +51,6 @@ import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.google.gson.Gson;
-import com.kyleduo.switchbutton.SwitchButton;
-import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * UU兑换页
@@ -185,13 +185,8 @@ public class MineMemberCenterActivity extends BaseActivity implements
         mMember_type = mIntent.getIntExtra("member_type", 0);
         isInTestUser = mIntent.getIntExtra("isInTestUser", 0);
         mSafeCode = mIntent.getStringExtra("safeCode");
-        //test
-//        mMember_type=5;
 
         mOpenId = mIntent.getStringExtra("openId");
-        //test
-//        mOpenId=null;
-//        mOpenId="";
         initData();
 
         loadData();
@@ -231,11 +226,9 @@ public class MineMemberCenterActivity extends BaseActivity implements
         if (isLogin) {
             mSlLogin.setVisibility(View.VISIBLE);
             mLLNotLogin.setVisibility(View.GONE);
-//            mTvWithdrawRecord.setVisibility(View.VISIBLE);
         } else {
             mSlLogin.setVisibility(View.GONE);
             mLLNotLogin.setVisibility(View.VISIBLE);
-//            mTvWithdrawRecord.setVisibility(View.GONE);
 
         }
 
@@ -270,7 +263,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
         mTvUUDetail.setOnClickListener(this);
         mLLIsFive.setOnClickListener(this);
         //换取详请监听
-//        mTvWithdrawRecord.setOnClickListener(this);
         mTitleBar.setLeftLayoutClickListener(this);
 
         //兑换监听
@@ -283,7 +275,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isIntegral = isChecked;
-//                    compareMoney();
                 setButton();
             }
         });
@@ -307,8 +298,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
                 } else {
                     mPayMoney = Long.valueOf(money);
                     mPayRMB=0;
-//                    mBtnNext.setText("兑换("+mPayMoney+")");
-//                    compareMoney();
                     setButton();
                 }
             }
@@ -342,7 +331,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
             public void onFail(Call call, Exception e, int id) {
                 LogUtils.e("getExchangeData", "失败");
                 dismissLoadingDialog();
-//                ToastUtils.exceptionToast(e,getApplicationContext());
             }
 
             @Override
@@ -385,35 +373,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
     }
 
     private void initControl() {
-//        mTagAdapter = new TagAdapter<String>(mVals) {
-//            @Override
-//            public View getView(FlowLayout parent, int position, String s) {
-//                TextView textView = (TextView) LayoutInflater.from(MineMemberCenterActivity.this)
-//                        .inflate(R.layout.member_center_tv, mTagFlowLayout, false);
-//
-//                int width = ScreenUtils.getScreenWidth(getApplicationContext());
-//                int textWidth = width / 4;
-//
-//                textView.setText(s);
-//
-//                LogUtils.e("width", "" + width);
-//                LogUtils.e("textHeight", textView.getHeight() + "");
-//                int textSpace = textWidth / 10;
-//
-//                ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(textWidth, textWidth / 2);
-//                textView.setPadding(0, 10, 0, 10);
-//                params.setMargins(textSpace, 0, textSpace, textSpace);
-//                textView.setLayoutParams(params);
-//                return textView;
-//            }
-//        };
-//
-//        mTagFlowLayout.setAdapter(mTagAdapter);
-//
-//        // 预设选中
-//        mTagAdapter.setSelectedList(0);
-//        mTagFlowLayout.getChildAt(0).setClickable(true);
-        //初始化兑换钱数
         mPayMoney = mRMBs[0];
         mGetCoin = mCoins[0];
         mBtnNext.setText("兑换(" + mGetCoin + ")UU");
@@ -427,33 +386,14 @@ public class MineMemberCenterActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.member_center_btn_next: // 兑换
-//                //处理兑换
-//                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认兑换？", "确认", "取消",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
                 pay();
-//                            }
-//                        },
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        }
-//                );
-//                dialog.show();
 
-                //                jump(MineRechargeSuccessActivity.class,false);
                 break;
             case R.id.member_center_tv_withdraw: // 换取入口
                 mClass = WithdrawRecordActivity.class;
-//                mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
                 mIntentWithDraw.putExtra("havenCoin", mHavenCoin);
                 mIntentWithDraw.putExtra("safeCode", mSafeCode);
                 goToGetMoney();
-//                jump(intentWithdraw,false);
                 break;
 
             case R.id.tv_goto_login: // 登录入口
@@ -461,13 +401,9 @@ public class MineMemberCenterActivity extends BaseActivity implements
                 jump(new Intent(getApplicationContext(), LoginActivity.class), false);
                 finish();
                 break;
-//            case R.id.tv_member_center_title_bar_withdraw_record: // 换取详请入口
-//                jump(WithdrawRecordActivity.class,false);
-//                break;
             case R.id.ll__member_center_coin_income: // 我的收益入口
                 mClass = UserIncomeActivity.class;
                 mIntentWithDraw = new Intent(getApplicationContext(), UserIncomeActivity.class);
-//                jump(UserIncomeActivity.class,false);
                 goToGetMoney();
                 break;
             case R.id.tv_uu_detail: // UU详情入口
@@ -540,63 +476,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
         LogUtils.d(TAG, mVals[choice]);
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.left_layout: // 返回
-//                finish();
-//                break;
-//            case R.id.member_center_btn_next: // 兑换
-////                //处理兑换
-////                Dialog dialog= DialogUtils.createConfirmDialog(this, null, "是否确认兑换？", "确认", "取消",
-////                        new DialogInterface.OnClickListener() {
-////                            @Override
-////                            public void onClick(DialogInterface dialog, int which) {
-////                                dialog.dismiss();
-//                pay();
-////                            }
-////                        },
-////                        new DialogInterface.OnClickListener() {
-////                            @Override
-////                            public void onClick(DialogInterface dialog, int which) {
-////                                dialog.dismiss();
-////                            }
-////                        }
-////                );
-////                dialog.show();
-//
-//                //                jump(MineRechargeSuccessActivity.class,false);
-//                break;
-//            case R.id.member_center_tv_withdraw: // 换取入口
-//                mClass = WithdrawRecordActivity.class;
-//                mIntentWithDraw = new Intent(getApplicationContext(), WithdrawActivity.class);
-//                mIntentWithDraw.putExtra("havenCoin", mHavenCoin);
-//                mIntentWithDraw.putExtra("safeCode", mSafeCode);
-//                goToGetMoney();
-////                jump(intentWithdraw,false);
-//                break;
-//
-//            case R.id.tv_goto_login: // 登录入口
-//
-//                jump(new Intent(getApplicationContext(), LoginActivity.class), false);
-//                finish();
-//                break;
-////            case R.id.tv_member_center_title_bar_withdraw_record: // 换取详请入口
-////                jump(WithdrawRecordActivity.class,false);
-////                break;
-//            case R.id.ll__member_center_coin_income: // 我的收益入口
-//                mClass = UserIncomeActivity.class;
-//                mIntentWithDraw = new Intent(getApplicationContext(), UserIncomeActivity.class);
-////                jump(UserIncomeActivity.class,false);
-//                goToGetMoney();
-//                break;
-//            case R.id.tv_uu_detail: // UU详情入口
-//                jump(UUDetailActivity.class, false);
-//                break;
-//        }
-//
-//    }
-
     /**
      * 处理收益和换取页面的跳转
      * 一：绑定微信
@@ -654,14 +533,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
                 isIntegralPriority = 0;//不是积分优先
             }
 
-            //防止连续重复点击
-//            mBtnNext.setEnabled(false);
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mHandler.sendEmptyMessage(0);
-//                }
-//            }, 10000);
 
             ClientAPI.postGoldCodePay(token, mPayMoney, isIntegralPriority, new StringCallback() {
                 @Override
@@ -669,8 +540,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
                     LogUtils.e("postIntegralPay--e:", e.toString());
                     if (mPayRMB > mLimitMoneys) {
                         Toast.makeText(getApplicationContext(), "兑换失败；兑换数额不能超过2000元", Toast.LENGTH_SHORT).show();
-                    } else {
-//                        UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                     }
                     dismissLoadingDialog();
                 }
@@ -689,16 +558,7 @@ public class MineMemberCenterActivity extends BaseActivity implements
                         }else {
                             ToastUtils.showShort("获取订单失败，稍后再试");
                         }
-//                        doPayByPingpp();
-                        //支付成功后跳转页
-//                    jump(MineRechargeSuccessActivity.class,false);
                     } else {
-                        //积分兑换不返回订单号
-//                        Toast.makeText(getApplicationContext(),"积分消费，UU兑换成功",Toast.LENGTH_SHORT).show();
-                        //跳转到支付成功页面
-//                        mPaySucceedIntent=new Intent(getApplicationContext(),MineRechargeSuccessActivity.class);
-//                        mPaySucceedIntent.putExtra("coin",mGetCoin+mHavenCoin);
-//                        jump(mPaySucceedIntent,false);
                         MineRechargeSuccessActivity.actionStart(MineMemberCenterActivity.this, 0);
                         finish();
                     }
@@ -759,8 +619,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
             //获得兑换钱数,并且进行判断
             mPayMoney = mRMBs[choice];
             mPayRMB = 0;
-//            compareMoney();
-//            mBtnNext.setText("兑换("+mPayMoney+")");
             setButton();
             mOtherView.setVisibility(View.GONE);
         }
@@ -859,11 +717,6 @@ public class MineMemberCenterActivity extends BaseActivity implements
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
             @Override
             public void onPaySuccess() {
-                //跳转到支付成功页面
-//                    mPaySucceedIntent=new Intent(getApplicationContext(),MineRechargeSuccessActivity.class);
-//                    mPaySucceedIntent.putExtra("coin",mGetCoin+mHavenCoin);
-//                    jump(mPaySucceedIntent,false);
-
                 MineRechargeSuccessActivity.actionStart(MineMemberCenterActivity.this, 0);
                 finish();
             }

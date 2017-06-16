@@ -13,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.alertview.AlertView;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.callback.PingppPayResult;
@@ -23,10 +27,6 @@ import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import okhttp3.Call;
 
 /**
  * 兑换券充值页面
@@ -35,7 +35,7 @@ import okhttp3.Call;
  */
 public class RechargeActivity extends BaseActivity {
 
-    public  static String TAG=RechargeActivity.class.getSimpleName();
+    public static String TAG = RechargeActivity.class.getSimpleName();
 
     private ImageView mTitleBack;
     //确认充值
@@ -140,7 +140,7 @@ public class RechargeActivity extends BaseActivity {
      * 请求接口确认充值
      */
     private void chargeCommit() {
-        if (mPayMoney==0){
+        if (mPayMoney == 0) {
             ToastUtils.showShort("请输入充值金额");
             return;
         }

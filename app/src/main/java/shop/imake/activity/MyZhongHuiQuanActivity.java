@@ -19,11 +19,11 @@ import okhttp3.Call;
 
 /**
  * 众汇券页面
- *author Alice
- *created at 2017/5/12 18:26
+ * author Alice
+ * created at 2017/5/12 18:26
  */
 public class MyZhongHuiQuanActivity extends BaseActivity {
-    public static String TAG=MyZhongHuiQuanActivity.class.getSimpleName();
+    public static String TAG = MyZhongHuiQuanActivity.class.getSimpleName();
 
     private IUUTitleBar mTitle;
     //众汇券明细入口
@@ -63,24 +63,25 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
         mTvZHQDetail.setOnClickListener(this);
 
     }
+
     private void initVariable() {
-        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
+        mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
     private void initData() {
         showLoadingDialog();
-        mApi4Mine.getZhongHuiQuanData(this,new DataCallback<ZhongHuiQuanModel>(getApplicationContext()) {
+        mApi4Mine.getZhongHuiQuanData(this, new DataCallback<ZhongHuiQuanModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
-                LogUtils.d("getZhongHuiQuanData",e.getMessage());
+                LogUtils.d("getZhongHuiQuanData", e.getMessage());
             }
 
             @Override
             public void onSuccess(Object response, int id) {
                 dismissLoadingDialog();
-                if (response!=null){
-                    mZhangHuiQuanModel=(ZhongHuiQuanModel) response;
+                if (response != null) {
+                    mZhangHuiQuanModel = (ZhongHuiQuanModel) response;
                     setDate();
                 }
 
@@ -90,15 +91,15 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
     }
 
     private void setDate() {
-        mTvZHQNum.setText(DoubleTextUtils.setDoubleUtils(Double.valueOf(mZhangHuiQuanModel.getAll_balance()))+"");
-        mTvZHQCanUse.setText(DoubleTextUtils.setDoubleUtils(mZhangHuiQuanModel.getCan_use_balance())+"");
-        mTvZHQDongjieNum.setText(DoubleTextUtils.setDoubleUtils(mZhangHuiQuanModel.getFreeze_balance())+"");
+        mTvZHQNum.setText(DoubleTextUtils.setDoubleUtils(Double.valueOf(mZhangHuiQuanModel.getAll_balance())) + "");
+        mTvZHQCanUse.setText(DoubleTextUtils.setDoubleUtils(mZhangHuiQuanModel.getCan_use_balance()) + "");
+        mTvZHQDongjieNum.setText(DoubleTextUtils.setDoubleUtils(mZhangHuiQuanModel.getFreeze_balance()) + "");
     }
 
     @Override
     public void widgetClick(View v) {
         super.widgetClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left_layout://关闭
                 finish();
                 break;
@@ -112,11 +113,12 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
                 return;
         }
     }
+
     /**
      * 跳转众汇券详情
      */
     private void intoDetail() {
-        StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
+        StringBuffer sb = new StringBuffer(ClientAPI.URL_WX_H5);
         sb.append("myshouyi-detail.html");
         sb.append("?pageType=");
         sb.append("zhonghui");
@@ -125,8 +127,8 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
         sb.append("&type=android");
         sb.append("&vt=").append(System.currentTimeMillis());
 
-        String webShowUrl=sb.toString().trim();
-        LogUtils.e("webShowUrl",webShowUrl);
-        WebShowActivity.actionStart(MyZhongHuiQuanActivity.this,webShowUrl, null);
+        String webShowUrl = sb.toString().trim();
+        LogUtils.e("webShowUrl", webShowUrl);
+        WebShowActivity.actionStart(MyZhongHuiQuanActivity.this, webShowUrl, null);
     }
 }

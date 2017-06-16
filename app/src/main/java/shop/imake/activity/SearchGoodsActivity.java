@@ -14,17 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import shop.imake.Constants;
-import shop.imake.R;
-import shop.imake.callback.DataCallback;
-import shop.imake.client.Api4ClientOther;
-import shop.imake.client.ClientApiHelper;
-import shop.imake.model.HistorySearchItem;
-import shop.imake.model.SearchHot;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.SPUtils;
-import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.zxing.activity.CaptureActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lidroid.xutils.ViewUtils;
@@ -40,6 +29,17 @@ import java.util.List;
 import java.util.Set;
 
 import okhttp3.Call;
+import shop.imake.Constants;
+import shop.imake.R;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4ClientOther;
+import shop.imake.client.ClientApiHelper;
+import shop.imake.model.HistorySearchItem;
+import shop.imake.model.SearchHot;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.SPUtils;
+import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.zxing.activity.CaptureActivity;
 
 /**
  * 商品搜索界面
@@ -110,7 +110,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
     private List<HistorySearchItem> historyJsonList;
 
     private Api4ClientOther mClient;
-    public static final String TAG=SearchGoodsActivity.class.getSimpleName();
+    public static final String TAG = SearchGoodsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -347,7 +347,7 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
      */
     private void loadHotSearchData() {
         mHotList = new ArrayList<>();
-        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
         mClient.getHotSearchGoodsData(TAG, new DataCallback<SearchHot>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
@@ -356,8 +356,8 @@ public class SearchGoodsActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null) {
-                    SearchHot searchHot= (SearchHot) response;
+                if (response != null) {
+                    SearchHot searchHot = (SearchHot) response;
                     mHotList = searchHot.getSearch_records();
                     LogUtils.e("size", mHotList.size() + "");
                     initSearchHot();

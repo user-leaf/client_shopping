@@ -52,11 +52,15 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     private IUUTitleBar mTitleBar;
 
     private TagFlowLayout mFlowLayout;
+    //反馈选项
     private String[] mVals;
+    //反馈选项适配器
     private TagAdapter<String> mTagAdapter;
     // 提交
     private Button mBtnCommit;
+    //输入字符数
     private TextView mTvCount;
+    //意见输入框
     private EditText mEtDesc;
 
     private RelativeLayout mRLCallCentre;   // 呼叫客服中心
@@ -65,9 +69,13 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     private String mCenterNum;              // 客服电话号码
     //选中的意见类型
     private int mType = 0;
+    //未登录布局
     private RelativeLayout mRLNotLogin;
+    //未联网布局
     private LinearLayout mLLUnNetWork;
+    //去登录
     private TextView mTVGoToLogin;
+    //登录布局
     private LinearLayout mLLLogin;
     //意见反馈的容器
     private FlowRadioGroup mRadioGroup;
@@ -80,7 +88,6 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_customer_service_suggestion);
         //初始化权限检查器
-//        mPermissionsChecker = new PermissionsChecker(this);
         initView();
         setupView();
         loadData();
@@ -200,7 +207,6 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
                 break;
 
             case R.id.rl_call_centre: // 拨打客服电话
-//                callCustomerServerPhone();
                 DialUtils.callCentre(this, DialUtils.CENTER_NUM);
                 break;
 
@@ -223,16 +229,17 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     private void submitOpinion(String content) {
         //意见内容
         LogUtils.e("submitOpinion", "content:" + content + "type:" + mType);
+        showLoadingDialog();
         ClientAPI.postSubmitOpinion(mType, content, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 checkNet();
-//                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                dismissLoadingDialog();
             }
 
             @Override
             public void onResponse(String response, int id) {
-//                Toast.makeText(getApplicationContext(), "意见已经成功提交", Toast.LENGTH_SHORT).show();
+                dismissLoadingDialog();
                 ToastUtils.showShort("提交成功");
                 mEtDesc.setText("");
                 finish();

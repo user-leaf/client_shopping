@@ -11,6 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4ClientOther;
@@ -21,11 +25,6 @@ import shop.imake.fragment.IncomeFragment;
 import shop.imake.model.ActivateInfoModel;
 import shop.imake.model.User;
 import shop.imake.utils.LogUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 我的兑换券页面
@@ -67,7 +66,7 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
     //是否是Vip用户
     private boolean isVipUser;
 
-    public static String MYEXCHANGE_USER="myexchange_user";
+    public static String MYEXCHANGE_USER = "myexchange_user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +81,10 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.d("getExchangeData","MyExchangeonResume");
+        LogUtils.d("getExchangeData", "MyExchangeonResume");
         initData();
     }
+
     /**
      *
      */
@@ -114,8 +114,8 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
         mFragments = new ArrayList<>();
         ExchangeCertificateFragment exchangeCertificateFragment = new ExchangeCertificateFragment();
 
-        Bundle bundle=new Bundle();
-        bundle.putSerializable(MYEXCHANGE_USER,mUserAboutCashInfo);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MYEXCHANGE_USER, mUserAboutCashInfo);
         exchangeCertificateFragment.setArguments(bundle);
 
         mFragments.add(exchangeCertificateFragment);
@@ -150,7 +150,7 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
      */
     private void initData() {
         ///////////////////////////////获取数据//////////////////////////////
-        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
         mClient.getExchangeData(new DataCallback<ActivateInfoModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
@@ -184,11 +184,11 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
             isVipUser = false;
         }
         //显示我的收益
-        if (isVipUser){
+        if (isVipUser) {
             mTvNotHaveIncome.setVisibility(View.GONE);
             mRg.setVisibility(View.VISIBLE);
             //不显示我的收益
-        }else {
+        } else {
             mTvNotHaveIncome.setVisibility(View.VISIBLE);
             mRg.setVisibility(View.GONE);
 
@@ -202,10 +202,10 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
 
         if (mUser != null && mUser.getMember() != null) {
             //获取数据
-            User.MemberBean mBean=mUser.getMember();
-            mMember_type= mBean.getMember_type();
-            isInTestUser=mBean.getIs_in_test_user();
-            isVip=mBean.getIs_vip();
+            User.MemberBean mBean = mUser.getMember();
+            mMember_type = mBean.getMember_type();
+            isInTestUser = mBean.getIs_in_test_user();
+            isVip = mBean.getIs_vip();
             //判断
             //存在收益权
             if (mMember_type == 5 || isInTestUser == 1 || isVip == 2) {
@@ -224,7 +224,6 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
             LogUtils.e("uu", "用户是空");
         }
     }
-
 
 
     /**
@@ -285,14 +284,15 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
         mCurrent = i;
 
     }
+
     /**
      * 跳转消息详情
      */
     private void intoRule() {
-        StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
+        StringBuffer sb = new StringBuffer(ClientAPI.URL_WX_H5);
         sb.append("myduihuanquan-role.html");
 
-        String webShowUrl=sb.toString().trim();
-        WebShowActivity.actionStart(MyExchangeActivity.this,webShowUrl, null);
+        String webShowUrl = sb.toString().trim();
+        WebShowActivity.actionStart(MyExchangeActivity.this, webShowUrl, null);
     }
 }

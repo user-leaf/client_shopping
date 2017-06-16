@@ -361,10 +361,6 @@
         <activity
             android:name=".activity.PermissionsActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activity.MineBingPhoneNumActivity"
-            android:screenOrientation="portrait">
-        </activity>
 
         <!-- Ping++支付 begain -->
         <!-- Ping++ SDK -->

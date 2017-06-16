@@ -12,6 +12,17 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.bigkoo.alertview.OnItemClickListener;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.MainActivity;
 import shop.imake.MainApplication;
 import shop.imake.R;
@@ -32,17 +43,6 @@ import shop.imake.utils.PayUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollListView;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 订单详情页
@@ -730,17 +730,18 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     /**
      * 支付成功后的操作
      */
-    private void paySuccess(){
+    private void paySuccess() {
         OrderPaySuccessActivity.actionStart(OrderDetailActivity.this, mStrName, mStrTel, mStrAddress, mOrderNumber);
         mHandler.sendEmptyMessage(0);
     }
 
     /**
      * 余额支付后的“回调”
+     *
      * @param event
      */
     @Subscribe
-    public void onBalancePayEvent(PayResultEvent event){
+    public void onBalancePayEvent(PayResultEvent event) {
         if (event.isPaySuccess()) {
             paySuccess();
         }
@@ -748,6 +749,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     /**
      * 第三方支付后的“回调”
+     *
      * @param requestCode
      * @param resultCode
      * @param data
