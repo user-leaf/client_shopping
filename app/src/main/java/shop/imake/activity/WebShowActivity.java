@@ -232,12 +232,17 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         mWebView.loadUrl("javascript:pauseVideo()");
     }
 
+    private void goBack() {
+        mWebView.loadUrl("javascript:goback()");
+    }
+
     //监听手机键盘的按下事件
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 判断当前的网页是否为刚开始加载的网页
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
             mWebView.goBack();
+            goBack();
             return true;
         }
 
@@ -246,6 +251,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             pauseVideo();
             finish();
         }
+
         return false;
     }
 

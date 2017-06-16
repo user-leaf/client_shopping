@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import shop.imake.ActivityCollector;
 import shop.imake.MainActivity;
 import shop.imake.R;
@@ -251,7 +252,16 @@ public class UpdateUtils {
 
         dialogWindow.setAttributes(lp);
 
-        dialog.show();
+        /**
+         * 解决一定频率出现崩溃问题
+         */
+        if (mContext instanceof MainActivity && ((MainActivity) mContext).isFinishing()) {
+            return;
+        }
+
+        if (dialog != null && !dialog.isShowing()) {
+            dialog.show();
+        }
     }
 
     private void requestPermission(final String permission, String rationale, final int requestCode) {
