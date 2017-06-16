@@ -35,6 +35,21 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bumptech.glide.Glide;
+import com.daimajia.swipe.SwipeLayout;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.activity.GoodsDetailsActivity;
 import shop.imake.activity.GoodsListShowActivity;
@@ -67,21 +82,6 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.zxing.activity.CaptureActivity;
-import com.bumptech.glide.Glide;
-import com.daimajia.swipe.SwipeLayout;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import okhttp3.Call;
 
 /**
  * @author Alice
@@ -726,9 +726,9 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
             @Override
             public void onResponse(String response, int id) {
                 if (!TextUtils.isEmpty(response)) {
-                    Context context=getContext();
+                    Context context = getContext();
                     String pushMessages = response.trim();
-                    if (pushMessages!=null&&context!=null){
+                    if (pushMessages != null && context != null) {
                         SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_ONE, pushMessages);
                         //获取第二页
                         mClientApi.getPushMessage(2, new StringCallback() {
@@ -741,7 +741,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                             public void onResponse(String response, int id) {
                                 if (!TextUtils.isEmpty(response)) {
                                     String pushMessages = response.trim();
-                                    if (pushMessages!=null){
+                                    if (pushMessages != null) {
                                         SPUtils.put(getContext(), SPUtils.PUSH_MESSAGE_KEY_TWO, pushMessages);
                                     }
                                 }
@@ -1270,8 +1270,8 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
     /**
      * 销毁消息提醒对话框
      */
-    public void dismissMessageDialog(){
-        if (messageDialog != null&&messageDialog.isShowing()) {
+    public void dismissMessageDialog() {
+        if (messageDialog != null && messageDialog.isShowing()) {
             messageDialog.dismiss();
         }
     }

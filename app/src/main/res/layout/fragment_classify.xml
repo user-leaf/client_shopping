@@ -1,64 +1,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="shop.imake.fragment.ClassifyPage"
-              android:background="@color/app_common_bg"
-              android:orientation="vertical"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_common_bg"
+    android:orientation="vertical"
+    tools:context="shop.imake.fragment.ClassifyPage">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/app_basic"
         android:gravity="center"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/editText_search_classify"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/shape_home_top_bar_et_bg"
-            android:focusable="false"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_home_top_bar_et_bg"
+            android:drawableLeft="@mipmap/nav_icon_seach"
+            android:focusable="false"
+            android:gravity="center"
+            android:hint="搜索商品"
             android:paddingBottom="3dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="3dp"
-            android:textColorHint="#999"
-            android:textSize="12sp"
-            android:hint="搜索商品"
-            android:gravity="center"
             android:singleLine="true"
-            android:drawableLeft="@mipmap/nav_icon_seach"
-            />
+            android:textColorHint="#999"
+            android:textSize="12sp" />
+
         <shop.imake.widget.IconCenterEditText
             android:id="@+id/icon_center_editText_search_classify"
-            android:gravity="center"
+            style="@style/StyleEditText"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            style="@style/StyleEditText" 
-            android:visibility="gone"
-            />
+            android:gravity="center"
+            android:visibility="gone" />
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ddd"
-        />
+        android:background="#ddd" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
         <ScrollView
             android:id="@+id/scrollview_level_one_classify"
             android:layout_width="85dp"
             android:layout_height="fill_parent"
             android:fadingEdge="none"
-            android:scrollbars="none" >
+            android:scrollbars="none">
+
             <LinearLayout
                 android:id="@+id/ll_level_one_classify"
                 android:layout_width="match_parent"
@@ -66,11 +66,11 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical" />
         </ScrollView>
+
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="#e2e1e3"
-            />
+            android:background="#e2e1e3" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_goods_classify"

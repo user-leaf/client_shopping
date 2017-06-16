@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import okhttp3.Call;
 import shop.imake.MainActivity;
 import shop.imake.R;
 import shop.imake.activity.MineMemberCenterActivity;
@@ -36,9 +39,6 @@ import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
-import com.google.gson.Gson;
-
-import okhttp3.Call;
 
 /**
  * 我的兑换券页面
@@ -163,25 +163,24 @@ public class ExchangeCertificateFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        LogUtils.d("getExchangeData","onResume");
+        LogUtils.d("getExchangeData", "onResume");
         //获取传递数据
         getData();
     }
 
     /**
-     *
      * 获取传递数据
      */
     private void getData() {
-        mUserAboutCashInfo= (ActivateInfoModel.UserAboutCashInfoBean) getArguments().get(MyExchangeActivity.MYEXCHANGE_USER);
+        mUserAboutCashInfo = (ActivateInfoModel.UserAboutCashInfoBean) getArguments().get(MyExchangeActivity.MYEXCHANGE_USER);
         setData();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            LogUtils.d("getExchangeData","!hidden");
+        if (!hidden) {
+            LogUtils.d("getExchangeData", "!hidden");
             initData();
         }
     }
@@ -199,7 +198,7 @@ public class ExchangeCertificateFragment extends BaseFragment {
         mClient.getExchangeData(new DataCallback<ActivateInfoModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-                LogUtils.e("getExchangeData", "失败"+e.getMessage());
+                LogUtils.e("getExchangeData", "失败" + e.getMessage());
                 dismissLoadingDialog();
             }
 
@@ -251,9 +250,9 @@ public class ExchangeCertificateFragment extends BaseFragment {
             mNotActivateNum = Double.valueOf(canDrawAmount);
         }
         //可激活券额为0时不能进入激活页面
-        if (mNotActivateNum<=0){
+        if (mNotActivateNum <= 0) {
             mTvActivate.setEnabled(false);
-        }else {
+        } else {
             mTvActivate.setEnabled(true);
         }
 
@@ -402,9 +401,9 @@ public class ExchangeCertificateFragment extends BaseFragment {
         //填充激活剩余
 //                int notActivateNum = (int) mNotActivateNum;
 
-        if (mWeekCanActivateNum==0){
+        if (mWeekCanActivateNum == 0) {
             etActivateNum.setText("");
-        }else {
+        } else {
             etActivateNum.setText("" + mWeekCanActivateNum);
         }
 
@@ -824,7 +823,7 @@ public class ExchangeCertificateFragment extends BaseFragment {
 //                }
 //            });
 
-            mClient.postExchangeData(token, exchangeMoney, userName, safeCode,new DataCallback<ExchangeResultModel>(getContext()){
+            mClient.postExchangeData(token, exchangeMoney, userName, safeCode, new DataCallback<ExchangeResultModel>(getContext()) {
                 @Override
                 public void onFail(Call call, Exception e, int id) {
 //                    ToastUtils.showShort("失败Exception");
@@ -842,7 +841,7 @@ public class ExchangeCertificateFragment extends BaseFragment {
                         ToastUtils.showShort("兑换成功");
                         mPopWindow.dismiss();
                         //重新加载数据
-                        LogUtils.d("getExchangeData","reGet");
+                        LogUtils.d("getExchangeData", "reGet");
                         initData();
                     }
 
@@ -862,21 +861,21 @@ public class ExchangeCertificateFragment extends BaseFragment {
                         //输入金额大于可兑换金额
                         ResponseModel model = new Gson().fromJson(responseBody, ResponseModel.class);
                         if (model != null) {
-                            int code=model.getCode();
-                            String messageString="";
+                            int code = model.getCode();
+                            String messageString = "";
                             if (code == 100009) {
 //                                ToastUtils.showShort("不得超出可使用兑换券额");
-                                messageString="不得超出可使用兑换券额";
-                            }else if (code==100006){
+                                messageString = "不得超出可使用兑换券额";
+                            } else if (code == 100006) {
 //                                ToastUtils.showShort("可使用券额需大于100才可兑换哦！");
-                                messageString="可使用券额需大于100才可兑换哦";
+                                messageString = "可使用券额需大于100才可兑换哦";
 
-                            } else if (code==110001){
+                            } else if (code == 110001) {
 //                                ToastUtils.showShort("安全码错误");
-                                messageString="安全码错误";
+                                messageString = "安全码错误";
 
-                            }else {
-                                messageString=model.getMessage();
+                            } else {
+                                messageString = model.getMessage();
                             }
 
                             Dialog dialog = DialogUtils.createConfirmDialog(getActivity(), null, messageString, "知道了", "",
@@ -1177,7 +1176,7 @@ public class ExchangeCertificateFragment extends BaseFragment {
                         ToastUtils.showShort("激活成功");
                         mPopWindow.dismiss();
                         //重新加载数据
-                        LogUtils.d("getExchangeData","reGet");
+                        LogUtils.d("getExchangeData", "reGet");
                         initData();
                     }
                 });

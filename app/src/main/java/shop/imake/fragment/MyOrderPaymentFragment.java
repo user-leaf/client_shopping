@@ -14,6 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.activity.LoginActivity;
 import shop.imake.activity.OrderDetailActivity;
@@ -28,15 +37,6 @@ import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SpaceItemDecoration;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * @author Alice
@@ -91,7 +91,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
     private boolean isPullDown = false;
     private Api4ClientOther mClientApi;
 
-    public static int PAY_REFRESH=2222;
+    public static int PAY_REFRESH = 2222;
 
     //ListView控件的高度
 //    private int mLvHeight;
@@ -100,9 +100,9 @@ public class MyOrderPaymentFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.arg1==PAY_REFRESH){
+            if (msg.arg1 == PAY_REFRESH) {
                 refreshData();
-            }else {
+            } else {
                 initData();
             }
         }
@@ -155,10 +155,10 @@ public class MyOrderPaymentFragment extends BaseFragment {
         lv.setEmptyView(mTvDataEmpty);
 //        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,mLvHeight-100);
 //        lv.setLayoutParams(params);
-        LinearLayoutManager manager=new LinearLayoutManager(getContext());
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         lv.setLayoutManager(manager);
-        lv.addItemDecoration(new SpaceItemDecoration(0,0,5,5));
+        lv.addItemDecoration(new SpaceItemDecoration(0, 0, 5, 5));
 
 
         mLLNotLogin = ((RelativeLayout) layout.findViewById(R.id.ll_not_login));
@@ -227,7 +227,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
      * 加载网络数据
      */
     private void initData() {
-        mClientApi= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClientApi = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
 
         mClientApi.getMyOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
             @Override
@@ -255,7 +255,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null) {
+                if (response != null) {
                     myOrder = (MyOrder) response;
                     mLastPage = myOrder.getLast_page();
                     isHaveNextNews = (myOrder.getNext_page_url() != null);
@@ -356,7 +356,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
+        if (!hidden) {
             refreshData();
         }
 //        refreshData();
@@ -365,6 +365,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
 
     /**
      * 立即支付成功后及时刷新数据
+     *
      * @param event
      */
     @Subscribe

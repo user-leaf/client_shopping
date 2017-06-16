@@ -14,6 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.activity.LoginActivity;
 import shop.imake.activity.OrderDetailActivity;
@@ -27,19 +33,11 @@ import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SpaceItemDecoration;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
- *
  * @author Alice
- *Creare 2016/6/12 14:32
- * 完成订单页面
- *
+ *         Creare 2016/6/12 14:32
+ *         完成订单页面
  */
 public class MyOrderFinishFragment extends BaseFragment {
     private static final String TAG = MyOrderFinishFragment.class.getSimpleName();
@@ -57,7 +55,7 @@ public class MyOrderFinishFragment extends BaseFragment {
     //是否还有下一页
     private boolean isHaveNextNews;
     //Orderstate
-    private  int mOrderstate=1;
+    private int mOrderstate = 1;
     //数据空白显示
     private ImageView mTvDataEmpty;
     //未登录布局
@@ -102,7 +100,6 @@ public class MyOrderFinishFragment extends BaseFragment {
     };
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,10 +139,10 @@ public class MyOrderFinishFragment extends BaseFragment {
         lv.setEmptyView(mTvDataEmpty);
 //        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,mLvHeight-100);
 //        lv.setLayoutParams(params);
-        LinearLayoutManager manager=new LinearLayoutManager(getContext());
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         lv.setLayoutManager(manager);
-        lv.addItemDecoration(new SpaceItemDecoration(0,0,5,5));
+        lv.addItemDecoration(new SpaceItemDecoration(0, 0, 5, 5));
 
 
         mLLNotLogin = ((RelativeLayout) layout.findViewById(R.id.ll_not_login));
@@ -214,7 +211,7 @@ public class MyOrderFinishFragment extends BaseFragment {
      * 加载网络数据
      */
     private void initData() {
-        mClientApi= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClientApi = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
 
         mClientApi.getMyOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
             @Override
@@ -242,7 +239,7 @@ public class MyOrderFinishFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Object response, int id) {
-                if (response!=null) {
+                if (response != null) {
                     myOrder = (MyOrder) response;
                     mLastPage = myOrder.getLast_page();
                     isHaveNextNews = (myOrder.getNext_page_url() != null);
@@ -343,7 +340,7 @@ public class MyOrderFinishFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
+        if (!hidden) {
             refreshData();
         }
     }

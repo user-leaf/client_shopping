@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/app_common_bg"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_common_bg"
+    android:orientation="vertical">
 
     <!-- 顶部标题栏 -->
     <RelativeLayout
@@ -12,61 +12,62 @@
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/top_bar_normal_bg"
         android:gravity="center_vertical"
-        android:visibility="visible"
-        >
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/ll_home_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:orientation="vertical"
             android:gravity="center"
-            >
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
             <ImageView
                 android:id="@+id/home_iv_scan"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@mipmap/nav_icon_scan"/>
+                android:src="@mipmap/nav_icon_scan" />
+
             <TextView
                 android:id="@+id/home_tv_scan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="扫一扫"
-                android:textSize="10sp"
                 android:gravity="center"
+                android:text="扫一扫"
                 android:textColor="#ffffff"
-                />
+                android:textSize="10sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_home_push_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:orientation="vertical"
             android:gravity="center"
-            >
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
             <RelativeLayout
                 android:layout_width="22dp"
-                android:layout_height="20dp"
-                >
+                android:layout_height="20dp">
+
                 <ImageView
                     android:id="@+id/home_iv_push_message"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_alignParentBottom="true"
-                    android:src="@mipmap/nav_icon_message"/>
+                    android:src="@mipmap/nav_icon_message" />
+
                 <TextView
                     android:id="@+id/tv_home_message_not_read"
-                    android:layout_alignParentRight="true"
                     android:layout_width="9dp"
                     android:layout_height="9dp"
+                    android:layout_alignParentRight="true"
                     android:background="@drawable/shape_home_not_read"
                     android:visibility="invisible"
 
@@ -77,29 +78,28 @@
                 android:id="@+id/home_tv_purchase_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="消息"
-                android:textSize="10sp"
                 android:gravity="center"
+                android:text="消息"
                 android:textColor="#ffffff"
-                />
+                android:textSize="10sp" />
 
         </LinearLayout>
+
         <EditText
             android:id="@+id/home_et_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/ll_home_push_message"
+            android:layout_toRightOf="@+id/ll_home_scan"
             android:background="@drawable/shape_home_top_bar_et_bg"
             android:drawableRight="@mipmap/nav_icon_seach"
             android:focusable="false"
+            android:maxLength="50"
             android:paddingBottom="3dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:paddingTop="3dp"
-            android:maxLength="50"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/ll_home_scan"
-            android:layout_toLeftOf="@id/ll_home_push_message"
-            />
+            android:paddingTop="3dp" />
 
     </RelativeLayout>
 
@@ -145,13 +145,10 @@
     <!--</LinearLayout>-->
 
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
         <!--断网判断-->
         <LinearLayout
             android:id="@+id/ll_home_un_network"
@@ -164,7 +161,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
+                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,29 +169,27 @@
                 android:background="#FFDFE0"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="当前网络不可用，请检查网络设置"/>
+                android:text="当前网络不可用，请检查网络设置" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
+                android:background="@android:color/darker_gray" />
         </LinearLayout>
 
         <View
             style="@style/entry_divider_fine_line_style"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <com.jcodecraeer.xrecyclerview.XRecyclerView
                 android:id="@+id/rv_everyday_empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <com.jcodecraeer.xrecyclerview.XRecyclerView
                 android:id="@+id/home_gv_show"
@@ -202,7 +197,7 @@
                 android:layout_height="match_parent"
                 android:horizontalSpacing="3.5dp"
                 android:numColumns="2"
-                android:verticalSpacing="3.5dp"/>
+                android:verticalSpacing="3.5dp" />
         </FrameLayout>
 
     </LinearLayout>
@@ -213,7 +208,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </LinearLayout>
