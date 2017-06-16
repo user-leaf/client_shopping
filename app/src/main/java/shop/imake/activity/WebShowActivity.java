@@ -42,7 +42,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     private IUUTitleBar mTitleBar;
     private ProgressBar mProgressBar;
     private WebView mWebView;
-    private View mRefreshView;
+//    private View mRefreshView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +98,13 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         mTitleBar = (IUUTitleBar) findViewById(R.id.web_show_title_bar);
         mProgressBar = (ProgressBar) findViewById(R.id.web_show_progress_bar);
         mWebView = (WebView) findViewById(R.id.web_show_webview);
-        mRefreshView = findViewById(R.id.web_show_refresh);
+//        mRefreshView = findViewById(R.id.web_show_refresh);
     }
 
     private void setupView() {
         mTitleBar.setLeftLayoutClickListener(this);
         mProgressBar.setMax(100);
-        mRefreshView.setOnClickListener(this);
+//        mRefreshView.setOnClickListener(this);
     }
 
     private void initWebView() {
@@ -143,8 +143,8 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                mWebView.setVisibility(View.GONE);
-                mRefreshView.setVisibility(View.VISIBLE);
+//                mWebView.setVisibility(View.GONE);
+//                mRefreshView.setVisibility(View.VISIBLE);
                 //网络不畅通加载本地html
                 mWebView.loadUrl("file:///android_asset/webviewreload.html");
             }
@@ -223,7 +223,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             case R.id.web_show_refresh:
                 loadUrl();
                 mWebView.setVisibility(View.VISIBLE);
-                mRefreshView.setVisibility(View.GONE);
+//                mRefreshView.setVisibility(View.GONE);
                 break;
         }
     }
