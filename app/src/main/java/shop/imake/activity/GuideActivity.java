@@ -1,6 +1,9 @@
 package shop.imake.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,8 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +58,13 @@ public class GuideActivity extends BaseActivity {
 //        imageView2.setImageResource(R.drawable.guide2);
 //        imageView3.setImageResource(R.drawable.guide3);
 
-        Glide.with(this).load(R.drawable.guide1).dontAnimate().into(imageView1);
-        Glide.with(this).load(R.drawable.guide2).dontAnimate().into(imageView2);
-        Glide.with(this).load(R.drawable.guide3).dontAnimate().into(imageView3);
+        imageView1.setImageBitmap(readBitmap(this, R.drawable.guide01));
+        imageView2.setImageBitmap(readBitmap(this, R.drawable.guide02));
+        imageView3.setImageBitmap(readBitmap(this, R.drawable.guide03));
+
+//        Glide.with(this).load(R.drawable.guide1).dontAnimate().into(imageView1);
+//        Glide.with(this).load(R.drawable.guide2).dontAnimate().into(imageView2);
+//        Glide.with(this).load(R.drawable.guide3).dontAnimate().into(imageView3);
 
         mList.add(imageView1);
         mList.add(imageView2);
@@ -82,7 +88,6 @@ public class GuideActivity extends BaseActivity {
 
             }
         });
-
 
         //设置ViewPager的滑动监听,为了滑动到最后一页,继续滑动实现页面的跳转
         mPager.setOnTouchListener(new View.OnTouchListener() {
@@ -115,11 +120,18 @@ public class GuideActivity extends BaseActivity {
         });
 
     }
+    public Bitmap readBitmap(Context context, int resId){
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPurgeable = true;
+        opt.inInputShareable = true;
+        InputStream is = context.getResources().openRawResource(resId);
+        return BitmapFactory.decodeStream(is,null,opt);
+    }
 
     /**
      * 进入主页
      */
-
     private void startApp() {
         Intent intent = new Intent(GuideActivity.this, MainActivity.class);
         startActivity(intent);
