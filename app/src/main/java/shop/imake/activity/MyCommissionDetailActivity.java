@@ -5,6 +5,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.adapter.MyCommissionDetailAdapter;
 import shop.imake.callback.DataCallback;
@@ -14,13 +21,6 @@ import shop.imake.model.MyCommissionModel;
 import shop.imake.utils.DataHolder;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 众汇券详情页面
@@ -108,7 +108,7 @@ public class MyCommissionDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        mApi4Mine.getMyPropertyData(this,mClassName, mPage, new DataCallback<MyCommissionModel>(getApplicationContext()) {
+        mApi4Mine.getMyPropertyData(this, mClassName, mPage, new DataCallback<MyCommissionModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 LogUtils.d("getMyPropertyData", e.getMessage());
@@ -137,7 +137,7 @@ public class MyCommissionDetailActivity extends BaseActivity {
                     if (isRefresh) {
                         mAdapter.clear();
                         mAdapter.addAll(dataBeen);
-                        isRefresh=false;
+                        isRefresh = false;
                     } else {
                         mAdapter.addAll(dataBeen);
                     }

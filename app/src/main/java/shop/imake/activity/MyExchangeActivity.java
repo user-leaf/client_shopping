@@ -73,8 +73,6 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_exchange);
         initView();
-
-//        initVariable();
         setupView();
     }
 
@@ -195,34 +193,6 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
         }
         createFragment();
 
-    }
-
-
-    private void initVariable() {
-
-        if (mUser != null && mUser.getMember() != null) {
-            //获取数据
-            User.MemberBean mBean = mUser.getMember();
-            mMember_type = mBean.getMember_type();
-            isInTestUser = mBean.getIs_in_test_user();
-            isVip = mBean.getIs_vip();
-            //判断
-            //存在收益权
-            if (mMember_type == 5 || isInTestUser == 1 || isVip == 2) {
-                mTvNotHaveIncome.setVisibility(View.GONE);
-                mRg.setVisibility(View.VISIBLE);
-                //test
-//                mTvNotHaveIncome.setVisibility(View.VISIBLE);
-//                mRg.setVisibility(View.GONE);
-
-                //不存在收益权
-            } else {
-                mTvNotHaveIncome.setVisibility(View.VISIBLE);
-                mRg.setVisibility(View.GONE);
-            }
-        } else {
-            LogUtils.e("uu", "用户是空");
-        }
     }
 
 

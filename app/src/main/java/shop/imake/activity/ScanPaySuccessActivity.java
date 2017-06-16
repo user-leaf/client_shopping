@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import shop.imake.R;
 import shop.imake.utils.ImageUtils;
 import shop.imake.utils.ScreenUtils;
-import com.bumptech.glide.Glide;
 
 public class ScanPaySuccessActivity extends Activity implements View.OnClickListener {
 

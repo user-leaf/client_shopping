@@ -8,12 +8,11 @@ import shop.imake.widget.IUUTitleBar;
 
 /**
  * 安全码重置链接发送
+ *
  * @author Alice
- *Creare 2016/8/25 11:19
- *
- *
+ *         Creare 2016/8/25 11:19
  */
-public class SafeCodeForgetActivity extends BaseActivity implements View.OnClickListener{
+public class SafeCodeForgetActivity extends BaseActivity implements View.OnClickListener {
 
     private IUUTitleBar mTitleBar;
 
@@ -35,7 +34,7 @@ public class SafeCodeForgetActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left_layout:
                 finish();
                 break;

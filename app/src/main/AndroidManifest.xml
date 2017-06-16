@@ -264,10 +264,6 @@
             android:screenOrientation="portrait">
         </activity>
         <!-- 添加支付宝 -->
-        <activity
-            android:name=".activity.ZhiFuBaoAddActivity"
-            android:screenOrientation="portrait">
-        </activity>
         <!-- 订单支付失败 -->
         <activity
             android:name=".activity.OrderPayFailActivity"

@@ -42,11 +42,11 @@ import shop.imake.widget.IUUTitleBar;
 
 /**
  * 我的佣金
- *author Alice
- *created at 2017/5/12 14:28
+ * author Alice
+ * created at 2017/5/12 14:28
  */
 public class MyCommissionActivity extends BaseActivity {
-    public static String TAG=MyCommissionActivity.class.getSimpleName();
+    public static String TAG = MyCommissionActivity.class.getSimpleName();
     //标题
     private IUUTitleBar mTitle;
     //佣金详情入口
@@ -85,7 +85,7 @@ public class MyCommissionActivity extends BaseActivity {
     private CommissionModel mCommissionModel;
     private CommissionModel.PushMoneyBean mPushMoneyBean;
     private ScrollView mScrlViewPop;
-    private boolean isCancel=false;
+    private boolean isCancel = false;
     //弹框的布局
     private View contentView;
 
@@ -100,7 +100,7 @@ public class MyCommissionActivity extends BaseActivity {
     }
 
     private void initVariable() {
-        mApi4Mine= (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
+        mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
     private void initView() {
@@ -141,18 +141,18 @@ public class MyCommissionActivity extends BaseActivity {
 
     private void initData() {
         showLoadingDialog();
-        mApi4Mine.getCommissionData(this,new DataCallback<CommissionModel>(getApplicationContext()) {
+        mApi4Mine.getCommissionData(this, new DataCallback<CommissionModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
-                LogUtils.d("getCommissionData",e.getMessage());
+                LogUtils.d("getCommissionData", e.getMessage());
             }
 
             @Override
             public void onSuccess(Object response, int id) {
                 dismissLoadingDialog();
-                if (response!=null){
-                    mCommissionModel= (CommissionModel) response;
+                if (response != null) {
+                    mCommissionModel = (CommissionModel) response;
                     setData();
                 }
             }
@@ -163,28 +163,27 @@ public class MyCommissionActivity extends BaseActivity {
      * 根据接口数据进行页面操作
      */
     private void setData() {
-         mPushMoneyBean=mCommissionModel.getPush_money();
-        if (mPushMoneyBean!=null){
-            mTvHavaCommissionNum.setText(""+ DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
-            mTvHaveWithdrawNum.setText(""+DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getAll_push_money())));
+        mPushMoneyBean = mCommissionModel.getPush_money();
+        if (mPushMoneyBean != null) {
+            mTvHavaCommissionNum.setText("" + DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
+            mTvHaveWithdrawNum.setText("" + DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getAll_push_money())));
 
-            mCommissionCanWithdrawNum=Double.valueOf(DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
+            mCommissionCanWithdrawNum = Double.valueOf(DoubleTextUtils.setDoubleUtils(Double.valueOf(mPushMoneyBean.getPush_money())));
 
         }
         //test
 //        mCommissionCanWithdrawNum=Double.valueOf("10.00");
-        LogUtils.e("mCommissionCanWithdrawNum",mCommissionCanWithdrawNum+"");
-        LogUtils.e("mCommissionHaveWithdrawNum",mPushMoneyBean.getAll_push_money()+"");
+        LogUtils.e("mCommissionCanWithdrawNum", mCommissionCanWithdrawNum + "");
+        LogUtils.e("mCommissionHaveWithdrawNum", mPushMoneyBean.getAll_push_money() + "");
 
-        if (mCommissionCanWithdrawNum>0){
+        if (mCommissionCanWithdrawNum > 0) {
             //可以进入提取页面
             mTvApplyWithdraw.setEnabled(true);
-        }else {
+        } else {
             //不可以进入提取页面
             mTvApplyWithdraw.setEnabled(false);
 
         }
-
 
 
     }
@@ -192,34 +191,27 @@ public class MyCommissionActivity extends BaseActivity {
     @Override
     public void widgetClick(View v) {
         super.widgetClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left_layout://退出我的佣金页面
                 finish();
                 break;
             case R.id.tv_into_commission_detail://进入佣金详情页面
-//                DataHolder.getInstance().setData(MyCommissionActivity.TAG);
-//                jump(MyCommissionDetailActivity.class,false);
-//                ToastUtils.showShort("吊起WebView");
                 intoDetail();
                 break;
             case R.id.tv_commission_apply_withdraw://申请提取（提取页面入口）
                 initCommissionWithdraw();
-//                ToastUtils.showShort("申请提取");
                 break;
 
             //////////处理提取弹框页面///////////////////////////////////////
 
             case R.id.tv_commission_set_all_can_use://全部提取
-//                ToastUtils.showShort("全部提取");
                 setExchangeAllCan();
                 break;
             case R.id.tv_commission_apply_withdraw_commit://申请提取提交
-//                ToastUtils.showShort("申请提取提交");
                 applyWithdrawCommit();
                 break;
             case R.id.tv_commission_withdraw_back://销毁弹框
-//                isCancel=true;
-                closeKeyboard(getApplicationContext(),etCommissionNum);
+                closeKeyboard(getApplicationContext(), etCommissionNum);
                 mPopWindow.dismiss();
                 break;
 
@@ -235,13 +227,13 @@ public class MyCommissionActivity extends BaseActivity {
     private void applyWithdrawCommit() {
 //        ToastUtils.showShort("申请提取提交");
         showLoadingDialog();
-        String amountString=etCommissionNum.getText().toString().trim();
-        Double amount=Double.valueOf(amountString);
+        String amountString = etCommissionNum.getText().toString().trim();
+        Double amount = Double.valueOf(amountString);
         mApi4Mine.getCommissiongCommit(this, amount, new DataCallback<String>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 dismissLoadingDialog();
-                LogUtils.e("getCommissiongCommit",e.getMessage());
+                LogUtils.e("getCommissiongCommit", e.getMessage());
 
             }
 
@@ -282,24 +274,21 @@ public class MyCommissionActivity extends BaseActivity {
                     //输入金额大于可兑换金额
                     ResponseModel model = new Gson().fromJson(responseBody, ResponseModel.class);
                     if (model != null) {
-                        int code=model.getCode();
-                        String messageString="";
+                        int code = model.getCode();
+                        String messageString = "";
                         if (code == 100012) {
-//                                ToastUtils.showShort("不得超出可使用兑换券额");
-                            messageString="额度不足";
-                        }else if (code==100060){
-//                                ToastUtils.showShort("可使用券额需大于100才可兑换哦！");
-                            messageString="添加记录失败";
+                            messageString = "额度不足";
+                        } else if (code == 100060) {
+                            messageString = "添加记录失败";
 
-                        } else if (code==100061){
+                        } else if (code == 100061) {
 //                                ToastUtils.showShort("安全码错误");
-                            messageString="更新用户账户失败";
+                            messageString = "更新用户账户失败";
 
-                        }else if (code==100013){
-                            messageString="操作频繁，稍后再试";
-                        }
-                        else {
-                            messageString=model.getMessage();
+                        } else if (code == 100013) {
+                            messageString = "操作频繁，稍后再试";
+                        } else {
+                            messageString = model.getMessage();
                         }
 
                         Dialog dialog = DialogUtils.createConfirmDialog(MyCommissionActivity.this, null, messageString, "知道了", "",
@@ -343,11 +332,9 @@ public class MyCommissionActivity extends BaseActivity {
      */
     private void initCommissionWithdraw() {
         //进入提取页面
-        if (mCommissionCanWithdrawNum>0){
+        if (mCommissionCanWithdrawNum > 0) {
             showCommissionWithdrawWindow();
         }
-        //test
-//        showCommissionWithdrawWindow();
     }
 
     /**
@@ -393,7 +380,7 @@ public class MyCommissionActivity extends BaseActivity {
 
         etCommissionNum.addTextChangedListener(etCommissionInputNumTextWatcher);
         //添加过滤器，只能输入两位小数，不能连续以0开始
-        InputFilter[] filters={new CashierInputFilter()};
+        InputFilter[] filters = {new CashierInputFilter()};
         etCommissionNum.setFilters(filters);
 
         //弹出页面直接显示键盘
@@ -423,6 +410,7 @@ public class MyCommissionActivity extends BaseActivity {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
     /**
      * 提取佣金输入框监听
      */
@@ -443,22 +431,22 @@ public class MyCommissionActivity extends BaseActivity {
             //根据需求改变按钮的状态
             if (!TextUtils.isEmpty(string)) {
                 mInPutCommissionNum = Double.valueOf(string);
-                if (mInPutCommissionNum != 0L&&mInPutCommissionNum<=mCommissionCanWithdrawNum) {
+                if (mInPutCommissionNum != 0L && mInPutCommissionNum <= mCommissionCanWithdrawNum) {
                     //根据输入判断是否可提现
                     tvCommissionWithdrawCommit.setEnabled(true);
                 } else {
                     tvCommissionWithdrawCommit.setEnabled(false);
                 }
                 //输入大于可提取
-                if (mInPutCommissionNum>mCommissionCanWithdrawNum){
+                if (mInPutCommissionNum > mCommissionCanWithdrawNum) {
                     tvCommissionOver.setVisibility(View.VISIBLE);
                     llCommissionInputNotOver.setVisibility(View.GONE);
-                }else {
+                } else {
                     tvCommissionOver.setVisibility(View.GONE);
                     llCommissionInputNotOver.setVisibility(View.VISIBLE);
 
                 }
-            }else {
+            } else {
                 tvCommissionWithdrawCommit.setEnabled(false);
             }
 
@@ -474,7 +462,7 @@ public class MyCommissionActivity extends BaseActivity {
      * 跳转佣金详情
      */
     private void intoDetail() {
-        StringBuffer sb=new StringBuffer(ClientAPI.URL_WX_H5);
+        StringBuffer sb = new StringBuffer(ClientAPI.URL_WX_H5);
         sb.append("myshouyi-detail.html");
         sb.append("?pageType=");
         sb.append("yongjin");
@@ -483,9 +471,9 @@ public class MyCommissionActivity extends BaseActivity {
         sb.append("&type=android");
         sb.append("&vt=").append(System.currentTimeMillis());
 
-        String webShowUrl=sb.toString().trim();
-        LogUtils.e("webShowUrl",webShowUrl);
+        String webShowUrl = sb.toString().trim();
+        LogUtils.e("webShowUrl", webShowUrl);
 
-        WebShowActivity.actionStart(MyCommissionActivity.this,webShowUrl, null);
+        WebShowActivity.actionStart(MyCommissionActivity.this, webShowUrl, null);
     }
 }

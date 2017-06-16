@@ -17,6 +17,19 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bumptech.glide.Glide;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import okhttp3.Call;
 import shop.imake.MainActivity;
 import shop.imake.MainApplication;
 import shop.imake.R;
@@ -36,29 +49,14 @@ import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.bumptech.glide.Glide;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import okhttp3.Call;
 
 
 /**
- *
  * @author Alice
- *Creare 2016/6/4 11:15
- * 扫码结果页面
- *
+ *         Creare 2016/6/4 11:15
+ *         扫码结果页面
  */
-public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClickListener,OnItemClickListener {
+public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {
     private IUUTitleBar mTitleBar;
 
     //图片轮播容器
@@ -99,10 +97,10 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     //规格ID，在规格选择监听的时候改变
     private int mSizeID;
     //商品数量
-    private int mProductNum=1;
+    private int mProductNum = 1;
 
     //规格角标，在规格选择监听的时候改变
-    private int mMOdleIndex=0;
+    private int mMOdleIndex = 0;
     //商品单价
     private double mMoney;
     //商品单积分
@@ -128,7 +126,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     //规格数据适配器
     private TagAdapter<String> sizeModelAdapterOne;
     //获得布局填充器
-    private  LayoutInflater mInflater;
+    private LayoutInflater mInflater;
     private View mLLOnNet;
     private LinearLayout mLLUnNetWork;
     private TextView mTVLoading;
@@ -137,10 +135,10 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     //规格角标
     private int mSizePosition;
     private LinearLayout mHaveDone;
-    private boolean isRush=false;
+    private boolean isRush = false;
     private LinearLayout mLLISRushState;
 
-    public static final String TAG=ScanGoodsDetailActivity.class.getSimpleName();
+    public static final String TAG = ScanGoodsDetailActivity.class.getSimpleName();
 
     private Api4ClientOther mClient;
     private ImageView mIvGoToCar;
@@ -183,7 +181,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         mLLUnNetWork = ((LinearLayout) findViewById(R.id.ll_unnetwork));
         mTVLoading = ((TextView) findViewById(R.id.tv_data_loading));
         mTVLoading.setVisibility(View.VISIBLE);
-        mTvGetDataAgain = ((TextView)findViewById(R.id.tv_get_data_again));
+        mTvGetDataAgain = ((TextView) findViewById(R.id.tv_get_data_again));
 
         //图片轮播控制器
         mRLImageViews = ((RelativeLayout) findViewById(R.id.rl_scan_goods_details_imgs));
@@ -200,7 +198,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         mTVSoldNum = ((TextView) findViewById(R.id.tv_scan_goods_details_sold_num));
         mTVOldPrice = ((TextView) findViewById(R.id.tv_scan_goods_details_oldprice));
         //为原价添加中线
-        mTVOldPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
+        mTVOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
 
         mFLModelOne = ((TagFlowLayout) findViewById(R.id.flowLayout_scan_goods_detail_model_one));
         mFlModelTwo = ((TagFlowLayout) findViewById(R.id.flowLayout_scan_goods_detail_model_two));
@@ -277,21 +275,22 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         });
 //
     }
+
     private void initData() {
-        String productScanID=getIntent().getStringExtra("productScanID");
-        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        String productScanID = getIntent().getStringExtra("productScanID");
+        mClient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
         mClient.getScanGoodDetailData(toString(), productScanID, new DataCallback<ProductDetail>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
                 //                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
-                LogUtils.e("ScanGood",e.getMessage()+"");
-                if (NetStateUtils.isNetworkAvailable(getApplicationContext())){
+                LogUtils.e("ScanGood", e.getMessage() + "");
+                if (NetStateUtils.isNetworkAvailable(getApplicationContext())) {
                     mLLScanHaven.setVisibility(View.VISIBLE);
                     mLLOnNet.setVisibility(View.GONE);
                     mLLUnNetWork.setVisibility(View.GONE);
                     mTVLoading.setVisibility(View.GONE);
                     mHaveDone.setVisibility(View.GONE);
-                }else {
+                } else {
                     mLLScanHaven.setVisibility(View.GONE);
                     mLLOnNet.setVisibility(View.GONE);
                     mLLUnNetWork.setVisibility(View.VISIBLE);
@@ -305,12 +304,12 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
             public void onSuccess(Object response, int id) {
                 mTVLoading.setVisibility(View.VISIBLE);
                 mLLOnNet.setVisibility(View.GONE);
-                if (response!=null){
-                    UNNetWorkUtils.lvShow(mTVLoading,mLLOnNet,mLLUnNetWork);
+                if (response != null) {
+                    UNNetWorkUtils.lvShow(mTVLoading, mLLOnNet, mLLUnNetWork);
                     mLLScanHaven.setVisibility(View.GONE);
                     mHaveDone.setVisibility(View.VISIBLE);
-                    ProductDetail productDetail= (ProductDetail) response;
-                    mProduct=productDetail.getProduct();
+                    ProductDetail productDetail = (ProductDetail) response;
+                    mProduct = productDetail.getProduct();
                     setData();
                 }
                 //数据为空
@@ -369,7 +368,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
             } else {
                 isSizeHave = false;
             }
-            mTVChooseNum.setText(""+ mProductNum);
+            mTVChooseNum.setText("" + mProductNum);
         }
         //数据为空，商品不存在
         else {
@@ -407,6 +406,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         mFLModelOne.getChildAt(0).setClickable(true);
 
     }
+
     /**
      * 规格数据集合
      */
@@ -418,9 +418,10 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
 
     /**
      * 图片无限轮播
+     *
      * @param mNetImages
      */
-    private void initImgs(List<HomeAdModel> mNetImages ) {
+    private void initImgs(List<HomeAdModel> mNetImages) {
         //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         mConvenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
@@ -443,30 +444,31 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
 
     /**
      * 填充和获得size相关的数据
+     *
      * @param i
      */
     public void setSize(int i) {
-        if (mSizeBeans.size()!=0){
-            isRush=mSizeBeans.get(i).isIf_rush_to_purchasing();
+        if (mSizeBeans.size() != 0) {
+            isRush = mSizeBeans.get(i).isIf_rush_to_purchasing();
             //控制抢购状态的显示和隐藏
-            if (isRush){
+            if (isRush) {
                 mLLISRushState.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mLLISRushState.setVisibility(View.GONE);
             }
-            mMoney=Double.valueOf(mSizeBeans.get(i).getPrice());
+            mMoney = Double.valueOf(mSizeBeans.get(i).getPrice());
 
-            mTVMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney)+ "");
+            mTVMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney) + "");
 
-            mIntegral=mSizeBeans.get(i).getIntegration_price();
-            mTVIntegral.setText(mIntegral+"");
+            mIntegral = mSizeBeans.get(i).getIntegration_price();
+            mTVIntegral.setText(mIntegral + "");
 
-            mTVSoldNum.setText("已经出售"+mSizeBeans.get(i).getSales_volume()+"件");
+            mTVSoldNum.setText("已经出售" + mSizeBeans.get(i).getSales_volume() + "件");
 
-            mGetIntegral=mSizeBeans.get(i).getPresented_gold();
-            mTVGetIntegral.setText(mGetIntegral+"");
+            mGetIntegral = mSizeBeans.get(i).getPresented_gold();
+            mTVGetIntegral.setText(mGetIntegral + "");
 
-            mSizeID=mSizeBeans.get(i).getId();
+            mSizeID = mSizeBeans.get(i).getId();
             mTVScore.setText(mSizeBeans.get(i).getWeight() + "kg");
             countMoney();
         }
@@ -495,7 +497,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
             String imagePath = sb.toString();
 
             Glide.with(getApplicationContext())
-                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(getApplicationContext())/2,0))
+                    .load(ImageUtils.getThumb(imagePath, ScreenUtils.getScreenWidth(getApplicationContext()) / 2, 0))
                     .error(R.mipmap.list_image_loading)
                     .placeholder(R.mipmap.list_image_loading)
                     .into(imageView);
@@ -516,12 +518,13 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
 
     /**
      * 处理点击事件
+     *
      * @param v
      */
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             //返回
             case R.id.left_layout:
                 finish();
@@ -568,24 +571,25 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
      * 去支付
      */
     private void goTOPay() {
-        mProductID=mProduct.getId();
-        mSizeID=mProduct.getSizes().get(mSizePosition).getId();
+        mProductID = mProduct.getId();
+        mSizeID = mProduct.getSizes().get(mSizePosition).getId();
 //    Toast.makeText(this,"去付款",Toast.LENGTH_SHORT).show();
-        StringBuffer sb=new StringBuffer(ClientAPI.API_POINT);
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
         sb.append("api/v1/shoppingCart/add");
         OkHttpUtils
                 .get()
                 .url(sb.toString().trim())
-                .addParams("number",mProductNum+"")
-                .addParams("product_id",mProductID+"")
-                .addParams("product_size_id",mSizeID+"")
+                .addParams("number", mProductNum + "")
+                .addParams("product_id", mProductID + "")
+                .addParams("product_size_id", mSizeID + "")
                 .addParams("token", CurrentUserManager.getUserToken())
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
 //                Toast.makeText(getApplicationContext(),mProductNum+"请先登录再付款",Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onResponse(String response, int id) {
                 //提交订单
@@ -608,26 +612,26 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
 //        private ProductBean product; //bject{...},
 //        private ProductSizeBean product_size; //bject{...},
 //        private ProductImagesBean product_images; //bject{...}
-        long product_id=mProduct.getId();
-        long product_size_id=mProduct.getSizes().get(mSizePosition).getId();
-        int number=mProductNum;
-        String updated_at="";
+        long product_id = mProduct.getId();
+        long product_size_id = mProduct.getSizes().get(mSizePosition).getId();
+        int number = mProductNum;
+        String updated_at = "";
 
-        CartModel.ProductBean product=new CartModel.ProductBean();
+        CartModel.ProductBean product = new CartModel.ProductBean();
         product.setName(mProduct.getName());
 
-        CartModel.ProductSizeBean product_size=new CartModel.ProductSizeBean();
+        CartModel.ProductSizeBean product_size = new CartModel.ProductSizeBean();
         product_size.setName(mProduct.getSizes().get(mSizePosition).getName());
         product_size.setPrice(mProduct.getSizes().get(mSizePosition).getPrice());
         product_size.setIntegration_price(mProduct.getSizes().get(mSizePosition).getIntegration_price());
         product_size.setPresented_gold(mProduct.getSizes().get(mSizePosition).getPresented_gold());
 
-        CartModel.ProductImagesBean product_images=new CartModel.ProductImagesBean();
-        if (mProduct.getImages().size()>0){
+        CartModel.ProductImagesBean product_images = new CartModel.ProductImagesBean();
+        if (mProduct.getImages().size() > 0) {
             product_images.setImage_base_name(mProduct.getImages().get(0).getImage_base_name());
             product_images.setImage_path(mProduct.getImages().get(0).getImage_path());
         }
-        CartModel model=new CartModel();
+        CartModel model = new CartModel();
         model.setNumber(number);
         model.setProduct(product);
         model.setProduct_id(product_id);
@@ -635,7 +639,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
         model.setProduct_size(product_size);
         model.setProduct_size_id(product_size_id);
 //        model.setUpdated_at("");
-        CartItem2 item=new CartItem2();
+        CartItem2 item = new CartItem2();
         item.setCartModel(model);
         item.setChecked(true);
         goodList.add(item);
@@ -656,16 +660,16 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
      * 添加到购物车
      */
     private void addToCar() {
-        mProductID=mProduct.getId();
-        mSizeID=mProduct.getSizes().get(mSizePosition).getId();
-        StringBuffer sb=new StringBuffer(ClientAPI.API_POINT);
+        mProductID = mProduct.getId();
+        mSizeID = mProduct.getSizes().get(mSizePosition).getId();
+        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
         sb.append("api/v1/shoppingCart/add");
         OkHttpUtils
                 .get()
                 .url(sb.toString().trim())
-                .addParams("number",mProductNum+"")
-                .addParams("product_id",mProductID+"")
-                .addParams("product_size_id",mSizeID+"")
+                .addParams("number", mProductNum + "")
+                .addParams("product_id", mProductID + "")
+                .addParams("product_size_id", mSizeID + "")
                 .addParams("token", CurrentUserManager.getUserToken())
                 .build().execute(new StringCallback() {
             @Override
@@ -673,13 +677,15 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
 //               UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
                 checkError(e);
             }
+
             @Override
             public void onResponse(String response, int id) {
-                Toast.makeText(getApplicationContext(),mProductNum+"件，您的宝贝已经加入购物车了哦",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), mProductNum + "件，您的宝贝已经加入购物车了哦", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+
     //对网络异常进行判断
     private void checkError(Exception e) {
         String eString = e.toString().trim();
@@ -709,10 +715,10 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
      * 减少商品
      */
     private void reduceProduct() {
-        if (mProductNum<=1){
-            Toast.makeText(this,"亲不能再减少了哦",Toast.LENGTH_SHORT).show();
+        if (mProductNum <= 1) {
+            Toast.makeText(this, "亲不能再减少了哦", Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
             --mProductNum;
             countMoney();
         }
@@ -723,12 +729,12 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
      * 计算钱数
      */
     private void countMoney() {
-        mGetIntegralAll=mGetIntegral*mProductNum;
-        mTVGetIntegral.setText(mGetIntegralAll+"UU");
-        mMoneyAll=mMoney*mProductNum;
-        mIntegralAll=mIntegral*mProductNum;
-        mTVMoneyAll.setText("总金额：￥"+mMoneyAll+"+"+mIntegralAll+"兑换券");
-        mTVChooseNum.setText(""+mProductNum);
+        mGetIntegralAll = mGetIntegral * mProductNum;
+        mTVGetIntegral.setText(mGetIntegralAll + "UU");
+        mMoneyAll = mMoney * mProductNum;
+        mIntegralAll = mIntegral * mProductNum;
+        mTVMoneyAll.setText("总金额：￥" + mMoneyAll + "+" + mIntegralAll + "兑换券");
+        mTVChooseNum.setText("" + mProductNum);
     }
 
 //    /**

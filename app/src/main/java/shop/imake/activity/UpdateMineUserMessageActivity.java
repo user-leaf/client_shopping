@@ -22,18 +22,6 @@ import android.widget.Toast;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
-import shop.imake.R;
-import shop.imake.callback.DataCallback;
-import shop.imake.client.Api4ClientOther;
-import shop.imake.client.ClientAPI;
-import shop.imake.client.ClientApiHelper;
-import shop.imake.model.User;
-import shop.imake.user.CurrentUserManager;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.ToastUtils;
-import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.utils.ValidatorsUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -51,6 +39,18 @@ import java.util.TimerTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import pub.devrel.easypermissions.EasyPermissions;
+import shop.imake.R;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4ClientOther;
+import shop.imake.client.ClientAPI;
+import shop.imake.client.ClientApiHelper;
+import shop.imake.model.User;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.ToastUtils;
+import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.utils.ValidatorsUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 修改个人用户信息页面
@@ -62,7 +62,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
     //获取相册照片的请求码
     private static final int PHOTO_REQUEST_GALLERY = 111;
-//    private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
+    //    private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
     private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
     private static final int PHOTO_REQUEST_CAMERA = 112;
     private static final int PHOTO_REQUEST_CUT = 113;
@@ -138,7 +138,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     //用户头像全路径
     private String mUserImgUrl;
 
-    public static final String TAG=UpdateMineUserMessageActivity.class.getSimpleName();
+    public static final String TAG = UpdateMineUserMessageActivity.class.getSimpleName();
 
     private Api4ClientOther mclient;
 
@@ -159,7 +159,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
      * 初始化变量
      */
     private void initVariables() {
-        mclient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mclient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
     }
 
     private void initView() {
@@ -173,7 +173,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
         mEtSafeCode = ((EditText) findViewById(R.id.et_update_user_safe_code));
         mTvSubmit = ((TextView) findViewById(R.id.tv_update_user_submit));
         mUserImg = ((CircleImageView) findViewById(R.id.iv_update_user_img));
-
 
 
         mGetUserImgAlertView = new AlertView(null, null, "取消", null, new String[]{"拍照", "我的相册"}, this, AlertView.Style.ActionSheet, this);
@@ -261,12 +260,12 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String verification = s.toString().trim();
                 //电话号码没修改，验证码不可输入
-                if (!isPhoneChange){
+                if (!isPhoneChange) {
                     //引起死循环判断，注释掉解决
 //                    mEtVaildateNum.setText("");
                     isVerificationChange = false;
                     mEtVaildateNum.setEnabled(false);
-                }else {
+                } else {
                     mEtVaildateNum.setEnabled(true);
                     //判断并标识验证码修改是否符合标准
                     if (verification.length() == mVerificationLimit) {
@@ -356,7 +355,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                             .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用磁盘缓存
                             .skipMemoryCache(true)//跳过内存缓存
                             .into(mIvUserImg);
-                }else {
+                } else {
                     mUserImg.setImageResource(R.mipmap.list_profile_photo);
                 }
 
@@ -368,7 +367,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
                 mPnone = mBean.getPhone();
 //        mEtPhone.setText(mPnone);
-                mPnone = mPnone.substring(0,3)+"****"+mPnone.substring(7,mPnone.length());
+                mPnone = mPnone.substring(0, 3) + "****" + mPnone.substring(7, mPnone.length());
                 mEtPhone.setHint(mPnone);
 //        mEtPhone.setSelection(mPnone.length());
 
@@ -379,7 +378,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 //            mEtEmail.setSelection(mEmail.length());
 
 //                    mEtSafeCode.setEnabled(true);
-                }else {
+                } else {
                     //未设置邮箱不能修改安全码
 //                    mEtSafeCode.setEnabled(false);
                 }
@@ -521,7 +520,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 parameterMap.put("email", mEmail);
             } else {
                 if (!mEmail.isEmpty()) {
-                    if (! ValidatorsUtils.isEmail(mEmail)) {
+                    if (!ValidatorsUtils.isEmail(mEmail)) {
                         Toast.makeText(getApplicationContext(), "邮箱格式不正确", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -554,7 +553,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 if (!isUserImgChange) {
                     Toast.makeText(getApplicationContext(), "没能为您进行任何修改", Toast.LENGTH_SHORT).show();
                     return;
-                }else {
+                } else {
                     finish();
                 }
             }
@@ -605,7 +604,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                  * Android 6.0 权限检查
                  * https://github.com/googlesamples/easypermissions
                  */
-                String[] perms1 = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
+                String[] perms1 = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                 if (EasyPermissions.hasPermissions(this, perms1)) {
 //                    ToastUtils.showShort("拍照");
                     camera();
@@ -699,7 +698,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     private final static String USERIMG_PATH = Environment.getExternalStorageDirectory() + "/userImg/";
 
     public void upload() {
-        if (bitmap!=null){
+        if (bitmap != null) {
             pd = ProgressDialog.show(this, null, "头像上传中...");
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -756,11 +755,10 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             //提交全部数据
             submitToServer();
         }
-
 
 
     }
@@ -774,7 +772,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 crop(uri);
             }
 
-        } else if (requestCode == PHOTO_REQUEST_CAMERA && resultCode==RESULT_OK) {
+        } else if (requestCode == PHOTO_REQUEST_CAMERA && resultCode == RESULT_OK) {
             if (hasSdcard()) {
                 tempFile = new File(Environment.getExternalStorageDirectory(),
                         PHOTO_FILE_NAME);

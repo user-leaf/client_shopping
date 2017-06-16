@@ -15,6 +15,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.adapter.MyOrderRecycleViewAdapter;
@@ -29,21 +35,13 @@ import shop.imake.utils.LogUtils;
 import shop.imake.utils.ScreenUtils;
 import shop.imake.widget.IUUTitleBar;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
- *
  * @author Alice
- *Creare 2016/6/8 15:35
- * 我的订单页面
- *
+ *         Creare 2016/6/8 15:35
+ *         我的订单页面
  */
-public class MyOrderActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
+public class MyOrderActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
     private RadioGroup rg;
     // 全部
@@ -62,7 +60,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
     // 待发货
     // 待收货
     // 记录当前是那个Fragment
-    private  int current;
+    private int current;
     private View mback;
     //未完成
     private MyOrderNotFinishFragment frNotFinish;
@@ -71,7 +69,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
     //获取当前Token
     private String mToken;
     //已经占用高度
-    private  int tackUpHeight;
+    private int tackUpHeight;
     private IUUTitleBar mTitleBar;
     //屏幕高度
     private int mHeight;
@@ -80,11 +78,11 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
     //确认收货提醒
     private TextView mTVRemainder;
     //控制确认收货提醒消失
-    private Handler mHandler=new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.arg1==0){
+            if (msg.arg1 == 0) {
                 mTVRemainder.setVisibility(View.GONE);
             }
         }
@@ -98,14 +96,14 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
         initView();
-        mFragmentManager=getSupportFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         //延时10秒发送指令，隐藏提醒
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mHandler.sendEmptyMessage(0);
             }
-        },10000);
+        }, 10000);
 
         //注册evenbus处理余额支付解决处理
         EventBus.getDefault().register(this);
@@ -122,14 +120,14 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
         rg.setOnCheckedChangeListener(this);
 
         //获取已占用高度
-        tackUpHeight= (int) (getResources().getDimension(R.dimen.height_top_bar))*2;
+        tackUpHeight = (int) (getResources().getDimension(R.dimen.height_top_bar)) * 2;
         //屏幕高度
-        mHeight= ScreenUtils.getScreenHeight(getApplicationContext());
-        mHeight=mHeight-tackUpHeight;
+        mHeight = ScreenUtils.getScreenHeight(getApplicationContext());
+        mHeight = mHeight - tackUpHeight;
 
-        mBundle=new Bundle();
-        mBundle.putInt("mHeight",mHeight);
-        Log.e("ORDER_HEIGHT", "rg_height："+rg.getHeight()+"---height_top_bar:"+(int)(getResources().getDimension(R.dimen.height_top_bar))+"---mHeight:"+ScreenUtils.getScreenHeight(getApplicationContext()));
+        mBundle = new Bundle();
+        mBundle.putInt("mHeight", mHeight);
+        Log.e("ORDER_HEIGHT", "rg_height：" + rg.getHeight() + "---height_top_bar:" + (int) (getResources().getDimension(R.dimen.height_top_bar)) + "---mHeight:" + ScreenUtils.getScreenHeight(getApplicationContext()));
 
 
         radios = new ArrayList<>();
@@ -163,7 +161,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        for (int i=0;i<group.getChildCount()-1;i++) {
+        for (int i = 0; i < group.getChildCount() - 1; i++) {
             if (radios.get(i).getId() == checkedId) {
                 radios.get(i).setChecked(true);
                 radios.get(i).setTextColor(Color.RED);
@@ -196,8 +194,8 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case  R.id.left_layout:
+        switch (v.getId()) {
+            case R.id.left_layout:
                 finish();
                 break;
         }
@@ -208,7 +206,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //电话授权检测
-        callPermissionsResult(requestCode,resultCode);
+        callPermissionsResult(requestCode, resultCode);
 
         PingppPayResult.setOnPayResultCallback(requestCode, resultCode, data, new PingppPayResult.OnPayResultCallback() {
             @Override
@@ -216,7 +214,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
 //                fPayment.refreshData();
 //                fPayment.mRefreshHandler.sendEmptyMessage(0);
                 EventBus.getDefault().post(new PayResultMyOrderRefreshEvent(true));
-                LogUtils.e("立即支付","Activity支付成功onActivityResult");
+                LogUtils.e("立即支付", "Activity支付成功onActivityResult");
             }
 
             @Override
@@ -229,17 +227,18 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
 
     /**
      * 在OnActivityResult()方法中调用，检查MyOrderAdapter中授权结果
+     *
      * @param requestCode
      * @param resultCode
      */
-    public void callPermissionsResult(int requestCode,int resultCode) {
-        LogUtils.e("order","授权结果");
+    public void callPermissionsResult(int requestCode, int resultCode) {
+        LogUtils.e("order", "授权结果");
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
         if (requestCode == Constants.CALL_PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            Toast.makeText(this,"未授权，不能拨打电话",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "未授权，不能拨打电话", Toast.LENGTH_SHORT).show();
 //            finish();
-        }else if(requestCode == Constants.CALL_PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_GRANTED){
-            DialUtils.callCentre(this,DialUtils.CENTER_NUM);
+        } else if (requestCode == Constants.CALL_PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
+            DialUtils.callCentre(this, DialUtils.CENTER_NUM);
         }
     }
 
@@ -275,20 +274,21 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
 
     /**
      * 余额支付回调
+     *
      * @param event
      */
     @Subscribe
-    public void onBalancePayEvent(PayResultEvent event){
-        LogUtils.e("立即支付","Activity支付成功onBalancePayEvent_out");
+    public void onBalancePayEvent(PayResultEvent event) {
+        LogUtils.e("立即支付", "Activity支付成功onBalancePayEvent_out");
         if (event.isPaySuccess()) {
             //刷新数据
 //            fPayment.refreshData();
 //            fPayment.mRefreshHandler.sendEmptyMessage(0);
             EventBus.getDefault().post(new PayResultMyOrderRefreshEvent(true));
 
-            LogUtils.e("立即支付","Activity支付成功onBalancePayEvent");
+            LogUtils.e("立即支付", "Activity支付成功onBalancePayEvent");
 
-        }else {
+        } else {
             //跳转到支付失败页面,传递订单号
 
         }
