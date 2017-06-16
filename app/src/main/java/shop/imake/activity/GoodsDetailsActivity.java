@@ -21,6 +21,19 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bumptech.glide.Glide;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import okhttp3.Call;
 import shop.imake.MainActivity;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
@@ -40,19 +53,6 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.bumptech.glide.Glide;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import okhttp3.Call;
 
 
 /**
@@ -63,7 +63,7 @@ import okhttp3.Call;
 public class GoodsDetailsActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener {
     public static final String PARAM_PRODUCT_ID = "productID";
 
-    public static final String TAG =GoodsDetailsActivity.class.getSimpleName();
+    public static final String TAG = GoodsDetailsActivity.class.getSimpleName();
     private Api4ClientOther mClient;
 
     private IUUTitleBar mTitleBar;
@@ -115,7 +115,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     //商品单积分
     private int mIntegral;
     //商品单价
-    private double mMoneyAll;
     //商品单积分
     private int mIntegralAll;
     //单个商品获得商品积分
@@ -128,7 +127,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private List<HomeAdModel> mNetImages;
     //网络加载的商品
     private ProductDetail.ProductBean mProduct;
-
+    //数据集合
     List<ProductDetail.ProductBean.SizesBean> mSizeBeans;
     //规格数据集合
     private ArrayList<String> sizeList;
@@ -136,22 +135,28 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private TagAdapter<String> sizeModelAdapterOne;
     //获得布局填充器
     private LayoutInflater mInflater;
+    //网络正常布局
     private View mLLOnNet;
+    //断网布局
     private LinearLayout mLLUnNetWork;
+    //数据加载提示
     private TextView mTVLoading;
+    //再次加载点击按钮
     private TextView mTvGetDataAgain;
     //选中的规格编号
     private int mSizePosition;
     //最下方操作按钮布局
     private LinearLayout mLLDone;
 
-    //单次购买数量限制哦
+    //商品数据增加上限
     private int mNumLimit = 99;
+    //单次购买数量限制哦
     private int mBuyLimit = 10;
 
 
     //是否在抢购中
     private LinearLayout mLLISRushState;
+    //是否为抢购商品提示
     private TextView mTVIsRushState;
     //规格
     private LinearLayout mLLSize;
@@ -168,16 +173,15 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private ImageView mIvAddToCar;
     //商品数量过多
     private LinearLayout mLLOverNum;
+    //通知提示框
     private TextView mTvNotify;
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_details);
+        //获得商品ID
         mProductID = getIntent().getLongExtra(PARAM_PRODUCT_ID, -1);
         mInflater = LayoutInflater.from(this);
         initData();
@@ -234,7 +238,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         mTVChooseNum = ((TextView) findViewById(R.id.tv_goods_details_choose_num));
 
         mTVAddToCar = ((TextView) findViewById(R.id.tv_goods_details_addtocar));
-        mTVMoneyAll = ((TextView) findViewById(R.id.tv_goods_details_money_all));
         mLLToPay = ((LinearLayout) findViewById(R.id.ll_goods_detail_pay));
 
         mTvWeight = ((TextView) findViewById(R.id.tv_goods_details_weight));
@@ -264,23 +267,15 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 mSizePosition = position;
 
                 //添加条件保证必须有一个条目被选
-//                view.setEnabled(false);
-//                view.setClickable(true);
                 int count = parent.getChildCount();
                 LogUtils.e("count", "" + count);
-//                if (count==1){
-//                    parent.getChildAt(0).setClickable(true);
-////                    parent.getChildAt(0).setBackground(getDrawable(R.drawable.shape_copy_button_bg_stroke_red));
-//                }else {
                 for (int i = 0; i < count; i++) {
                     if (i != position) {
-//                        parent.getChildAt(i).setEnabled(true);
                         parent.getChildAt(i).setClickable(false);
                     } else {
                         parent.getChildAt(i).setClickable(true);
                     }
                 }
-//                }
                 return true;
             }
         });
@@ -308,7 +303,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private void initData() {
         long productID = getIntent().getLongExtra(PARAM_PRODUCT_ID, -1);
 
-        mClient= (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        mClient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
 
         mClient.getGoodDetailData(TAG, productID, new DataCallback<ProductDetail>(getApplicationContext()) {
             @Override
@@ -319,7 +314,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
                     UNNetWorkUtils.isNetHaveConnect(getApplicationContext(), mTVLoading, mLLOnNet, mLLUnNetWork);
                 } else {
-//                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
                     ToastUtils.showException(e, getApplicationContext());
 
                     //商品不存在
@@ -338,10 +332,10 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             public void onSuccess(Object response, int id) {
                 mTVLoading.setVisibility(View.VISIBLE);
                 mLLOnNet.setVisibility(View.GONE);
-                if (response!=null) {
+                if (response != null) {
                     mTVLoading.setVisibility(View.GONE);
                     UNNetWorkUtils.lvShow(mTVLoading, mLLOnNet, mLLUnNetWork);
-                    ProductDetail productDetail= (ProductDetail) response;
+                    ProductDetail productDetail = (ProductDetail) response;
                     mProduct = productDetail.getProduct();
                     mLLDone.setVisibility(View.VISIBLE);
                     setData();
@@ -403,7 +397,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             } else {
                 isSizeHave = false;
             }
-            mTVChooseNum.setText(""+ mProductNum);
+            mTVChooseNum.setText("" + mProductNum);
         }
         //数据为空，商品不存在
         else {
@@ -437,9 +431,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             }
         };
 
-//        if (mFLModelOne.getChildCount()==1){
-//            mFLModelOne.getChildAt(0).setClickable(true);
-//        }
 
         //填充适配器
         mFLModelOne.setAdapter(sizeModelAdapterOne);
@@ -515,7 +506,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             }
 
 
-            mTVMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney)+ "");
+            mTVMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney) + "");
 
             mIntegral = mSizeBeans.get(i).getIntegration_price();
             mTVIntegral.setText(mIntegral + "");
@@ -598,7 +589,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 break;
             //调用分享的方法进行分享
             case R.id.right_layout:
-//                showShare();
                 break;
 
             //商品减少
@@ -656,36 +646,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    /**
-     * 去支付
-     */
-    private void goTOPay() {
-//    Toast.makeText(this,"去付款",Toast.LENGTH_SHORT).show();
-        StringBuffer sb = new StringBuffer(ClientAPI.API_POINT);
-        sb.append("api/v1/shoppingCart/add");
-        OkHttpUtils
-                .get()
-                .url(sb.toString().trim())
-                .addParams("number", mProductNum + "")
-                .addParams("product_id", mProductID + "")
-                .addParams("product_size_id", mSizeID + "")
-                .addParams("token", CurrentUserManager.getUserToken())
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                LogUtils.e("addToCar--order-e:", e.toString());
-                checkError(e);
-//              UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                //提交订单
-                makeOrder();
-            }
-        });
-
-    }
 
     /**
      * 结账，下订单
@@ -693,17 +653,9 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void makeOrder() {
         List<CartItem2> goodList = new ArrayList<>();
-//        private long product_id; //,
-//        private long product_size_id; //,
-//        private int number; //,
-//        private String updated_at; //2016-07-09 12:21:14",
-//        private ProductBean product; //bject{...},
-//        private ProductSizeBean product_size; //bject{...},
-//        private ProductImagesBean product_images; //bject{...}
         long product_id = mProduct.getId();
         long product_size_id = mProduct.getSizes().get(mSizePosition).getId();
         int number = mProductNum;
-        String updated_at = "";
 
         CartModel.ProductBean product = new CartModel.ProductBean();
         product.setName(mProduct.getName());
@@ -732,19 +684,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         model.setProduct_images(product_images);
         model.setProduct_size(product_size);
         model.setProduct_size_id(product_size_id);
-//        model.setUpdated_at("");
         CartItem2 item = new CartItem2();
         item.setCartModel(model);
         item.setChecked(true);
         goodList.add(item);
 
-//        Intent intent = new Intent(this, OrderMakeActivity.class);
-//        // 通过MainApplication传值
-//        MainApplication ma = MainApplication.getInstance();
-//        ma.setData(goodList);
         OrderMakeActivity.actionStart(this, goodList, 1);
-//        startActivity(intent);
-//        finish();
     }
 
     /**
@@ -765,7 +710,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             public void onError(Call call, Exception e, int id) {
                 LogUtils.e("makeOrder---e:", e.toString());
                 checkError(e);
-//                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
 
             @Override
@@ -780,14 +724,10 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private void checkError(Exception e) {
         String eString = e.toString().trim();
         LogUtils.e("eString:", eString + "");
-//        eString=eString.substring(eString.length()-3,eString.length())
-
         if (eString != null) {
             if (eString.contains("400") || eString.contains("401")) {
-//                Toast.makeText(getApplicationContext(), "请登录后再次操作", Toast.LENGTH_SHORT).show();
                 jump(LoginActivity.class, false);
             } else {
-//                Toast.makeText(context,"提交失败"+e.toString(),Toast.LENGTH_SHORT).show();
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
         }
@@ -823,9 +763,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void limitNotify() {
         //商品没下架
-//        if (mProduct != null && mProduct.getOnsell() != 0 && mProduct.getDeleted_at() == null) {
-        if (mProduct!=null&&mProduct.getOnsell()!=0&&(mProduct.getDeleted_at()==null||mProduct.getDeleted_at()=="")){
-//        if (mProduct!=null&&mProduct.getOnsell()!=0&&TextUtils.isEmpty(mProduct.getDeleted_at().toString())){
+        if (mProduct != null && mProduct.getOnsell() != 0 && (mProduct.getDeleted_at() == null || mProduct.getDeleted_at() == "")) {
             //超过提醒限购数量
             if (mProductNum >= mBuyLimit) {
                 mLLOverNum.setVisibility(View.GONE);
@@ -853,45 +791,9 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         limitNotify();
         mGetIntegralAll = mGetIntegral * mProductNum;
         mTVGetIntegral.setText(mGetIntegralAll + "UU");
-        mMoneyAll = mMoney * mProductNum;
         mIntegralAll = mIntegral * mProductNum;
-        mTVMoneyAll.setText("总金额：￥" + mMoneyAll + "+" + mIntegralAll + "兑换券");
         mTVChooseNum.setText("" + mProductNum);
     }
-
-//    /**
-//     * 分享
-//     */
-//    private void showShare() {
-////        ShareSDK.initSDK(this); // 添加到了 onCreate()
-//        OnekeyShare oks = new OnekeyShare();
-//        //关闭sso授权
-//        oks.disableSSOWhenAuthorize();
-//
-////        oks.setSilent(true);   //隐藏编辑页面
-////        oks.setSilent(false); //显示编辑页面
-//
-//        // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
-//        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
-//        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-//        oks.setTitle("来自哎呦哟的小商品");
-//        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-//        oks.setTitleUrl("http://sharesdk.cn");
-//        // text是分享文本，所有平台都需要这个字段
-//        oks.setText("谢谢惠顾哎呦呦商城");
-//        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-//        // url仅在微信（包括好友和朋友圈）中使用
-//        oks.setUrl("http://sharesdk.cn");
-//        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-//        oks.setComment("我是测试评论文本");
-//        // site是分享此内容的网站名称，仅在QQ空间使用
-//        oks.setSite(getString(R.string.app_name));
-//        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-//        oks.setSiteUrl("http://sharesdk.cn");
-//        // 启动分享GUI
-//        oks.show(this);
-//    }
 
 
     /**

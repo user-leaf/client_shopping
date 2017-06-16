@@ -383,13 +383,7 @@
                 android:textColor="@color/white"
                 android:text="去付款"
                 />
-            <TextView
-                android:id="@+id/tv_goods_details_money_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                android:text="总金额：￥0+0兑换券"/>
+
         </LinearLayout>
 
     </LinearLayout>

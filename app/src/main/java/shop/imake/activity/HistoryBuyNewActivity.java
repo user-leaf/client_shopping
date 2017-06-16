@@ -11,6 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.adapter.HistoryBuyRecycleViewAdapter;
 import shop.imake.callback.DataCallback;
@@ -22,12 +28,6 @@ import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SpaceItemDecoration;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 历史购买
@@ -45,9 +45,6 @@ public class HistoryBuyNewActivity extends BaseActivity {
     //标题
     private IUUTitleBar mTitleBar;
     //接收意图
-    private Intent mIntent;
-    //标题名称
-    private String mTitle;
     //数据加载为空的显示
     private ImageView mTVEmpty;
     //登录入口
@@ -58,21 +55,15 @@ public class HistoryBuyNewActivity extends BaseActivity {
     private LinearLayout mTVUnNetWork;
     //默认显示，数据加载的页数
     private int mPage = 1;
-    private int mLastPage;
     //是否存在下一页
     private boolean isHasNextPage = true;
+    //再次获取数据按钮
     private TextView mTvGetDataAgain;
     private TextView mTVNotLoginTitle;
 
     private ImageView mIvEmpty;
     //是否是刷新
     private boolean isRefresh;
-    //footView 提示没有更多信息
-    private View footView;
-    //最后一行
-    private boolean isLast;
-    //向下滑
-    private boolean isDown;
 
     private Api4ClientOther mClient;
     public static final String TAG = HistoryBuyNewActivity.class.getSimpleName();
@@ -83,8 +74,6 @@ public class HistoryBuyNewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_buy_show);
 
-        mIntent = getIntent();
-        mTitle = mIntent.getStringExtra("title");
         //适配器数据
         mData = new ArrayList<>();
         //获得传递过来的数据
@@ -97,11 +86,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
     private void onRecycleViewRefresh() {
         //刷新
         mPage = 1;
-//        mAdapter.clear();
-//        mAdapter.notifyDataSetChanged();
         initData();
-        //停止刷新
-//        mGV.onRefreshComplete();
     }
 
 
@@ -112,7 +97,6 @@ public class HistoryBuyNewActivity extends BaseActivity {
             public void onItemClick(View view, int position) {
                 //获取商品的ID
                 long productID = mData.get(position - 1).getProduct_id();
-//        Toast.makeText(this,""+productID,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), GoodsDetailsActivity.class);
                 intent.putExtra("productID", productID);
                 startActivity(intent);
@@ -138,7 +122,6 @@ public class HistoryBuyNewActivity extends BaseActivity {
                     LogUtils.e("historyBuy", "数据为空");
                 } else {
                     //1、当网络不可用的时候、显示网络不可用
-//                    ToastUtils.showShort("当前网络不可用，请检查网络设置");
                     unNetWorkView();
                 }
                 //停止刷新
@@ -152,15 +135,13 @@ public class HistoryBuyNewActivity extends BaseActivity {
                 //停止刷新
                 mGV.loadMoreComplete();
                 mGV.refreshComplete();
-                if (response!= null) {
+                if (response != null) {
                     HistoryBuy historyBuy = (HistoryBuy) response;
                     //是否含有下一页
                     isHasNextPage = !TextUtils.isEmpty(historyBuy.getNext_page_url());
-                    mLastPage = historyBuy.getLast_page();
-
-                    if (isHasNextPage){
+                    if (isHasNextPage) {
                         mGV.setNoMore(false);
-                    }else {
+                    } else {
                         mGV.setNoMore(true);
                     }
 
@@ -203,17 +184,12 @@ public class HistoryBuyNewActivity extends BaseActivity {
         mTVEmpty = (ImageView) findViewById(R.id.iv_data_loading);
         mGV.setEmptyView(mTVEmpty);
         mIvEmpty = ((ImageView) findViewById(R.id.iv_history_buy_empty));
-//
-//        footView = LayoutInflater.from(this).inflate(R.layout.fragment_home_foot, null);
-//        mGV.addFootView(footView);
-
 
         mTitleBar = ((IUUTitleBar) findViewById(R.id.title_history_buy));
         mTVLogin = ((TextView) findViewById(R.id.tv_goto_login));
         mLLNotLogin = ((RelativeLayout) findViewById(R.id.ll_not_login));
         mTVNotLoginTitle = ((TextView) findViewById(R.id.tv_not_login_title));
         mTVNotLoginTitle.setText("无法获取历史购买信息");
-        mTitleBar.setTitle(mTitle);
         mTVUnNetWork = ((LinearLayout) findViewById(R.id.ll_unnetwork));
         mTvGetDataAgain = ((TextView) findViewById(R.id.tv_get_data_again));
 
@@ -223,7 +199,6 @@ public class HistoryBuyNewActivity extends BaseActivity {
         mGV.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-//                mLLFoot.setVisibility(View.VISIBLE);
                 isRefresh = true;
                 onRecycleViewRefresh();
 
@@ -233,14 +208,11 @@ public class HistoryBuyNewActivity extends BaseActivity {
             public void onLoadMore() {
                 isRefresh = false;
                 //加载
-//        if (isHasNextPage){
                 if (isHasNextPage) {
                     ++mPage;
                     initData();
                 } else {
-                    isLast = true;
 
-//                    Toast.makeText(getApplicationContext(), "已经加载到最后一页了", Toast.LENGTH_SHORT).show();
                     mGV.loadMoreComplete();
                     mGV.refreshComplete();
                 }
@@ -260,13 +232,10 @@ public class HistoryBuyNewActivity extends BaseActivity {
             case R.id.left_layout:
                 finish();
                 break;
-            case R.id.tv_goto_login:
-//                jump(new Intent(this,LoginActivity.class),false);
-//                startActivity(new Intent(this, LoginActivity.class));
+            case R.id.tv_goto_login://登录
                 jump(LoginActivity.class, true);
                 break;
-            case R.id.tv_get_data_again:
-                LogUtils.e("重新加载", "重新加载");
+            case R.id.tv_get_data_again://重新加载
                 onRecycleViewRefresh();
                 break;
         }

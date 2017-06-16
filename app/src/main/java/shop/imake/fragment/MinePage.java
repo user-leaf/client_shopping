@@ -388,8 +388,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mGvOther.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (!CurrentUserManager.isLoginUser()){
-                    jump(LoginActivity.class,false);
+                if (!CurrentUserManager.isLoginUser()) {
+                    jump(LoginActivity.class, false);
                     return;
                 }
                 goToHtml(position);
@@ -406,15 +406,15 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         if (myMineList != null && position < myMineList.size()) {
             MyMineOther.ThreeServicesBean threeServicesBean = myMineList.get(position);
             if (threeServicesBean != null) {
-                int type=threeServicesBean.getIs_open();
-                if (type==1){
+                int type = threeServicesBean.getIs_open();
+                if (type == 1) {
                     StringBuilder stringBuilder = new StringBuilder(threeServicesBean.getRequest_url());
                     stringBuilder.append("?token=").append(CurrentUserManager.getUserToken())
                             .append("&type=android").append("&vt=").append(System.currentTimeMillis());
                     String htmlUrl = stringBuilder.toString();
 
                     WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
-                }else if (type==0){
+                } else if (type == 0) {
                     Dialog dialog = DialogUtils.createMessageDialog(
                             getActivity(), null, "暂未开通相关服务，敬请期待～", "确定",
                             new DialogInterface.OnClickListener() {
@@ -1124,26 +1124,24 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                if (!CurrentUserManager.isLoginUser()){
-                    jump(LoginActivity.class,false);
+                if (!CurrentUserManager.isLoginUser()) {
+                    jump(LoginActivity.class, false);
                     return;
                 }
                 // 我的订单
                 jump(MyOrderActivity.class, false);
                 break;
-            case 1:
-                if (!CurrentUserManager.isLoginUser()){
-                    jump(LoginActivity.class,false);
+            case 1://历史购买
+                if (!CurrentUserManager.isLoginUser()) {
+                    jump(LoginActivity.class, false);
                     return;
                 }
-                Intent phIntent = new Intent(getActivity(), HistoryBuyNewActivity.class);
-                //携带数据接口
-                phIntent.putExtra("title", "历史购买");
-                startActivity(phIntent);
+
+                startActivity(new Intent(getActivity(), HistoryBuyNewActivity.class));
                 break;
             case 2:
-                if (!CurrentUserManager.isLoginUser()){
-                    jump(LoginActivity.class,false);
+                if (!CurrentUserManager.isLoginUser()) {
+                    jump(LoginActivity.class, false);
                     return;
                 }
                 //收货地址"
@@ -1151,8 +1149,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 jump(AddressManagerActivity.class, false);
                 break;
             case 3:
-                if (!CurrentUserManager.isLoginUser()){
-                    jump(LoginActivity.class,false);
+                if (!CurrentUserManager.isLoginUser()) {
+                    jump(LoginActivity.class, false);
                     return;
                 }
                 //我的众汇券，WebView
@@ -1196,8 +1194,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //                break;
         }
     }
-
-
 
 
     /**

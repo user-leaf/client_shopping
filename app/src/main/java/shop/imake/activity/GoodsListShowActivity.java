@@ -10,14 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import shop.imake.R;
-import shop.imake.adapter.GoodsAdapter;
-import shop.imake.client.ClientAPI;
-import shop.imake.model.Goods;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.NetStateUtils;
-import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
@@ -27,6 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.R;
+import shop.imake.adapter.GoodsAdapter;
+import shop.imake.client.ClientAPI;
+import shop.imake.model.Goods;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.NetStateUtils;
+import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
   *商品浏览列表页面
@@ -50,7 +50,6 @@ public class GoodsListShowActivity extends BaseActivity implements View.OnClickL
     //标题名称
     private String mTitle;
     //数据接口网址
-//    private int mUrl;
     private String mUrl;
     private ImageView mTVEmpty;
     //断网布局

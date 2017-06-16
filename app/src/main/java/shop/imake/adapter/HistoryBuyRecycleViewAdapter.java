@@ -10,14 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
 import shop.imake.R;
 import shop.imake.model.HistoryBuy;
 import shop.imake.utils.ImageUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ScreenUtils;
-import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 /**
  * 历史购买recycleview适配器
@@ -119,13 +120,8 @@ public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBu
         if (goods != null) {
 
             //判断是否下架
-            //下架
-            //test
-//            if (goods.getProduct().getDeleted_at()==null||goods.getProduct().getOnsell()!=0){
 
             if (goods.getProduct()==null||goods.getProduct().getDeleted_at()!=null||goods.getProduct().getOnsell()==0){
-//                LogUtils.e("Deleted_at",goods.getProduct().getDeleted_at()+"");
-//                LogUtils.e("Onsell",goods.getProduct().getOnsell()+"");
                 //下架提醒
                 holder.tvSoldOut.setVisibility(View.VISIBLE);
                 //透明度
@@ -147,9 +143,7 @@ public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBu
             }
             if (goods.getProduct_size() != null) {
                 if (!TextUtils.isEmpty(goods.getProduct_size().getPrice() + "")) {
-//        Log.e("",goods.getName());
                     String price = "￥" + goods.getProduct_size().getPrice();
-//        String price="￥"+goods.getPrice();
                     holder.tvPrice.setText(price);
                 }
                 if (!TextUtils.isEmpty(goods.getProduct_size().getIntegration_price() + "")) {
@@ -192,7 +186,6 @@ public class HistoryBuyRecycleViewAdapter extends RecyclerView.Adapter<HistoryBu
 
     public void clear() {
         mList.clear();
-//        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {

@@ -7,6 +7,9 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import shop.imake.MainApplication;
 import shop.imake.R;
 import shop.imake.adapter.LogisticsAdapter;
@@ -14,13 +17,11 @@ import shop.imake.model.ExpressDetailModel;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 查看物流
+ *
  * @author Alice
- *Creare 2016/10/25 15:24
+ *         Creare 2016/10/25 15:24
  */
 public class CheckTheLogisticsActivity extends BaseActivity implements View.OnClickListener {
     //到达城市
@@ -46,7 +47,7 @@ public class CheckTheLogisticsActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_the_logistics);
         //获得数据
-        expressDetailModel= (ExpressDetailModel) MainApplication.getInstance().getData();
+        expressDetailModel = (ExpressDetailModel) MainApplication.getInstance().getData();
         initView();
         setUpView();
         initData();
@@ -62,24 +63,25 @@ public class CheckTheLogisticsActivity extends BaseActivity implements View.OnCl
         mLV.setFocusable(false);
         mLLHavent = ((LinearLayout) findViewById(R.id.ll_check_the_logistics_havent));
     }
+
     private void setUpView() {
 //        mScrollView.setOnRefreshListener(this);
         mTitle.setOnClickListener(this);
     }
 
     private void initData() {
-        data=new ArrayList<>();
-        if (expressDetailModel!=null) {
-            if (expressDetailModel.getData().isResult()){
+        data = new ArrayList<>();
+        if (expressDetailModel != null) {
+            if (expressDetailModel.getData().isResult()) {
                 mScrollView.setVisibility(View.VISIBLE);
                 mLLHavent.setVisibility(View.GONE);
-                data=expressDetailModel.getData().getTraces().getTrace();
+                data = expressDetailModel.getData().getTraces().getTrace();
                 initCtrl();
-            }else {
+            } else {
                 mLLHavent.setVisibility(View.VISIBLE);
                 mScrollView.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             mLLHavent.setVisibility(View.VISIBLE);
             mScrollView.setVisibility(View.GONE);
 
@@ -87,11 +89,11 @@ public class CheckTheLogisticsActivity extends BaseActivity implements View.OnCl
     }
 
     private void initCtrl() {
-        if (data!=null&&data.size()!=0) {
+        if (data != null && data.size() != 0) {
             mTVArrivedCity.setText(data.get(0).getStation());
             mTVWayBillNum.setText(expressDetailModel.getData().getMailno());
-            adapter=new LogisticsAdapter(data,getApplicationContext());
-            LogUtils.e("expressDetailModel count:",adapter.getCount()+"");
+            adapter = new LogisticsAdapter(data, getApplicationContext());
+            LogUtils.e("expressDetailModel count:", adapter.getCount() + "");
             mLV.setAdapter(adapter);
         }
     }
@@ -99,7 +101,7 @@ public class CheckTheLogisticsActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.title_check_the_logistics:
                 finish();
                 break;

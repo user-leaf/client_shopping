@@ -6,14 +6,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
 import shop.imake.R;
 import shop.imake.model.OrderPayFail;
 import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.ImageUtils;
 import shop.imake.utils.LogUtils;
-import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 /**
  *
@@ -67,7 +68,7 @@ public class OrderPayFailAdapter extends MyBaseAdapter<OrderPayFail.OrderBean.Or
                 LogUtils.e("imgUrl",imgUrl);
                 Glide.with(context)
 //                        .load(imgUrl)
-                        .load(ImageUtils.getThumb(imgUrl, holder.iv.getWidth(), 0))
+                        .load(ImageUtils.getThumb(imgUrl, 184, 184))
                         .error(R.mipmap.list_image_loading)
                         .placeholder(R.mipmap.list_image_loading)
                         .into(holder.iv);
