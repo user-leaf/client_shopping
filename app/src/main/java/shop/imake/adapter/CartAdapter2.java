@@ -1,5 +1,6 @@
 package shop.imake.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import shop.imake.fragment.CartPage;
 import shop.imake.model.CartItem2;
 import shop.imake.model.CartModel;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.DialogUtils;
 import shop.imake.utils.ImageUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ScreenUtils;
@@ -37,6 +39,7 @@ import java.io.File;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.utils.Utility;
 
 /**
  * 购物车页 数据列表适配器(适应新的数据类型)
@@ -151,17 +154,11 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
         View offSaleView = convertView.findViewById(R.id.cart_item_rl_off_sale);
         SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(R.id.sample1);
 
-
-        // 设置选中的事件监听
-        chb.setOnCheckedChangeListener(this);
-        // +1
-        ivInc.setOnClickListener(this);
-        // -1
-        ivDec.setOnClickListener(this);
-        // 点击跳转
-        btnClick.setOnClickListener(this);
-        // 侧滑删除
-        tvDelete.setOnClickListener(this);
+        chb.setOnCheckedChangeListener(this);   // 设置选中的事件监听
+        ivInc.setOnClickListener(this);         // +1
+        ivDec.setOnClickListener(this);         // -1
+        btnClick.setOnClickListener(this);      // 点击跳转
+        tvDelete.setOnClickListener(this);      // 侧滑删除
 
         // 3. 显示内容
         swipeLayout.close();
@@ -196,8 +193,6 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                 CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
                 if (product_size != null) {
                     tvType.setText(product_size.getName());
-//                    tvSales.setText("已售出" + cartModel.getProduct_size().getSales_volume() + "件");
-
                     tvPrice.setText("¥" + product_size.getPrice());
 
                     // 如果是抢购中商品就设为抢购价+抢购标识
@@ -220,12 +215,7 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 
                             }
                         }
-
                     }
-
-                    // 只显示价格20170513
-//                    tvPoints.setText("+" + product_size.getIntegration_price() + "兑换券");
-
                 }
 
                 // 对下架商品进行处理
@@ -380,25 +370,30 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                     count--;
                     if (count >= 1) {
                         cartItem.getCartModel().setNumber(count);
-                        // 网络请求
                         dealNumberChange(count, cartItem, 0);
                     } else {
                         // 0时删除
-                        new AlertDialog.Builder(mContext)
-                                .setMessage("是否删除此商品")
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        if (Utility.isFastDoubleClick()){
+                            return;
+                        }
+                        Dialog confirmDialog = DialogUtils.createConfirmDialog(
+                                mContext, null, "是否删除此商品", "确定", "取消",
+                                new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         deleteItem(position);
                                     }
-                                })
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                }, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
                                     }
-                                })
-                                .show();
+                                }
+                        );
+
+                        if (confirmDialog != null && !confirmDialog.isShowing()) {
+                            confirmDialog.show();
+                        }
 
                     }
                     // 刷新列表
@@ -414,7 +409,6 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
 
                     int count = cartItem.getCartModel().getNumber();
                     count++;
-//                    if (count <= cartItem.getCartModel().getProduct_size().getStock()) { // 如果有库存
                     if (count <= 99) {
                         cartItem.getCartModel().setNumber(count);
                         // 网络请求
@@ -431,7 +425,6 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                 if (tag != null && tag instanceof Integer) {
                     position = (Integer) tag;
                     CartItem2 item = mList.get(position);
-//                    ToastUtils.showShort("位置" + position + "点击跳转:" + item.toString());
                     // 跳转到商品详情页
                     long product_id = item.getCartModel().getProduct_id();
                     Intent intent = new Intent(mContext, GoodsDetailsActivity.class);
@@ -516,16 +509,12 @@ public class CartAdapter2 extends BaseSwipeAdapter implements CompoundButton.OnC
                     public void onResponse(String response, int id) {
                         switch (type) {
                             case 0: // -1
-//                                ToastUtils.showShort("-1");
                                 break;
                             case 1: // +1
-//                                ToastUtils.showShort("+1");
                                 break;
                         }
                     }
                 });
-
-
     }
 
     private class ViewHolder {
