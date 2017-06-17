@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -180,6 +179,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 refreshData();
+                lv.setNoMore(false);
             }
 
             @Override
@@ -190,6 +190,7 @@ public class MyOrderPaymentFragment extends BaseFragment {
                 if (isHaveNextNews) {
                     ++mPage;
                     initData();
+                    lv.setNoMore(false);
                 } else {
 
                     lv.postDelayed(new Runnable() {
@@ -200,7 +201,9 @@ public class MyOrderPaymentFragment extends BaseFragment {
                             lv.refreshComplete();
                         }
                     }, 1000);
-                    Toast.makeText(getContext(), "已经加载到最后一页", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "已经加载到最后一页", Toast.LENGTH_SHORT).show();
+                    lv.setNoMore(true);
+
                 }
 
             }
