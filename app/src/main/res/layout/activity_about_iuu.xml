@@ -75,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="客服电话"
+                android:text="客服咨询"
                 android:textColor="#333"
                 android:textSize="14sp"/>
 
@@ -112,7 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="对接电话"
+                android:text="商家对接"
                 android:textColor="#333"
                 android:textSize="14sp"/>
 
