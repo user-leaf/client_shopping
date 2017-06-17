@@ -291,6 +291,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         } catch (RuntimeException e) {
             LogUtils.e("相机异常2", e.toString());
             Toast.makeText(getApplicationContext(), "请到设置里检查应用权限设置或硬件完整性", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
         if (handler == null) {
