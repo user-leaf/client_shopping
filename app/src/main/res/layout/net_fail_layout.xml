@@ -6,7 +6,7 @@
                 android:id="@+id/net_fail"
                 android:visibility="gone"
                 android:gravity="center"
-              android:background="@color/app_common_bg"
+              android:background="@color/white"
     >
 
     <ImageView

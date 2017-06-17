@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/net_fail"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center"
               android:background="@color/white"
-              android:orientation="vertical">
+              android:gravity="center"
+              android:orientation="vertical"
+    >
 
-    <TextView
-        android:id="@+id/textView1"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加载失败\n点击重试"/>
+        android:src="@mipmap/list_nonetwork"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="网络请求失败"
+        android:textColor="#6b6b6b"
+        android:textSize="28px"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="请检查您的网络"
+        android:textColor="#bbb"
+        android:textSize="24px"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="重新加载吧"
+        android:textColor="#bbb"
+        android:textSize="24px"
+        />
+
+    <TextView
+        android:id="@+id/fail_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_copy_button_bg_stroke_gray"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="重新加载"
+        android:textColor="#6b6b6b"
+        android:textSize="28px"
+        />
 </LinearLayout>

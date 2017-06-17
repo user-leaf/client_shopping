@@ -112,7 +112,7 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
         ClientAPI.getAddressList(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                mLoadViewHelper.showError(new View.OnClickListener() {
+                mLoadViewHelper.showError(AddressManagerActivity.this, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         loadData();
