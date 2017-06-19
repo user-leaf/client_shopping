@@ -1248,7 +1248,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             case R.id.tv_safe_code_forget_callcentre:
                 //拨打客服电话
                 DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
-                //Test
+
+//                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
+//                }, getActivity(), AlertView.Style.ActionSheet, this).show();
+
                 dialogDismiss(mFindSafeCodeDialog);
                 break;
             //关闭邮箱验证的窗口
@@ -1316,5 +1319,24 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 startActivity(mIntentSafeCode);
             }
         }
+    }
+
+    @Override
+    public void onItemClick(Object o, int position) {
+        //调用父类的方法给出提示
+        super.onItemClick(o,position);
+        switch (position) {
+            case 0: //
+                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM1);
+
+                break;
+            case 1: //
+                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM2);
+
+                break;
+            default:
+                return;
+        }
+
     }
 }

@@ -72,7 +72,7 @@ public class Constants {
     /**
      * 客服电话
      */
-    public static final String KEFU_TEL = "4001599586";
+    public static final String KEFU_TEL = "010-53358674";
 
     // 确认订单页 超过9kg增加运费 重量基准
     public static final int ORDER_MAKE_POSTAGE_WEIGHT_BASE = 9;
