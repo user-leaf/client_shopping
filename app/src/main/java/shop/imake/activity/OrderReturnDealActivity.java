@@ -26,6 +26,7 @@ import shop.imake.R;
 import shop.imake.client.ClientAPI;
 import shop.imake.model.OrderReturnDealModel;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.DialUtils;
 import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
@@ -123,15 +124,15 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.order_return_deal_rl_kefu: // 联系客服
-//                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
+                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
 
-                if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
-                    makeCall();
-                } else {
-                    // Ask for one permission
-                    EasyPermissions.requestPermissions(this, "需要开启拨打电话权限",
-                            RC_CALL_PERM, Manifest.permission.CALL_PHONE);
-                }
+//                if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
+//                    makeCall();
+//                } else {
+//                    // Ask for one permission
+//                    EasyPermissions.requestPermissions(this, "需要开启拨打电话权限",
+//                            RC_CALL_PERM, Manifest.permission.CALL_PHONE);
+//                }
 
                 break;
         }
