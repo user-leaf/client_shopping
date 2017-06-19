@@ -42,4 +42,8 @@
     <string name="login_tip_invite_person">温馨提示：新用户首次登录，若未填写推荐人手机号，一旦登录将无法建立推荐关系，且无法修改，请确认是否继续登录！
     </string>
 
+    <!--客服电话-->
+    <string name="service_num1">010-53358654</string>
+    <string name="service_num2">010-53358674</string>
+
 </resources>

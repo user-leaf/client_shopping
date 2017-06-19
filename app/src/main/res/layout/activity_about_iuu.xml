@@ -87,7 +87,14 @@
                 android:text="4001-599-586"
                 android:textColor="#4d97ee"
                 android:textSize="14sp"
+                android:visibility="gone"
                 />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_center_icon_telephone"
+                />
+
         </LinearLayout>
 
 
@@ -122,6 +129,12 @@
                 android:text="010-53654225"
                 android:textColor="#4d97ee"
                 android:textSize="14sp"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_center_icon_telephone"
                 />
         </LinearLayout>
 

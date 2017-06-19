@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.alertview.AlertView;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -207,7 +208,9 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
                 break;
 
             case R.id.rl_call_centre: // 拨打客服电话
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM);
+//                DialUtils.callCentre(this, DialUtils.CENTER_NUM);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
+                }, this, AlertView.Style.ActionSheet, this).show();
                 break;
 
             case R.id.tv_goto_login: // 去登陆
@@ -309,5 +312,29 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
             mLLUnNetWork.setVisibility(View.GONE);
             mLLLogin.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * 电话弹出框条目点击
+     * @param o
+     * @param position
+     */
+    @Override
+    public void onItemClick(Object o, int position) {
+        //调用父类的方法给出提示
+        super.onItemClick(o,position);
+        switch (position) {
+            case 0: //
+                DialUtils.callCentre(this, DialUtils.CENTER_NUM1);
+
+                break;
+            case 1: //
+                DialUtils.callCentre(this, DialUtils.CENTER_NUM2);
+
+                break;
+            default:
+                return;
+        }
+
     }
 }

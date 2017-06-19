@@ -6,10 +6,13 @@ package shop.imake.activity;
  *
  *
  */
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bigkoo.alertview.AlertView;
 
 import shop.imake.R;
 import shop.imake.utils.AppUtils;
@@ -63,12 +66,39 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case R.id.ll_service_the_phone://客服电话
-                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
+//                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
+                }, this, AlertView.Style.ActionSheet, this).show();
                 break;
-            case ll_supply_the_phone://客服电话
+            case ll_supply_the_phone://供货电话
                 DialUtils.callCentre(this,DialUtils.SUPPLY_PHONE);
                 break;
 
         }
+    }
+
+
+    /**
+     * 电话弹出框条目点击
+     * @param o
+     * @param position
+     */
+    @Override
+    public void onItemClick(Object o, int position) {
+        //调用父类的方法给出提示
+        super.onItemClick(o,position);
+        switch (position) {
+            case 0: //
+                DialUtils.callCentre(this, DialUtils.CENTER_NUM1);
+
+                break;
+            case 1: //
+                DialUtils.callCentre(this, DialUtils.CENTER_NUM2);
+
+                break;
+            default:
+                return;
+        }
+
     }
 }

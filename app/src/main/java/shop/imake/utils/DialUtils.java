@@ -18,7 +18,12 @@ public class DialUtils {
      * 调用系统拨号器拨打电话
      * 客服电话
      */
-    public static String CENTER_NUM = "4001599586";
+//    public static String CENTER_NUM = "4001599586";
+    public static String CENTER_NUM = "01053358654";
+
+    public static String CENTER_NUM1 = "01053358654";
+    public static String CENTER_NUM2 = "01053358674";
+
 
     /**
      * 供货电话
