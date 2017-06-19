@@ -130,7 +130,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     //头像是否更改
     private boolean isUserImgChange = false;
 
-    private Uri uri;
     //头像名称
     private String mImgName;
     //会员信息
@@ -648,7 +647,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
      * @param uri
      */
     private void crop(Uri uri) {
-        //
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
@@ -745,7 +743,8 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             if (data != null) {
-                uri = data.getData();
+                Uri uri = data.getData();
+                LogUtils.e("uri",uri.toString()+"");
                 crop(uri);
             }
 
@@ -753,7 +752,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             if (hasSdcard()) {
                 tempFile = new File(Environment.getExternalStorageDirectory(),
                         PHOTO_FILE_NAME);
-                uri = Uri.fromFile(tempFile);
+                Uri uri = Uri.fromFile(tempFile);
                 crop(uri);
             }
 
