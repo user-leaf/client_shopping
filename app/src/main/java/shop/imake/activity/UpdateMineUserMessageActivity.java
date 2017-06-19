@@ -196,12 +196,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String name = s.toString().trim();
                 //判断并标识,昵称修改是否符合标准 不为空，与原来不一样
-//                if (!TextUtils.isEmpty(name)){
-//                    mName=name;
-//                    isNameChange=true;
-//                }else {
-//                    isNameChange=false;
-//                }
                 if (TextUtils.isEmpty(mName)) {
                     if (!TextUtils.isEmpty(name)) {
                         mName = name;
@@ -262,7 +256,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 //电话号码没修改，验证码不可输入
                 if (!isPhoneChange) {
                     //引起死循环判断，注释掉解决
-//                    mEtVaildateNum.setText("");
                     isVerificationChange = false;
                     mEtVaildateNum.setEnabled(false);
                 } else {
@@ -361,33 +354,22 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
                 //昵称
                 mName = mBean.getNick_name();
-//        mEtName.setText(mName);
                 mEtName.setHint(mName);
-//        mEtName.setSelection(mName.length());
 
                 mPnone = mBean.getPhone();
-//        mEtPhone.setText(mPnone);
                 mPnone = mPnone.substring(0, 3) + "****" + mPnone.substring(7, mPnone.length());
                 mEtPhone.setHint(mPnone);
-//        mEtPhone.setSelection(mPnone.length());
 
                 mEmail = mBean.getEmail();
                 if (!TextUtils.isEmpty(mEmail)) {
-//            mEtEmail.setText(mEmail);
                     mEtEmail.setHint(mEmail);
-//            mEtEmail.setSelection(mEmail.length());
 
-//                    mEtSafeCode.setEnabled(true);
                 } else {
-                    //未设置邮箱不能修改安全码
-//                    mEtSafeCode.setEnabled(false);
                 }
                 mSafeCode = mBean.getSecurity_code_hint();
                 if (!TextUtils.isEmpty(mSafeCode)) {
                     mSafeCode = mSafeCode + "********";
-//            mEtSafeCode.setText(mSafeCode);
                     mEtSafeCode.setHint(mSafeCode);
-//            mEtSafeCode.setSelection(mSafeCode.length());
                 }
             }
 
@@ -415,8 +397,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 //向服务器提交信息
                 //头像上传
                 upload();
-//                submitToServer();
-//                finish();
                 break;
 
             case R.id.iv_update_user_img://修改头像
@@ -544,7 +524,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
                     @Override
                     public void onResponse(String response, int id) {
-//                        Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });
@@ -619,7 +598,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             case 1://我的相册
                 String[] perms2 = {Manifest.permission.READ_EXTERNAL_STORAGE};
                 if (EasyPermissions.hasPermissions(this, perms2)) {
-//                    ToastUtils.showShort("我的相册");
                     gallery();
                 } else {
                     EasyPermissions.requestPermissions(this, "需要开启一些权限",

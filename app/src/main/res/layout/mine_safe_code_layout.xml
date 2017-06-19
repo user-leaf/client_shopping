@@ -83,6 +83,7 @@
            android:inputType="textEmailAddress"
            android:textColorHint="#dcdcdc"
            android:layout_margin="10dp"
+           android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
            android:hint="邮箱用于找回安全码"
            android:background="@null"
            />

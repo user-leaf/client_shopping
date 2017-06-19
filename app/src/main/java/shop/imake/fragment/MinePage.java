@@ -458,6 +458,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //模拟我的邀请好友假数据
         String token = CurrentUserManager.getUserToken();
+
+
+
         if (token != null) {
             mClientApi.getUserMessage(TAG, new DataCallback<User>(getContext()) {
                 @Override
@@ -956,6 +959,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 ClientAPI.postSetSafeCode(token, safeCode, email, new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                         dialogDismiss(mSafeCodeDialog);
                     }
@@ -972,6 +976,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 ClientAPI.postSetSafeCode(token, safeCode, new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                         dialogDismiss(mSafeCodeDialog);
                     }
