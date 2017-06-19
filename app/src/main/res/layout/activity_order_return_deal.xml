@@ -290,7 +290,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="联系客服"
+            android:text="客服咨询"
             />
 
         <TextView
@@ -298,6 +298,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="4001-599-586"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/personal_center_icon_telephone"
+            android:layout_alignParentRight="true"
             />
     </RelativeLayout>
 

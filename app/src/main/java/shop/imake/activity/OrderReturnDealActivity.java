@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.alertview.AlertView;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -124,7 +125,9 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.order_return_deal_rl_kefu: // 联系客服
-                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
+                }, this, AlertView.Style.ActionSheet, this).show();
+//                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
 
 //                if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
 //                    makeCall();
@@ -280,6 +283,31 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 break;
 
         }
+    }
+
+
+    /**
+     * 电话弹出框条目点击
+     * @param o
+     * @param position
+     */
+    @Override
+    public void onItemClick(Object o, int position) {
+        //调用父类的方法给出提示
+        super.onItemClick(o,position);
+        switch (position) {
+            case 0: //
+                DialUtils.callCentre(this, DialUtils.CENTER_NUM1);
+
+                break;
+            case 1: //
+                DialUtils.callCentre(this, DialUtils.CENTER_NUM2);
+
+                break;
+            default:
+                return;
+        }
+
     }
 
 }
