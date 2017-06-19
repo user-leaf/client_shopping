@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -42,7 +44,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     private IUUTitleBar mTitleBar;
     private ProgressBar mProgressBar;
     private WebView mWebView;
-//    private View mRefreshView;
+    private View mRefreshView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         mTitleBar = (IUUTitleBar) findViewById(R.id.web_show_title_bar);
         mProgressBar = (ProgressBar) findViewById(R.id.web_show_progress_bar);
         mWebView = (WebView) findViewById(R.id.web_show_webview);
-//        mRefreshView = findViewById(R.id.web_show_refresh);
+        mRefreshView = findViewById(R.id.web_show_refresh);
     }
 
     private void setupView() {
@@ -125,6 +127,8 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
+        CookieManager.getInstance().setAcceptCookie(true);
+
         //设置网页在WebView中打开，而不是跳转到浏览器
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -143,10 +147,10 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-//                mWebView.setVisibility(View.GONE);
-//                mRefreshView.setVisibility(View.VISIBLE);
+                mWebView.setVisibility(View.GONE);
+                mRefreshView.setVisibility(View.VISIBLE);
                 //网络不畅通加载本地html
-                mWebView.loadUrl("file:///android_asset/webviewreload.html");
+//                view.loadUrl("file:///android_asset/webviewreload.html");
             }
 
             @Override
@@ -223,7 +227,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             case R.id.web_show_refresh:
                 loadUrl();
                 mWebView.setVisibility(View.VISIBLE);
-//                mRefreshView.setVisibility(View.GONE);
+                mRefreshView.setVisibility(View.GONE);
                 break;
         }
     }
@@ -239,6 +243,15 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     //监听手机键盘的按下事件
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+//        // debug
+//        WebBackForwardList webBackForwardList = mWebView.copyBackForwardList();
+//        for (int i = 0; i< webBackForwardList.getSize()-1; i++) {
+//            String url = webBackForwardList.getItemAtIndex(i).getUrl();
+//            LogUtils.d(TAG, url);
+//
+//        }
+
         // 判断当前的网页是否为刚开始加载的网页
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
             mWebView.goBack();

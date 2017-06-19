@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/web_show_title_bar"
-        android:text="加载失败\n点击重试"
+        android:text="加载失败\n请检查您的网络后重试"
         android:gravity="center"
         android:visibility="gone"
         />
