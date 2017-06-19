@@ -142,8 +142,12 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                 if (hostH5.equals(hostWeb)) {
                     return false;
                 } else if (url.contains("alipays://platformapi")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    }catch (Exception e){
+                         return false;
+                    }
                 }
                 return true;
             }
