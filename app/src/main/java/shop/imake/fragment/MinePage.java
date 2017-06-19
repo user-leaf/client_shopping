@@ -249,6 +249,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
 
     private void initOtherData() {
+        if (!NetStateUtils.isNetworkAvailable(getContext())){
+            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            return;
+        }
 
         //获取其他服务图标信息
         mClient.getMyMineOther(getActivity(), new DataCallback<MyMineOther>(getActivity()) {
@@ -417,6 +421,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
 
     private void initData() {
+        if (!NetStateUtils.isNetworkAvailable(getContext())){
+            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            return;
+        }
         //取消数据加载Loading
 //        showLoadingDialog();
         //退款接口为二次请求相应接口，先请求退款接口，（成功与否对获取用户信息不影响）再获取用户信息
@@ -452,6 +460,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
 
     private void initUserData() {
+
+        if (!NetStateUtils.isNetworkAvailable(getContext())){
+            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            return;
+        }
         //初始化网路请求对象
 
         mClientApi = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
@@ -619,8 +632,15 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             LogUtils.e("getIs_vip", "" + memberBean.getIs_vip());
             if (memberBean.getIs_vip() == 2) {
-                mIvMember.setVisibility(View.VISIBLE);
+                mIvMember.setVisibility(View.GONE);
             } else {
+                mIvMember.setVisibility(View.GONE);
+            }
+
+            int memberLevel=memberBean.getMember_level();
+            if (memberLevel==1||memberLevel==2||memberLevel==3){
+                mIvMember.setVisibility(View.VISIBLE);
+            }else {
                 mIvMember.setVisibility(View.GONE);
             }
         }
