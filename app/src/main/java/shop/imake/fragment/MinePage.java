@@ -619,7 +619,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             LogUtils.e("getIs_vip", "" + memberBean.getIs_vip());
             if (memberBean.getIs_vip() == 2) {
-                mIvMember.setVisibility(View.GONE);
+                mIvMember.setVisibility(View.VISIBLE);
             } else {
                 mIvMember.setVisibility(View.GONE);
             }
