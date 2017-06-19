@@ -13,14 +13,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import shop.imake.Constants;
-import shop.imake.R;
-import shop.imake.client.ClientAPI;
-import shop.imake.model.OrderReturnDealModel;
-import shop.imake.utils.DoubleTextUtils;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.ToastUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -29,6 +21,15 @@ import java.util.List;
 
 import okhttp3.Call;
 import pub.devrel.easypermissions.EasyPermissions;
+import shop.imake.Constants;
+import shop.imake.R;
+import shop.imake.client.ClientAPI;
+import shop.imake.model.OrderReturnDealModel;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.DoubleTextUtils;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.ToastUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 处理退款申请页、退款进度
@@ -181,6 +182,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
         ClientAPI.getOrderReturn(orderNumber, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 ToastUtils.showException(e);
             }
 

@@ -259,6 +259,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 dismissLoadingDialog();
             }
 
@@ -325,6 +326,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         ClientAPI.getOrderDetailExpressDetail(mOrderNumber, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 mTvExpress2Number.setText("无");
                 mTvExpress2Content.setText("物流信息获取失败");
                 mTvExpress2Time.setVisibility(View.GONE);
@@ -482,6 +484,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                                 ClientAPI.confirmGoodsReceipt(mOrderNumber, new StringCallback() {
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
+                                        CurrentUserManager.TokenDue(e);
                                         e.printStackTrace();
                                         ToastUtils.showException(e);
                                     }
@@ -537,6 +540,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                                 ClientAPI.deleteOrder(mOrderNumber, new StringCallback() {
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
+                                        CurrentUserManager.TokenDue(e);
                                         e.printStackTrace();
                                         ToastUtils.showException(e);
                                     }
@@ -616,7 +620,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        UNNetWorkUtils.unNetWorkOnlyNotify(context);
+                        CurrentUserManager.TokenDue(e);
                     }
 
                     @Override
@@ -651,7 +655,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        UNNetWorkUtils.unNetWorkOnlyNotify(context);
+                        CurrentUserManager.TokenDue(e);
                         ToastUtils.showShort("订单取消失败");
                     }
 

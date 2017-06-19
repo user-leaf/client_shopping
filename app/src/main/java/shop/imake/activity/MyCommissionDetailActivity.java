@@ -18,6 +18,7 @@ import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.MyCommissionModel;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DataHolder;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
@@ -111,6 +112,7 @@ public class MyCommissionDetailActivity extends BaseActivity {
         mApi4Mine.getMyPropertyData(this, mClassName, mPage, new DataCallback<MyCommissionModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 LogUtils.d("getMyPropertyData", e.getMessage());
                 if (isRefresh) {
                     isRefresh = false;

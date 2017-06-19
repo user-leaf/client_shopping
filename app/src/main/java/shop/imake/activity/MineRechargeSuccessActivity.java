@@ -8,13 +8,6 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import shop.imake.R;
-import shop.imake.adapter.RechargeSuccessAdapter;
-import shop.imake.client.ClientAPI;
-import shop.imake.model.RechargeSuccessModel;
-import shop.imake.model.User;
-import shop.imake.utils.ToastUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -22,6 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.R;
+import shop.imake.adapter.RechargeSuccessAdapter;
+import shop.imake.client.ClientAPI;
+import shop.imake.model.RechargeSuccessModel;
+import shop.imake.model.User;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ToastUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 充值成功页
@@ -125,6 +126,7 @@ public class MineRechargeSuccessActivity extends BaseActivity implements View.On
         ClientAPI.getMineRechargeSuccessGoldCoin(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 ToastUtils.showException(e);
             }
 

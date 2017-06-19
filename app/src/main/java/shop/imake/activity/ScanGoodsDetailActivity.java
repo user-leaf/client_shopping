@@ -674,7 +674,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-//               UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                CurrentUserManager.TokenDue(e);
                 checkError(e);
             }
 

@@ -536,6 +536,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 ClientAPI.updateUserMessage(parameterMap, token, new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         LogUtils.e("net error", e.toString());
                         UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                         return;
@@ -737,6 +738,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 ClientAPI.postUserImg(file, new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         ToastUtils.exceptionToast(e, getApplicationContext());
                         LogUtils.e("postUserImg", e.getMessage() + "");
                         //提交全部数据

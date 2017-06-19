@@ -17,19 +17,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
 import shop.imake.client.HttpUrls;
 import shop.imake.model.UserInComeModel;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.StringUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import okhttp3.Call;
 
 /**
  * 我的收益
@@ -145,6 +146,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         ClientAPI.getUserIncome(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
             }
 
@@ -268,6 +270,7 @@ public class UserIncomeActivity extends BaseActivity implements View.OnClickList
         ClientAPI.postWithDraw(TAG, open_id, amount, strPayee, strSafecode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 dismissLoadingDialog();
 
                 Dialog dialog = DialogUtils.createMessageDialog(UserIncomeActivity.this, "", StringUtils.getExceptionMessage(e.getMessage()), "确认", new DialogInterface.OnClickListener() {

@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.activity.MineMemberCenterActivity;
 import shop.imake.activity.WithDrawSucceedActivity;
@@ -23,13 +26,11 @@ import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.ActivateInfoModel;
 import shop.imake.model.IncomeEtCheckModel;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import okhttp3.Call;
 
 /**
  * 收益页面
@@ -116,6 +117,7 @@ public class IncomeFragment extends BaseFragment {
 
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
 
             }
 
@@ -152,6 +154,7 @@ public class IncomeFragment extends BaseFragment {
                 mClientApi.getExchangeData(new DataCallback<ActivateInfoModel>(getContext()) {
                     @Override
                     public void onFail(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         dismissLoadingDialog();
                         ToastUtils.showException(e);
                     }
@@ -333,6 +336,7 @@ public class IncomeFragment extends BaseFragment {
         mApi4Mine.withdrawIncome(this, amount, strName, strSafecode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 dismissLoadingDialog();
 
                 Dialog errorDialog = DialogUtils.createMessageDialog(

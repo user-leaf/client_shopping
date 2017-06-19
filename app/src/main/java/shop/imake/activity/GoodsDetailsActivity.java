@@ -709,6 +709,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onError(Call call, Exception e, int id) {
                 LogUtils.e("makeOrder---e:", e.toString());
+                CurrentUserManager.TokenDue(e);
                 checkError(e);
             }
 

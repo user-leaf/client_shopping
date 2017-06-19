@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
@@ -27,6 +32,7 @@ import shop.imake.client.Api4Home;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.ScanPayModel;
 import shop.imake.model.ShopModel;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
@@ -39,12 +45,6 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.IUUTitleBar;
-
-import com.bumptech.glide.Glide;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
 
 /**
  * 扫码支付页面
@@ -244,6 +244,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 ToastUtils.showException(e);
                 mLoadViewHelper.showError(new View.OnClickListener() {
                     @Override
@@ -507,6 +508,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                         mShopId, new DataCallback<ScanPayModel>(ScanPayActivity.this) {
                             @Override
                             public void onFail(Call call, Exception e, int id) {
+                                CurrentUserManager.TokenDue(e);
                                 dismissLoadingDialog();
                                 ToastUtils.showException(e);
                             }

@@ -17,6 +17,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.MainActivity;
 import shop.imake.R;
@@ -32,20 +46,6 @@ import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.ToastUtils;
-import com.google.gson.Gson;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
-import okhttp3.Call;
 
 /**
  * 购物车页面
@@ -269,6 +269,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         ClientAPI.getCartData(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.clearUserToken();
                 /**
                  * 错误类型：断网、token过期、服务器错误
                  */
@@ -286,7 +287,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
                     // TODO: 2016/9/17 隐式登录 自动刷新token
 
                     // 清空token(临时先这样，token过期，清空token)
-                    CurrentUserManager.clearUserToken();
                 } else if (!TextUtils.isEmpty(e.getMessage())) {
                     isPerform = false;
                 }

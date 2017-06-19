@@ -92,6 +92,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         mApi4Mine.getMyIncome(this, new DataCallback<MyIncomeModel>(this) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 mLoadViewHelper.showError(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

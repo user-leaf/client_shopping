@@ -427,6 +427,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         ClientAPI.getWithdraw(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 initUserData();
             }
 
@@ -461,6 +462,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             mClientApi.getUserMessage(TAG, new DataCallback<User>(getContext()) {
                 @Override
                 public void onFail(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
                     //断网提示
                     if (!NetStateUtils.isNetworkAvailable(getContext())) {
                         mLLUnNetWork.setVisibility(View.VISIBLE);
@@ -884,6 +886,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     ClientAPI.sendEmailResetCode(token, mEmail, new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
+                            CurrentUserManager.TokenDue(e);
                             UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                             dialogDismiss(mFindSafeCodeDialog);
                         }
@@ -928,6 +931,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             ClientAPI.postValidateSafeCode(token, safeCode, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
                     LogUtils.e("getMessage-----", e.getMessage());
                     UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                     dialogDismiss(mSafeCodeDialog);

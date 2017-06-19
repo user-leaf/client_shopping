@@ -3,15 +3,6 @@ package shop.imake.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import shop.imake.R;
-import shop.imake.adapter.WithdrawRecordAdapter;
-import shop.imake.callback.DataCallback;
-import shop.imake.client.Api4ClientOther;
-import shop.imake.client.ClientApiHelper;
-import shop.imake.model.WithdrawReCordModel;
-import shop.imake.utils.ToastUtils;
-import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -20,6 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.R;
+import shop.imake.adapter.WithdrawRecordAdapter;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4ClientOther;
+import shop.imake.client.ClientApiHelper;
+import shop.imake.model.WithdrawReCordModel;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ToastUtils;
+import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 提现记录页面
@@ -73,6 +74,7 @@ public class WithdrawRecordActivity extends BaseActivity implements View.OnClick
         mClient.getWithdrawRecord(TAG, mPage, new DataCallback<WithdrawReCordModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 mLv.onRefreshComplete();
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }

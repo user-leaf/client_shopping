@@ -3,15 +3,6 @@ package shop.imake.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import shop.imake.R;
-import shop.imake.adapter.IntegralDetailAdapter;
-import shop.imake.callback.DataCallback;
-import shop.imake.client.Api4ClientOther;
-import shop.imake.client.ClientApiHelper;
-import shop.imake.model.IntegralDetailModel;
-import shop.imake.utils.ToastUtils;
-import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -19,6 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.R;
+import shop.imake.adapter.IntegralDetailAdapter;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4ClientOther;
+import shop.imake.client.ClientApiHelper;
+import shop.imake.model.IntegralDetailModel;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ToastUtils;
+import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 积分详情页面
@@ -70,6 +71,7 @@ public class IntegralDetailActivity extends BaseActivity implements View.OnClick
         mClient.getIntegralDetail(TAG, mPage, new DataCallback<IntegralDetailModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 mLv.onRefreshComplete();
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }

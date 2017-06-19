@@ -28,6 +28,7 @@ import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4ClientOther;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.MyOrder;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SpaceItemDecoration;
@@ -220,6 +221,7 @@ public class MyOrderNotFinishFragment extends BaseFragment {
         mClientApi.getMyOrderData(TAG, mOrderstate, mPage, new DataCallback<MyOrder>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 //判断时候是网络不可用
                 if (NetStateUtils.isNetworkAvailable(getContext())) {
                     String eString = e.toString();

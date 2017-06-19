@@ -6,13 +6,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import shop.imake.R;
-import shop.imake.adapter.AddressAdapter;
-import shop.imake.client.ClientAPI;
-import shop.imake.model.AddressInfo2;
-import shop.imake.utils.LoadViewHelper;
-import shop.imake.utils.LogUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -20,6 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.R;
+import shop.imake.adapter.AddressAdapter;
+import shop.imake.client.ClientAPI;
+import shop.imake.model.AddressInfo2;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.LoadViewHelper;
+import shop.imake.utils.LogUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 新的收货地址列表页（新）
@@ -112,6 +113,7 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
         ClientAPI.getAddressList(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 mLoadViewHelper.showError(AddressManagerActivity.this, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

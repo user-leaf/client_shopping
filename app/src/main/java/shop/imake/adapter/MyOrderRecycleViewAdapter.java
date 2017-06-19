@@ -23,6 +23,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.alertview.OnItemClickListener;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.qqtheme.framework.picker.OptionPicker;
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.MainActivity;
 import shop.imake.MainApplication;
@@ -49,16 +59,6 @@ import shop.imake.utils.PayUtils;
 import shop.imake.utils.SpaceItemDecoration;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
-import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import cn.qqtheme.framework.picker.OptionPicker;
-import okhttp3.Call;
 
 /**
  * @author Alice
@@ -797,6 +797,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         UNNetWorkUtils.unNetWorkOnlyNotify(context, e);
                         LogUtils.e("cancleOrder--E:", e.toString());
                     }
@@ -834,6 +835,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
+                            CurrentUserManager.TokenDue(e);
                             UNNetWorkUtils.unNetWorkOnlyNotify(context, e);
                         }
 
@@ -868,6 +870,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         UNNetWorkUtils.unNetWorkOnlyNotify(context, e);
+                        CurrentUserManager.TokenDue(e);
                     }
 
                     @Override
@@ -915,6 +918,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         UNNetWorkUtils.unNetWorkOnlyNotify(context, e);
                     }
 

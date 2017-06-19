@@ -23,6 +23,7 @@ import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4ClientOther;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.HistoryBuy;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SpaceItemDecoration;
@@ -112,6 +113,7 @@ public class HistoryBuyNewActivity extends BaseActivity {
         mClient.getHistoryData(TAG, mPage, new DataCallback<HistoryBuy>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                 //判断时候是网络不可用
                 if (NetStateUtils.isNetworkAvailable(getApplicationContext())) {

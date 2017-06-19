@@ -17,19 +17,6 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import shop.imake.R;
-import shop.imake.activity.LoginActivity;
-import shop.imake.adapter.InviteMineAdapter;
-import shop.imake.client.ClientAPI;
-import shop.imake.model.ContactModel;
-import shop.imake.model.InviteMineModel;
-import shop.imake.pinyin.CharacterParser;
-import shop.imake.pinyin.PinyinComparator;
-import shop.imake.utils.DensityUtils;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.NetStateUtils;
-import shop.imake.utils.PhoneUtils;
-import shop.imake.widget.SideBar;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -39,6 +26,20 @@ import java.util.List;
 
 import okhttp3.Call;
 import pub.devrel.easypermissions.EasyPermissions;
+import shop.imake.R;
+import shop.imake.activity.LoginActivity;
+import shop.imake.adapter.InviteMineAdapter;
+import shop.imake.client.ClientAPI;
+import shop.imake.model.ContactModel;
+import shop.imake.model.InviteMineModel;
+import shop.imake.pinyin.CharacterParser;
+import shop.imake.pinyin.PinyinComparator;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.DensityUtils;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.NetStateUtils;
+import shop.imake.utils.PhoneUtils;
+import shop.imake.widget.SideBar;
 
 /**
  * 邀请成员页--我邀请的
@@ -243,6 +244,7 @@ public class InviteMineFragment extends BaseFragment implements EasyPermissions.
         ClientAPI.getInviteByMe(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 checkNet();
                 dismissDialog();
             }

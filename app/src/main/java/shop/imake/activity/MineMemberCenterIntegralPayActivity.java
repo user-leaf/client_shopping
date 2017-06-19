@@ -20,6 +20,16 @@ import android.widget.Toast;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.callback.PingppPayResult;
@@ -31,16 +41,6 @@ import shop.imake.utils.LogUtils;
 import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 积分充值页面
@@ -495,6 +495,7 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
             ClientAPI.postIntegralPay(token, mPayMoney, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
                     if (mPayMoney > mLimitMonyes) {
                         Toast.makeText(getApplicationContext(), "充值失败；支付人民币不能超过2000元", Toast.LENGTH_SHORT).show();
                     } else {

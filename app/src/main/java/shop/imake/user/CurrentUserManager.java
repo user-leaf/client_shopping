@@ -87,4 +87,25 @@ public class CurrentUserManager {
     public static boolean isLoginUser(){
         return TextUtils.isEmpty(getUserToken())?false:true;
     }
+
+
+    /**
+     * Token过期清除缓存
+     * @param e
+     */
+    public static void  TokenDue(Exception e){
+        if (e==null){
+            return;
+        }
+        String message=e.toString();
+        boolean tokenPastDue= !TextUtils.isEmpty(message)&&
+                (message.contains("token_expired")
+                        || message.contains("token_absent")
+                        || message.contains("user_not_found")
+                        || message.contains("token_invalid"));
+
+        if (tokenPastDue){
+            CurrentUserManager.clearUserToken();
+        }
+    }
 }

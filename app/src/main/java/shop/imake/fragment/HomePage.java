@@ -642,6 +642,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mClientApi.isHaveMessageNotRead(new DataCallback<IsHaveMessageNotRead>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 //请求失败不显示主页提示红点
                 mTvMessageNotRead.setVisibility(View.INVISIBLE);
                 LogUtils.d("isHaveMessageNotRead", "错误");
@@ -720,6 +721,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
         mClientApi.getPushMessage(1, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
 
             }
 
@@ -734,6 +736,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                         mClientApi.getPushMessage(2, new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
+                                CurrentUserManager.TokenDue(e);
 
                             }
 

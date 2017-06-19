@@ -24,6 +24,7 @@ import shop.imake.fragment.ExchangeCertificateFragment;
 import shop.imake.fragment.IncomeFragment;
 import shop.imake.model.ActivateInfoModel;
 import shop.imake.model.User;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 
 /**
@@ -152,6 +153,7 @@ public class MyExchangeActivity extends BaseActivity implements RadioGroup.OnChe
         mClient.getExchangeData(new DataCallback<ActivateInfoModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 LogUtils.e("getExchangeData", "失败");
             }
 

@@ -14,6 +14,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bigkoo.alertview.OnItemClickListener;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
 import shop.imake.ActivityCollector;
 import shop.imake.Constants;
 import shop.imake.MainApplication;
@@ -46,19 +59,6 @@ import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollListView;
-import com.bigkoo.alertview.OnItemClickListener;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import okhttp3.Call;
 
 /**
  * 确认订单页
@@ -294,6 +294,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             ClientAPI.getCartData(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
                     hasLoadListData = true;
                     checkNet();
                     dismissLoadingDialog();
@@ -585,6 +586,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         ClientAPI.getPostage(TAG, address, mSumWeight, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 LogUtils.d(TAG, "onError: " + e.getMessage());
             }
 

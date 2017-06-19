@@ -24,6 +24,15 @@ import android.widget.TextView;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.activity.LoginActivity;
@@ -44,15 +53,6 @@ import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.widget.NoScrollGridView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 任务页
@@ -238,6 +238,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         mApi4Task.getTaskAd(pageNum, new DataCallback<TaskModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 closeRefresh();
             }
 
@@ -312,6 +313,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
 
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 // 保持原有状态
                 mBtnSignIn.setSelected(currentSignState);
                 checkNet();
@@ -322,6 +324,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
         mApi4Mine.getUserMessage(getActivity(), new DataCallback<User>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
 
             }
 
@@ -450,6 +453,7 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                     ClientAPI.taskSync(TAG, new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
+                            CurrentUserManager.TokenDue(e);
                             String str = "+0积分";
                             showSyncAnim(str);
                         }

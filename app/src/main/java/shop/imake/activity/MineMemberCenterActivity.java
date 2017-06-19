@@ -329,6 +329,7 @@ public class MineMemberCenterActivity extends BaseActivity implements
         mClient.getExchangeData(new DataCallback<ActivateInfoModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 LogUtils.e("getExchangeData", "失败");
                 dismissLoadingDialog();
             }
@@ -537,6 +538,7 @@ public class MineMemberCenterActivity extends BaseActivity implements
             ClientAPI.postGoldCodePay(token, mPayMoney, isIntegralPriority, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
                     LogUtils.e("postIntegralPay--e:", e.toString());
                     if (mPayRMB > mLimitMoneys) {
                         Toast.makeText(getApplicationContext(), "兑换失败；兑换数额不能超过2000元", Toast.LENGTH_SHORT).show();

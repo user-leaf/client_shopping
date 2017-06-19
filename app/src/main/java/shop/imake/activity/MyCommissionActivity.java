@@ -144,6 +144,7 @@ public class MyCommissionActivity extends BaseActivity {
         mApi4Mine.getCommissionData(this, new DataCallback<CommissionModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 dismissLoadingDialog();
                 LogUtils.d("getCommissionData", e.getMessage());
             }
@@ -232,6 +233,7 @@ public class MyCommissionActivity extends BaseActivity {
         mApi4Mine.getCommissiongCommit(this, amount, new DataCallback<String>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 dismissLoadingDialog();
                 LogUtils.e("getCommissiongCommit", e.getMessage());
 

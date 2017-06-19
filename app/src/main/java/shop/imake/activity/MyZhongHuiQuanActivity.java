@@ -73,6 +73,7 @@ public class MyZhongHuiQuanActivity extends BaseActivity {
         mApi4Mine.getZhongHuiQuanData(this, new DataCallback<ZhongHuiQuanModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 dismissLoadingDialog();
                 LogUtils.d("getZhongHuiQuanData", e.getMessage());
             }

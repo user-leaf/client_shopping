@@ -149,6 +149,7 @@ public class RechargeActivity extends BaseActivity {
             ClientAPI.postRechargePay(token, mPayMoney, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
                     UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
 
                 }

@@ -9,6 +9,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.alertview.OnItemClickListener;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.adapter.OrderPayFailAdapter;
@@ -26,17 +37,6 @@ import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollListView;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  *
@@ -159,6 +159,7 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
         ClientAPI.getOrderDetailsData(mOrderNumber, token, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
             }
             @Override
@@ -253,6 +254,7 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
                         LogUtils.e("取消订单：",e.toString().trim());
                         UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
                     }

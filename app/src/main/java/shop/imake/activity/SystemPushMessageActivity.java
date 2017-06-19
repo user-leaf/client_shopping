@@ -12,15 +12,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
-import shop.imake.R;
-import shop.imake.adapter.SystemPushMessageAdapter;
-import shop.imake.client.Api4Home;
-import shop.imake.client.ClientApiHelper;
-import shop.imake.fragment.HomePage;
-import shop.imake.model.PushMessage;
-import shop.imake.user.CurrentUserManager;
-import shop.imake.utils.SPUtils;
-import shop.imake.widget.IUUTitleBar;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -30,6 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import shop.imake.R;
+import shop.imake.adapter.SystemPushMessageAdapter;
+import shop.imake.client.Api4Home;
+import shop.imake.client.ClientApiHelper;
+import shop.imake.fragment.HomePage;
+import shop.imake.model.PushMessage;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.SPUtils;
+import shop.imake.widget.IUUTitleBar;
 
 /**
  * 系统消息列表类
@@ -233,6 +233,7 @@ public class SystemPushMessageActivity extends BaseActivity implements View.OnCl
         mClientApi.getPushMessage(mPage, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 if (mRclView!=null&&mRclView.isRefreshing()){
                     mRclView.onRefreshComplete();
                 }

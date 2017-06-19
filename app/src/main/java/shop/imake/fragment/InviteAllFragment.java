@@ -17,21 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import shop.imake.R;
-import shop.imake.activity.LoginActivity;
-import shop.imake.adapter.SortAdapter;
-import shop.imake.callback.DataCallback;
-import shop.imake.client.Api4Mine;
-import shop.imake.client.ClientApiHelper;
-import shop.imake.model.ContactMemberModel;
-import shop.imake.model.ContactModel;
-import shop.imake.pinyin.CharacterParser;
-import shop.imake.pinyin.PinyinComparator;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.MobileUtils;
-import shop.imake.utils.NetStateUtils;
-import shop.imake.widget.ClearEditText;
-import shop.imake.widget.SideBar;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -42,6 +27,22 @@ import java.util.Map;
 
 import okhttp3.Call;
 import pub.devrel.easypermissions.EasyPermissions;
+import shop.imake.R;
+import shop.imake.activity.LoginActivity;
+import shop.imake.adapter.SortAdapter;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4Mine;
+import shop.imake.client.ClientApiHelper;
+import shop.imake.model.ContactMemberModel;
+import shop.imake.model.ContactModel;
+import shop.imake.pinyin.CharacterParser;
+import shop.imake.pinyin.PinyinComparator;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.MobileUtils;
+import shop.imake.utils.NetStateUtils;
+import shop.imake.widget.ClearEditText;
+import shop.imake.widget.SideBar;
 
 /**
  * 邀请成员页--所有联系人
@@ -303,6 +304,7 @@ public class InviteAllFragment extends BaseFragment implements EasyPermissions.P
 
                             @Override
                             public void onFail(Call call, Exception e, int id) {
+                                CurrentUserManager.TokenDue(e);
                                 checkNet();
                                 mHandler.sendMessage(Message.obtain());
 

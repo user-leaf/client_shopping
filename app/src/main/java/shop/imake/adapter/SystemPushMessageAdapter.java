@@ -8,6 +8,13 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.activity.SystemPushMessageActivity;
 import shop.imake.activity.WebShowActivity;
@@ -16,13 +23,6 @@ import shop.imake.client.ClientAPI;
 import shop.imake.model.PushMessage;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
-import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.adapters.BaseSwipeAdapter;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 系统消息列表适配器
@@ -199,6 +199,7 @@ public class SystemPushMessageAdapter extends BaseSwipeAdapter implements View.O
         mApi4Home.deletePushMessage(id, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 LogUtils.e("deletePushMessage","删除失败");
             }
 

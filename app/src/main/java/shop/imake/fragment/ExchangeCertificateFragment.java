@@ -198,6 +198,7 @@ public class ExchangeCertificateFragment extends BaseFragment {
         mClient.getExchangeData(new DataCallback<ActivateInfoModel>(getContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
                 LogUtils.e("getExchangeData", "失败" + e.getMessage());
                 dismissLoadingDialog();
             }
@@ -826,6 +827,7 @@ public class ExchangeCertificateFragment extends BaseFragment {
             mClient.postExchangeData(token, exchangeMoney, userName, safeCode, new DataCallback<ExchangeResultModel>(getContext()) {
                 @Override
                 public void onFail(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
 //                    ToastUtils.showShort("失败Exception");
                     dismissLoadingDialog();
 
@@ -1143,6 +1145,8 @@ public class ExchangeCertificateFragment extends BaseFragment {
                 mClient.postActivateExchange(mInPutActivateNum, new DataCallback<ActivateResultMode>(getContext()) {
                     @Override
                     public void onFail(Call call, Exception e, int id) {
+                        CurrentUserManager.TokenDue(e);
+
                         dismissLoadingDialog();
                         LogUtils.e("postActivateExchange", e.toString());
                         LogUtils.e("postActivateExchange", e.getMessage());
