@@ -134,8 +134,9 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+//                view.loadUrl(url);
+//                return true;
+                return false;
             }
 
             @Override
