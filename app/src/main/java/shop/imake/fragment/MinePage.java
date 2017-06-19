@@ -420,6 +420,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         //取消数据加载Loading
 //        showLoadingDialog();
         //退款接口为二次请求相应接口，先请求退款接口，（成功与否对获取用户信息不影响）再获取用户信息
+
+        if (TextUtils.isEmpty(CurrentUserManager.getUserToken())){
+            return;
+        }
         ClientAPI.getWithdraw(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
