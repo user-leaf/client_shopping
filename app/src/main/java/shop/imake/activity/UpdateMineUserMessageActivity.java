@@ -174,9 +174,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
         mTvSubmit = ((TextView) findViewById(R.id.tv_update_user_submit));
         mUserImg = ((CircleImageView) findViewById(R.id.iv_update_user_img));
 
-
-        mGetUserImgAlertView = new AlertView(null, null, "取消", null, new String[]{"拍照", "我的相册"}, this, AlertView.Style.ActionSheet, this);
-
     }
 
     private void setView() {
@@ -400,7 +397,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 break;
 
             case R.id.iv_update_user_img://修改头像
-                mGetUserImgAlertView.show();
+                new AlertView(null, null, "取消", null, new String[]{"拍照", "我的相册"}, this, AlertView.Style.ActionSheet, this).show();
                 break;
 
         }
