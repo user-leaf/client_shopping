@@ -2,6 +2,7 @@ package shop.imake.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import shop.imake.R;
+import shop.imake.client.ClientAPI;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
 
@@ -127,8 +129,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
-        CookieManager.getInstance().setAcceptCookie(true);
-
         //设置网页在WebView中打开，而不是跳转到浏览器
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -136,7 +136,16 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 //                view.loadUrl(url);
 //                return true;
-                return false;
+                String hostWeb = Uri.parse(url).getHost();
+                String hostH5 = Uri.parse(ClientAPI.URL_WX_H5).getHost();
+                LogUtils.d(TAG, "hostWeb: " + hostWeb + ", hostH5: " + hostH5);
+                if (hostH5.equals(hostWeb)) {
+                    return false;
+                } else if (url.contains("alipays://platformapi")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                }
+                return true;
             }
 
             @Override
