@@ -33,6 +33,7 @@ import shop.imake.client.ClientApiHelper;
 import shop.imake.model.ScanPayModel;
 import shop.imake.model.ShopModel;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
@@ -536,7 +537,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DialUtils.callCentre(ScanPayActivity.this, DialUtils.CENTER_NUM);
+                        DialUtils.callCentre(ScanPayActivity.this, ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
                         dialog.dismiss();
                     }
                 },

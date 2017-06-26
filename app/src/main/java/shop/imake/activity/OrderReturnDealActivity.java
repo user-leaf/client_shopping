@@ -79,6 +79,8 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
     // 进度条
     private ImageView mIvProgress1;
     private static final int RC_CALL_PERM = 123;
+    //客服电话
+    private String[] mPhones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,18 +127,8 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.order_return_deal_rl_kefu: // 联系客服
-                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
-                }, this, AlertView.Style.ActionSheet, this).show();
-//                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
-
-//                if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
-//                    makeCall();
-//                } else {
-//                    // Ask for one permission
-//                    EasyPermissions.requestPermissions(this, "需要开启拨打电话权限",
-//                            RC_CALL_PERM, Manifest.permission.CALL_PHONE);
-//                }
-
+                mPhones=DialUtils.getPhoneNum(this,DialUtils.SERVER_PHONE_TYPE);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones, this, AlertView.Style.ActionSheet, this).show();
                 break;
         }
     }
@@ -206,7 +198,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                         // 申请退款时间
                         long createdTime = orderReturnDealModel.getCreated();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                        String time = sdf.format(createdTime*1000);
+                        String time = sdf.format(createdTime * 1000);
                         mTvTime0.setText(time);
                         mTvApplyTime.setText(time);
 
@@ -227,7 +219,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                         mTvWay.setText(way);
 
                         // 退款金额
-                        mTvMoney.setText("¥" + DoubleTextUtils.setDoubleUtils((double)orderReturnDealModel.getAmount() / 100));
+                        mTvMoney.setText("¥" + DoubleTextUtils.setDoubleUtils((double) orderReturnDealModel.getAmount() / 100));
 
                         // 退款状态
                         String status = orderReturnDealModel.getStatus();
@@ -288,25 +280,20 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
 
     /**
      * 电话弹出框条目点击
+     *
      * @param o
      * @param position
      */
     @Override
     public void onItemClick(Object o, int position) {
         //调用父类的方法给出提示
-        super.onItemClick(o,position);
-        switch (position) {
-            case 0: //
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM1);
-
-                break;
-            case 1: //
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM2);
-
-                break;
-            default:
-                return;
+        super.onItemClick(o, position);
+        if (position<0){
+            return;
         }
+
+        DialUtils.callCentre(this, mPhones[position]);
+
 
     }
 

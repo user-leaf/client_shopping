@@ -4,7 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import shop.imake.model.TelephoneModel;
 
 /**
  * 直接拨打客服电话
@@ -19,22 +27,27 @@ public class DialUtils {
      * 客服电话
      */
 //    public static String CENTER_NUM = "4001599586";
-    public static String CENTER_NUM = "01053358674";
-
-    public static String CENTER_NUM1 = "01053358654";
-    public static String CENTER_NUM2 = "01053358674";
+//    public static String CENTER_NUM = "01053358674";
+//
+//    public static String CENTER_NUM1 = "01053358654";
+//    public static String CENTER_NUM2 = "01053358674";
 
 
     /**
      * 供货电话
      */
-    public static String SUPPLY_PHONE="01053654225";
+//    public static String SUPPLY_PHONE = "01053654225";
     //test
 //    public static String SUPPLY_PHONE = "18333618642";
 
-    public static  int REQUEST_CODE=110;
+    public static int REQUEST_CODE = 110;
+
+    public static String PHONE_JSON_KEY = "telephone_jsonString_key";//用于标识存储拨打电话数据
+    public static String PHONE_GET_SAFE_CODE_KEY = "get_safe_code_key";//用于标识找回安全码电话数据
 
 
+    public static int SERVER_PHONE_TYPE = 1;//客服电话类型
+    public static int SUPPLY_PHONE_TYPE = 2;//供货电话类型
 
 
     /**
@@ -49,6 +62,36 @@ public class DialUtils {
         return permission;
     }
 
+    public static String[] getPhoneNum(Context context, int phoneType) {
+        //获取缓存json数据
+        String jsonString = ACache.get(context).getAsString(DialUtils.PHONE_JSON_KEY);
+        //存储符合要求的电话数据
+        List<String> listData=new ArrayList<>();
+
+        if (!TextUtils.isEmpty(jsonString)) {
+            //获取数据对象
+            TelephoneModel telephoneModel = new Gson().fromJson(jsonString,TelephoneModel.class);
+            List<TelephoneModel.PhoneBean> list = telephoneModel.getPhone();
+            //遍历数据获得满足要求的数据
+            for (int i=0;i< list.size();i++) {
+                TelephoneModel.PhoneBean phoneBean=list.get(i);
+                if (phoneBean != null && phoneBean.getType() == phoneType) {
+                    listData.add(phoneBean.getVal());
+                }
+            }
+        }
+        //将集合数据赋值到数组用于掉起统一的选择框
+        String[] phones =new String[listData.size()];
+        for (int i=0;i<listData.size();i++){
+            phones[i] =listData.get(i);
+            if (phoneType==SERVER_PHONE_TYPE&&i==listData.size()-1){
+                //用于找回安全码
+                ACache.get(context).put(PHONE_GET_SAFE_CODE_KEY,listData.get(i));
+            }
+        }
+        return phones;
+    }
+
     /**
      * 拨打电话
      *
@@ -56,6 +99,8 @@ public class DialUtils {
      * @param mCenterNum
      */
     public static void callCentre(Context context, String mCenterNum) {
+
+        //调用系统拨号器拨打电话
         //方法二，直接拨打电话
         Intent intent = new Intent();
         // 设置要拨打的号码

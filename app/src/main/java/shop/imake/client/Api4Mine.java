@@ -309,4 +309,21 @@ public class Api4Mine extends BaseClientApi {
         doPost(url, null, callback);
 
     }
+
+
+    /**
+     * 登录页面获取验证码
+     * @param callback
+     */
+    public void getTelephone(StringCallback callback){
+
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/systemTel");
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "getTelephone url: " + url);
+
+        doGet(url, null, callback);
+    }
+
 }

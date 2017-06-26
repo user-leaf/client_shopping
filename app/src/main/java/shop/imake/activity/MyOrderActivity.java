@@ -30,6 +30,7 @@ import shop.imake.fragment.MyOrderNotFinishFragment;
 import shop.imake.fragment.MyOrderPaymentFragment;
 import shop.imake.model.PayResultEvent;
 import shop.imake.model.PayResultMyOrderRefreshEvent;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ScreenUtils;
@@ -238,7 +239,7 @@ public class MyOrderActivity extends BaseActivity implements RadioGroup.OnChecke
             Toast.makeText(this, "未授权，不能拨打电话", Toast.LENGTH_SHORT).show();
 //            finish();
         } else if (requestCode == Constants.CALL_PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
-            DialUtils.callCentre(this, DialUtils.CENTER_NUM);
+            DialUtils.callCentre(this, ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
         }
     }
 

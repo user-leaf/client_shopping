@@ -61,6 +61,7 @@ import shop.imake.model.MyMine;
 import shop.imake.model.MyMineOther;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
@@ -1231,7 +1232,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     //没有邮箱直接拨打电话
                 } else {
                     //拨打客服电话
-                    DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                    DialUtils.callCentre(getContext(), ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
                 }
                 break;
             //关闭安全码验证的窗口
@@ -1247,7 +1248,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //忘记你密码页面联系客服
             case R.id.tv_safe_code_forget_callcentre:
                 //拨打客服电话
-                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+                DialUtils.callCentre(getContext(), ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
 
 //                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
 //                }, getActivity(), AlertView.Style.ActionSheet, this).show();
@@ -1294,10 +1295,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
 
             case R.id.ll_mine_supply_the_phone: //拨打供货电话
-                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
+//                DialUtils.callCentre(getContext(), DialUtils.SUPPLY_PHONE);
                 break;
             case R.id.ll_mine_service_the_phone: //拨打客服电话
-                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
+//                DialUtils.callCentre(getContext(), DialUtils.CENTER_NUM);
                 break;
         }
     }
@@ -1327,11 +1328,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         super.onItemClick(o,position);
         switch (position) {
             case 0: //
-                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM1);
+//                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM1);
 
                 break;
             case 1: //
-                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM2);
+//                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM2);
 
                 break;
             default:

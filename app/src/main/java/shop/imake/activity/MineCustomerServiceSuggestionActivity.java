@@ -82,6 +82,8 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     private FlowRadioGroup mRadioGroup;
     //重新获取数据
     private TextView mTvGetAgain;
+    //电话
+    private String[] mPhones;
 
 
     @Override
@@ -208,9 +210,8 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
                 break;
 
             case R.id.rl_call_centre: // 拨打客服电话
-//                DialUtils.callCentre(this, DialUtils.CENTER_NUM);
-                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
-                }, this, AlertView.Style.ActionSheet, this).show();
+                mPhones=DialUtils.getPhoneNum(this,DialUtils.SERVER_PHONE_TYPE);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones, this, AlertView.Style.ActionSheet, this).show();
                 break;
 
             case R.id.tv_goto_login: // 去登陆
@@ -304,10 +305,10 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     /**
      * 网络检查
      */
-    public void checkNet(){
+    public void checkNet() {
         if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
             UNNetWorkUtils.isNetHaveConnect(getApplicationContext(), mRLNotLogin, mLLLogin, mLLUnNetWork);
-        }else {
+        } else {
             mRLNotLogin.setVisibility(View.GONE);
             mLLUnNetWork.setVisibility(View.GONE);
             mLLLogin.setVisibility(View.VISIBLE);
@@ -316,25 +317,19 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
 
     /**
      * 电话弹出框条目点击
+     *
      * @param o
      * @param position
      */
     @Override
     public void onItemClick(Object o, int position) {
         //调用父类的方法给出提示
-        super.onItemClick(o,position);
-        switch (position) {
-            case 0: //
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM1);
-
-                break;
-            case 1: //
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM2);
-
-                break;
-            default:
-                return;
+        super.onItemClick(o, position);
+        if (position<0){
+            return;
         }
+        DialUtils.callCentre(this,mPhones[position]);
+
 
     }
 }

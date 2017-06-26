@@ -1,10 +1,9 @@
 package shop.imake.activity;
 /**
  * 关于我么页面
+ *
  * @author Alice
- *Creare 2016/8/27 19:57
- *
- *
+ * Creare 2016/8/27 19:57
  */
 
 import android.os.Bundle;
@@ -23,12 +22,13 @@ import static shop.imake.R.id.ll_service_the_phone;
 import static shop.imake.R.id.ll_supply_the_phone;
 
 
-public class AboutIUUActivity extends BaseActivity implements View.OnClickListener{
+public class AboutIUUActivity extends BaseActivity implements View.OnClickListener {
 
     private IUUTitleBar mTitleBar;
     private TextView mTvVersions;//版本
     private LinearLayout mLLServerPhone;//客服电话
     private LinearLayout mLLSupplyPhone;//供货电话
+    private String[] mPhones ;//电话数组
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
         setUpView();
         setData();
     }
-
 
 
     private void initView() {
@@ -54,24 +53,28 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
         mLLServerPhone.setOnClickListener(this);
         mLLSupplyPhone.setOnClickListener(this);
     }
+
     private void setData() {
-        mTvVersions.setText("v"+AppUtils.getVersionName(getApplicationContext())+"");
+        mTvVersions.setText("v" + AppUtils.getVersionName(getApplicationContext()) + "");
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left_layout:
                 finish();
                 break;
 
             case R.id.ll_service_the_phone://客服电话
-//                DialUtils.callCentre(this,DialUtils.CENTER_NUM);
-                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
-                }, this, AlertView.Style.ActionSheet, this).show();
+                mPhones=DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SERVER_PHONE_TYPE);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones,
+                        this, AlertView.Style.ActionSheet, this).show();
                 break;
             case ll_supply_the_phone://供货电话
-                DialUtils.callCentre(this,DialUtils.SUPPLY_PHONE);
+                mPhones=DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SUPPLY_PHONE_TYPE);
+                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones,
+                        this, AlertView.Style.ActionSheet, this).show();
+
                 break;
 
         }
@@ -86,19 +89,11 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onItemClick(Object o, int position) {
         //调用父类的方法给出提示
-        super.onItemClick(o,position);
-        switch (position) {
-            case 0: //
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM1);
-
-                break;
-            case 1: //
-                DialUtils.callCentre(this, DialUtils.CENTER_NUM2);
-
-                break;
-            default:
-                return;
+        super.onItemClick(o, position);
+        if (position<0){
+            return;
         }
-
+        //拨打相应的电话
+        DialUtils.callCentre(this, mPhones[position]);
     }
 }

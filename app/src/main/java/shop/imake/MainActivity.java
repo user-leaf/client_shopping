@@ -6,22 +6,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.util.List;
 
+import okhttp3.Call;
 import shop.imake.activity.BaseActivity;
 import shop.imake.activity.PermissionsActivity;
+import shop.imake.client.Api4Mine;
+import shop.imake.client.ClientApiHelper;
 import shop.imake.fragment.BaseFragment;
 import shop.imake.fragment.CartPage;
 import shop.imake.fragment.ClassifyPage;
 import shop.imake.fragment.HomePage;
 import shop.imake.fragment.MinePage;
 import shop.imake.fragment.TaskPage;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.UpdateUtils;
@@ -37,7 +44,7 @@ public class MainActivity extends BaseActivity {
 
     private RadioButton mController0;
     private RadioButton mController1;
-//    private RadioButton mController2;
+    //    private RadioButton mController2;
     private RadioButton mController3;
     private RadioButton mController4;
 
@@ -62,12 +69,20 @@ public class MainActivity extends BaseActivity {
     // 升级
     private UpdateUtils mUpdateUtils;
 
+    //////////处理客服电话
+    private Api4Mine mClientApi;//网络请求对象
+
+    public static String serverPhone[];//客服电话
+    public static String supplyPhone[];//供货电话
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initView();
+
 
         if (savedInstanceState == null) {
             setupView();
@@ -100,7 +115,11 @@ public class MainActivity extends BaseActivity {
         mUpdateUtils = new UpdateUtils();
         // 检查升级
         mUpdateUtils.checkUpdate(this, null);
+
+        //获取电话信息
+        getTelephone();
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -333,8 +352,35 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), "未授权，不能拨打电话", Toast.LENGTH_SHORT).show();
 //            finish();
         } else if (requestCode == DialUtils.REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
-            DialUtils.callCentre(this, DialUtils.CENTER_NUM);
+            DialUtils.callCentre(this, ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
         }
+    }
+
+
+    /**
+     * 获取客服,供货电话
+     */
+    private void getTelephone() {
+        mClientApi = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
+        mClientApi.getTelephone(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                //请求失败再次请求
+                getTelephone();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                if (TextUtils.isEmpty(response)){
+                    return;
+                }
+                ACache.get(getApplicationContext()).put(DialUtils.PHONE_JSON_KEY, response.trim());
+                LogUtils.e("telephone",response);
+
+            }
+        });
+
+
     }
 
 }

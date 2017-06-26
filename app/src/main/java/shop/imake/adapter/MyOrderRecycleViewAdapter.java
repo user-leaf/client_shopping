@@ -50,6 +50,7 @@ import shop.imake.model.MyOrder;
 import shop.imake.model.PermissionsChecker;
 import shop.imake.task.PaymentTask;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
@@ -445,7 +446,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
             case R.id.bt_myOrder_contactcustomerservice:
                 //直接拨打客服电话
 //                callCustomerServerPhone();
-                DialUtils.callCentre(activity, DialUtils.CENTER_NUM);
+                DialUtils.callCentre(activity, ACache.get(context).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
                 break;
             case R.id.bt_myOrder_refundprogress:
                 //跳转到商品详情页面
@@ -1017,7 +1018,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
             startPermissionsActivity();
         } else {
             //已经授权直接拨打电话
-            DialUtils.callCentre(activity, DialUtils.CENTER_NUM);
+            DialUtils.callCentre(activity, ACache.get(context).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
         }
     }
 

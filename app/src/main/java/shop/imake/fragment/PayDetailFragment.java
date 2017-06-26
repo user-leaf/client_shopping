@@ -26,6 +26,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
@@ -33,6 +39,7 @@ import shop.imake.adapter.PayWayAdapter;
 import shop.imake.client.Api4Cart;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.PayWayModel;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
@@ -43,13 +50,6 @@ import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.LoadingDialog;
-
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 支付底部弹窗Fragment
@@ -382,7 +382,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DialUtils.callCentre(mContext, DialUtils.CENTER_NUM);
+                        DialUtils.callCentre(mContext, ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
                         dialog.dismiss();
                     }
                 },

@@ -10,13 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.bigkoo.alertview.OnItemClickListener;
-import shop.imake.ActivityCollector;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.ToastUtils;
-import shop.imake.utils.Utility;
-import shop.imake.widget.LoadingDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import shop.imake.ActivityCollector;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.Utility;
+import shop.imake.widget.LoadingDialog;
 
 /**
  * BaseActivity
@@ -194,11 +194,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case 1: // 余额支付
-                ToastUtils.showShort("正在开通中...");
+
                 break;
 
             case 2: // 环迅支付
-                ToastUtils.showShort("正在开通中...");
+
                 break;
 
             default:
