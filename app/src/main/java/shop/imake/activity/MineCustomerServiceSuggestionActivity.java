@@ -210,7 +210,7 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
                 break;
 
             case R.id.rl_call_centre: // 拨打客服电话
-                mPhones=DialUtils.getPhoneNum(this,DialUtils.SERVER_PHONE_TYPE);
+                mPhones = DialUtils.getPhoneNum(this, DialUtils.SERVER_PHONE_TYPE);
                 new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones, this, AlertView.Style.ActionSheet, this).show();
                 break;
 
@@ -325,11 +325,9 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
     public void onItemClick(Object o, int position) {
         //调用父类的方法给出提示
         super.onItemClick(o, position);
-        if (position<0){
+        if (position < 0) {
             return;
         }
-        DialUtils.callCentre(this,mPhones[position]);
-
-
+        DialUtils.callCentre(this, mPhones[position]);
     }
 }
