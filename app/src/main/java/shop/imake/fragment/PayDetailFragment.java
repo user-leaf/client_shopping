@@ -376,7 +376,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         Dialog confirmDialog = DialogUtils.createConfirmDialog(
                 mContext,
                 null,
-                "拨打客服电话" + Constants.KEFU_TEL + "进行修改",
+                "拨打客服电话" + ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY)  + "进行修改",
                 "拨打",
                 "取消",
                 new DialogInterface.OnClickListener() {
