@@ -312,7 +312,7 @@ public class Api4Mine extends BaseClientApi {
 
 
     /**
-     * 登录页面获取验证码
+     * 进入app获取电话号码
      * @param callback
      */
     public void getTelephone(StringCallback callback){
