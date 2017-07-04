@@ -65,6 +65,7 @@ import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
+import shop.imake.utils.NTalkerUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.SPUtils;
 import shop.imake.utils.ScreenUtils;
@@ -86,6 +87,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     //    功能列表
     private NoScrollGridView gv;
+
+    private static int flag_NTalker_login = -1;   // 是否执行过登录小能客服
 
     //  功能按钮数据
     private List<MyMine> dataListLogin;
@@ -530,7 +533,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         User.MemberBean memberBean = mUser.getMember();
 //        initGridViewChange();
-
+        CurrentUserManager.setCurrentUser(memberBean);
+        // 登录小能客服
+        if (flag_NTalker_login != 1){
+            flag_NTalker_login = 1;
+            NTalkerUtils.getInstance().login();
+        }
 
 //        //用户名
 //        mTvName.setText(memberBean.getName());
@@ -690,6 +698,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         MyMine mine7 = new MyMine("设置", R.mipmap.list_set_nor);
         dataListLogin.add(mine7);
+        MyMine mine8 = new MyMine("在线客服", R.mipmap.list_online_service);
+        dataListLogin.add(mine8);
         //test
 //        MyMine mine8 = new MyMine("我的兑换券", R.mipmap.list_set);
 //        dataListLogin.add(mine8);
@@ -1188,6 +1198,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 jump(SettingsActivity.class, false);
 
                 break;
+
+            case 7:
+                // 在线客服
+                NTalkerUtils.getInstance().startChat(getActivity());
+                break;
+
             //test
 //            case 7:
 //                //test，跳转我的兑换券

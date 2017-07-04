@@ -31,6 +31,7 @@ import shop.imake.fragment.TaskPage;
 import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
+import shop.imake.utils.NTalkerUtils;
 import shop.imake.utils.UpdateUtils;
 
 public class MainActivity extends BaseActivity {
@@ -115,9 +116,10 @@ public class MainActivity extends BaseActivity {
         mUpdateUtils = new UpdateUtils();
         // 检查升级
         mUpdateUtils.checkUpdate(this, null);
-
         //获取电话信息
         getTelephone();
+        // 小能客服登录
+        NTalkerUtils.getInstance().login();
     }
 
 

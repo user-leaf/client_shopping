@@ -113,7 +113,6 @@ android {
 }
 
 dependencies {
-
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':pullToRefreshLibrary')
@@ -162,10 +161,13 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.3'
     compile 'cn.jiguang.sdk:jcore:1.1.1'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.pingxx:pingpp-core:2.1.9'
+    //必须添加
+    compile 'com.pingxx:pingpp-alipay:2.1.9'
+    //使用支付宝时添加
 
-    compile 'com.pingxx:pingpp-core:2.1.9' //必须添加
-    compile 'com.pingxx:pingpp-alipay:2.1.9' //使用支付宝时添加
-//    compile 'com.pingxx:pingpp-wxpay:2.1.9' //使用微信支付时添加
+    //    compile 'com.pingxx:pingpp-wxpay:2.1.9' //使用微信支付时添加
 
-//    compile 'com.zhy:percent-support-extends:1.0.7'//百分比适配 https://github.com/hongyangAndroid/android-percent-support-extend
+    //    compile 'com.zhy:percent-support-extends:1.0.7'//百分比适配 https://github.com/hongyangAndroid/android-percent-support-extend
+    compile project(':library:xiaonengChatUI')
 }

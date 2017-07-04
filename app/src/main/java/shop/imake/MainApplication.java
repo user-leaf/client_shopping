@@ -3,6 +3,10 @@ package shop.imake;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import cn.xiaoneng.activity.ChatActivity;
+import cn.xiaoneng.uiapi.EPlusFunctionType;
+import cn.xiaoneng.uiapi.Ntalker;
+import cn.xiaoneng.xpush.XPush;
 import shop.imake.BuildConfig;
 
 import shop.imake.client.ClientApiHelper;
@@ -42,6 +46,10 @@ public class MainApplication extends MultiDexApplication {
     // 数据载体
     private Object data;
 
+    // 小能客服
+    public static String siteid = "kf_9003";// 示例kf_9979,kf_8002,kf_3004,zf_1000,yy_1000,kf_9979
+    public static String sdkkey = "AC7B45BC-AF77-4821-9375-6F5890A69358";// 示例FB7677EF-00AC-169D-1CAD-DEDA35F9C07B,w2222
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,6 +65,17 @@ public class MainApplication extends MultiDexApplication {
 
         JPushInterface.setDebugMode(DEBUG);
         JPushInterface.init(this);
+
+        // 小能在线客服
+        Ntalker.getBaseInstance().enableDebug(DEBUG);
+        Ntalker.getBaseInstance().initSDK(getApplicationContext(), siteid, sdkkey);
+
+        Ntalker.getExtendInstance().extensionArea().removeAll();//首先先调用删除所有功能的接口，然后依次添加功能
+        Ntalker.getExtendInstance().extensionArea().addPlusFunction(EPlusFunctionType.DEFAULT_PICTRUE);
+        Ntalker.getExtendInstance().extensionArea().addPlusFunction(EPlusFunctionType.DEFAULT_CAMERA);
+        Ntalker.getExtendInstance().extensionArea().addPlusFunction(EPlusFunctionType.DEFAULT_VIDEO);
+        Ntalker.getExtendInstance().extensionArea().addPlusFunction(EPlusFunctionType.DEFAULT_EVALUATE);
+        setXPush();
     }
 
     public static Context getContext() {
@@ -128,5 +147,20 @@ public class MainApplication extends MultiDexApplication {
                 })
                 .build();
         return client;
+    }
+
+    /**
+     * 小能推送
+     */
+    private void setXPush() {
+        XPush.setNotificationClickToActivity(getApplicationContext(), ChatActivity.class);
+        XPush.setNotificationShowIconId(getApplicationContext(), 0);
+        XPush.setNotificationShowTitleHead(getApplicationContext(), null);//getResources().getString(R.string.app_name)
+
+//		XPush.enableHuaweiPush(getApplicationContext(), true);
+//		XPush.setHuaweiPushParams(getApplicationContext(), "10556196");
+//		XPush.enableXiaomiPush(getApplicationContext(), true);
+//		XPush.setXiaomiPushParams(getApplicationContext(), getPackageName(), "2882303761517480753", "5641748066753");
+
     }
 }

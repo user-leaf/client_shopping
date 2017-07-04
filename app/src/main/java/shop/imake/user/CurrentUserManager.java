@@ -4,6 +4,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import shop.imake.MainApplication;
+import shop.imake.model.User;
+import shop.imake.utils.ACache;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.SPUtils;
 
@@ -32,8 +34,8 @@ public class CurrentUserManager {
      * @param userInfo
      * @return
      */
-    public static UserInfo setCurrentUser(UserInfo userInfo) {
-        SPUtils.put(MainApplication.getContext(), SP_CURRENT_USER, userInfo);
+    public static User.MemberBean setCurrentUser(User.MemberBean userInfo) {
+        ACache.get(MainApplication.getContext()).put(SP_CURRENT_USER, userInfo);
         return userInfo;
     }
 
@@ -42,8 +44,8 @@ public class CurrentUserManager {
      *
      * @return
      */
-    public static UserInfo getCurrentUser() {
-        return (UserInfo) SPUtils.get(MainApplication.getContext(), SP_CURRENT_USER, null);
+    public static User.MemberBean getCurrentUser() {
+        return (User.MemberBean) ACache.get(MainApplication.getContext()).getAsObject(SP_CURRENT_USER);
     }
 
     /**

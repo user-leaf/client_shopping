@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.xiaoneng.uiapi.Ntalker;
 import shop.imake.R;
 import shop.imake.fragment.TaskPage;
 import shop.imake.user.CurrentUserManager;
@@ -130,6 +131,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                     // 任务页数据重置
                     Intent taskIntent = new Intent(TaskPage.INTENT_BROADCAST);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(taskIntent);
+                    // 小能退出登录
+                    Ntalker.getBaseInstance().logout();
+                    CurrentUserManager.clearCurrentUser();
                     finish();
                 }
                 break;
