@@ -282,3 +282,16 @@
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
+
+#小能
+-dontwarn cn.xiaoneng.**
+-dontwarn android.support.v4xn.**
+-dontwarn orgxn.fusesource.**
+-keep class cn.xiaoneng.** {*;}
+-keep class android.support.v4xn.** {*;}
+-keep class orgxn.fusesource.** {*;}
+#小能推送
+-dontwarn com.huawei.android.**
+-keep class com.huawei.android.** {*;}
+-dontwarn com.xiaomi.push.**
+-keep class com.xiaomi.push.** {*;}
