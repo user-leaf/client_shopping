@@ -25,7 +25,7 @@ public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
     // 用户
     private String userid = "";     // 客户唯一标识，切忌不同客户使用同一个userid，未登录访客请传"",不能传除 . - @ 三个之外的特殊字符
     private String username = "";   // 顾客名字
-    private String settingid1 = "kf_9003_1498460998928";    // 客服组id示例kf_9979_1452750735837,kf_9979_1452750735837
+    private String settingid1 = "kf_9003_1499140862639";    // 客服组id示例kf_9979_1452750735837,kf_9979_1452750735837
     private String groupName = "";  // 客服组默认名称
     private int userlevel = 0;      // 用户级别,级别分为1-5,5为最高级,默认为0 非会员
     // 聊天信息实例
