@@ -47,7 +47,7 @@ public class MainApplication extends MultiDexApplication {
     private Object data;
 
     // 小能客服
-    public static String siteid = "kf_9003";// 示例kf_9979,kf_8002,kf_3004,zf_1000,yy_1000,kf_9979
+    public static String siteid = "kf_9003_1499140862639";// 示例kf_9979,kf_8002,kf_3004,zf_1000,yy_1000,kf_9979
     public static String sdkkey = "AC7B45BC-AF77-4821-9375-6F5890A69358";// 示例FB7677EF-00AC-169D-1CAD-DEDA35F9C07B,w2222
 
     @Override
