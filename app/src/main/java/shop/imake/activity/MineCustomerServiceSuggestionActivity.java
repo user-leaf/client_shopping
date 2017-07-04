@@ -211,7 +211,7 @@ public class MineCustomerServiceSuggestionActivity extends BaseActivity implemen
 
             case R.id.rl_call_centre: // 拨打客服电话
                 mPhones = DialUtils.getPhoneNum(this, DialUtils.SERVER_PHONE_TYPE);
-                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones, this, AlertView.Style.ActionSheet, this).show();
+                new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, mPhones, this, AlertView.Style.ActionSheet, this).show();
                 break;
 
             case R.id.tv_goto_login: // 去登陆

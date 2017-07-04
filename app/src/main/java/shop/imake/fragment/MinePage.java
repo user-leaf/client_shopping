@@ -1250,7 +1250,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 //拨打客服电话
                 DialUtils.callCentre(getContext(), ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
 
-//                new AlertView("哎呦呦客服为您服务", null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
+//                new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
 //                }, getActivity(), AlertView.Style.ActionSheet, this).show();
 
                 dialogDismiss(mFindSafeCodeDialog);

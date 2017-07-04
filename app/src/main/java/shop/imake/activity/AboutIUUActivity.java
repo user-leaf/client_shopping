@@ -67,12 +67,12 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.ll_service_the_phone://客服电话
                 mPhones=DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SERVER_PHONE_TYPE);
-                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones,
+                new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, mPhones,
                         this, AlertView.Style.ActionSheet, this).show();
                 break;
             case ll_supply_the_phone://供货电话
                 mPhones=DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SUPPLY_PHONE_TYPE);
-                new AlertView("哎呦呦客服为您服务", null, "取消", null, mPhones,
+                new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, mPhones,
                         this, AlertView.Style.ActionSheet, this).show();
 
                 break;

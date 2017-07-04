@@ -49,6 +49,8 @@ public class DialUtils {
     public static int SERVER_PHONE_TYPE = 1;//客服电话类型
     public static int SUPPLY_PHONE_TYPE = 2;//供货电话类型
 
+    public static String SERVER_TITLE = "爱每刻客服为您服务";//电话列表标题
+
 
     /**
      * 判断是否开启拨打电话权限
