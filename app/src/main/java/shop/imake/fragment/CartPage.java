@@ -269,7 +269,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         ClientAPI.getCartData(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                CurrentUserManager.clearUserToken();
                 /**
                  * 错误类型：断网、token过期、服务器错误
                  */
