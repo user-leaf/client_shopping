@@ -128,6 +128,10 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.order_return_deal_rl_kefu: // 联系客服
                 mPhones=DialUtils.getPhoneNum(this,DialUtils.SERVER_PHONE_TYPE);
+                if (mPhones.length==0){
+                    ToastUtils.showShort("咨询电话加载中...");
+                    return;
+                }
                 new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, mPhones, this, AlertView.Style.ActionSheet, this).show();
                 break;
         }

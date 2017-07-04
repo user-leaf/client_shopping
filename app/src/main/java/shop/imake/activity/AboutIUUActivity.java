@@ -16,6 +16,7 @@ import com.bigkoo.alertview.AlertView;
 import shop.imake.R;
 import shop.imake.utils.AppUtils;
 import shop.imake.utils.DialUtils;
+import shop.imake.utils.ToastUtils;
 import shop.imake.widget.IUUTitleBar;
 
 import static shop.imake.R.id.ll_service_the_phone;
@@ -67,11 +68,19 @@ public class AboutIUUActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.ll_service_the_phone://客服电话
                 mPhones=DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SERVER_PHONE_TYPE);
+                if (mPhones.length==0){
+                    ToastUtils.showShort("咨询电话加载中...");
+                    return;
+                }
                 new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, mPhones,
                         this, AlertView.Style.ActionSheet, this).show();
                 break;
             case ll_supply_the_phone://供货电话
                 mPhones=DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SUPPLY_PHONE_TYPE);
+                if (mPhones.length==0){
+                    ToastUtils.showShort("咨询电话加载中...");
+                    return;
+                }
                 new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, mPhones,
                         this, AlertView.Style.ActionSheet, this).show();
 

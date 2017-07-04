@@ -61,7 +61,6 @@ import shop.imake.model.MyMine;
 import shop.imake.model.MyMineOther;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
-import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
@@ -1248,7 +1247,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     //没有邮箱直接拨打电话
                 } else {
                     //拨打客服电话
-                    DialUtils.callCentre(getContext(), ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
+                    DialUtils.callSafeCodeForget(getContext());
                 }
                 break;
             //关闭安全码验证的窗口
@@ -1264,7 +1263,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //忘记你密码页面联系客服
             case R.id.tv_safe_code_forget_callcentre:
                 //拨打客服电话
-                DialUtils.callCentre(getContext(), ACache.get(getContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
+                DialUtils.callSafeCodeForget(getContext());
 
 //                new AlertView(DialUtils.SERVER_TITLE, null, "取消", null, new String[]{getString(R.string.service_num1),getString(R.string.service_num2)
 //                }, getActivity(), AlertView.Style.ActionSheet, this).show();

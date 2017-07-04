@@ -139,4 +139,14 @@ public class DialUtils {
 //            Toast.makeText(context,"请到设置里检查应用权限设置或硬件完整性",Toast.LENGTH_SHORT).show();
 //        }
     }
+
+    public static void callSafeCodeForget(Context context){
+        String telephone=ACache.get(context).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY);
+        if (TextUtils.isEmpty(telephone)){
+            ToastUtils.showShort("咨询电话加载中...");
+            return;
+        }
+
+        callCentre(context,telephone);
+    }
 }

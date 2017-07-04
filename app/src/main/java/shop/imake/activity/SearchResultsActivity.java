@@ -12,6 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 import shop.imake.R;
 import shop.imake.adapter.SearchResultGoodsAdapter;
 import shop.imake.callback.DataCallback;
@@ -24,15 +33,6 @@ import shop.imake.utils.SpaceItemDecoration;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollGridView;
-import com.google.gson.Gson;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * @author Alice
@@ -126,6 +126,7 @@ public class SearchResultsActivity extends BaseActivity implements View.OnClickL
         mGV.setLayoutManager(manager);
         mGV.addItemDecoration(new SpaceItemDecoration(0,5,5,5));
 
+
         mGV.setEmptyView(mTVEmpty);
         mScrollViewNull = ((PullToRefreshScrollView) findViewById(R.id.scrl_search_result_null));
         mScrollViewNull.setVisibility(View.GONE);
@@ -146,18 +147,27 @@ public class SearchResultsActivity extends BaseActivity implements View.OnClickL
                 mPage=1;
                 //停止刷新
                 initData();
+                mGV.setNoMore(false);
             }
 
             @Override
             public void onLoadMore() {
                 isRefresh=false;
                 if (isHaveNext){
+                    mGV.setNoMore(false);
                     ++mPage;
                     initData();
                 }else {
-                    Toast.makeText(getApplicationContext(),"已经加载到最后一页",Toast.LENGTH_SHORT).show();
-                    mGV.loadMoreComplete();
-                    mGV.refreshComplete();
+//                    Toast.makeText(getApplicationContext(),"已经加载到最后一页",Toast.LENGTH_SHORT).show();
+                    mGV.postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            mGV.loadMoreComplete();
+                            mGV.refreshComplete();
+                        }
+                    }, 1000);
+                    mGV.setNoMore(true);
                 }
 
             }

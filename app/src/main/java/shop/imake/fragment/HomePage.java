@@ -79,7 +79,6 @@ import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.RefreshUtils;
 import shop.imake.utils.SPUtils;
 import shop.imake.utils.ScreenUtils;
-import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.zxing.activity.CaptureActivity;
 
@@ -518,6 +517,7 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                     mLLUNNetWork.setVisibility(View.VISIBLE);
                     mGvShow.refreshComplete();
                 }
+                mGvShow.setNoMore(false);
             }
 
             @Override
@@ -526,15 +526,18 @@ public class HomePage extends BaseFragment implements View.OnClickListener, OnIt
                 if (isHaveNextNews) {
                     ++mEveryDayPage;
                     initData();
+                    mGvShow.setNoMore(false);
                 } else {
                     mGvShow.postDelayed(new Runnable() {
 
                         @Override
                         public void run() {
-                            ToastUtils.showShort("最后一页");
+//                            ToastUtils.showShort("最后一页");
+                            mGvShow.setNoMore(true);
+                            mGvShow.loadMoreComplete();
                         }
                     }, 1000);
-                    mGvShow.loadMoreComplete();
+
                 }
             }
         });
