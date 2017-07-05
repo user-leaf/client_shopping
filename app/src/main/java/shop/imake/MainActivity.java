@@ -377,6 +377,8 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 ACache.get(getApplicationContext()).put(DialUtils.PHONE_JSON_KEY, response.trim());
+                //用于缓存默认的安全码找回的客电话
+                DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SERVER_PHONE_TYPE);
                 LogUtils.e("telephone",response);
 
             }
