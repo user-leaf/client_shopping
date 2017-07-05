@@ -41,6 +41,9 @@ public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
         return instance;
     }
 
+    /**
+     * 如果商城处于登录状态就调用小能login，如果商城未登录就不调用小能login
+     */
     public void login() {
         User.MemberBean currentUser = CurrentUserManager.getCurrentUser();
         if (currentUser != null) {
