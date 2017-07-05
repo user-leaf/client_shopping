@@ -24,8 +24,7 @@ public class CurrentUserManager {
      * 清除当前登录用户（退出登录时调用）
      */
     public static void clearCurrentUser() {
-        SPUtils.remove(MainApplication.getContext(), SP_CURRENT_USER);
-
+        ACache.get(MainApplication.getContext()).remove(SP_CURRENT_USER);
     }
 
     /**
