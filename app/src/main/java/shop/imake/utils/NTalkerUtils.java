@@ -18,6 +18,7 @@ import shop.imake.user.CurrentUserManager;
  * Created by SONY on 2017/6/27.
  */
 public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
+    public static final String TAG = NTalkerUtils.class.getSimpleName();
 
     private static NTalkerUtils instance = new NTalkerUtils();
 
@@ -33,13 +34,14 @@ public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
     private Ringtone ringtonenotification;
     private Activity activity;
 
-    private NTalkerUtils(){}
+    private NTalkerUtils() {
+    }
 
-    public static NTalkerUtils getInstance(){
+    public static NTalkerUtils getInstance() {
         return instance;
     }
 
-    public void login(){
+    public void login() {
         User.MemberBean currentUser = CurrentUserManager.getCurrentUser();
         if (currentUser != null) {
             userid = String.valueOf(currentUser.getId());
@@ -48,7 +50,7 @@ public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
         }
     }
 
-    public void startChat(Activity activity){
+    public void startChat(Activity activity) {
         this.activity = activity;
 
         setNtalkerListener();
@@ -81,6 +83,6 @@ public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
 
     @Override
     public void onErrorCode(int errorcode) {
-        Toast.makeText(MainApplication.getContext(), "发生错误"+errorcode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainApplication.getContext(), "发生错误" + errorcode, Toast.LENGTH_SHORT).show();
     }
 }

@@ -189,8 +189,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 dismissLoadingDialog();
 
-                loginXiaoneng();
-
                 if (response == null) {
                     return;
                 }
@@ -206,6 +204,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 LogUtils.d(TAG, "token：" + token);
                 CurrentUserManager.setUserToken(token);
+
+                loginXiaoneng();
+
                 setResult(RESULT_OK);
                 finish();
 
@@ -223,6 +224,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onSuccess(Object response, int id) {
                 User user = (User) response;
+                LogUtils.d(TAG, "loginXiaoneng:" + user.toString());
                 if (user == null) {
                     return;
                 }
