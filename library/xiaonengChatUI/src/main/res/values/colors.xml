@@ -2,9 +2,9 @@
 <resources>
 
     <!-- 可替换的色值 start-->
-    <color name="xn_sdk_head_bg">#37a1f2</color>
-    <color name="xn_head_explo_bg">#37a1f2</color>
-    <color name="xn_leave_head_bg">#37a1f2</color>
+    <color name="xn_sdk_head_bg">#FF5A27</color>
+    <color name="xn_head_explo_bg">#FF5A27</color>
+    <color name="xn_leave_head_bg">#FF5A27</color>
     <color name="xn_valu_text_bg">#37a1f2</color>
     <color name="xn_leave_text_bg">#37a1f2</color>
     <color name="xn_sdk_dialog_bg">#37a1f2</color>

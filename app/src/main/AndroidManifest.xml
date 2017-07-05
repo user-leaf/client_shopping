@@ -693,7 +693,7 @@
         <!-- ***************************小能SDK所需要receiver和Service ********************* -->
         <!--Android 7.0 适配-->
         <provider
-            android:authorities="com.bjaiyouyou.thismall.fileprovider"
+            android:authorities="shop.imake.fileprovider"
             android:name="android.support.v4.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
