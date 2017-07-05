@@ -2,8 +2,14 @@ package shop.imake.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Ringtone;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
+
+import java.io.File;
 
 import cn.xiaoneng.coreapi.ChatParamsBody;
 import cn.xiaoneng.uiapi.Ntalker;
@@ -45,11 +51,22 @@ public class NTalkerUtils implements OnUnreadmsgListener, XNErrorListener {
      * 如果商城处于登录状态就调用小能login，如果商城未登录就不调用小能login
      */
     public void login() {
-        User.MemberBean currentUser = CurrentUserManager.getCurrentUser();
+        final User.MemberBean currentUser = CurrentUserManager.getCurrentUser();
         if (currentUser != null) {
             userid = String.valueOf(currentUser.getId());
             username = currentUser.getNick_name();
             Ntalker.getBaseInstance().login(userid, username, userlevel);
+            String url = currentUser.getAvatar_path() + File.separator + currentUser.getAvatar_name();
+            ImageUtils.getImageFromNet(
+                    url,
+                    new ImageUtils.ImageCallback() {
+
+                        @Override
+                        public void handle(Bitmap bitmap) {
+                            Ntalker.getExtendInstance().settings().setUsersHeadIcon(bitmap);
+                        }
+
+                    });
         }
     }
 
