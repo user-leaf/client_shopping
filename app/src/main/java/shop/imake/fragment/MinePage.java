@@ -87,8 +87,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     //    功能列表
     private NoScrollGridView gv;
 
-    private static int flag_NTalker_login = -1;   // 是否执行过登录小能客服
-
     //  功能按钮数据
     private List<MyMine> dataListLogin;
     private List<MyMine> dataListNotLogin;
@@ -533,11 +531,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         User.MemberBean memberBean = mUser.getMember();
 //        initGridViewChange();
         CurrentUserManager.setCurrentUser(memberBean);
-        // 登录小能客服
-        if (flag_NTalker_login != 1){
-            flag_NTalker_login = 1;
-            NTalkerUtils.getInstance().login();
-        }
 
 //        //用户名
 //        mTvName.setText(memberBean.getName());

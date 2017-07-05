@@ -15,9 +15,11 @@ import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.TokenModel;
+import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.CountDownButtonHelper;
 import shop.imake.utils.LogUtils;
+import shop.imake.utils.NTalkerUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
@@ -187,6 +189,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 dismissLoadingDialog();
 
+                loginXiaoneng();
+
                 if (response == null) {
                     return;
                 }
@@ -205,6 +209,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 setResult(RESULT_OK);
                 finish();
 
+            }
+        });
+    }
+
+    private void loginXiaoneng() {
+        mApi4Mine.getUserMessage(this, new DataCallback<User>(this) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                User user = (User) response;
+                if (user == null) {
+                    return;
+                }
+                CurrentUserManager.setCurrentUser(user.getMember());
+                NTalkerUtils.getInstance().login();
             }
         });
     }
