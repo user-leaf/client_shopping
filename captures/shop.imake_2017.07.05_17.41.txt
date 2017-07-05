@@ -1,0 +1,298 @@
+Activity Resolver Table:
+  Schemes:
+      tencent100371282:
+        8656a52 shop.imake/com.mob.tools.MobUIShell filter 1e1429a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "tencent100371282"
+          AutoVerify=false
+
+  Non-Data Actions:
+      cn.jpush.android.ui.PushActivity:
+        6ff7123 shop.imake/cn.jpush.android.ui.PushActivity filter d6356c1
+          Action: "cn.jpush.android.ui.PushActivity"
+          Category: "android.intent.category.DEFAULT"
+          Category: "shop.imake"
+          AutoVerify=false
+      android.intent.action.MAIN:
+        34e0620 shop.imake/.activity.SplashActivity filter 4c50ba8
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          AutoVerify=false
+        ad68bd9 shop.imake/com.squareup.leakcanary.internal.DisplayLeakActivity filter 200ee66
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          AutoVerify=false
+      com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY:
+        8656a52 shop.imake/com.mob.tools.MobUIShell filter c5077cb
+          Action: "com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Receiver Resolver Table:
+  Schemes:
+      package:
+        ecbd99e shop.imake/cn.jpush.android.service.PushReceiver filter 6808faf
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Action: "android.intent.action.PACKAGE_REMOVED"
+          Scheme: "package"
+          AutoVerify=false
+
+  Non-Data Actions:
+      cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY:
+        ecbd99e shop.imake/cn.jpush.android.service.PushReceiver filter 4a03f89
+          Action: "cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"
+          Category: "shop.imake"
+          mPriority=1000, mHasPartialTypes=false
+          AutoVerify=false
+      cn.jpush.android.intent.CONNECTION:
+        85d644c shop.imake/.receiver.MyJPushReceiver filter deafbc
+          Action: "cn.jpush.android.intent.REGISTRATION"
+          Action: "cn.jpush.android.intent.MESSAGE_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_OPENED"
+          Action: "cn.jpush.android.intent.CONNECTION"
+          Category: "shop.imake"
+          AutoVerify=false
+      cn.jpush.android.intent.MESSAGE_RECEIVED:
+        85d644c shop.imake/.receiver.MyJPushReceiver filter deafbc
+          Action: "cn.jpush.android.intent.REGISTRATION"
+          Action: "cn.jpush.android.intent.MESSAGE_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_OPENED"
+          Action: "cn.jpush.android.intent.CONNECTION"
+          Category: "shop.imake"
+          AutoVerify=false
+      android.net.conn.CONNECTIVITY_CHANGE:
+        ecbd99e shop.imake/cn.jpush.android.service.PushReceiver filter 88cfb8e
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          AutoVerify=false
+        31b0c95 shop.imake/cn.xiaoneng.xpush.XPushReceiver filter fc44b45
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.STATE_CHANGE"
+          Action: "cn.xiaoneng.xpush.service"
+          mPriority=1000, mHasPartialTypes=false
+          AutoVerify=false
+      android.net.wifi.STATE_CHANGE:
+        31b0c95 shop.imake/cn.xiaoneng.xpush.XPushReceiver filter fc44b45
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.STATE_CHANGE"
+          Action: "cn.xiaoneng.xpush.service"
+          mPriority=1000, mHasPartialTypes=false
+          AutoVerify=false
+      cn.xiaoneng.xpush.service:
+        31b0c95 shop.imake/cn.xiaoneng.xpush.XPushReceiver filter fc44b45
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.STATE_CHANGE"
+          Action: "cn.xiaoneng.xpush.service"
+          mPriority=1000, mHasPartialTypes=false
+          AutoVerify=false
+      android.intent.action.BOOT_COMPLETED:
+        31b0c95 shop.imake/cn.xiaoneng.xpush.XPushReceiver filter fc44b45
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.STATE_CHANGE"
+          Action: "cn.xiaoneng.xpush.service"
+          mPriority=1000, mHasPartialTypes=false
+          AutoVerify=false
+      android.intent.action.USER_PRESENT:
+        ecbd99e shop.imake/cn.jpush.android.service.PushReceiver filter 88cfb8e
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          AutoVerify=false
+        31b0c95 shop.imake/cn.xiaoneng.xpush.XPushReceiver filter fc44b45
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.STATE_CHANGE"
+          Action: "cn.xiaoneng.xpush.service"
+          mPriority=1000, mHasPartialTypes=false
+          AutoVerify=false
+      cn.jpush.android.intent.NOTIFICATION_OPENED:
+        85d644c shop.imake/.receiver.MyJPushReceiver filter deafbc
+          Action: "cn.jpush.android.intent.REGISTRATION"
+          Action: "cn.jpush.android.intent.MESSAGE_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_OPENED"
+          Action: "cn.jpush.android.intent.CONNECTION"
+          Category: "shop.imake"
+          AutoVerify=false
+      cn.jpush.android.intent.REGISTRATION:
+        85d644c shop.imake/.receiver.MyJPushReceiver filter deafbc
+          Action: "cn.jpush.android.intent.REGISTRATION"
+          Action: "cn.jpush.android.intent.MESSAGE_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_OPENED"
+          Action: "cn.jpush.android.intent.CONNECTION"
+          Category: "shop.imake"
+          AutoVerify=false
+      cn.jpush.android.intent.NOTIFICATION_RECEIVED:
+        85d644c shop.imake/.receiver.MyJPushReceiver filter deafbc
+          Action: "cn.jpush.android.intent.REGISTRATION"
+          Action: "cn.jpush.android.intent.MESSAGE_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_RECEIVED"
+          Action: "cn.jpush.android.intent.NOTIFICATION_OPENED"
+          Action: "cn.jpush.android.intent.CONNECTION"
+          Category: "shop.imake"
+          AutoVerify=false
+
+Service Resolver Table:
+  Non-Data Actions:
+      cn.jpush.android.intent.PUSH_TIME:
+        97f1aa shop.imake/cn.jpush.android.service.PushService filter 6ce3153
+          Action: "cn.jpush.android.intent.REGISTER"
+          Action: "cn.jpush.android.intent.REPORT"
+          Action: "cn.jpush.android.intent.PushService"
+          Action: "cn.jpush.android.intent.PUSH_TIME"
+          AutoVerify=false
+      cn.jpush.android.intent.REPORT:
+        97f1aa shop.imake/cn.jpush.android.service.PushService filter 6ce3153
+          Action: "cn.jpush.android.intent.REGISTER"
+          Action: "cn.jpush.android.intent.REPORT"
+          Action: "cn.jpush.android.intent.PushService"
+          Action: "cn.jpush.android.intent.PUSH_TIME"
+          AutoVerify=false
+      cn.jpush.android.intent.DaemonService:
+        fcfe19b shop.imake/cn.jpush.android.service.DaemonService filter 2047a90
+          Action: "cn.jpush.android.intent.DaemonService"
+          Category: "shop.imake"
+          AutoVerify=false
+      cn.jpush.android.intent.PushService:
+        97f1aa shop.imake/cn.jpush.android.service.PushService filter 6ce3153
+          Action: "cn.jpush.android.intent.REGISTER"
+          Action: "cn.jpush.android.intent.REPORT"
+          Action: "cn.jpush.android.intent.PushService"
+          Action: "cn.jpush.android.intent.PUSH_TIME"
+          AutoVerify=false
+      cn.jpush.android.intent.REGISTER:
+        97f1aa shop.imake/cn.jpush.android.service.PushService filter 6ce3153
+          Action: "cn.jpush.android.intent.REGISTER"
+          Action: "cn.jpush.android.intent.REPORT"
+          Action: "cn.jpush.android.intent.PushService"
+          Action: "cn.jpush.android.intent.PUSH_TIME"
+          AutoVerify=false
+
+Permissions:
+  Permission [shop.imake.permission.JPUSH_MESSAGE] (1b85a22):
+    sourcePackage=shop.imake
+    uid=10277 gids=null type=0 prot=signature
+    perm=Permission{b227938 shop.imake.permission.JPUSH_MESSAGE}
+    packageSetting=PackageSetting{c358270 shop.imake/10277}
+
+Registered ContentProviders:
+  shop.imake/android.support.v4.content.FileProvider:
+    Provider{7ecdd11 shop.imake/android.support.v4.content.FileProvider}
+
+ContentProvider Authorities:
+  [shop.imake.fileprovider]:
+    Provider{7ecdd11 shop.imake/android.support.v4.content.FileProvider}
+      applicationInfo=ApplicationInfo{75b7e76 shop.imake}
+
+Key Set Manager:
+  [shop.imake]
+      Signing KeySets: 145
+
+Packages:
+  Package [shop.imake] (c358270):
+    userId=10277
+    pkg=Package{7c0fc77 shop.imake}
+    codePath=/data/app/shop.imake-2
+    resourcePath=/data/app/shop.imake-2
+    legacyNativeLibraryDir=/data/app/shop.imake-2/lib
+    primaryCpuAbi=armeabi-v7a
+    secondaryCpuAbi=null
+    versionCode=4 minSdk=14 targetSdk=23
+    versionName=0.9.1
+    splits=[base]
+    apkSigningVersion=1
+    applicationInfo=ApplicationInfo{75b7e76 shop.imake}
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    dataDir=/data/user/0/shop.imake
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2017-07-05 16:13:09
+    firstInstallTime=2017-07-05 14:51:59
+    lastUpdateTime=2017-07-05 16:13:12
+    signatures=PackageSignatures{48559c [b7a54c31]}
+    installPermissionsFixed=true installStatus=1
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    declared permissions:
+      shop.imake.permission.JPUSH_MESSAGE: prot=signature, INSTALLED
+    requested permissions:
+      android.permission.INTERNET
+      android.permission.CALL_PHONE
+      com.sec.android.app.factorymode.permission.KEYSTRING
+      android.permission.READ_PHONE_STATE
+      android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.CAMERA
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.VIBRATE
+      android.permission.GET_TASKS
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.CHANGE_WIFI_STATE
+      android.permission.MANAGE_ACCOUNTS
+      android.permission.GET_ACCOUNTS
+      android.permission.READ_CONTACTS
+      android.permission.NFC
+      shop.imake.permission.JPUSH_MESSAGE
+      android.permission.RECEIVE_USER_PRESENT
+      android.permission.WAKE_LOCK
+      android.permission.WRITE_SETTINGS
+      android.permission.SYSTEM_ALERT_WINDOW
+      android.permission.ACCESS_COARSE_LOCATION
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+      android.permission.CHANGE_NETWORK_STATE
+      android.permission.RECORD_AUDIO
+      android.permission.RECEIVE_BOOT_COMPLETED
+    install permissions:
+      android.permission.MANAGE_ACCOUNTS: granted=true
+      android.permission.NFC: granted=true
+      shop.imake.permission.JPUSH_MESSAGE: granted=true
+      android.permission.CHANGE_NETWORK_STATE: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.GET_TASKS: granted=true
+      android.permission.INTERNET: granted=true
+      android.permission.ACCESS_LOCATION_EXTRA_COMMANDS: granted=true
+      android.permission.CHANGE_WIFI_STATE: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.WAKE_LOCK: granted=true
+    User 0: ceDataInode=1425860 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0
+      gids=[3003]
+      runtime permissions:
+        android.permission.ACCESS_FINE_LOCATION: granted=true
+        android.permission.READ_EXTERNAL_STORAGE: granted=true
+        android.permission.ACCESS_COARSE_LOCATION: granted=true
+        android.permission.READ_PHONE_STATE: granted=true
+        android.permission.CALL_PHONE: granted=true
+        android.permission.CAMERA: granted=true
+        android.permission.GET_ACCOUNTS: granted=true
+        android.permission.WRITE_EXTERNAL_STORAGE: granted=true
+        android.permission.RECORD_AUDIO: granted=true
+        android.permission.READ_CONTACTS: granted=true
+      enabledComponents:
+        com.squareup.leakcanary.DisplayLeakService
+        com.squareup.leakcanary.internal.HeapAnalyzerService
+        com.squareup.leakcanary.internal.DisplayLeakActivity
+        cn.jpush.android.service.PushReceiver
+        cn.jpush.android.service.AlarmReceiver
+    isRemovableApp=false
+
+
+Dexopt state:
+  [shop.imake]
+    Instruction Set: arm
+      path: /data/app/shop.imake-2/base.apk
+      status: /data/app/shop.imake-2/oat/arm/base.odex [compilation_filter=interpret-only, status=kOatUpToDate]

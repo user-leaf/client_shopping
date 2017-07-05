@@ -683,15 +683,17 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine3);
         MyMine mine4 = new MyMine("我的众汇券", R.mipmap.personal_centeriocn_icon_my_assets);
         dataListLogin.add(mine4);
-        MyMine mine5 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
-        dataListLogin.add(mine5);
         MyMine mine6 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
         dataListLogin.add(mine6);
+        MyMine mine8 = new MyMine("在线客服", R.mipmap.list_online_service);
+        dataListLogin.add(mine8);
+
+        MyMine mine5 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
+        dataListLogin.add(mine5);
 
         MyMine mine7 = new MyMine("设置", R.mipmap.list_set_nor);
         dataListLogin.add(mine7);
-        MyMine mine8 = new MyMine("在线客服", R.mipmap.list_online_service);
-        dataListLogin.add(mine8);
+
         //test
 //        MyMine mine8 = new MyMine("我的兑换券", R.mipmap.list_set);
 //        dataListLogin.add(mine8);
@@ -1175,23 +1177,23 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 WebShowActivity.actionStart(getContext(), zhonghuiquanUrl, WebShowActivity.PARAM_PAGE_HIDE);
 
                 break;
-            case 4:
+            case 6:
                 //意见反馈"
 
                 jump(MineCustomerServiceSuggestionActivity.class, false);
                 break;
-            case 5:
+            case 4:
                 // 关于我们"
                 jump(AboutIUUActivity.class, false);
                 break;
 
-            case 6:
+            case 7:
                 //设置
                 jump(SettingsActivity.class, false);
 
                 break;
 
-            case 7:
+            case 5:
                 // 在线客服
                 NTalkerUtils.getInstance().startChat(getActivity());
                 break;

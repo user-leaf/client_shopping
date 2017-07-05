@@ -86,7 +86,7 @@ public class DialUtils {
         String[] phones =new String[listData.size()];
         for (int i=0;i<listData.size();i++){
             phones[i] =listData.get(i);
-            if (phoneType==SERVER_PHONE_TYPE&&i==listData.size()-1){
+            if (phoneType==SERVER_PHONE_TYPE&&i==0){
                 //用于找回安全码
                 ACache.get(context).put(PHONE_GET_SAFE_CODE_KEY,listData.get(i));
             }
