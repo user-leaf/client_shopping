@@ -382,7 +382,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DialUtils.callCentre(mContext, ACache.get(mContext).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY));
+                        DialUtils.callSafeCodeForget(mContext);
                         dialog.dismiss();
                     }
                 },
