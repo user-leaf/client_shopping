@@ -20,7 +20,7 @@
         android:id="@+id/tv_about_iuu_icon"
         android:layout_width="match_parent"
         android:layout_height="143dp"
-        android:src="@mipmap/icon_logo"
+        android:src="@mipmap/icon_about_us"
         android:scaleType="centerInside"
         />
 
