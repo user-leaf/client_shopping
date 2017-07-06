@@ -140,14 +140,18 @@
         </LinearLayout>
 
     </LinearLayout>
-    <!--iUU-->
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom|center_horizontal"
-        android:paddingBottom="25dp"
-        android:textColor="#666"
-        android:textSize="12sp"
-        android:text="北京哎呦呦网络科技有限公司版权所有"
+        android:layout_height="wrap_content"
+        android:text="@string/about_us"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
         />
 </LinearLayout>

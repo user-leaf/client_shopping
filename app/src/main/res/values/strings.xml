@@ -41,6 +41,7 @@
     <string name="mine_user_income_name">支付宝实名认证姓名</string>
     <string name="login_tip_invite_person">温馨提示：新用户首次登录，若未填写推荐人手机号，一旦登录将无法建立推荐关系，且无法修改，请确认是否继续登录！
     </string>
+    <string name="about_us">北京哎呦呦网络科技有限公司版权所有</string>
 
     <!--客服电话-->
     <string name="service_num1">010-53358654</string>
