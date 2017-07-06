@@ -246,12 +246,13 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
             public void onFail(Call call, Exception e, int id) {
                 CurrentUserManager.TokenDue(e);
                 ToastUtils.showException(e);
-                mLoadViewHelper.showError(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        loadData();
-                    }
-                });
+//                mLoadViewHelper.showError(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        loadData();
+//                    }
+//                });
+                mLoadViewHelper.restore();
             }
 
             @Override
