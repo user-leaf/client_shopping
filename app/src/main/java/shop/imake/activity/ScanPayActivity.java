@@ -42,6 +42,7 @@ import shop.imake.utils.LoadViewHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.MathUtil;
 import shop.imake.utils.ScreenUtils;
+import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.IUUTitleBar;
@@ -252,7 +253,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 //                        loadData();
 //                    }
 //                });
-                mLoadViewHelper.restore();
+                mLoadViewHelper.showScanError(StringUtils.getExceptionMessage(e.getMessage()));
             }
 
             @Override

@@ -56,6 +56,22 @@ public class LoadViewHelper {
         helper.showLayout(layout);
     }
 
+    public void showScanError(String strError) {
+        View layout = helper.inflate(R.layout.layout_view_helper_scan_error);
+        TextView tvError = (TextView) layout.findViewById(R.id.tv_scan_error);
+        tvError.setText(strError);
+
+//        TextView textView = (TextView) layout.findViewById(R.id.fail_refresh);
+//        textView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LoadViewHelper.this.showLoading();
+//                onClickListener.onClick(v);
+//            }
+//        });
+        helper.showLayout(layout);
+    }
+
     public void showError(final Context context, final OnClickListener onClickListener) {
         if (!NetStateUtils.isNetworkAvailable(MainApplication.getContext())) { // 无网
             View layout = helper.inflate(R.layout.layout_view_helper_load_error);
