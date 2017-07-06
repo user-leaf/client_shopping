@@ -22,7 +22,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
-import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
@@ -533,7 +532,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         // 拨打客服电话
         Dialog pswForgetDialog = DialogUtils.createConfirmDialog(
                 ScanPayActivity.this,
-                null, "拨打客服电话" + Constants.KEFU_TEL + "进行修改", "拨打", "取消",
+                null, "拨打客服电话" + ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY)  + "进行修改", "拨打", "取消",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

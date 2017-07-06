@@ -22,11 +22,11 @@ import java.util.List;
 
 import okhttp3.Call;
 import pub.devrel.easypermissions.EasyPermissions;
-import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
 import shop.imake.model.OrderReturnDealModel;
 import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LogUtils;
@@ -142,7 +142,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
      */
     private void makeCall() {
 
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Constants.KEFU_TEL));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY)));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
