@@ -683,7 +683,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine3);
         MyMine mine4 = new MyMine("我的众汇券", R.mipmap.personal_centeriocn_icon_my_assets);
         dataListLogin.add(mine4);
-        MyMine mine6 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
+        MyMine mine6 = new MyMine("关于我们", R.mipmap.list_imake_nor);
         dataListLogin.add(mine6);
         MyMine mine8 = new MyMine("在线客服", R.mipmap.list_online_service);
         dataListLogin.add(mine8);
@@ -719,7 +719,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListNotLogin.add(mine33);
         MyMine mine44 = new MyMine("邀请好友", R.mipmap.list_addfriend_nor);
         dataListNotLogin.add(mine44);
-        MyMine mine55 = new MyMine("关于我们", R.mipmap.list_aiyouyou_nor);
+        MyMine mine55 = new MyMine("关于我们", R.mipmap.list_imake_nor);
         dataListNotLogin.add(mine55);
         MyMine mine66 = new MyMine("意见反馈", R.mipmap.list_icon_customerservice_nor);
         dataListNotLogin.add(mine66);
