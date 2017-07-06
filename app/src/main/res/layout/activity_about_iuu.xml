@@ -53,6 +53,7 @@
             android:textSize="14sp"
             />
     </LinearLayout>
+    <!--电话-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,4 +140,14 @@
         </LinearLayout>
 
     </LinearLayout>
+    <!--iUU-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center_horizontal"
+        android:paddingBottom="25dp"
+        android:textColor="#666"
+        android:textSize="12sp"
+        android:text="北京哎呦呦网络科技有限公司版权所有"
+        />
 </LinearLayout>
