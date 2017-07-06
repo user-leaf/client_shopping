@@ -56,6 +56,10 @@ public class LoadViewHelper {
         helper.showLayout(layout);
     }
 
+    /**
+     * 扫码支付错误页面
+     * @param strError
+     */
     public void showScanError(String strError) {
         View layout = helper.inflate(R.layout.layout_view_helper_scan_error);
         TextView tvError = (TextView) layout.findViewById(R.id.tv_scan_error);
