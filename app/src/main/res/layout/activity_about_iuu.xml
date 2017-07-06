@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
-        app:iuuTitleBarTitle="关于我们"/>
+        app:iuuTitleBarTitle="关于爱每刻"/>
 
     <ImageView
         android:id="@+id/tv_about_iuu_icon"
