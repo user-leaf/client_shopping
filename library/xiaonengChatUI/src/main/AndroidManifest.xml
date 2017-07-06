@@ -3,4 +3,6 @@
 	package="com.xiaoneng.xnchatui"
 	android:versionCode="1"
 	android:versionName="2.2" >
+
+	<uses-sdk android:minSdkVersion="4" />
 </manifest>
