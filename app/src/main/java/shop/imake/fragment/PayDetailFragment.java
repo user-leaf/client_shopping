@@ -39,7 +39,6 @@ import shop.imake.adapter.PayWayAdapter;
 import shop.imake.client.Api4Cart;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.PayWayModel;
-import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
@@ -373,27 +372,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
      */
     private void showSafeCodeForgetDialog() {
         // 拨打客服电话
-        Dialog confirmDialog = DialogUtils.createConfirmDialog(
-                mContext,
-                null,
-                "拨打客服电话" + ACache.get(mContext).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY)  + "进行修改",
-                "拨打",
-                "取消",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DialUtils.callSafeCodeForget(mContext);
-                        dialog.dismiss();
-                    }
-                },
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        confirmDialog.show();
-
+        DialUtils.callSafeCodeForget(mContext);
     }
 
     @Override

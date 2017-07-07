@@ -1,6 +1,8 @@
 package shop.imake.utils;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -140,13 +142,35 @@ public class DialUtils {
 //        }
     }
 
-    public static void callSafeCodeForget(Context context){
-        String telephone=ACache.get(context).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY);
-        if (TextUtils.isEmpty(telephone)){
-            ToastUtils.showShort("咨询电话加载中...");
-            return;
-        }
+    public static void callSafeCodeForget(final Context context){
 
-        callCentre(context,telephone);
+        // 拨打客服电话
+        Dialog confirmDialog = DialogUtils.createConfirmDialog(
+                context,
+                null,
+                "拨打客服电话" + ACache.get(context).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY)  + "进行修改",
+                "拨打",
+                "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String telephone=ACache.get(context).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY);
+                        if (TextUtils.isEmpty(telephone)){
+                            ToastUtils.showShort("咨询电话加载中...");
+                            return;
+                        }
+
+                        callCentre(context,telephone);
+                        dialog.dismiss();
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
+        confirmDialog.show();
     }
 }
