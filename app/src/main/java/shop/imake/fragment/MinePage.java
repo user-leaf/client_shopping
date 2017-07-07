@@ -70,7 +70,6 @@ import shop.imake.utils.SPUtils;
 import shop.imake.utils.ScreenUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.NoScrollGridView;
 
 /**
@@ -891,7 +890,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 tvSateCodeForget.setEnabled(false);
                 etSateCodeMakeSure.setVisibility(View.GONE);
                 etSateCodeInput.setHint("8~16位，数字、字母组合");
-                mLLSetEmail.setVisibility(View.VISIBLE);
+                mLLSetEmail.setVisibility(View.GONE);
             }
         }
 
@@ -974,47 +973,65 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             return;
         } else {
             //设置安全码 mIsHaveSafeCode=true
-            //情况一：邮箱未设置
-            if (!isHaveEmail) {
-                String email = mEtEmail.getText().toString().trim();
-                if (!(!TextUtils.isEmpty(email) && email.length() > 1 && ValidatorsUtils.isEmail(email))) {
-                    Toast.makeText(getContext(), "请输入正确的邮箱", Toast.LENGTH_SHORT).show();
-                    return;
+
+            //情况一：邮箱已经设置
+            ClientAPI.postSetSafeCode(token, safeCode, new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    CurrentUserManager.TokenDue(e);
+                    UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+                    dialogDismiss(mSafeCodeDialog);
                 }
-                ClientAPI.postSetSafeCode(token, safeCode, email, new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        CurrentUserManager.TokenDue(e);
-                        UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
-                        dialogDismiss(mSafeCodeDialog);
-                    }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        //设置成功刷新数据
-                        initData();
-                        dialogDismiss(mSafeCodeDialog);
-                    }
-                });
-            } else {
-                //情况一：邮箱已经设置
-                ClientAPI.postSetSafeCode(token, safeCode, new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        CurrentUserManager.TokenDue(e);
-                        UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
-                        dialogDismiss(mSafeCodeDialog);
-                    }
+                @Override
+                public void onResponse(String response, int id) {
+                    //设置成功刷新数据
+                    initData();
+                    dialogDismiss(mSafeCodeDialog);
+                }
+            });
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        //设置成功刷新数据
-                        initData();
-                        dialogDismiss(mSafeCodeDialog);
-                    }
-                });
-
-            }
+//            //情况一：邮箱未设置
+//            if (!isHaveEmail) {
+//                String email = mEtEmail.getText().toString().trim();
+//                if (!(!TextUtils.isEmpty(email) && email.length() > 1 && ValidatorsUtils.isEmail(email))) {
+//                    Toast.makeText(getContext(), "请输入正确的邮箱", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                ClientAPI.postSetSafeCode(token, safeCode, email, new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        CurrentUserManager.TokenDue(e);
+//                        UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+//                        dialogDismiss(mSafeCodeDialog);
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        //设置成功刷新数据
+//                        initData();
+//                        dialogDismiss(mSafeCodeDialog);
+//                    }
+//                });
+//            } else {
+//                //情况一：邮箱已经设置
+//                ClientAPI.postSetSafeCode(token, safeCode, new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        CurrentUserManager.TokenDue(e);
+//                        UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
+//                        dialogDismiss(mSafeCodeDialog);
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        //设置成功刷新数据
+//                        initData();
+//                        dialogDismiss(mSafeCodeDialog);
+//                    }
+//                });
+//
+//            }
         }
 
         dialogDismiss(mSafeCodeDialog);
@@ -1236,14 +1253,16 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //跳转到忘记密码处理, popWin
             case R.id.tv_safe_code_forget:
                 dialogDismiss(mSafeCodeDialog);
-                //存在邮箱，邮箱验证弹框
-                if (isHaveEmail) {
-                    createFindSafeCodeDialog();
-                    //没有邮箱直接拨打电话
-                } else {
-                    //拨打客服电话
-                    DialUtils.callSafeCodeForget(getContext());
-                }
+                //拨打客服电话
+                DialUtils.callSafeCodeForget(getContext());
+//                //存在邮箱，邮箱验证弹框
+//                if (isHaveEmail) {
+//                    createFindSafeCodeDialog();
+//                    //没有邮箱直接拨打电话
+//                } else {
+//                    //拨打客服电话
+//                    DialUtils.callSafeCodeForget(getContext());
+//                }
                 break;
             //关闭安全码验证的窗口
             case R.id.iv_safe_code_close:

@@ -1,259 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#eee"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context="shop.imake.activity.UpdateMineUserMessageActivity">
+
     <shop.imake.widget.IUUTitleBar
         android:id="@+id/title_update_mine_user_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iuuTitleBarTitle="修改个人信息"
-        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"/>
+        app:iuuTitleBarLeftImage="@mipmap/nav_back_white"
+        app:iuuTitleBarTitle="修改个人信息" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
-                android:background="@android:color/white"
-                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                >
-                <TextView
-                    android:layout_marginRight="10dp"
-                    android:paddingRight="10dp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                android:background="#fff"
+                android:orientation="vertical">
+                <!--头像-->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="头像"/>
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_update_user_img"
-                    android:layout_width="42.5dp"
-                    android:layout_height="42.5dp"
-                    android:src="@mipmap/list_profile_photo"/>
-            </LinearLayout>
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
 
-            <LinearLayout
-                android:background="@android:color/white"
-                android:layout_marginTop="1dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginRight="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="昵称"/>
-                <EditText
-                    android:id="@+id/et_update_user_name"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="请填入昵称"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:autoText="true"
-                    android:background="@null"
-                    android:gravity="right"
-                    android:textCursorDrawable="@null"
-                    android:maxLength="10"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:background="@android:color/white"
-                android:layout_marginTop="1dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginRight="10dp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="账号"/>
-                <EditText
-                    android:id="@+id/et_update_user_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:maxLength="11"
-                    android:ellipsize="start"
-                    android:hint="请填入手机号"
-                    android:digits="0123456789"
-                    android:inputType="phone"
-                    android:background="@null"
-                    android:gravity="right"
-                    android:textCursorDrawable="@null"
-                    android:enabled="false"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:background="@android:color/white"
-                android:layout_marginTop="1dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:paddingRight="10dp"
+                        android:text="头像" />
 
-                <EditText
-                    android:id="@+id/et_update_user_validate_num"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_update_user_img"
+                        android:layout_width="42.5dp"
+                        android:layout_height="42.5dp"
+                        android:src="@mipmap/list_profile_photo" />
+                </LinearLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_ccc_style"
+                    android:layout_marginLeft="10dp" />
+                <!--昵称-->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="请输入4位验证码"
-                    android:singleLine="true"
-                    android:ellipsize="start"
-                    android:digits="0123456789"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:background="@null"
-                    />
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/tv_update_user_get_validate_num"
+                    android:background="@android:color/white"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="昵称" />
+
+                    <EditText
+                        android:id="@+id/et_update_user_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:autoText="true"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:hint="请填入昵称"
+                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:textColor="@drawable/selector_update_user_textcolor"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_ccc_style"
+                    android:layout_marginLeft="10dp" />
+                <!--账号-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="账号" />
+
+                    <EditText
+                        android:id="@+id/et_update_user_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:digits="0123456789"
+                        android:ellipsize="start"
+                        android:enabled="false"
+                        android:gravity="right"
+                        android:hint="请填入手机号"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:singleLine="true"
+                        android:textColor="@drawable/selector_update_user_textcolor"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <!--获取验证码-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
                     android:padding="10dp"
-                    android:layout_width="100dp"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/et_update_user_validate_num"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:digits="0123456789"
+                        android:ellipsize="start"
+                        android:hint="请输入4位验证码"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:id="@+id/tv_update_user_get_validate_num"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/selector_update_user_getvaildate_bg"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="获取验证码"
+                        android:textColor="@drawable/update_user_textcolor_getvaildate" />
+                </LinearLayout>
+
+                <View
+                    style="@style/entry_divider_fine_line_ccc_style"
+                    android:layout_marginLeft="10dp" />
+                <!--认证-->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="获取验证码"
-                    android:textColor="@drawable/update_user_textcolor_getvaildate"
-                    android:background="@drawable/selector_update_user_getvaildate_bg"
-                    />
+                    android:background="@android:color/white"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="认证" />
+
+                    <TextView
+                        android:id="@+id/tv_update_user_authentication"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="start"
+                        android:gravity="right"
+                        android:hint="马上认证"
+                        android:singleLine="true"
+                        android:textColor="@drawable/selector_update_user_textcolor"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
             </LinearLayout>
+            <!--安全码-->
             <LinearLayout
-                android:background="@android:color/white"
-                android:layout_marginTop="1dp"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginRight="10dp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="邮箱"/>
-                <EditText
-                    android:id="@+id/et_update_user_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="未绑定"
-                    android:singleLine="true"
-                    android:ellipsize="start"
-                    android:digits="1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM.@"
-                    android:background="@null"
-                    android:gravity="right"
-                    android:textCursorDrawable="@null"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:background="@android:color/white"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:background="@android:color/white"
+                android:padding="10dp">
+
                 <TextView
-                    android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="安全码"/>
+                    android:layout_marginRight="10dp"
+                    android:text="安全码" />
+
                 <EditText
                     android:id="@+id/et_update_user_safe_code"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:ellipsize="start"
-                    android:hint="8-16位的数字、英文"
-                    android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:maxLength="16"
+                    android:layout_weight="1"
                     android:background="@null"
+                    android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:ellipsize="start"
+                    android:gravity="right"
+                    android:hint="8-16位的数字、英文"
+                    android:maxLength="16"
+                    android:singleLine="true"
+                    android:textColor="@drawable/selector_update_user_textcolor"
                     android:textCursorDrawable="@null"
-                    />
+                    android:textSize="14sp" />
             </LinearLayout>
+            <!--身份证-->
             <LinearLayout
-                android:visibility="gone"
-                android:background="@android:color/white"
-                android:layout_marginTop="1dp"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:visibility="gone">
+
                 <TextView
-                    android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="身份证号"/>
+                    android:layout_marginRight="10dp"
+                    android:text="身份证号" />
+
                 <EditText
                     android:id="@+id/et_update_user_id_card_no"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="0123456789"
                     android:ellipsize="start"
                     android:hint="请输入十八位身份证号"
-                    android:digits="0123456789"
                     android:maxLength="18"
-                    android:background="@null"
-                    android:textCursorDrawable="@null"
-                    />
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
-                android:background="@android:color/white"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
                 android:orientation="vertical"
-                >
+                android:padding="10dp"
+                android:visibility="gone">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="27dp"
-                    android:text="上传身份证照片"/>
+                    android:layout_marginTop="20dp"
+                    android:text="上传身份证照片" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="17dp"
                     android:layout_marginRight="17dp"
                     android:orientation="horizontal">
+
                     <ImageView
-                    android:layout_width="117dp"
-                    android:layout_height="59dp"/>
-                    <ImageView
-                        android:layout_alignParentRight="true"
                         android:layout_width="117dp"
-                        android:layout_height="59dp"/>
+                        android:layout_height="59dp" />
+
+                    <ImageView
+                        android:layout_width="117dp"
+                        android:layout_height="59dp"
+                        android:layout_alignParentRight="true" />
 
                 </RelativeLayout>
 
 
-
             </LinearLayout>
 
-
+            <!--保存按钮-->
             <TextView
                 android:id="@+id/tv_update_user_submit"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="10dp"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/selector_btn_textcolor"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/selector_btn_bg"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="保存"
-                android:background="@drawable/selector_btn_bg"/>
+                android:textColor="@drawable/selector_btn_textcolor" />
 
         </LinearLayout>
     </ScrollView>

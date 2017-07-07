@@ -49,7 +49,6 @@ import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
-import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 
 /**
@@ -86,8 +85,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     private EditText mEtPhone;
     //获得验证码的按钮
     private TextView mTvGetVaildateNum;
-    //邮箱
-    private EditText mEtEmail;
     //安全码
     private EditText mEtSafeCode;
     //信息提交
@@ -102,7 +99,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     private String mName;
     private String mPnone;
     private String mVerification;
-    private String mEmail;
     private String mSafeCode;
     private String mImgUrl;
 
@@ -113,7 +109,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     private boolean isNameChange = false;
     private boolean isPhoneChange = false;
     private boolean isVerificationChange = false;
-    private boolean isEmailChange = false;
     //电话号码提交条件限制
     private int mMaxPhone = 11;
     private long mMaxTimePhone = 60;
@@ -140,6 +135,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     public static final String TAG = UpdateMineUserMessageActivity.class.getSimpleName();
 
     private Api4ClientOther mclient;
+    private TextView mTvAuthentication;
 
 
     @Override
@@ -168,7 +164,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
         mEtPhone = ((EditText) findViewById(R.id.et_update_user_phone));
         mEtVaildateNum = ((EditText) findViewById(R.id.et_update_user_validate_num));
         mTvGetVaildateNum = ((TextView) findViewById(R.id.tv_update_user_get_validate_num));
-        mEtEmail = ((EditText) findViewById(R.id.et_update_user_email));
+        mTvAuthentication = ((TextView) findViewById(R.id.tv_update_user_authentication));
         mEtSafeCode = ((EditText) findViewById(R.id.et_update_user_safe_code));
         mTvSubmit = ((TextView) findViewById(R.id.tv_update_user_submit));
         mUserImg = ((CircleImageView) findViewById(R.id.iv_update_user_img));
@@ -180,6 +176,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
         mTvGetVaildateNum.setOnClickListener(this);
         mTvSubmit.setOnClickListener(this);
         mIvUserImg.setOnClickListener(this);
+        mTvAuthentication.setOnClickListener(this);
 
         //昵称
         mEtName.addTextChangedListener(new TextWatcher() {
@@ -272,30 +269,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             }
         });
 
-        //邮箱
-        mEtEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String email = s.toString().trim();
-                //判断并标识,邮箱修改是否符合标准 包含@符号
-                mEmail = email;
-                if (email.contains("@")) {
-                    isEmailChange = true;
-                } else {
-                    isEmailChange = false;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         //安全码
         mEtSafeCode.addTextChangedListener(new TextWatcher() {
             @Override
@@ -355,17 +328,24 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 mPnone = mBean.getPhone();
                 mPnone = mPnone.substring(0, 3) + "****" + mPnone.substring(7, mPnone.length());
                 mEtPhone.setHint(mPnone);
-
-                mEmail = mBean.getEmail();
-                if (!TextUtils.isEmpty(mEmail)) {
-                    mEtEmail.setHint(mEmail);
-
-                } else {
-                }
                 mSafeCode = mBean.getSecurity_code_hint();
                 if (!TextUtils.isEmpty(mSafeCode)) {
                     mSafeCode = mSafeCode + "********";
                     mEtSafeCode.setHint(mSafeCode);
+                }
+
+                //根据是否芝麻认证字段显示
+                boolean isZMAuthentication = false;
+                //已经认证,显示已经认证且为不可点击状态
+                if (isZMAuthentication) {
+                    mTvAuthentication.setText("已认证");
+                    mTvAuthentication.setEnabled(false);
+
+                    //未认证,显示马上认证,可点击跳转
+                } else {
+                    mTvAuthentication.setText("马上认证");
+                    mTvAuthentication.setEnabled(true);
+
                 }
             }
 
@@ -394,10 +374,15 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 //头像上传
                 upload();
                 break;
-
             case R.id.iv_update_user_img://修改头像
                 new AlertView(null, null, "取消", null, new String[]{"拍照", "我的相册"}, this, AlertView.Style.ActionSheet, this).show();
                 break;
+            case R.id.tv_update_user_authentication://芝麻认证
+                //没有认证的跳转H5芝麻认证
+                ToastUtils.showShort("芝麻认证");
+
+                break;
+
 
         }
     }
@@ -491,16 +476,6 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             if (isPhoneChange && isVerificationChange) {
                 parameterMap.put("phone", mPnone);
                 parameterMap.put("verification", mVerification);
-            }
-            if (isEmailChange) {
-                parameterMap.put("email", mEmail);
-            } else {
-                if (!mEmail.isEmpty()) {
-                    if (!ValidatorsUtils.isEmail(mEmail)) {
-                        Toast.makeText(getApplicationContext(), "邮箱格式不正确", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
             }
             if (isSafeChange) {
                 parameterMap.put("security_code", mSafeCode);
@@ -744,7 +719,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             if (data != null) {
                 Uri uri = data.getData();
-                LogUtils.e("uri",uri.toString()+"");
+                LogUtils.e("uri", uri.toString() + "");
                 crop(uri);
             }
 
