@@ -141,13 +141,15 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                 LogUtils.d(TAG, "hostWeb: " + hostWeb + ", hostH5: " + hostH5);
                 if (hostH5.equals(hostWeb)) {
                     return false;
-                } else if (url.contains("alipays://platformapi")) {
+                } else if (url.contains("alipays://platformapi")) { // 支付宝
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
                     }catch (Exception e){
                          return false;
                     }
+                }else if (hostWeb.contains("zmxy.com.cn")){ // 蚂蚁认证
+                    return false;
                 }
                 return true;
             }
