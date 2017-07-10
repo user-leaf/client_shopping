@@ -1,10 +1,12 @@
 package shop.imake.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/5/16.
  */
 
-public class ShopModel {
+public class ShopModel implements Serializable{
 
     /**
      * avatar_path : https://testapi3.bjaiyouyou.com/storage/app/public/avatar/2017/01/06/41487

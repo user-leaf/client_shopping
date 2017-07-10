@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.Serializable;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import shop.imake.MainApplication;
@@ -56,6 +58,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
     public static final String TAG = ScanPayActivity.class.getSimpleName();
     public static final String PARAM_SHOP_ID = "shop_id";
     public static final String PARAM_MONEY = "money";
+    public static final String PARAM_SHOP_MODEL = "shop_model";
 
     private int customMoneyPageFlag = -1;       // 是否是自定义金额页面
 
@@ -90,11 +93,13 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
      * 启动本页面
      *
      * @param context
+     * @param shopModel
      */
-    public static void actionStart(Context context, long shopId, double money) {
+    public static void actionStart(Context context, long shopId, double money, ShopModel shopModel) {
         Intent intent = new Intent(context, ScanPayActivity.class);
         intent.putExtra(PARAM_SHOP_ID, shopId);
         intent.putExtra(PARAM_MONEY, money);
+        intent.putExtra(PARAM_SHOP_MODEL, shopModel);
         context.startActivity(intent);
     }
 
@@ -118,6 +123,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         Intent intent = getIntent();
         mShopId = intent.getLongExtra(PARAM_SHOP_ID, -1);
         mMoney = MathUtil.round(intent.getDoubleExtra(PARAM_MONEY, 0), 2); // 取两位小数
+
     }
 
     private void initView() {
@@ -240,56 +246,83 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
         }
 
-        // 商户头像、名称
-        mApi4Home.getShopInfo(this, mShopId, new DataCallback<ShopModel>(this) {
+        mLoadViewHelper.restore();
+        Intent intent = getIntent();
+        ShopModel shopModel = (ShopModel) intent.getSerializableExtra(PARAM_SHOP_MODEL);
+        mShopImgUrl = shopModel.getAvatar_path() + "/" + shopModel.getAvatar_name();
+        LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + mShopImgUrl);
+        Glide.with(ScanPayActivity.this)
+                .load(ImageUtils.getThumb(mShopImgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
+                .error(R.mipmap.list_profile_photo)
+                .into(mIvHead);
 
-            @Override
-            public void onFail(Call call, Exception e, int id) {
-                CurrentUserManager.TokenDue(e);
-                ToastUtils.showException(e);
-//                mLoadViewHelper.showError(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        loadData();
-//                    }
-//                });
-                mLoadViewHelper.showScanError(StringUtils.getExceptionMessage(e.getMessage()));
-            }
+        mShopName = shopModel.getCompany_name();
+        mTvName.setText("向商家用户(" + (mShopName == null ? "爱每刻用户" : mShopName) + ")支付");
+        mUserBalance = shopModel.getUser_withdrawable_balance();
+        mTvBalance.setText("剩余券额" + DoubleTextUtils.setDoubleUtils(mUserBalance));
 
-            @Override
-            public void onSuccess(Object response, int id) {
-                mLoadViewHelper.restore();
-                if (response == null) {
-                    return;
+        if (customMoneyPageFlag == 1) { // 如果自定义金额页面，则et获取焦点
+            mEtMoney.setFocusable(true);
+            mEtMoney.setFocusableInTouchMode(true);
+            mEtMoney.requestFocus();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    KeyBoardUtils.openKeybord(mEtMoney, ScanPayActivity.this);
                 }
+            }, 300);
+        }
 
-                ShopModel shopModel = (ShopModel) response;
-
-                mShopImgUrl = shopModel.getAvatar_path() + "/" + shopModel.getAvatar_name();
-                LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + mShopImgUrl);
-                Glide.with(ScanPayActivity.this)
-                        .load(ImageUtils.getThumb(mShopImgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
-                        .error(R.mipmap.list_profile_photo)
-                        .into(mIvHead);
-
-                mShopName = shopModel.getCompany_name();
-                mTvName.setText("向商家用户(" + (mShopName == null ? "爱每刻用户" : mShopName) + ")支付");
-                mUserBalance = shopModel.getUser_withdrawable_balance();
-                mTvBalance.setText("剩余券额" + DoubleTextUtils.setDoubleUtils(mUserBalance));
-
-                if (customMoneyPageFlag == 1) { // 如果自定义金额页面，则et获取焦点
-                    mEtMoney.setFocusable(true);
-                    mEtMoney.setFocusableInTouchMode(true);
-                    mEtMoney.requestFocus();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            KeyBoardUtils.openKeybord(mEtMoney, ScanPayActivity.this);
-                        }
-                    }, 300);
-                }
-            }
-        });
+//        // 商户头像、名称
+//        mApi4Home.getShopInfo(this, mShopId, new DataCallback<ShopModel>(this) {
+//
+//            @Override
+//            public void onFail(Call call, Exception e, int id) {
+//                CurrentUserManager.TokenDue(e);
+//                ToastUtils.showException(e);
+////                mLoadViewHelper.showError(new View.OnClickListener() {
+////                    @Override
+////                    public void onClick(View v) {
+////                        loadData();
+////                    }
+////                });
+//                mLoadViewHelper.showScanError(StringUtils.getExceptionMessage(e.getMessage()));
+//            }
+//
+//            @Override
+//            public void onSuccess(Object response, int id) {
+//                mLoadViewHelper.restore();
+//                if (response == null) {
+//                    return;
+//                }
+//
+//                ShopModel shopModel = (ShopModel) response;
+//
+//                mShopImgUrl = shopModel.getAvatar_path() + "/" + shopModel.getAvatar_name();
+//                LogUtils.d(ScanPayActivity.TAG, "imgUrl: " + mShopImgUrl);
+//                Glide.with(ScanPayActivity.this)
+//                        .load(ImageUtils.getThumb(mShopImgUrl, ScreenUtils.getScreenWidth(ScanPayActivity.this) / 4, 0))
+//                        .error(R.mipmap.list_profile_photo)
+//                        .into(mIvHead);
+//
+//                mShopName = shopModel.getCompany_name();
+//                mTvName.setText("向商家用户(" + (mShopName == null ? "爱每刻用户" : mShopName) + ")支付");
+//                mUserBalance = shopModel.getUser_withdrawable_balance();
+//                mTvBalance.setText("剩余券额" + DoubleTextUtils.setDoubleUtils(mUserBalance));
+//
+//                if (customMoneyPageFlag == 1) { // 如果自定义金额页面，则et获取焦点
+//                    mEtMoney.setFocusable(true);
+//                    mEtMoney.setFocusableInTouchMode(true);
+//                    mEtMoney.requestFocus();
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            KeyBoardUtils.openKeybord(mEtMoney, ScanPayActivity.this);
+//                        }
+//                    }, 300);
+//                }
+//            }
+//        });
     }
 
     /**
@@ -534,7 +567,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         // 拨打客服电话
         Dialog pswForgetDialog = DialogUtils.createConfirmDialog(
                 ScanPayActivity.this,
-                null, "拨打客服电话" + ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY)  + "进行修改", "拨打", "取消",
+                null, "拨打客服电话" + ACache.get(getApplicationContext()).getAsString(DialUtils.PHONE_GET_SAFE_CODE_KEY) + "进行修改", "拨打", "取消",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

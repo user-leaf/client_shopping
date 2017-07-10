@@ -42,16 +42,22 @@ import java.nio.charset.Charset;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.activity.PermissionsActivity;
 import shop.imake.activity.ScanGoodsDetailActivity;
 import shop.imake.activity.ScanPayActivity;
+import shop.imake.callback.DataCallback;
+import shop.imake.client.Api4Home;
+import shop.imake.client.ClientApiHelper;
 import shop.imake.model.PermissionsChecker;
 import shop.imake.model.ScanPayQRCodeModel;
+import shop.imake.model.ShopModel;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.Base64;
 import shop.imake.utils.LogUtils;
+import shop.imake.utils.ToastUtils;
 import shop.imake.zxing.camera.CameraManager;
 import shop.imake.zxing.decoding.CaptureActivityHandler;
 import shop.imake.zxing.decoding.InactivityTimer;
@@ -85,6 +91,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
     private ImageView btScanCode;
     private ImageView btScanHistory;
     //private Button cancelScanButton;
+    private Api4Home mApi4Home;
 
     public static int SCAN_EMPTY=1111111;
 
@@ -120,6 +127,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
         setContentView(R.layout.camera);
         //初始化权限检查器
         mPermissionsChecker = new PermissionsChecker(this);
+        mApi4Home = (Api4Home) ClientApiHelper.getInstance().getClientApi(Api4Home.class);
         infoView();
         setUpView();
     }
@@ -262,9 +270,29 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
             if (resultStringPay.contains("shopId")) {
                 ScanPayQRCodeModel scanPayQRCodeModel = new Gson().fromJson(resultStringPay, ScanPayQRCodeModel.class);
                 if (scanPayQRCodeModel != null) {
-                    long shopId = scanPayQRCodeModel.getShopId();
-                    double money = scanPayQRCodeModel.getMoney();
-                    ScanPayActivity.actionStart(CaptureActivity.this, shopId, money);
+                    final long shopId = scanPayQRCodeModel.getShopId();
+                    final double money = scanPayQRCodeModel.getMoney();
+
+                    // 商户头像、名称
+                    mApi4Home.getShopInfo(this, shopId, new DataCallback<ShopModel>(this) {
+
+                        @Override
+                        public void onFail(Call call, Exception e, int id) {
+                            CurrentUserManager.TokenDue(e);
+                            ToastUtils.showException(e);
+                        }
+
+                        @Override
+                        public void onSuccess(Object response, int id) {
+                            if (response == null){
+                                return;
+                            }
+
+                            ShopModel shopModel = (ShopModel) response;
+
+                            ScanPayActivity.actionStart(CaptureActivity.this, shopId, money, shopModel);
+                        }
+                    });
                 }
                 //商品详情
             } else {
