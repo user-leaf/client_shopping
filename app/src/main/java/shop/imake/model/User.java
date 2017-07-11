@@ -76,6 +76,15 @@ public class User implements Serializable {
         private int is_in_test_user;
         private String cannot_push_money;
         private boolean security_code_state;
+        private int is_certification;
+
+        public int getIs_certification() {
+            return is_certification;
+        }
+
+        public void setIs_certification(int is_certification) {
+            this.is_certification = is_certification;
+        }
 
         public int getId() {
             return id;

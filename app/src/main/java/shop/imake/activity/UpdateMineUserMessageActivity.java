@@ -335,7 +335,8 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 }
 
                 //根据是否芝麻认证字段显示
-                boolean isZMAuthentication = false;
+                boolean isZMAuthentication = mBean.getIs_certification()==1;
+
                 //已经认证,显示已经认证且为不可点击状态
                 if (isZMAuthentication) {
                     mTvAuthentication.setText("已认证");
