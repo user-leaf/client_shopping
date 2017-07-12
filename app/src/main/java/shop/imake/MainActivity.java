@@ -2,6 +2,7 @@ package shop.imake;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -120,6 +121,8 @@ public class MainActivity extends BaseActivity {
         getTelephone();
         // 小能客服登录
         NTalkerUtils.getInstance().login();
+        //获取芝麻认证回传的结果
+        getResultZMRZ();
     }
 
 
@@ -373,18 +376,33 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response, int id) {
-                if (TextUtils.isEmpty(response)){
+                if (TextUtils.isEmpty(response)) {
                     return;
                 }
                 ACache.get(getApplicationContext()).put(DialUtils.PHONE_JSON_KEY, response.trim());
                 //用于缓存默认的安全码找回的客电话
-                DialUtils.getPhoneNum(getApplicationContext(),DialUtils.SERVER_PHONE_TYPE);
-                LogUtils.e("telephone",response);
+                DialUtils.getPhoneNum(getApplicationContext(), DialUtils.SERVER_PHONE_TYPE);
+                LogUtils.e("telephone", response);
 
             }
         });
+    }
 
+    /**
+     * 获取H5芝麻认证的回传参数
+     */
+    private void getResultZMRZ() {
 
+        Intent getResultIntent = getIntent();
+        String action = getResultIntent.getAction();
+
+        if (Intent.ACTION_VIEW.equals(action)) {
+            Uri uri = getResultIntent.getData();
+            if (uri != null) {
+                String typeName = uri.getQueryParameter("m");
+                String resultState = uri.getQueryParameter("is_success");
+            }
+        }
     }
 
 }

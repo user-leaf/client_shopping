@@ -9,12 +9,10 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
-import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -221,6 +219,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
         // JS调用Native方法
         mWebView.addJavascriptInterface(new JsInterface(), "android");
+
     }
 
     private void loadUrl() {
