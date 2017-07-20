@@ -288,5 +288,16 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         public void backpage() {
             finish();
         }
+
+        @JavascriptInterface
+        public void openUrlByBrowser(String url){   // 芝麻认证中
+            openBrowser(url);
+        }
+    }
+
+    private void openBrowser(String url){
+        Uri  uri = Uri.parse(url);
+        Intent  intent = new  Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }
