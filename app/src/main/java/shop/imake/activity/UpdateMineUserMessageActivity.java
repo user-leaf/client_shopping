@@ -382,7 +382,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 //没有认证的跳转H5芝麻认证
 //                ToastUtils.showShort("芝麻认证");
                 String url=ClientAPI.URL_WX_H5+"member-zmrz.html?type=android&token="+CurrentUserManager.getUserToken();
-                WebShowActivity.actionStart(getApplicationContext(), url,WebShowActivity.PARAM_PAGE_HIDE);
+                WebShowActivity.actionStart(this, url,WebShowActivity.PARAM_PAGE_HIDE);
 
                 break;
 

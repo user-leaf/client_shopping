@@ -33,8 +33,11 @@ import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NTalkerUtils;
-import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.utils.NetStateUtils;
+import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UpdateUtils;
+
+import static shop.imake.MainApplication.getContext;
 
 public class MainActivity extends BaseActivity {
 
@@ -371,7 +374,10 @@ public class MainActivity extends BaseActivity {
         mClientApi.getTelephone(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                if (!NetStateUtils.isNetworkAvailable(getContext())){
+                    ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
+                    return;
+                }
                 //请求失败再次请求
                 getTelephone();
             }
