@@ -33,6 +33,7 @@ import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NTalkerUtils;
+import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.utils.UpdateUtils;
 
 public class MainActivity extends BaseActivity {
@@ -370,6 +371,7 @@ public class MainActivity extends BaseActivity {
         mClientApi.getTelephone(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
                 //请求失败再次请求
                 getTelephone();
             }

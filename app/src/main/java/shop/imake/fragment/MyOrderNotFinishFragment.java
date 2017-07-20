@@ -236,7 +236,7 @@ public class MyOrderNotFinishFragment extends BaseFragment {
                 } else {
                     //1、当网络不可用的时候、显示网络不可用
                     unNetWorkView();
-                    ToastUtils.showShort("当前网络不可用，请检查网络设置");
+                    ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
                 }
                 lv.loadMoreComplete();
                 lv.refreshComplete();

@@ -169,7 +169,7 @@
                 android:background="#FFDFE0"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="当前网络不可用，请检查网络设置" />
+                android:text="@string/xn_toast_nointernet" />
 
             <TextView
                 android:layout_width="match_parent"

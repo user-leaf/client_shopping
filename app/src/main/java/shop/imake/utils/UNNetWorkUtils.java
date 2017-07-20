@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import shop.imake.R;
+
 /**
  * 断网处理
  * @author Alice
@@ -26,7 +28,7 @@ public class UNNetWorkUtils {
         if (NetStateUtils.isNetworkAvailable(context)){
             lvHide(mLLNotLogin,mTvDataEmpty,lv,mLLUnNetWork,ivEmpty);
         }else {
-            Toast.makeText(context,"当前网络不可用，请检查网络设置",Toast.LENGTH_SHORT).show();
+            ToastUtils.showShort(context.getString(R.string.xn_toast_nointernet));
             unNetWorkView(mLLNotLogin,mTvDataEmpty,lv,mLLUnNetWork,ivEmpty);
         }
     }
@@ -109,7 +111,7 @@ public class UNNetWorkUtils {
      * @param mLLUnNetWork
      */
     public static void isNetHaveConnect(Context context,TextView mTvDataEmpty, View lv , LinearLayout mLLUnNetWork){
-        Toast.makeText(context,"当前网络不可用，请检查网络设置",Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort(context.getString(R.string.xn_toast_nointernet));
         unNetWorkView(mTvDataEmpty,lv,mLLUnNetWork);
     }
     /**
@@ -155,7 +157,7 @@ public class UNNetWorkUtils {
             }
         }else {
             if (context!=null){
-                Toast.makeText(context,"当前网络不可用，请检查网络设置",Toast.LENGTH_SHORT).show();
+                ToastUtils.showShort(context.getString(R.string.xn_toast_nointernet));
             }
         }
     }
@@ -169,7 +171,7 @@ public class UNNetWorkUtils {
      * @param mLLUnNetWork
      */
     public static void isNetHaveConnect(Context context,View notLoginView, View LoginView , LinearLayout mLLUnNetWork){
-        Toast.makeText(context,"当前网络不可用，请检查网络设置",Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort(context.getString(R.string.xn_toast_nointernet));
         unNetWorkView(notLoginView,LoginView,mLLUnNetWork);
     }
 

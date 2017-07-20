@@ -250,7 +250,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initOtherData() {
         if (!NetStateUtils.isNetworkAvailable(getContext())){
-            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
             return;
         }
 
@@ -422,7 +422,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initData() {
         if (!NetStateUtils.isNetworkAvailable(getContext())){
-            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
             return;
         }
         //取消数据加载Loading
@@ -462,7 +462,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private void initUserData() {
 
         if (!NetStateUtils.isNetworkAvailable(getContext())){
-            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
             return;
         }
         //初始化网路请求对象
@@ -943,6 +943,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      * 提交弹出框的安全码
      */
     private void submitSafeCode() {
+        loadingDialog.show();
 
         //提交成功条状到   mClassJump  类
         //没有：添加
@@ -958,6 +959,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             ClientAPI.postValidateSafeCode(token, safeCode, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    loadingDialog.dismiss();
                     CurrentUserManager.TokenDue(e);
                     LogUtils.e("getMessage-----", e.getMessage());
                     UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
@@ -966,6 +968,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
                 @Override
                 public void onResponse(String response, int id) {
+                    loadingDialog.dismiss();
                     startActivity(mIntentSafeCode);
                     dialogDismiss(mSafeCodeDialog);
                 }
@@ -978,6 +981,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             ClientAPI.postSetSafeCode(token, safeCode, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    loadingDialog.dismiss();
                     CurrentUserManager.TokenDue(e);
                     UNNetWorkUtils.unNetWorkOnlyNotify(getContext(), e);
                     dialogDismiss(mSafeCodeDialog);
@@ -985,6 +989,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
                 @Override
                 public void onResponse(String response, int id) {
+                    loadingDialog.dismiss();
                     //设置成功刷新数据
                     initData();
                     dialogDismiss(mSafeCodeDialog);
@@ -1341,7 +1346,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
          */
 
         if (!NetStateUtils.isNetworkAvailable(getContext())) {
-            ToastUtils.showShort("当前网络不可用，请检查网络设置");
+            ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
         } else {
             if (!CurrentUserManager.isLoginUser()) {
                 startActivity(LoginActivity.class);
