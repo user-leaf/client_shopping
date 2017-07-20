@@ -3,11 +3,13 @@ package shop.imake.callback;
 import android.content.Context;
 
 import shop.imake.utils.LogUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -70,6 +72,10 @@ public abstract class DataCallback<T> extends Callback {
 
     @Override
     public void onError(Call call, Exception e, int id) {
+        if (e.getMessage().contains("bjaiyouyou.com")) {
+            onFail(call, new IOException("网络请求失败，请检查网络后重试"), id);
+            return;
+        }
         onFail(call, e, id);
     }
 
@@ -81,7 +87,7 @@ public abstract class DataCallback<T> extends Callback {
 
     public abstract void onFail(Call call, Exception e, int id);
 
-    public void onFail(Call call, String responseBody, int id){
+    public void onFail(Call call, String responseBody, int id) {
 
     }
 
