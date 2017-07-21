@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
+import shop.imake.utils.AppPackageChecked;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
 
@@ -290,9 +291,15 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         }
 
         @JavascriptInterface
-        public void openUrlByBrowser(String url){   // 芝麻认证中
+        public void openUrlByBrowser(String url){   // 芝麻认证中调用
             openBrowser(url);
         }
+
+        @JavascriptInterface
+        public boolean haszhifubao(){
+            return AppPackageChecked.isExist(WebShowActivity.this, "com.eg.android.AlipayGphone");
+        }
+
     }
 
     private void openBrowser(String url){

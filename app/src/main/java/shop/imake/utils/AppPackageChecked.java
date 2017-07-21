@@ -27,7 +27,7 @@ public class AppPackageChecked {
      * @param packageName
      * @return
      */
-    private static boolean isExist(Context context, String packageName){
+    public static boolean isExist(Context context, String packageName){
         final PackageManager packageManager = context.getPackageManager();//获取packagemanager
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);//获取所有已安装程序的包信息
         List<String> pName = new ArrayList<String>();//用于存储所有已安装程序的包名
