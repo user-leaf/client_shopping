@@ -42,14 +42,18 @@ import pub.devrel.easypermissions.EasyPermissions;
 import shop.imake.R;
 import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4ClientOther;
+import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
+import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
+
+import static shop.imake.MainApplication.getContext;
 
 /**
  * 修改个人用户信息页面
@@ -136,6 +140,8 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
     private Api4ClientOther mclient;
     private TextView mTvAuthentication;
+    private Api4Mine mClientApi;
+    private boolean isFristStart = true;
 
 
     @Override
@@ -150,11 +156,45 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isFristStart) {
+            initUserData();
+        }
+    }
+
+    private void initUserData() {
+
+        if (!NetStateUtils.isNetworkAvailable(getContext())) {
+            ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
+            return;
+        }
+
+        mClientApi.getUserMessage(TAG, new DataCallback<User>(getContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                CurrentUserManager.TokenDue(e);
+
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                mUser = (User) response;
+                if (mUser != null) {
+                    initCtrl();
+                }
+            }
+        });
+    }
+
     /**
      * 初始化变量
      */
     private void initVariables() {
         mclient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
+        //初始化网路请求对象
+        mClientApi = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
     }
 
     private void initView() {
@@ -296,6 +336,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
     }
 
     private void initCtrl() {
+        isFristStart = false;
         //重新设置头像为默认头像
 //        mUserImg.setImageResource(R.mipmap.list_profile_photo);
         if (mUser != null) {
@@ -335,7 +376,7 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
                 }
 
                 //根据是否芝麻认证字段显示
-                boolean isZMAuthentication = mBean.getIs_certification()==1;
+                boolean isZMAuthentication = mBean.getIs_certification() == 1;
 
                 //已经认证,显示已经认证且为不可点击状态
                 if (isZMAuthentication) {
@@ -381,8 +422,8 @@ public class UpdateMineUserMessageActivity extends BaseActivity implements View.
             case R.id.tv_update_user_authentication://芝麻认证
                 //没有认证的跳转H5芝麻认证
 //                ToastUtils.showShort("芝麻认证");
-                String url=ClientAPI.URL_WX_H5+"member-zmrz.html?type=android&token="+CurrentUserManager.getUserToken();
-                WebShowActivity.actionStart(this, url,WebShowActivity.PARAM_PAGE_HIDE);
+                String url = ClientAPI.URL_WX_H5 + "member-zmrz.html?type=android&token=" + CurrentUserManager.getUserToken();
+                WebShowActivity.actionStart(this, url, WebShowActivity.PARAM_PAGE_HIDE);
 
                 break;
 
