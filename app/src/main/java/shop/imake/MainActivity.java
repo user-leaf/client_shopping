@@ -81,6 +81,9 @@ public class MainActivity extends BaseActivity {
     public static String serverPhone[];//客服电话
     public static String supplyPhone[];//供货电话
 
+    private String typeName;
+    private String resultState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +128,6 @@ public class MainActivity extends BaseActivity {
         getTelephone();
         // 小能客服登录
         NTalkerUtils.getInstance().login();
-        //获取芝麻认证回传的结果
-        getResultZMRZ();
     }
 
 
@@ -394,23 +395,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-    }
-
-    /**
-     * 获取H5芝麻认证的回传参数
-     */
-    private void getResultZMRZ() {
-
-        Intent getResultIntent = getIntent();
-        String action = getResultIntent.getAction();
-
-        if (Intent.ACTION_VIEW.equals(action)) {
-            Uri uri = getResultIntent.getData();
-            if (uri != null) {
-                String typeName = uri.getQueryParameter("m");
-                String resultState = uri.getQueryParameter("is_success");
-            }
-        }
     }
 
 }

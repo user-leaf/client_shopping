@@ -157,16 +157,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
-            <!-- Android实现通过浏览器点击链接打开本地应用（APP）并拿到浏览器传递的数据 -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:host="shop.imake"
-                    android:pathPrefix="/openwith"
-                    android:scheme="imakeshop" />
-            </intent-filter>
+
         </activity>
 
         <!-- 搜索商品页面 -->
@@ -308,8 +299,21 @@
         <!-- 网页 -->
         <activity
             android:name=".activity.WebShowActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
+            <!-- Android实现通过浏览器点击链接打开本地应用（APP）并拿到浏览器传递的数据 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="shop.imake"
+                    android:pathPrefix="/openwith"
+                    android:scheme="imakeshop" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"

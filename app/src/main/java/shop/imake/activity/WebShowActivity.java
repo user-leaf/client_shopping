@@ -2,7 +2,6 @@ package shop.imake.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -48,10 +47,28 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     private WebView mWebView;
     private View mRefreshView;
 
+    private static String startUrl;
+
+    /**
+     * 启动本页面
+     *
+     * @param context
+     * @param url
+     * @param title   传null，则用网页默认标题
+     */
+    public static void actionStart(Context context, String url, String title) {
+        Intent intent = new Intent(context, WebShowActivity.class);
+        intent.putExtra(PARAM_URLPATH, url);
+        intent.putExtra(PARAM_TITLE, title);
+        startUrl = url;
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_show);
+
 
         initView();
         setupView();
@@ -84,18 +101,11 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         super.onDestroy();
     }
 
-    /**
-     * 启动本页面
-     *
-     * @param context
-     * @param url
-     * @param title   传null，则用网页默认标题
-     */
-    public static void actionStart(Context context, String url, String title) {
-        Intent intent = new Intent(context, WebShowActivity.class);
-        intent.putExtra(PARAM_URLPATH, url);
-        intent.putExtra(PARAM_TITLE, title);
-        context.startActivity(intent);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getResultZMRZ(intent);
+
     }
 
     private void initView() {
@@ -132,55 +142,49 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         //设置网页在WebView中打开，而不是跳转到浏览器
         mWebView.setWebViewClient(new WebViewClient() {
 
-                                      @Override
-                                      public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
 //                view.loadUrl(url);
 //                return true;
-                                          String hostWeb = Uri.parse(url).getHost();
-                                          String hostH5 = Uri.parse(ClientAPI.URL_WX_H5).getHost();
-                                          LogUtils.d(TAG, "hostWeb: " + hostWeb + ", hostH5: " + hostH5);
-                                          if (hostH5.equals(hostWeb)) {
-                                              return false;
-                                          } else if (url.contains("alipays://platformapi")) { // 支付宝
-                                              try {
-                                                  Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                                  startActivity(intent);
-                                              } catch (Exception e) {
-                                                  return false;
-                                              }
-                                          } else if (hostWeb.contains("zmxy.com.cn")) { // 蚂蚁认证
-                                              return false;
-                                          }
-                                          return true;
-                                      }
+                String hostWeb = Uri.parse(url).getHost();
+                String hostH5 = Uri.parse(ClientAPI.URL_WX_H5).getHost();
+                LogUtils.d(TAG, "hostWeb: " + hostWeb + ", hostH5: " + hostH5);
+                if (hostH5.equals(hostWeb)) {
+                    return false;
+                } else if (url.contains("alipays://platformapi")) { // 支付宝
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else if (hostWeb.contains("zmxy.com.cn")) { // 蚂蚁认证
+                    return false;
+                }
+                return true;
+            }
 
-                                      @Override
-                                      public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                                          super.onReceivedError(view, request, error);
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
 
-                                      }
+            }
 
-                                      @Override
-                                      public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                                          super.onReceivedError(view, errorCode, description, failingUrl);
-                                          mWebView.setVisibility(View.GONE);
-                                          mRefreshView.setVisibility(View.VISIBLE);
-                                          //网络不畅通加载本地html
-                                          view.loadUrl("file:///android_asset/webviewreload.html");
-                                      }
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                mWebView.setVisibility(View.GONE);
+                mRefreshView.setVisibility(View.VISIBLE);
+                //网络不畅通加载本地html
+                view.loadUrl("file:///android_asset/webviewreload.html");
+            }
 
-                                      @Override
-                                      public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
 //                super.onReceivedSslError(view, handler, error);
-                                          handler.proceed();
-                                      }
-
-                                      @Override
-                                      public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                                          super.onPageStarted(view, url, favicon);
-                                      }
-                                  }
-        );
+                handler.proceed();
+            }
+        });
 
         // 弹出窗体的设置
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -313,5 +317,27 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+    }
+
+    /**
+     * 获取H5芝麻认证的回传参数
+     */
+    private void getResultZMRZ(Intent intent) {
+        String action = intent.getAction();
+        Uri uri = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(action) && uri != null) {
+            // 操作类型（比如芝麻认证）
+            String typeName = uri.getQueryParameter("m");
+            String resultState = uri.getQueryParameter("is_success");
+
+            if ("zmrz".equals(typeName)) {    // 芝麻认证成功
+                if (startUrl.contains("member-zmrz")) {  // 个人中心页面
+                    finish();
+                } else {    // 万家联盟
+                    mWebView.loadUrl(ClientAPI.URL_WX_H5 + "wanjialianmeng-czhuiyuan-iframe.html");
+                }
+            }
+        }
     }
 }
