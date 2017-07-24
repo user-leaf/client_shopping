@@ -78,7 +78,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     private View mBottomView;
     private CheckBox mChbAll;
     private TextView mTvTotalPrice;
-//    private TextView mTvTotalPoint;
+    //    private TextView mTvTotalPoint;
     private Button mBtnOrder;
 
     // flag
@@ -146,7 +146,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         }
 
         if (!isHidden()) {
-             initData();
+            initData();
         }
 
     }
@@ -372,7 +372,7 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
      * @param list
      */
     private void showTopTip(List<CartItem2> list) {
-        if (!Constants.showTip){
+        if (!Constants.showTip) {
             return;
         }
 
@@ -406,86 +406,43 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
             }
         }
 
-        // 需求修改16.12.29 --> 提示一直显示
-//        ViewWrapper wrapper = new ViewWrapper(mTvTipSendDelay);
-//
-//        if (isReach){  // 显示
-//            if (mTvTipSendDelay.getVisibility() == View.GONE) {
-//                mTvTipSendDelay.setVisibility(View.VISIBLE);
-//                ValueAnimator showAnim = ObjectAnimator.ofInt(wrapper, "height", 0, DensityUtils.dp2px(getContext(), 50));
-//                showAnim.setInterpolator(new AccelerateInterpolator());
-//                showAnim.setDuration(200);
-//                showAnim.start();
-//
-//            }
-//
-//        }else {  // 消失
-//            if (mTvTipSendDelay.getVisibility() == View.VISIBLE) {
-//                ValueAnimator hideAnim = ObjectAnimator.ofInt(wrapper, "height", DensityUtils.dp2px(getContext(), 50), 0);
-//                hideAnim.setInterpolator(new LinearInterpolator());
-//                hideAnim.setDuration(200);
-//                hideAnim.addListener(new Animator.AnimatorListener() {
-//                    @Override
-//                    public void onAnimationStart(Animator animation) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        mTvTipSendDelay.setVisibility(View.GONE);
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationCancel(Animator animation) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animator animation) {
-//
-//                    }
-//                });
-//                hideAnim.start();
-//            }
-//        }
     }
 
     public double countTotalPrice() {
         double sum = 0;
 
         for (CartItem2 item : mRawList) {
-            if (item.isChecked()) { // 只计算选中的商品的总价格
-                if (item != null) {
-                    CartModel cartModel = item.getCartModel();
-                    CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
+            if (!item.isChecked()) { // 只计算选中的商品的总价格
+                continue;
+            }
+            CartModel cartModel = item.getCartModel();
+            CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
-                    if (cartModel != null && product_size != null) {
-                        int count = cartModel.getNumber();
-                        double price = Double.valueOf(product_size.getPrice());
+            if (product_size == null) {
+                continue;
+            }
+            int count = cartModel.getNumber();
+            double price = Double.valueOf(product_size.getPrice());
 
-                        // 抢购中商品按抢购价
-                        CartModel.ProductBean product = cartModel.getProduct();
-                        if (product != null) {
-                            boolean isRushGood = product.getProduct_type() == 0 ? true : false;
+            // 抢购中商品按抢购价
+            CartModel.ProductBean product = cartModel.getProduct();
+            if (product != null) {
+                boolean isRushGood = product.getProduct_type() == 0 ? true : false;
 
-                            if (isRushGood) {
-                                CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+                if (isRushGood) {
+                    CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
-                                if (product_time_frame != null) {
-                                    boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
+                    if (product_time_frame != null) {
+                        boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
 
-                                    if (if_rush_to_purchasing) {
-                                        price = Double.valueOf(product_size.getRush_price());
-                                    }
-                                }
-                            }
+                        if (if_rush_to_purchasing) {
+                            price = Double.valueOf(product_size.getRush_price());
                         }
-
-                        sum += (price * count);
                     }
                 }
             }
+
+            sum += (price * count);
         }
 
         return sum;
@@ -499,12 +456,14 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
     public int countTotalPoints() {
         int sum = 0;
         for (CartItem2 item : mRawList) {
-            if (item.isChecked()) {
-                if (item.getCartModel() != null && item.getCartModel().getProduct_size() != null) {
-                    int count = item.getCartModel().getNumber();
-                    int points = item.getCartModel().getProduct_size().getIntegration_price();
-                    sum += (points * count);
-                }
+            if (!item.isChecked()) {
+                continue;
+            }
+
+            if (item.getCartModel() != null && item.getCartModel().getProduct_size() != null) {
+                int count = item.getCartModel().getNumber();
+                int points = item.getCartModel().getProduct_size().getIntegration_price();
+                sum += (points * count);
             }
         }
         return sum;
@@ -657,35 +616,45 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
         for (int i = 0; i < selectedList.size(); i++) {
             CartItem2 cartItem = selectedList.get(i);
             CartModel cartModel = cartItem.getCartModel();
-            if (cartModel != null) {
-                CartModel.ProductBean product = cartModel.getProduct();
+            if (cartModel == null) {
+                continue;
+            }
+            CartModel.ProductBean product = cartModel.getProduct();
 
-                if (product != null) {
-                    int product_type = product.getProduct_type();
+            if (product == null) {
+                continue;
+            }
+            int product_type = product.getProduct_type();
 
-                    // product_type 0: 抢购商品，1：每日新上
-                    if (product_type == 0) {
-                        CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
+            // product_type 0: 抢购商品，1：每日新上
+            if (product_type != 0) {
+                continue;
+            }
+            CartModel.ProductSizeBean product_size = cartModel.getProduct_size();
 
-                        if (product_size != null) {
-                            CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
+            if (product_size == null) {
+                continue;
+            }
+            CartModel.ProductSizeBean.ProductTimeFrameBean product_time_frame = product_size.getProduct_time_frame();
 
-                            if (product_time_frame != null) {
-                                boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
-                                // 本次请求时在抢购中
-                                if (if_rush_to_purchasing) {
-                                    // 此刻商品是否已过期
-                                    CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
-                                    if (time_frame != null) {
-                                        String time_frame1 = time_frame.getTime_frame();
-                                        if (CartHelper.isRushGoodExpired(time_frame1)) {
-                                            expiredList.add(cartItem);
-                                            continue;
-                                        }
-                                    }
-                                }
-                                // 不到抢购时间的商品这个字段也为false，就出错了，不应被过滤掉
-                                // 刚才请求回来的商品是否已过期
+            if (product_time_frame == null) {
+                continue;
+            }
+            boolean if_rush_to_purchasing = product_time_frame.isIf_rush_to_purchasing();
+
+            if (if_rush_to_purchasing) {    // 本次请求时在抢购中
+                // 此刻商品是否已过期
+                CartModel.ProductSizeBean.ProductTimeFrameBean.TimeFrameBean time_frame = product_time_frame.getTime_frame();
+                if (time_frame != null) {
+                    String time_frame1 = time_frame.getTime_frame();
+                    if (CartHelper.isRushGoodExpired(time_frame1)) {
+                        expiredList.add(cartItem);
+                        continue;
+                    }
+                }
+            }
+            // 不到抢购时间的商品这个字段也为false，就出错了，不应被过滤掉
+            // 刚才请求回来的商品是否已过期
 //                                if (!if_rush_to_purchasing) {
 //                                    goodExpired = true;
 //                                    expiredIndexes.add(i);
@@ -702,12 +671,6 @@ public class CartPage extends BaseFragment implements CompoundButton.OnCheckedCh
 //                                        continue;
 //                                    }
 //                                }
-                            }
-                        }
-                    }
-                }
-
-            }
         }
         return expiredList;
     }

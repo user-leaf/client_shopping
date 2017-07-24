@@ -69,7 +69,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_show);
 
-
         initView();
         setupView();
 
