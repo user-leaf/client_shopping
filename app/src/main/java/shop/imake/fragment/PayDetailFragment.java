@@ -74,7 +74,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
     private Api4Cart mApi4Cart;
 
     private enum PayWayEnum {
-        balance, alipay
+        balance, alipay, wx
     }
 
     private PayWayEnum currentPayWay = PayWayEnum.balance;   // 当前的实付方式(默认余额)
@@ -146,6 +146,8 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         mPayWayModels.add(payWayModel);
         PayWayModel payWayModel2 = new PayWayModel(PayWayEnum.alipay.name(), R.mipmap.list_icon_alipay, "支付宝", false, false);
         mPayWayModels.add(payWayModel2);
+        PayWayModel payWayModel3 = new PayWayModel(PayWayEnum.wx.name(), R.mipmap.list_icon_wechatpay, "微信支付", false, false);
+        mPayWayModels.add(payWayModel3);
 
         mPayWayAdapter = new PayWayAdapter(getContext(), mPayWayModels);
         mLvPayWay.setAdapter(mPayWayAdapter);
@@ -210,6 +212,13 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                     case alipay:
                         // 调用支付
                         mCallback.onPayCallback(Constants.CHANNEL_ALIPAY);
+                        break;
+
+                    case wx:
+                        mCallback.onPayCallback(Constants.CHANNEL_WECHAT);
+                        break;
+
+                    default:
                         break;
                 }
                 break;
@@ -399,6 +408,12 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                 payWay = "支付宝";
                 break;
 
+            case wx:
+                payWay = "微信支付";
+                break;
+
+            default:
+                break;
         }
 
         mTvPayWay.setText(payWay);
