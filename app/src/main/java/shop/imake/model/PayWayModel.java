@@ -3,14 +3,18 @@ package shop.imake.model;
 /**
  * 支付方式
  *
- * Created by JackB on 2017/4/21.
+ * Created by Administrator on 2017/4/21.
  */
 public class PayWayModel {
     private String payWay;
     private int resId;
+    private String icon;
     private String title;
     private boolean recommend;
     private boolean choose;
+
+    public PayWayModel() {
+    }
 
     public PayWayModel(String payWay, int resId, String title, boolean recommend, boolean choose) {
         this.payWay = payWay;
@@ -59,4 +63,13 @@ public class PayWayModel {
     public void setChoose(boolean choose) {
         this.choose = choose;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
 }

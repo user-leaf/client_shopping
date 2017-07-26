@@ -2,6 +2,7 @@ package shop.imake.client;
 
 import shop.imake.callback.DataCallback;
 import shop.imake.model.OrderMakeOrderNumberModel;
+import shop.imake.model.PayTypeModel;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.LogUtils;
 
@@ -72,5 +73,21 @@ public class Api4Cart extends BaseClientApi {
         String url = sb.toString();
 
         doPost(url, null, callback);
+    }
+
+    /**
+     * 获取支付方式列表
+     * @param hasBalance 是否获取余额支付
+     * @param callback
+     */
+    public void getPayWayList(boolean hasBalance, DataCallback<PayTypeModel> callback){
+        StringBuilder stringBuilder = new StringBuilder(ClientAPI.API_POINT);
+        stringBuilder.append("api/v1/paytype");
+        if (!hasBalance){
+            stringBuilder.append("/a");
+        }
+        String url = stringBuilder.toString();
+        LogUtils.d(TAG, "getPayWayList url: " + url);
+        doGet(url, null, callback);
     }
 }

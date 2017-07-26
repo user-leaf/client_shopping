@@ -36,8 +36,10 @@ import shop.imake.Constants;
 import shop.imake.MainApplication;
 import shop.imake.R;
 import shop.imake.adapter.PayWayAdapter;
+import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Cart;
 import shop.imake.client.ClientApiHelper;
+import shop.imake.model.PayTypeModel;
 import shop.imake.model.PayWayModel;
 import shop.imake.utils.DialUtils;
 import shop.imake.utils.DialogUtils;
@@ -56,6 +58,8 @@ import shop.imake.widget.LoadingDialog;
  */
 public class PayDetailFragment extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
     public static final String TAG = PayDetailFragment.class.getSimpleName();
+
+    boolean payWayListGetSuccessFlag = false;   // 支付方式列表是否获取成功
 
     private double mMoney;          // 付款金额
     private String mStrOrderNum;    // 订单号
@@ -142,19 +146,83 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         mPayWayModels = new ArrayList<>();
         LogUtils.d(TAG, PayWayEnum.balance.name());
         LogUtils.d(TAG, PayWayEnum.balance.toString());
-        PayWayModel payWayModel = new PayWayModel(PayWayEnum.balance.name(), R.mipmap.list_icon_coincertificate, "众汇券", true, true);
-        mPayWayModels.add(payWayModel);
-        PayWayModel payWayModel2 = new PayWayModel(PayWayEnum.alipay.name(), R.mipmap.list_icon_alipay, "支付宝", false, false);
-        mPayWayModels.add(payWayModel2);
-        PayWayModel payWayModel3 = new PayWayModel(PayWayEnum.wx.name(), R.mipmap.list_icon_wechatpay, "微信支付", false, false);
-        mPayWayModels.add(payWayModel3);
 
-        mPayWayAdapter = new PayWayAdapter(getContext(), mPayWayModels);
-        mLvPayWay.setAdapter(mPayWayAdapter);
-        mLvPayWay.setOnItemClickListener(this);
+        // 获取支付方式列表
+        loadData4PayWayList();
+
+//        PayWayModel payWayModel = new PayWayModel(PayWayEnum.balance.name(), R.mipmap.list_icon_coincertificate, "众汇券", true, true);
+//        mPayWayModels.add(payWayModel);
+//        PayWayModel payWayModel2 = new PayWayModel(PayWayEnum.alipay.name(), R.mipmap.list_icon_alipay, "支付宝", false, false);
+//        mPayWayModels.add(payWayModel2);
+//        PayWayModel payWayModel3 = new PayWayModel(PayWayEnum.wx.name(), R.mipmap.list_icon_wechatpay, "微信支付", false, false);
+//        mPayWayModels.add(payWayModel3);
+
+//        mPayWayAdapter = new PayWayAdapter(getContext(), mPayWayModels);
+//        mLvPayWay.setAdapter(mPayWayAdapter);
+//        mLvPayWay.setOnItemClickListener(this);
 
         // 设置数据
         tvMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney) + "元");
+    }
+
+    /**
+     * 获取支付方式列表
+     */
+    private void loadData4PayWayList() {
+        Api4Cart api4Cart = (Api4Cart) ClientApiHelper.getInstance().getClientApi(Api4Cart.class);
+        api4Cart.getPayWayList(true, new DataCallback<PayTypeModel>(mContext) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                payWayListGetSuccessFlag = false;
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response == null) {
+                    return;
+                }
+                payWayListGetSuccessFlag = true;
+
+                PayTypeModel payTypeModel = (PayTypeModel) response;
+                List<PayTypeModel.PayTypesBean> pay_types = payTypeModel.getPay_types();
+                if (pay_types == null) {
+                    return;
+                }
+
+                for (PayTypeModel.PayTypesBean item : pay_types) {
+                    PayWayModel payWayModel = new PayWayModel();
+                    payWayModel.setPayWay(item.getPay_param());
+                    payWayModel.setIcon(item.getIcon());
+                    payWayModel.setTitle(item.getName());
+                    payWayModel.setRecommend(false);
+                    payWayModel.setChoose(false);
+
+                    // 图标
+                    if (PayWayEnum.balance.name().equals(item.getPay_param())) {
+                        payWayModel.setResId(R.mipmap.list_icon_coincertificate);
+                    } else if (PayWayEnum.alipay.name().equals(item.getPay_param())) {
+                        payWayModel.setResId(R.mipmap.list_icon_alipay);
+                    }else if (PayWayEnum.wx.name().equals(item.getPay_param())){
+                        payWayModel.setResId(R.mipmap.list_icon_wechatpay);
+                    }
+//                    else if (PayWayEnum.ips.name().equals(item.getPay_param())) {
+//                        payWayModel.setResId(R.mipmap.list_icon_ring_payment);
+//                    } else if (PayWayEnum.yee_pay.name().equals(item.getPay_param())){
+//                        payWayModel.setResId(R.mipmap.list_logo_yibaozhifu);
+//                    }
+
+                    if (PayWayEnum.balance.name().equals(item.getPay_param())) {
+                        payWayModel.setChoose(true);
+                    }
+                    mPayWayModels.add(payWayModel);
+                }
+                mPayWayModels.get(0).setRecommend(true);
+
+                mPayWayAdapter = new PayWayAdapter(getContext(), mPayWayModels);
+                mLvPayWay.setAdapter(mPayWayAdapter);
+                mLvPayWay.setOnItemClickListener(PayDetailFragment.this);
+            }
+        });
     }
 
     @Override
@@ -171,6 +239,12 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                 break;
 
             case R.id.pay_detail_rl_pay_way:    // 选择方式
+                if (!payWayListGetSuccessFlag) {
+                    ToastUtils.showShort("支付列表获取失败");
+                    loadData4PayWayList();
+                    return;
+                }
+
                 mRlPayDetail.startAnimation(slide_left_to_left);
                 mRlPayDetail.setVisibility(View.GONE);
                 mLlPayWay.startAnimation(slide_right_to_left);
