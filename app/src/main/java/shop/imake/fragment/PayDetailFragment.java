@@ -189,6 +189,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                     return;
                 }
 
+                mPayWayModels.clear();
                 for (PayTypeModel.PayTypesBean item : pay_types) {
                     PayWayModel payWayModel = new PayWayModel();
                     payWayModel.setPayWay(item.getPay_param());
