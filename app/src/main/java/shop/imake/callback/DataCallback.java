@@ -72,8 +72,8 @@ public abstract class DataCallback<T> extends Callback {
 
     @Override
     public void onError(Call call, Exception e, int id) {
-        if (e.getMessage().contains("bjaiyouyou.com")) {
-            onFail(call, new IOException("网络请求失败，请检查网络后重试"), id);
+        if (e.getMessage().contains("bjaiyouyou.com") || e.getMessage().contains("bjiuu.com")) {
+            onFail(call, new IOException("网络请求失败，请检查网络"), id);
             return;
         }
         onFail(call, e, id);

@@ -44,8 +44,8 @@ public class ClientAPI {
 
     static {
         if (flag_test) {    // 测试环境
-            API_POINT = "https://testapi3.bjaiyouyou.com/";
-            URL_WX_H5 = "https://testwxweb2.bjaiyouyou.com/zhweb/";
+            API_POINT = "http://api3.bjiuu.com/";
+            URL_WX_H5 = "http://wxweb2.bjiuu.com/zhweb/";
 
         } else {    // 正式环境
             API_POINT = "https://zhapi.bjaiyouyou.com/";
