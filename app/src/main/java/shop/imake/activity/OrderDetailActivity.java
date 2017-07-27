@@ -780,4 +780,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         });
 
     }
+
+    @Subscribe
+    public void closePage(Object event){
+        finish();
+    }
 }

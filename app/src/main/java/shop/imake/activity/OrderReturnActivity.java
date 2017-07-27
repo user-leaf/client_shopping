@@ -39,6 +39,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -354,12 +356,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
 
                 ToastUtils.showException(e);
 
-                // 测试
-//                        // 跳转到退款进度页
-//                        Intent intent = new Intent(OrderReturnActivity.this, OrderReturnDealActivity.class);
-//                        intent.putExtra("mOrderNumber", mOrderNumber);
-//                        startActivity(intent);
-//                        OrderReturnActivity.this.finish();
             }
 
             @Override
@@ -369,6 +365,8 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
                 }
 
                 ToastUtils.showShort("上传成功");
+                // 关闭订单详情页面
+                EventBus.getDefault().post(new Object());
                 // 跳转到退款进度页
                 Intent intent = new Intent(OrderReturnActivity.this, OrderReturnDealActivity.class);
                 intent.putExtra("mOrderNumber", mOrderNumber);
@@ -396,17 +394,6 @@ public class OrderReturnActivity extends BaseActivity implements RadioGroup.OnCh
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         Log.d(TAG, "onPermissionsDenied:" + requestCode + ":" + perms.size());
 
-//        // (Optional) Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
-//        // This will display a dialog directing them to enable the permission in app settings.
-//        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-//            new AppSettingsDialog.Builder(this, getString(R.string.rationale_ask_again))
-//                    .setTitle(getString(R.string.title_settings_dialog))
-//                    .setPositiveButton(getString(R.string.setting))
-//                    .setNegativeButton(getString(R.string.cancel), null /* click listener */)
-//                    .setRequestCode(RC_SETTINGS_SCREEN)
-//                    .build()
-//                    .show();
-//        }
     }
 
 
