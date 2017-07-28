@@ -35,7 +35,7 @@ android {
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
-                JPUSH_APPKEY: "859f1f6b6f62f013a227faa8" //JPush上注册的包名对应的appkey.（正式）
+                JPUSH_APPKEY : "859f1f6b6f62f013a227faa8" //JPush上注册的包名对应的appkey.（正式）
 //                    JPUSH_APPKEY: "bb181800e1bd09bc0b13825b" //JPush上注册的包名对应的appkey.（测试，重新核对）
 //                    JPUSH_APPKEY: "fa12e28aa3f6ce16f0039645" //JPush上注册的包名对应的appkey.（测试，重新核对）
         ]
@@ -162,12 +162,8 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.pingxx:pingpp-core:2.1.9'
-    //必须添加
     compile 'com.pingxx:pingpp-alipay:2.1.9'
-    //使用支付宝时添加
-
-    //    compile 'com.pingxx:pingpp-wxpay:2.1.9' //使用微信支付时添加
-
+    compile 'com.pingxx:pingpp-wxpay:2.1.9'
     //    compile 'com.zhy:percent-support-extends:1.0.7'//百分比适配 https://github.com/hongyangAndroid/android-percent-support-extend
     compile project(':library:xiaonengChatUI')
 }
