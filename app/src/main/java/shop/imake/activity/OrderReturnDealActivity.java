@@ -263,6 +263,7 @@ public class OrderReturnDealActivity extends BaseActivity implements View.OnClic
                 mTvStage0.setTextColor(Color.GRAY);
                 mTvStage1.setTextColor(Color.GRAY);
                 mTvStage2.setTextColor(getResources().getColor(R.color.app_orange));
+                mTvStage2.setText("退款成功");
                 // 退款信息列表
                 mTvSheetTitle.setText("退款成功");
                 break;
