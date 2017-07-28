@@ -53,7 +53,7 @@ public class PingppPayResult {
 
                 } else if ("invalid".equals(result)) {
                     // https://help.pingxx.com/article/115895/
-                    ToastUtils.showShort("相关软件未安装或不支持");
+                    ToastUtils.showShort("支付软件未安装");
                 }
 
             }
