@@ -109,6 +109,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     private OnItemLongClickListener mItemLongClickListener;
     //需要支付的总金额
     private double mAmount;
+    private Dialog mCancleOrderdialog;//取消订单提醒对话框
 
     public MyOrderRecycleViewAdapter(Context context, BaseFragment fragment, List<MyOrder.DataBean> orders, Activity activity, Handler mHandler) {
         mInflater = LayoutInflater.from(context);
@@ -259,8 +260,11 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
 
     //    定义对话框--取消订单
     private void initDialog() {
+        if (mCancleOrderdialog!=null&&mCancleOrderdialog.isShowing()){
+            mCancleOrderdialog.dismiss();
+        }
         //处理充值
-        Dialog dialog = DialogUtils.createConfirmDialog(context, null, "取消订单后不能恢复，是否取消？", "是", "否",
+         mCancleOrderdialog = DialogUtils.createConfirmDialog(context, null, "取消订单后不能恢复，是否取消？", "是", "否",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -282,7 +286,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                     }
                 }
         );
-        dialog.show();
+        mCancleOrderdialog.show();
 
     }
 
