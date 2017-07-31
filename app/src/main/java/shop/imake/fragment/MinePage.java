@@ -387,9 +387,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 switch (i){
                     case 0:
                         //飞机票
+                        NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_plane);
                         break;
                     case 1:
                         //火车票
+                        NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_train);
                         break;
                 }
             }
@@ -1243,7 +1245,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             case 5:
                 // 在线客服
-                NTalkerUtils.getInstance().startChat(getActivity());
+                NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu);
                 break;
 
             //test
