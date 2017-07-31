@@ -50,7 +50,6 @@ public class PingppPayResult {
 
                 } else if ("cancel".equals(result)) {
                     ToastUtils.showShort("已取消支付");
-                    callback.onPayFail();
                 } else if ("invalid".equals(result)) {
                     // https://help.pingxx.com/article/115895/
                     ToastUtils.showShort("支付控件未安装");
