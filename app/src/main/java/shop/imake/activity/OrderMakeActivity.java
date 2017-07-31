@@ -53,7 +53,6 @@ import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LoadViewHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.MathUtil;
-import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.PayUtils;
 import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
@@ -126,6 +125,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private String mAddress;
     private String mPhone;
 
+    // flag
     // 标志：地址是否是选择返回过来的
     private boolean isAddressSelected = false;
     // 标志：接口返回的地址中是否有默认地址
@@ -137,6 +137,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 法2，判断是否已执行完hasLoadListData()，未执行完则不执行loadData()，
     // 防止重复执行(但是loadListData()先执行的话并不能避免，不过一般不会发生，因为要请求完毕之后才会执行)
     private boolean hasLoadListData = false;
+    // 只执行一次，执行完毕就不再执行了
+    private int loadListDataSuccess = -1;
 
     // 标志：限制总额中的邮费只累加1次
     private int flagPostagePlusOnlyOnce = -1;
@@ -165,7 +167,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             loadListData();
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,6 +285,11 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     private void loadListData() {
 
+        if (loadListDataSuccess == 1){
+            // 如果执行过此方法成功加载数据，就不再执行。
+            return;
+        }
+
         // 获取购物车页传过来的数据
         final List<CartItem2> goodList = (List<CartItem2>) MainApplication.getInstance().getData();
 //        MainApplication.getInstance().setData(null); // 断网之后刷新，重新获取会获取不到数据，null，导致空指针异常
@@ -313,6 +319,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                     dismissLoadingDialog();
                     mLoadViewHelper.restore();
                     hasLoadListData = true;
+                    loadListDataSuccess = 1;
 
                     if (response != null && !"[]".equals(response)) {
                         Gson gson = new Gson();
@@ -749,9 +756,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
 //        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)}, this, AlertView.Style.ActionSheet, this).show();
-//        PayDetailFragment payDetailFragment = new PayDetailFragment();
-//        payDetailFragment.setArguments(bundle);
-//        payDetailFragment.show(getSupportFragmentManager(), TAG);
 
         if (!TextUtils.isEmpty(mStrOrderNum)) {  // 有订单号则直接调起支付
             payOrder();
