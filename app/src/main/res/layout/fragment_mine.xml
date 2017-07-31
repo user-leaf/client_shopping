@@ -413,7 +413,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!--列表功能入口1-->
+            <!--个人中心，列表功能入口-->
             <shop.imake.widget.NoScrollGridView
                 android:id="@+id/gv_mine"
                 android:layout_width="match_parent"
@@ -423,6 +423,34 @@
                 android:paddingRight="10dp"
                 android:background="#fff"
                 android:numColumns="4"
+                android:paddingBottom="25dp"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:background="#fff"
+                android:padding="10dp"
+                android:text="出行服务"
+                android:textColor="#333"
+                android:textSize="16sp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#ccc"/>
+
+            <!--其他服务，列表功能入口-->
+            <shop.imake.widget.NoScrollGridView
+                android:id="@+id/gv_mine_travel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:numColumns="4"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:paddingBottom="25dp"
                 />
 
@@ -441,7 +469,7 @@
                 android:layout_height="1px"
                 android:background="#ccc"/>
 
-            <!--列表功能入口1-->
+            <!--其他服务，列表功能入口-->
             <shop.imake.widget.NoScrollGridView
                 android:id="@+id/gv_mine_other"
                 android:layout_width="match_parent"

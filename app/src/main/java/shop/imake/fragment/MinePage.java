@@ -191,6 +191,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private MineOtherAdapter mMyMineOtherAdapter;
     //其他服务数据
     private List<MyMineOther.ThreeServicesBean> myMineList;
+    //出行服务列表
+    private NoScrollGridView mGvTravel;
 
 
     @Nullable
@@ -243,13 +245,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
 
-
     /**
      * 加载其他服务数据
      */
 
     private void initOtherData() {
-        if (!NetStateUtils.isNetworkAvailable(getContext())){
+        if (!NetStateUtils.isNetworkAvailable(getContext())) {
             ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
             return;
         }
@@ -279,7 +280,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     }
 
 
-
     private void initView() {
         mHeight = ScreenUtils.getScreenHeight(getContext());
         //登录后的头部布局
@@ -289,11 +289,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //断网提示
         mLLUnNetWork = ((LinearLayout) layout.findViewById(R.id.ll_mine_un_network));
-        //功能列表
+        //个人中心功能列表
         gv = ((NoScrollGridView) layout.findViewById(R.id.gv_mine));
-
+        //其他服务功能列表
         mGvOther = ((NoScrollGridView) layout.findViewById(R.id.gv_mine_other));
 
+        mGvTravel = ((NoScrollGridView) layout.findViewById(R.id.gv_mine_travel));
 
         initGridView();
         //未登录布局中的登录按钮
@@ -378,6 +379,21 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 goToHtml(position);
             }
         });
+
+        //出行服务点击事件
+        mGvTravel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0:
+                        //飞机票
+                        break;
+                    case 1:
+                        //火车票
+                        break;
+                }
+            }
+        });
     }
 
     /**
@@ -421,7 +437,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      */
 
     private void initData() {
-        if (!NetStateUtils.isNetworkAvailable(getContext())){
+        if (!NetStateUtils.isNetworkAvailable(getContext())) {
             ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
             return;
         }
@@ -429,7 +445,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 //        showLoadingDialog();
         //退款接口为二次请求相应接口，先请求退款接口，（成功与否对获取用户信息不影响）再获取用户信息
 
-        if (TextUtils.isEmpty(CurrentUserManager.getUserToken())){
+        if (TextUtils.isEmpty(CurrentUserManager.getUserToken())) {
             return;
         }
         ClientAPI.getWithdraw(new StringCallback() {
@@ -461,7 +477,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initUserData() {
 
-        if (!NetStateUtils.isNetworkAvailable(getContext())){
+        if (!NetStateUtils.isNetworkAvailable(getContext())) {
             ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
             return;
         }
@@ -471,7 +487,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         //模拟我的邀请好友假数据
         String token = CurrentUserManager.getUserToken();
-
 
 
         if (token != null) {
@@ -637,10 +652,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 mIvMember.setVisibility(View.GONE);
             }
 
-            int memberLevel=memberBean.getMember_level();
-            if (memberLevel==1||memberLevel==2||memberLevel==3){
+            int memberLevel = memberBean.getMember_level();
+            if (memberLevel == 1 || memberLevel == 2 || memberLevel == 3) {
                 mIvMember.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mIvMember.setVisibility(View.GONE);
             }
         }
@@ -700,6 +715,17 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         adapter = new MineAdapter(getActivity(), gv, dataListLogin);
         gv.setAdapter(adapter);
 
+
+////////////////////出行服务/////////////////////////
+        List<MyMine> dataListTravel = new ArrayList<>();
+        MyMine mine01 = new MyMine("飞机票", R.mipmap.personal_centeriocn_icon_plane);
+        dataListTravel.add(mine01);
+
+        MyMine mine02 = new MyMine("火车票", R.mipmap.personal_centeriocn_icon_train);
+        dataListTravel.add(mine02);
+
+        MineAdapter adapter = new MineAdapter(getActivity(), mGvTravel, dataListTravel);
+        mGvTravel.setAdapter(adapter);
 
     }
 
@@ -1359,7 +1385,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     @Override
     public void onItemClick(Object o, int position) {
         //调用父类的方法给出提示
-        super.onItemClick(o,position);
+        super.onItemClick(o, position);
         switch (position) {
             case 0: //
 //                DialUtils.callCentre(getActivity(), DialUtils.CENTER_NUM1);
