@@ -40,7 +40,7 @@ public class ClientAPI {
     /**
      * false 正式环境  true 测试环境
      */
-    private static boolean flag_test = true;
+    private static boolean flag_test = false;
 
     static {
         if (flag_test) {    // 测试环境
@@ -57,7 +57,11 @@ public class ClientAPI {
     private ClientAPI() {
     }
 
-//    /**
+    public static boolean isFlag_test() {
+        return flag_test;
+    }
+
+    //    /**
 //     * 获取首页物品数据
 //     *
 //     * @param stage_id77777''

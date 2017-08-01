@@ -18,6 +18,7 @@ import shop.imake.model.TokenModel;
 import shop.imake.model.User;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.CountDownButtonHelper;
+import shop.imake.utils.JPushUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NTalkerUtils;
 import shop.imake.utils.NetStateUtils;
@@ -26,7 +27,6 @@ import shop.imake.utils.ToastUtils;
 import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 
-import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
@@ -205,7 +205,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LogUtils.d(TAG, "token：" + token);
                 CurrentUserManager.setUserToken(token);
 
-                loginXiaoneng();
+                settings();
 
                 setResult(RESULT_OK);
                 finish();
@@ -214,7 +214,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    private void loginXiaoneng() {
+    private void settings() {
         mApi4Mine.getUserMessage(this, new DataCallback<User>(this) {
             @Override
             public void onFail(Call call, Exception e, int id) {
@@ -224,12 +224,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onSuccess(Object response, int id) {
                 User user = (User) response;
-                LogUtils.d(TAG, "loginXiaoneng:" + user.toString());
-                if (user == null) {
-                    return;
-                }
+                LogUtils.d(TAG, "settings:" + user.toString());
+
+                // 登录小能
                 CurrentUserManager.setCurrentUser(user.getMember());
                 NTalkerUtils.getInstance().login();
+
+                // 极光推送
+                JPushUtils.setAlias(String.valueOf(user.getMember().getId()));
             }
         });
     }

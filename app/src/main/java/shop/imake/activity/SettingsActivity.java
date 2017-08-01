@@ -16,6 +16,7 @@ import shop.imake.R;
 import shop.imake.fragment.TaskPage;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DataCleanManager;
+import shop.imake.utils.JPushUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UpdateUtils;
@@ -128,11 +129,17 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.settings_btn_logout: // 退出账号
                 if (!TextUtils.isEmpty(CurrentUserManager.getUserToken())){
                     CurrentUserManager.clearUserToken();
+
                     // 任务页数据重置
                     Intent taskIntent = new Intent(TaskPage.INTENT_BROADCAST);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(taskIntent);
+
                     // 小能退出登录
                     Ntalker.getBaseInstance().logout();
+
+                    // 极光推送别名清除
+                    JPushUtils.deleteAlias();
+
                     CurrentUserManager.clearCurrentUser();
                     finish();
                 }

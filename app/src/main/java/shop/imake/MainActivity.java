@@ -2,7 +2,6 @@ package shop.imake;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -29,8 +28,11 @@ import shop.imake.fragment.ClassifyPage;
 import shop.imake.fragment.HomePage;
 import shop.imake.fragment.MinePage;
 import shop.imake.fragment.TaskPage;
+import shop.imake.model.User;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.ACache;
 import shop.imake.utils.DialUtils;
+import shop.imake.utils.JPushUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.NTalkerUtils;
 import shop.imake.utils.NetStateUtils;
@@ -128,8 +130,12 @@ public class MainActivity extends BaseActivity {
         getTelephone();
         // 小能客服登录
         NTalkerUtils.getInstance().login();
+        // 极光推送别名
+        User.MemberBean currentUser = CurrentUserManager.getCurrentUser();
+        if (currentUser != null) {
+            JPushUtils.setAlias(String.valueOf(currentUser.getId()));
+        }
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -375,7 +381,7 @@ public class MainActivity extends BaseActivity {
         mClientApi.getTelephone(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                if (!NetStateUtils.isNetworkAvailable(getContext())){
+                if (!NetStateUtils.isNetworkAvailable(getContext())) {
                     ToastUtils.showShort(getString(R.string.xn_toast_nointernet));
                     return;
                 }
