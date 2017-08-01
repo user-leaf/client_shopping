@@ -1,5 +1,6 @@
 package shop.imake.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,12 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
-import shop.imake.Constants;
 import shop.imake.R;
 import shop.imake.adapter.OrderPayFailAdapter;
 import shop.imake.callback.PingppPayResult;
 import shop.imake.client.ClientAPI;
 import shop.imake.fragment.PayDetailFragment;
+import shop.imake.model.OrderDetailModel;
 import shop.imake.model.OrderPayFail;
 import shop.imake.model.PayResultEvent;
 import shop.imake.task.PaymentTask;
@@ -33,7 +34,6 @@ import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.PayUtils;
-import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollListView;
@@ -89,6 +89,18 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
     private String mChannel;
     //总价格
     private double mAmount;
+
+    public static String ORDER_OBJECT="OrderPayFailActivity_order_object";
+
+
+    public  void actionStart(Context context, OrderDetailModel orderDetailModel){
+        Intent intent=new Intent(context,OrderPayFailActivity.class);
+        Bundle bundle=new Bundle();
+        //上一页传递对象
+//        bundle.putSerializable(ORDER_OBJECT,orderDetailModel);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
