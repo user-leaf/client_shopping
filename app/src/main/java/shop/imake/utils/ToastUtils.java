@@ -99,6 +99,11 @@ public class ToastUtils {
             if (!TextUtils.isEmpty(e.getMessage())) {
 //                Toast.makeText(context, StringUtils.getExceptionMessage(e.getMessage()), Toast.LENGTH_SHORT).show();
                 String exceptionMessage = StringUtils.getExceptionMessage(e.getMessage());
+                if (exceptionMessage.contains("bjaiyouyou.com") || exceptionMessage.contains("bjiuu.com")){
+                    showToast(context, "网络请求失败，请检查网络", Toast.LENGTH_SHORT);
+                    return;
+                }
+
                 if (!TextUtils.isEmpty(exceptionMessage)) {
                     showToast(context, exceptionMessage, Toast.LENGTH_SHORT);
                 }

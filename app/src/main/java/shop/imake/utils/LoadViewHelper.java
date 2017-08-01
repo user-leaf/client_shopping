@@ -76,6 +76,11 @@ public class LoadViewHelper {
         helper.showLayout(layout);
     }
 
+    /**
+     * 包含检查是否登录
+     * @param context
+     * @param onClickListener
+     */
     public void showError(final Context context, final OnClickListener onClickListener) {
         if (!NetStateUtils.isNetworkAvailable(MainApplication.getContext())) { // 无网
             View layout = helper.inflate(R.layout.layout_view_helper_load_error);

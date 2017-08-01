@@ -50,9 +50,9 @@ import shop.imake.task.PaymentTask;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.DoubleTextUtils;
+import shop.imake.utils.LoadViewHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.MathUtil;
-import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.PayUtils;
 import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
@@ -125,6 +125,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private String mAddress;
     private String mPhone;
 
+    // flag
     // 标志：地址是否是选择返回过来的
     private boolean isAddressSelected = false;
     // 标志：接口返回的地址中是否有默认地址
@@ -136,6 +137,8 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     // 法2，判断是否已执行完hasLoadListData()，未执行完则不执行loadData()，
     // 防止重复执行(但是loadListData()先执行的话并不能避免，不过一般不会发生，因为要请求完毕之后才会执行)
     private boolean hasLoadListData = false;
+    // 只执行一次，执行完毕就不再执行了
+    private int loadListDataSuccess = -1;
 
     // 标志：限制总额中的邮费只累加1次
     private int flagPostagePlusOnlyOnce = -1;
@@ -156,6 +159,14 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     };
 
     private Api4Cart mApi4Cart;
+    private LoadViewHelper mLoadViewHelper;
+    private View.OnClickListener onViewHelperErrorClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            loadData();
+            loadListData();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +181,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         initView();
         setupView();
         initCtrl();
+
+        mLoadViewHelper = new LoadViewHelper(mBodyView);
+        mLoadViewHelper.showLoading();
         // 加载列表数据，只加载一次
         loadListData();
 //        loadData();
@@ -222,7 +236,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
     private void initView() {
         mTitleBar = (IUUTitleBar) findViewById(R.id.order_make_title_bar);
         mLlBodyView = (LinearLayout) findViewById(R.id.order_make_ll);
-//        mTvDelayTip = (TextView) findViewById(R.id.order_make_delay_tip);
 
         mListView = (NoScrollListView) findViewById(R.id.order_make_listview);
         mAddressView = findViewById(R.id.order_make_address);
@@ -234,11 +247,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         mTvPay = (TextView) findViewById(R.id.order_confirm_tv_pay);
 
         mTvPostageTipView = findViewById(R.id.order_confirm_rl_postage_tip);
-//        mTvExpressCompany = (TextView) findViewById(R.id.order_make_tv_express_way);
         mTvWeight = (TextView) findViewById(R.id.order_make_tv_weight);
         mTvPostage = (TextView) findViewById(R.id.order_make_tv_postage);
         mTvPostageExtra = (TextView) findViewById(R.id.order_make_tv_postage_extra);
-//        mTvGoldSum = (TextView) findViewById(R.id.order_make_gold_sum);
         mTvProductCount = (TextView) findViewById(R.id.order_confirm_tv_product_count);
         mTvMoneySum = (TextView) findViewById(R.id.order_make_tv_money_sum);
         mTvPointsSum = (TextView) findViewById(R.id.order_make_tv_points_sum);
@@ -274,6 +285,11 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     private void loadListData() {
 
+        if (loadListDataSuccess == 1){
+            // 如果执行过此方法成功加载数据，就不再执行。
+            return;
+        }
+
         // 获取购物车页传过来的数据
         final List<CartItem2> goodList = (List<CartItem2>) MainApplication.getInstance().getData();
 //        MainApplication.getInstance().setData(null); // 断网之后刷新，重新获取会获取不到数据，null，导致空指针异常
@@ -288,7 +304,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         boolean useDataInServer = true;
 
         if (useDataInServer) {
-            showLoadingDialog();
 
             // 请求购物车接口获取此刻服务器数据
             ClientAPI.getCartData(new StringCallback() {
@@ -296,14 +311,15 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                 public void onError(Call call, Exception e, int id) {
                     CurrentUserManager.TokenDue(e);
                     hasLoadListData = true;
-                    checkNet();
-                    dismissLoadingDialog();
+                    mLoadViewHelper.showError(OrderMakeActivity.this, onViewHelperErrorClickListener);
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
                     dismissLoadingDialog();
+                    mLoadViewHelper.restore();
                     hasLoadListData = true;
+                    loadListDataSuccess = 1;
 
                     if (response != null && !"[]".equals(response)) {
                         Gson gson = new Gson();
@@ -350,6 +366,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             mAdapter.setData(goodList);
             setDataForPage(goodList);
         }
+
     }
 
     // 给页面赋值
@@ -447,20 +464,9 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
         // 商品总额
         mTvMoneySum.setText("¥" + DoubleTextUtils.setDoubleUtils(sumMoney));
 
-        // 只显示价格20170513
-//        // 商品总额中的积分数
-//        mTvPointsSum.setText("+" + totalPoints + "众汇券");
-        // 本次消费可得UU
-//        mTvGoldSum.setText((int) sumMoney / 10 + "UU");
-
         mFinalPay = sumMoney;
         // 底部实付金额
         mTvTotalPay.setText("¥" + DoubleTextUtils.setDoubleUtils(mFinalPay));
-
-        // 只显示价格20170513
-//        // 底部实付积分
-//        mTvTotalPoints.setText("+" + totalPoints + "众汇券");
-
 
     }
 
@@ -503,12 +509,11 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             return;
         }
 
-        showLoadingDialog();
-
         // 设置默认地址
         ClientAPI.getOrderMakeAddressList(TAG, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                mLoadViewHelper.showError(OrderMakeActivity.this, onViewHelperErrorClickListener);
                 resetAddress();
                 checkAddressEmpty();
                 dismissLoadingDialog();
@@ -516,7 +521,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onResponse(String response, int id) {
-                dismissLoadingDialog();
+                mLoadViewHelper.restore();
 
                 hasDefaultAddress = false;
                 if (response != null && !"[]".equals(response)) {
@@ -751,9 +756,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
         // https://github.com/saiwu-bigkoo/Android-AlertView
 //        new AlertView("选择支付方式", null, "取消", null, new String[]{getString(R.string.pay_alipay), getString(R.string.pay_balance), getString(R.string.pay_hx)}, this, AlertView.Style.ActionSheet, this).show();
-//        PayDetailFragment payDetailFragment = new PayDetailFragment();
-//        payDetailFragment.setArguments(bundle);
-//        payDetailFragment.show(getSupportFragmentManager(), TAG);
 
         if (!TextUtils.isEmpty(mStrOrderNum)) {  // 有订单号则直接调起支付
             payOrder();
@@ -871,229 +873,6 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-//  改换样式了--170425
-//    //  https://github.com/saiwu-bigkoo/Android-AlertView
-//    @Override
-//    public void onItemClick(Object o, int position) {
-//        super.onItemClick(o, position);
-//
-//        if (position < 0) { // 取消
-//            return;
-//        }
-//
-//        switch (position) {
-//            case 0: // 支付宝
-//                commitOrderBeforePay(0);
-//                break;
-//
-//            case 1: // 余额支付
-//                break;
-//
-//            case 2: // 环迅支付
-//                break;
-//
-//            default:
-//                break;
-//        }
-//
-//
-//    }
-//
-//    /**
-//     * 提交订单获取订单号，然后去支付
-//     *
-//     * @param payType 支付方式
-//     */
-//    private void commitOrderBeforePay(final int payType) {
-//
-//        if (TextUtils.isEmpty(mStrOrderNum)) { // 没有订单号，生成订单并支付
-//
-//            //  要上传的收件人信息
-//            mName = mTvName.getText().toString();
-//            mAddress = mTvAddress.getText().toString();
-//            mPhone = mTvTel.getText().toString();
-//
-//            if (TextUtils.isEmpty(mName) || TextUtils.isEmpty(mAddress) || TextUtils.isEmpty(mPhone)) {
-//                ToastUtils.showShort("未选择收货地址");
-//                return;
-//            }
-//
-//            // 要上传的商品列表
-//            List<OrderMakeUploadModel> uploadModelList = new ArrayList<>();
-//            for (CartItem2 ci : mFinalList) {
-//                OrderMakeUploadModel orderMakeUploadModel = new OrderMakeUploadModel();
-//                CartModel cartModel = ci.getCartModel();
-//                if (cartModel != null) {
-//                    orderMakeUploadModel.setProduct_id(cartModel.getProduct_id());
-//                    orderMakeUploadModel.setProduct_size_id(cartModel.getProduct_size_id());
-//                    orderMakeUploadModel.setNumber(cartModel.getNumber());
-//                }
-//                uploadModelList.add(orderMakeUploadModel);
-//            }
-//
-//            LogUtils.d(TAG, "uploadModelList" + uploadModelList.toString());
-//
-//            Gson gson = new Gson();
-//            String productListJson = gson.toJson(uploadModelList);
-//            LogUtils.d(productListJson);
-//            //用户Token
-//            String userToken = CurrentUserManager.getUserToken();
-//
-//            // 拼接URL
-//            StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
-//
-//            /**
-//             * 跟据上一页的页面类型，走不同接口，提交订单
-//             * 如果是默认-1
-//             * 如果是0（购物车页）...
-//             * 如果是1（商品详情页）...
-//             */
-//            switch (mPageType) {
-//                // 上一页是购物车页
-//                case 0:
-//                    sb.append("api/v1/order/submit");
-//                    sb.append("?token=").append(userToken);
-//                    break;
-//
-//                // 上一页是商品详情页
-//                case 1:
-//                    sb.append("api/v1/order/buyNow");
-//                    sb.append("?token=").append(userToken);
-//                    break;
-//            }
-//            String url = sb.toString();
-//
-//
-//            // 生成订单
-//            OkHttpUtils.post()
-//                    .url(url)
-//                    .addParams("address", mAddress)
-//                    .addParams("phone", mPhone)
-//                    .addParams("addressee", mName)
-//                    .addParams("product_list", productListJson)
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-////                            ToastUtils.showException(e);
-//                            Dialog dialog = DialogUtils.createMessageDialog(OrderMakeActivity.this, null, StringUtils.getExceptionMessage(e.getMessage()), "确认", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.dismiss();
-//                                }
-//                            });
-//                            dialog.show();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            Gson gson = new Gson();
-//                            OrderMakeOrderNumberModel orderMakeOrderNumberModel = gson.fromJson(response, OrderMakeOrderNumberModel.class);
-//                            mStrOrderNum = orderMakeOrderNumberModel.getOrder_number();
-//
-//                            payOrder(payType);
-//
-//                        }
-//                    });
-//
-//        } else { // 已经获得订单号，不再生成订单，直接支付
-//            payOrder(payType);
-//        }
-//    }
-//
-//    /**
-//     * 付款
-//     *
-//     * @param payType 支付方式
-//     */
-//    private void payOrder(int payType) {
-//
-//        if (payType < 0) {
-//            return;
-//        }
-//
-//        switch (payType) {
-//            case 0: // 支付宝
-//                int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-//                String channel = Constants.CHANNEL_ALIPAY;
-//                new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mStrOrderNum, channel, mTvPay, TAG)
-//                        .execute(new PaymentTask.PaymentRequest(channel, amount));
-//                break;
-//
-//            case 1: // 余额支付
-//                break;
-//
-//            case 2: // 环迅支付
-//                break;
-//
-//            default:
-//                break;
-//        }
-//
-//    }
-
-
-//    class PaymentTask extends AsyncTask<PaymentRequest, Void, String> {
-//
-//        // 订单号
-//        private String orderNo;
-//        // 支付方式
-//        private String channel;
-//
-//        public PaymentTask(String orderNo, String channel) {
-//            this.orderNo = orderNo;
-//            this.channel = channel;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            loadingDialog.show();
-//            //按键点击之后的禁用，防止重复点击
-//            mTvPay.setOnClickListener(null);
-//        }
-//
-//        @Override
-//        protected String doInBackground(PaymentRequest... pr) {
-//
-//            PaymentRequest paymentRequest = pr[0];
-//            String data = null;
-//            String json = new Gson().toJson(paymentRequest);
-//            try {
-//                //向Your Ping++ Server SDK请求数据
-////                String URL = Constants.PingppURL+"?token="+CurrentUserManager.getUserToken() + "&orderNo=" + orderNo;
-//
-//                StringBuilder sb = new StringBuilder(Constants.PingppURL);
-//                sb.append("?token=").append(CurrentUserManager.getUserToken());
-//                sb.append("&orderNo=").append(orderNo);
-//                sb.append("&channel=").append(channel);
-//                String URL = sb.toString();
-//
-//                data = postJson(URL, json);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return data;
-//        }
-//
-//        /**
-//         * 获得服务端的charge，调用ping++ sdk。
-//         */
-//        @Override
-//        protected void onPostExecute(String data) {
-//            if (null == data) {
-//                showMsg("请求出错", "请检查URL", "URL无法获取charge");
-//                return;
-//            }
-//            Log.d("charge", data);
-////            Pingpp.createPayment(ClientSDKActivity.this, data);
-//            //QQ钱包调起支付方式  “qwalletXXXXXXX”需与AndroidManifest.xml中的data值一致
-//            //建议填写规则:qwallet + APP_ID
-//            Pingpp.createPayment(OrderMakeActivity.this, data, "qwalletXXXXXXX");
-//        }
-//
-//    }
-
     /**
      * 支付成功后的操作
      */
@@ -1167,46 +946,46 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
             }
         }
     }
-
-    // 检查网络
-    private void checkNet() {
-
-        if (!NetStateUtils.isNetworkAvailable(this)) {
-            LogUtils.d(TAG, "checkNet  无网");
-            mNoNetView.setVisibility(View.VISIBLE);
-            mBodyView.setVisibility(View.GONE);
-
-            // 无网络页面中的重新加载按钮
-            TextView refreshView = (TextView) mNoNetView.findViewById(R.id.net_fail_refresh);
-            refreshView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadData();
-                }
-            });
-
-        } else {
-            // 有网但未登录
-            LogUtils.d(TAG, "checkNet  有网，去登录");
-            mNoNetView.setVisibility(View.GONE);
-            mBodyView.setVisibility(View.GONE);
-
-            gotoLogin();
-        }
-
-    }
-
-    // 显示去登录页面
-    private void gotoLogin() {
-        mNoLoginView.setVisibility(View.VISIBLE);
-
-        TextView tvGotoLogin = (TextView) findViewById(R.id.no_login_goto);
-        tvGotoLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jump(LoginActivity.class, false);
-            }
-        });
-    }
+//
+//    // 检查网络
+//    private void checkNet() {
+//
+//        if (!NetStateUtils.isNetworkAvailable(this)) {
+//            LogUtils.d(TAG, "checkNet  无网");
+//            mNoNetView.setVisibility(View.VISIBLE);
+//            mBodyView.setVisibility(View.GONE);
+//
+//            // 无网络页面中的重新加载按钮
+//            TextView refreshView = (TextView) mNoNetView.findViewById(R.id.net_fail_refresh);
+//            refreshView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    loadData();
+//                }
+//            });
+//
+//        } else {
+//            // 有网但未登录
+//            LogUtils.d(TAG, "checkNet  有网，去登录");
+//            mNoNetView.setVisibility(View.GONE);
+//            mBodyView.setVisibility(View.GONE);
+//
+//            gotoLogin();
+//        }
+//
+//    }
+//
+//    // 显示去登录页面
+//    private void gotoLogin() {
+//        mNoLoginView.setVisibility(View.VISIBLE);
+//
+//        TextView tvGotoLogin = (TextView) findViewById(R.id.no_login_goto);
+//        tvGotoLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                jump(LoginActivity.class, false);
+//            }
+//        });
+//    }
 
 }
