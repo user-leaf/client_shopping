@@ -294,41 +294,6 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    //  https://github.com/saiwu-bigkoo/Android-AlertView
-    // 所需
-    @Override
-    public void onItemClick(Object o, int position) {
-        //调用父类的方法给出提示
-//        super.onItemClick(o,position);
-
-
-        int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-        switch (position) {
-            case 0: // 支付宝支付
-                mChannel = Constants.CHANNEL_ALIPAY;
-                toPay();
-                break;
-            case 1: // 余额支付
-                ToastUtils.showShort("正在开通中...");
-                break;
-
-            case 2: // 环迅支付
-                ToastUtils.showShort("正在开通中...");
-                break;
-            default:
-                return;
-        }
-
-    }
-
-    private void toPay() {
-        new PaymentTask(getApplicationContext(), this, mOrderNumber, mChannel, mBtOtherPay2, OrderPayFailActivity.TAG)
-                .execute(new PaymentTask.PaymentRequest(mChannel, 1));
-    }
-
-
-
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 //        mTvPayNow.setOnClickListener(OrderDetailActivity.this);
