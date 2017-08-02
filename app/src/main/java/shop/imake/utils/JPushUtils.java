@@ -17,8 +17,10 @@ public class JPushUtils {
 
     // 设置别名
     public static void setAlias(String alias) {
-        if (ClientAPI.isFlag_test()){
+        if (ClientAPI.isFlag_test()) {
             alias = "test" + alias;
+        } else {
+            alias = "member" + alias;
         }
 
         final String finalAlias = alias;
@@ -40,7 +42,7 @@ public class JPushUtils {
         });
     }
 
-    public static void deleteAlias(){
+    public static void deleteAlias() {
         JPushInterface.setAlias(MainApplication.getContext(), "", new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
