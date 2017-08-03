@@ -53,14 +53,34 @@ final class CameraConfigurationManager {
     previewFormat = parameters.getPreviewFormat();
     previewFormatString = parameters.get("preview-format");
     Log.d(TAG, "Default preview format: " + previewFormat + '/' + previewFormatString);
-    WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-    Display display = manager.getDefaultDisplay();
-    screenResolution = new Point(display.getWidth(), display.getHeight());
-    Log.d(TAG, "Screen resolution: " + screenResolution);
-    cameraResolution = getCameraResolution(parameters, screenResolution);
-    Log.d(TAG, "Camera resolution: " + screenResolution);
-  }
 
+
+    WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+
+    Display display = manager.getDefaultDisplay();
+
+
+    screenResolution = new Point(display.getWidth(), display.getHeight());
+
+
+    Point screenResolutionForCamera = new Point();
+    screenResolutionForCamera.x = screenResolution.x;
+    screenResolutionForCamera.y = screenResolution.y;
+    // preview size is always something like 480*320, other 320*480
+    if (screenResolution.x < screenResolution.y) {
+      screenResolutionForCamera.x = screenResolution.y;
+      screenResolutionForCamera.y = screenResolution.x;
+    }
+
+
+
+    Log.d(TAG, "Screen resolution: " + screenResolution);
+//    cameraResolution = getCameraResolution(parameters, screenResolution);
+    Log.d(TAG, "Camera resolution: " + screenResolution);
+
+    cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
+  }
   /**
    * Sets the camera up to take preview images which are used for both preview and decoding.
    * We detect the preview format here so that buildLuminanceSource() can build an appropriate
