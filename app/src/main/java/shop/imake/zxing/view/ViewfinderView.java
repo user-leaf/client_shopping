@@ -27,12 +27,13 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
-import shop.imake.R;
-import shop.imake.zxing.camera.CameraManager;
 import com.google.zxing.ResultPoint;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import shop.imake.R;
+import shop.imake.zxing.camera.CameraManager;
 
 
 /**
@@ -170,9 +171,13 @@ public final class ViewfinderView extends View
 
     //画阴影区域
     paint.setColor(resultBitmap != null ? resultColor : maskColor);
+    //上
     canvas.drawRect(0, 0, width, frame.top, paint);
+    //左
     canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
+    //右
     canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
+    //下
     canvas.drawRect(0, frame.bottom + 1, width, height, paint);
 
     if (resultBitmap != null)

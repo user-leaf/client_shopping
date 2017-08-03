@@ -26,9 +26,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import shop.imake.R;
-
 import java.io.IOException;
+
+import shop.imake.R;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The
@@ -222,6 +222,9 @@ public final class CameraManager {
    * far enough away to ensure the image will be in focus.
    *
    * @return The rectangle to draw on screen in window coordinates.
+   *
+   * 控制扫码框的显示位置
+   *
    */
   public Rect getFramingRect() {
     Point screenResolution = configManager.getScreenResolution();

@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -93,16 +92,6 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
     //private Button cancelScanButton;
     private Api4Home mApi4Home;
 
-    public static int SCAN_EMPTY=1111111;
-
-    private Handler mHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Toast.makeText(CaptureActivity.this, "扫码失败!", Toast.LENGTH_SHORT).show();
-        }
-    };
-
     //////////////////////授权变量// 所需的全部权限
 
 
@@ -111,7 +100,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
 //			Manifest.permission.RECORD_AUDIO,
-			Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //			Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
 //			Manifest.permission.VIBRATE,
 //			Manifest.permission.INTERNET
@@ -255,11 +244,12 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 
     /**
      * 处理二维码扫描结果
+     *
      * @param resultString
      */
-    private void dealWithScanResult(String resultString ) {
+    private void dealWithScanResult(String resultString) {
         //对二维码解密
-        String resultStringPay= new String (Base64.decode(resultString));
+        String resultStringPay = new String(Base64.decode(resultString));
         //将扫描结果传递到其他处理页面
 
 
@@ -284,7 +274,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
 
                         @Override
                         public void onSuccess(Object response, int id) {
-                            if (response == null){
+                            if (response == null) {
                                 return;
                             }
 
@@ -294,19 +284,11 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                         }
                     });
                 }
-                //商品详情
-            } else {
-                //扫描结果进行处理
-                Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-                scanIntent.putExtra("productScanID", resultString);
-                startActivity(scanIntent);
             }
-        } else {
-            //扫描结果进行处理
-            Intent scanIntent = new Intent(getApplicationContext(), ScanGoodsDetailActivity.class);
-            scanIntent.putExtra("productScanID", resultString);
-            startActivity(scanIntent);
+            return;
         }
+        //商品详情
+        ScanGoodsDetailActivity.actionStart(CaptureActivity.this, resultString);
     }
 
 
@@ -472,25 +454,24 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                                 // 返回扫描结果
                                 String recode = recode(result.getText().toString().trim());
 
-                               if (!TextUtils.isEmpty(recode)){
-                                   Intent data = new Intent();
-                                   data.putExtra("result", recode);
-                                   setResult(300, data);
-                                   //调用扫描结果处理方法
-                                   dealWithScanResult(recode);
+                                if (!TextUtils.isEmpty(recode)) {
+                                    Intent data = new Intent();
+                                    data.putExtra("result", recode);
+                                    setResult(300, data);
+                                    //调用扫描结果处理方法
+                                    dealWithScanResult(recode);
 
-                               }else {
-                                   runOnUiThread(new Runnable() {
-                                       @Override
-                                       public void run() {
-//                                           mHandler.sendEmptyMessage(SCAN_EMPTY);
-                                           Toast.makeText(CaptureActivity.this, "扫码失败!", Toast.LENGTH_SHORT).show();
-                                       }
-                                   });
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(CaptureActivity.this, "扫码失败!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
-                                   LogUtils.e("扫码失败","相册扫描结果为空字符串");
+                                    LogUtils.e("扫码失败", "相册扫描结果为空字符串");
 
-                               }
+                                }
                                 CaptureActivity.this.finish();
 
                             }

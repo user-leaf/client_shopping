@@ -61,10 +61,12 @@ final class CameraConfigurationManager {
     Display display = manager.getDefaultDisplay();
 
 
+    //控制扫码框的显示
     screenResolution = new Point(display.getWidth(), display.getHeight());
 
 
     Point screenResolutionForCamera = new Point();
+
     screenResolutionForCamera.x = screenResolution.x;
     screenResolutionForCamera.y = screenResolution.y;
     // preview size is always something like 480*320, other 320*480
@@ -73,12 +75,10 @@ final class CameraConfigurationManager {
       screenResolutionForCamera.y = screenResolution.x;
     }
 
-
-
     Log.d(TAG, "Screen resolution: " + screenResolution);
 //    cameraResolution = getCameraResolution(parameters, screenResolution);
     Log.d(TAG, "Camera resolution: " + screenResolution);
-
+    //控制扫码框内的成像
     cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
   }
   /**

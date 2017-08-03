@@ -147,7 +147,16 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     private LinearLayout mLLSize;
     private LinearLayout mLLDone;
 
+    public static String SCAN_PRODUCT_ID="productScanID";
 
+
+    public static void  actionStart(Context context,String productScanID){
+        //扫描结果进行处理
+        Intent scanIntent = new Intent(context, ScanGoodsDetailActivity.class);
+        scanIntent.putExtra(SCAN_PRODUCT_ID, productScanID);
+        context.startActivity(scanIntent);
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -277,7 +286,7 @@ public class ScanGoodsDetailActivity extends BaseActivity implements View.OnClic
     }
 
     private void initData() {
-        String productScanID = getIntent().getStringExtra("productScanID");
+        String productScanID = getIntent().getStringExtra(SCAN_PRODUCT_ID);
         mClient = (Api4ClientOther) ClientApiHelper.getInstance().getClientApi(Api4ClientOther.class);
         mClient.getScanGoodDetailData(toString(), productScanID, new DataCallback<ProductDetail>(getApplicationContext()) {
             @Override
