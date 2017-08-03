@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
 
     signingConfigs {
@@ -52,6 +56,24 @@ android {
             minifyEnabled true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // 更改输出release版的名称
+            // app_v[版本号]_[编译日期]_[release/debug].apk，例如：app_v1.0.0_2017-01-09_release.apk
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    def fileName
+
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        if (variant.buildType.name.equals('release')) {
+                            fileName = "iMake_v${defaultConfig.versionName}_${releaseTime()}_release.apk"
+                        } else if (variant.buildType.name.equals('debug')) {
+                            fileName = "iMake_v${defaultConfig.versionName}_${releaseTime()}_debug.apk"
+                        }
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
 
         debug {
