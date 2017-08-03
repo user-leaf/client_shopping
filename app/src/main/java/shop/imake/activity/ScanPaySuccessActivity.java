@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import shop.imake.R;
+import shop.imake.utils.DoubleTextUtils;
 import shop.imake.utils.ImageUtils;
 import shop.imake.utils.ScreenUtils;
 
@@ -54,7 +55,7 @@ public class ScanPaySuccessActivity extends Activity implements View.OnClickList
         String strHeadImagePath = intent.getStringExtra(PARAM_HEAD_IMG_PATH);
         String strShopName = intent.getStringExtra(PARAM_SHOP_NAME);
 
-        tvMoney.setText(String.valueOf(money));
+        tvMoney.setText(DoubleTextUtils.setDoubleUtils(money));
         Glide.with(this)
                 .load(ImageUtils.getThumb(strHeadImagePath, ScreenUtils.getScreenWidth(this) / 4, 0))
                 .error(R.mipmap.list_profile_photo)
