@@ -384,6 +384,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mGvTravel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!CurrentUserManager.isLoginUser()){
+                    jump(LoginActivity.class, false);
+                    return;
+                }
                 switch (i){
                     case 0:
                         //飞机票
