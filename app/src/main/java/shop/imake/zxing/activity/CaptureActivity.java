@@ -284,11 +284,14 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
                         }
                     });
                 }
+            }else {
+                ScanGoodsDetailActivity.actionStart(CaptureActivity.this, resultString);
             }
-            return;
+        }else {
+            //商品详情
+            ScanGoodsDetailActivity.actionStart(CaptureActivity.this, resultString);
         }
-        //商品详情
-        ScanGoodsDetailActivity.actionStart(CaptureActivity.this, resultString);
+
     }
 
 
