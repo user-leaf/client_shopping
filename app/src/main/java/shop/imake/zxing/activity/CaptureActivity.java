@@ -616,7 +616,7 @@ public class CaptureActivity extends Activity implements Callback, View.OnClickL
      * @param resultCode
      */
     public void scanPermissionsResult(int requestCode, int resultCode) {
-        LogUtils.e("order", "授权结果");
+        LogUtils.e("CaptureActivity", "授权结果");
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
         if (requestCode == Constants.CALL_PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
             Toast.makeText(this, "未授权，不能进行扫描", Toast.LENGTH_SHORT).show();
