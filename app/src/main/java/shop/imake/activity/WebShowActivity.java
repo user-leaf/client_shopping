@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 
 import shop.imake.R;
 import shop.imake.client.ClientAPI;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.AppPackageChecked;
 import shop.imake.utils.LogUtils;
 import shop.imake.widget.IUUTitleBar;
@@ -83,7 +84,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 
         initWebView();
         loadUrl();
-
     }
 
     @Override
@@ -103,8 +103,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        getResultZMRZ(intent);
-
+        dealResult(intent);
     }
 
     private void initView() {
@@ -166,7 +165,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-
             }
 
             @Override
@@ -208,24 +206,23 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                 }
             }
 
-            //弹出一个对话框
+            // 弹出一个对话框
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 return super.onJsAlert(view, url, message, result);
             }
 
-            //带按钮的对话框
+            // 带按钮的对话框
             @Override
             public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
                 return super.onJsConfirm(view, url, message, result);
             }
 
-            //带输入的对话框
+            // 带输入的对话框
             @Override
             public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
                 return super.onJsPrompt(view, url, message, defaultValue, result);
             }
-
         });
 
         // JS调用Native方法
@@ -275,7 +272,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
 //        for (int i = 0; i< webBackForwardList.getSize()-1; i++) {
 //            String url = webBackForwardList.getItemAtIndex(i).getUrl();
 //            LogUtils.d(TAG, url);
-//
 //        }
 
         // 判断当前的网页是否为刚开始加载的网页
@@ -309,7 +305,6 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         public boolean haszhifubao() {
             return AppPackageChecked.isExist(WebShowActivity.this, "com.eg.android.AlipayGphone");
         }
-
     }
 
     private void openBrowser(String url) {
@@ -319,9 +314,9 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
     }
 
     /**
-     * 获取H5芝麻认证的回传参数
+     * 处理浏览器回传参数
      */
-    private void getResultZMRZ(Intent intent) {
+    private void dealResult(Intent intent) {
         String action = intent.getAction();
         Uri uri = intent.getData();
 
@@ -335,6 +330,20 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                     finish();
                 } else {    // 万家联盟
                     mWebView.loadUrl(ClientAPI.URL_WX_H5 + "wanjialianmeng-czhuiyuan-iframe.html");
+                }
+            }
+            // imakeshop://shop.imake/openwith/?m=zhcz&is_success=0
+            else if ("zhcz".equals(typeName)) { // 充值众汇券成功
+
+                if ("0".equals(resultState)) {   // 失败
+                    mWebView.goBack();
+                } else { // 成功
+                    StringBuilder stringBuilder = new StringBuilder(ClientAPI.URL_WX_H5);
+                    stringBuilder.append("myzhonghui.html?token=");
+                    stringBuilder.append(CurrentUserManager.getUserToken())
+                            .append("&type=android&vt=").append(System.currentTimeMillis());
+                    String url = stringBuilder.toString();
+                    mWebView.loadUrl(url);
                 }
             }
         }
