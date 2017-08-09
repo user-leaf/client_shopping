@@ -68,7 +68,7 @@ android {
                         if (variant.buildType.name.equals('release')) {
                             fileName = "iMake_v${defaultConfig.versionName}_${releaseTime()}_release.apk"
                         } else if (variant.buildType.name.equals('debug')) {
-                            fileName = "iMake_v${defaultConfig.versionName}_${releaseTime()}_debug.apk"
+                            fileName = "iMake_debug.apk"
                         }
                         output.outputFile = new File(outputFile.parent, fileName)
                     }

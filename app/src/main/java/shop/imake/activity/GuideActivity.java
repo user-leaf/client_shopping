@@ -120,7 +120,8 @@ public class GuideActivity extends BaseActivity {
         });
 
     }
-    public Bitmap readBitmap(Context context, int resId){
+
+    private Bitmap readBitmap(Context context, int resId){
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
         opt.inPurgeable = true;

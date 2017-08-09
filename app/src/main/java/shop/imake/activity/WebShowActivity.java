@@ -158,6 +158,8 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
                     }
                 } else if (hostWeb.contains("zmxy.com.cn")) { // 蚂蚁认证
                     return false;
+                } else if (hostWeb.contains("alipay.com")){
+                    return false;
                 }
                 return true;
             }
