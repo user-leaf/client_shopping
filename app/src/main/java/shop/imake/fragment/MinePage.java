@@ -62,6 +62,7 @@ import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientAPI;
 import shop.imake.client.ClientApiHelper;
+import shop.imake.client.HttpUrls;
 import shop.imake.model.MyMine;
 import shop.imake.model.MyMineOther;
 import shop.imake.model.User;
@@ -425,7 +426,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     case 1:
                         //飞机票
                         showTicketDialog(
-                                ClientAPI.URL_WX_H5 + "user-instructions-plane.html",
+                                ClientAPI.URL_WX_H5 + HttpUrls.MINE_README_PLANE,
                                 new ReadMeCallback() {
 
                                     @Override
@@ -437,7 +438,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     case 2:
                         //火车票
                         showTicketDialog(
-                                ClientAPI.URL_WX_H5 + "user-instructions-train.html",
+                                ClientAPI.URL_WX_H5 + HttpUrls.MINE_README_TRAIN,
                                 new ReadMeCallback() {
 
                                     @Override

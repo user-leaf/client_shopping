@@ -24,4 +24,7 @@ public class HttpUrls {
     public static final String URL_SCAN_PAY_SHOP_INFO = "api/v1/member/memberBusinessDetail/";      // 扫码支付 - 商户信息地址
     public static final String URL_SCAN_PAY_QRCODEPAY = "api/v1/qrcodepay";                         // 扫码支付 - 支付地址
 
+    // --------------------------个人中心----------------------------------------------------------
+    public static final String MINE_README_PLANE = "user-instructions-plane.html";
+    public static final String MINE_README_TRAIN = "user-instructions-train.html";
 }
