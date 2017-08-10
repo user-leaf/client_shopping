@@ -17,6 +17,7 @@ import shop.imake.model.ContactMemberModel;
 import shop.imake.model.MyCommissionModel;
 import shop.imake.model.MyIncomeModel;
 import shop.imake.model.MyMineOther;
+import shop.imake.model.TelephonePayNum;
 import shop.imake.model.TokenModel;
 import shop.imake.model.User;
 import shop.imake.model.ZhongHuiQuanModel;
@@ -325,5 +326,22 @@ public class Api4Mine extends BaseClientApi {
 
         doGet(url, null, callback);
     }
+
+    /**
+     * 获取充值列表数据
+     * @param callback
+     */
+    public void getTelePayNums(DataCallback<TelephonePayNum> callback){
+
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT);
+        sb.append("api/v1/threeService/topup");
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "getTelePayNums url: " + url);
+
+        doGet(url, null, callback);
+    }
+
+
 
 }

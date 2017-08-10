@@ -56,6 +56,12 @@
         <item name="android:background">#DC9600</item> <!-- 88CCCCCC --><!-- EEEEEE -->
     </style>
 
+    <style name="entry_divider_bold_line_cb">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_bold</item>
+        <item name="android:background">#cbcbcb</item> <!-- 88CCCCCC -->
+    </style>
+
     <!-- 入口条目布局style -->
     <style name="settings_entry_bar_style">
         <item name="android:paddingTop">15dp</item>

@@ -428,12 +428,13 @@
 
 
             <TextView
+                android:id="@+id/tv_mine_service_title1"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:gravity="center_vertical"
                 android:background="#fff"
                 android:padding="10dp"
-                android:text="出行服务"
+                android:text="生活/出行服务"
                 android:textColor="#333"
                 android:textSize="16sp"
                 />

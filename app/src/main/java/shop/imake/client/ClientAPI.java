@@ -40,7 +40,7 @@ public class ClientAPI {
     /**
      * false 正式环境  true 测试环境
      */
-    private static boolean flag_test = false;
+    private static boolean flag_test = true;
 
     static {
         if (flag_test) {    // 测试环境

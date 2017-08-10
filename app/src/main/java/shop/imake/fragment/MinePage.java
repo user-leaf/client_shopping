@@ -49,6 +49,7 @@ import shop.imake.activity.MyIncomeActivity;
 import shop.imake.activity.MyOrderActivity;
 import shop.imake.activity.MyZhongHuiQuanActivity;
 import shop.imake.activity.SettingsActivity;
+import shop.imake.activity.TelephoneFeeChargeActivity;
 import shop.imake.activity.UpdateMineUserMessageActivity;
 import shop.imake.activity.WebShowActivity;
 import shop.imake.adapter.MineAdapter;
@@ -187,12 +188,19 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
     private NoScrollGridView mGvOther;
     //网络加载
     private Api4Mine mClient;
+    //生活服务部分的适配器
+    private MineOtherAdapter mMyMineLifeAdapter;
     //其他服务部分的适配器
     private MineOtherAdapter mMyMineOtherAdapter;
     //其他服务数据
     private List<MyMineOther.ThreeServicesBean> myMineList;
+
+    //生活出行服务数据
+    private List<MyMineOther.ThreeServicesBean> mLifeList;
     //出行服务列表
     private NoScrollGridView mGvTravel;
+    //用户账号
+    private String mTelNum;
 
 
     @Nullable
@@ -210,7 +218,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         setupView();
         initCtl();
         initData();
-        initOtherData();
+
+        initOtherData();//获取其他服务信息
 
 
     }
@@ -266,9 +275,29 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             public void onSuccess(Object response, int id) {
                 if (response != null) {
                     MyMineOther myMineOther = (MyMineOther) response;
-                    myMineList = myMineOther.getThree_services();
-                    mMyMineOtherAdapter.clear();
-                    mMyMineOtherAdapter.addAll(myMineList);
+                    List<MyMineOther.ThreeServicesBean> list = new ArrayList<>();
+
+                    list = myMineOther.getThree_services();
+                    mLifeList.clear();
+                    myMineList.clear();
+
+                    for (MyMineOther.ThreeServicesBean item : list) {
+                        int type = item.getType();
+                        //生活出行
+                        if (type == 1) {
+                            mLifeList.add(item);
+
+                            //其他服务
+                        } else if (type == 2) {
+                            myMineList.add(item);
+
+                        }
+                    }
+
+                    mMyMineOtherAdapter = new MineOtherAdapter(myMineList, getContext());
+                    mGvOther.setAdapter(mMyMineOtherAdapter);
+                    mMyMineLifeAdapter = new MineOtherAdapter(mLifeList, getContext());
+                    mGvTravel.setAdapter(mMyMineLifeAdapter);
                 }
             }
         });
@@ -384,19 +413,27 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         mGvTravel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (!CurrentUserManager.isLoginUser()){
+                if (!CurrentUserManager.isLoginUser()) {
                     jump(LoginActivity.class, false);
                     return;
                 }
-                switch (i){
-                    case 0:
+                switch (i) {
+                    case 1:
                         //飞机票
                         NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_plane);
                         break;
-                    case 1:
+                    case 2:
                         //火车票
                         NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_train);
                         break;
+                    case 3:
+                        //五季汽贸
+
+                        break;
+                    case 0://话费充值
+                        TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
+                        break;
+
                 }
             }
         });
@@ -472,9 +509,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     private void initCtl() {
         myMineList = new ArrayList<>();
-        mMyMineOtherAdapter = new MineOtherAdapter(myMineList, getContext());
-        mGvOther.setAdapter(mMyMineOtherAdapter);
 
+        mLifeList = new ArrayList<>();
     }
 
     /**
@@ -564,6 +600,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             }
 
             String tel = memberBean.getPhone().trim();
+            mTelNum=tel;
+
             if (!TextUtils.isEmpty(tel)) {
                 tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 4, tel.length());
                 mTVTel.setText(tel);
@@ -715,23 +753,27 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine7);
 
         //test
-//        MyMine mine8 = new MyMine("我的兑换券", R.mipmap.list_set);
-//        dataListLogin.add(mine8);
+        MyMine mine9 = new MyMine("话费充值", R.mipmap.personal_centeriocn_icon_prepaid_refill);
+        dataListLogin.add(mine9);
 
         adapter = new MineAdapter(getActivity(), gv, dataListLogin);
         gv.setAdapter(adapter);
 
 
 ////////////////////出行服务/////////////////////////
-        List<MyMine> dataListTravel = new ArrayList<>();
-        MyMine mine01 = new MyMine("飞机票", R.mipmap.personal_centeriocn_icon_plane);
-        dataListTravel.add(mine01);
-
-        MyMine mine02 = new MyMine("火车票", R.mipmap.personal_centeriocn_icon_train);
-        dataListTravel.add(mine02);
-
-        MineAdapter adapter = new MineAdapter(getActivity(), mGvTravel, dataListTravel);
-        mGvTravel.setAdapter(adapter);
+//        List<MyMine> dataListTravel = new ArrayList<>();
+//        MyMine mine01 = new MyMine("飞机票", R.mipmap.personal_centeriocn_icon_plane);
+//
+//        MyMine mine02 = new MyMine("火车票", R.mipmap.personal_centeriocn_icon_train);
+//
+//        MyMine mine03 = new MyMine("话费充值", R.mipmap.personal_centeriocn_icon_prepaid_refill);
+//
+//        dataListTravel.add(mine03);
+//        dataListTravel.add(mine01);
+//        dataListTravel.add(mine02);
+//
+//        MineAdapter adapter = new MineAdapter(getActivity(), mGvTravel, dataListTravel);
+//        mGvTravel.setAdapter(adapter);
 
     }
 
@@ -1253,9 +1295,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 break;
 
             //test
-//            case 7:
-//                //test，跳转我的兑换券
-//                jump(MyExchangeActivity.class,false);
+            case 8:
+                //test，跳转我的兑换券
+                TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
 //                break;
 
 //            case 8:

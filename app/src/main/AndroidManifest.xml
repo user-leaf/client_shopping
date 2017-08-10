@@ -44,6 +44,7 @@
     <!-- 读取手机通讯录需要的权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- <uses-permission android:name="android.permission.WRITE_CONTACTS"/> -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <!-- Ping++支付  begin -->
@@ -106,7 +107,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <!--小能在线客服-->
+    <!-- 小能在线客服 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -135,8 +136,8 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <!-- ***************************小能SDK所需要的权限 ********************* -->
 
+    <!-- ***************************小能SDK所需要的权限 ********************* -->
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -156,9 +157,7 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <!-- 搜索商品页面 -->
         <activity
@@ -193,6 +192,7 @@
             android:screenOrientation="portrait" />
 
         <!-- 地址管理页面 -->
+
 
         <!-- 添加地址页面 -->
         <activity
@@ -256,43 +256,43 @@
         <!-- 个人中心 - 客服页 -->
         <activity
             android:name=".activity.MineCustomerServiceActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 客服 - 意见建议 -->
         <activity
             android:name=".activity.MineCustomerServiceSuggestionActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <!-- 登录页 -->
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 处理退款申请页 -->
         <activity
             android:name=".activity.OrderReturnDealActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 会员中心页 充值页 -->
         <activity
             android:name=".activity.MineMemberCenterActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 订单详情页 -->
         <activity
             android:name=".activity.OrderDetailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 绑定支付方式 -->
         <!-- 添加微信 -->
         <activity
             android:name=".activity.WechatAddActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 添加支付宝 -->
         <!-- 订单支付失败 -->
         <activity
             android:name=".activity.OrderPayFailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 订单支付成功 -->
         <activity
             android:name=".activity.OrderPaySuccessActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 网页 -->
         <activity
             android:name=".activity.WebShowActivity"
@@ -302,14 +302,15 @@
             <!-- Android实现通过浏览器点击链接打开本地应用（APP）并拿到浏览器传递的数据 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="shop.imake"
                     android:pathPrefix="/openwith"
                     android:scheme="imakeshop" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activity.SplashActivity"
@@ -330,7 +331,7 @@
         </activity>
         <activity
             android:name=".activity.MobileContactActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 提现 -->
 
 
@@ -346,22 +347,22 @@
         <!-- 积分充值 -->
         <activity
             android:name=".activity.HistoryBuyNewActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 历史购买 -->
         <activity
             android:name=".activity.MineMemberCenterIntegralPayActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 金币充值成功页 -->
         <activity
             android:name=".activity.MineRechargeSuccessActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 邀请好友页 -->
         <activity
             android:name=".activity.InviteActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ScanGoodsDetailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!--
         修改个人信息
 
@@ -370,7 +371,7 @@
         <activity
             android:name=".activity.UpdateMineUserMessageActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <!-- 关于我们 -->
         <activity
             android:name=".activity.AboutIUUActivity"
@@ -400,13 +401,13 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- 银联支付 sdk -->
         <activity
@@ -417,56 +418,57 @@
 
 
         <!-- Ping++支付 end -->
-        <activity android:name=".activity.CheckTheLogisticsActivity"></activity>
+        <activity android:name=".activity.CheckTheLogisticsActivity" />
         <!-- 图片播放器页面 -->
         <activity
             android:name=".activity.ImagePagerActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <!-- 提现 -->
         <!-- 提现详请页面 -->
         <activity
             android:name=".activity.WithdrawRecordActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 会员收益页面 -->
         <activity
             android:name=".activity.UserIncomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 提现成功页面 -->
         <activity
             android:name=".activity.WithDrawSucceedActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- UU详情 -->
         <activity
             android:name=".activity.UUDetailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 积分详情 -->
         <activity
             android:name=".activity.IntegralDetailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 系统消息列表 -->
         <activity
             android:name=".activity.SystemPushMessageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 我的兑换券 -->
         <activity
             android:name=".activity.MyExchangeActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <!-- 兑换券充值页面 -->
         <activity
             android:name=".activity.RechargeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 兑换券兑换页面 -->
         <!-- 兑换券激活页面 -->
+
 
         <!-- 极光推送 -->
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
-            android:theme="@style/MyDialogStyle"></activity>
+            android:theme="@style/MyDialogStyle" />
 
         <!-- Required SDK核心功能 -->
         <activity
@@ -485,7 +487,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
@@ -572,27 +574,27 @@
 
         <activity
             android:name=".activity.MyIncomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ScanPayActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.MyCommissionDetailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MyCommissionActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.MyZhongHuiQuanActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ScanPaySuccessActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".activity.RegisterActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.RegisterActivity" />
 
-        <!--小能在线客服-->
+        <!-- 小能在线客服 -->
         <activity
             android:name="cn.xiaoneng.activity.ChatActivity"
             android:launchMode="singleTask"
@@ -608,41 +610,42 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|navigation|layoutDirection|touchscreen|locale|mnc|mcc|fontScale"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/MyDialogTopRight"></activity>
+            android:theme="@style/MyDialogTopRight" />
         <activity
             android:name="cn.xiaoneng.activity.ShowAlbumActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent"></activity>
+            android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name="cn.xiaoneng.activity.ValuationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/valuationdialog"></activity>
+            android:theme="@style/valuationdialog" />
         <activity
             android:name="cn.xiaoneng.activity.ShowPictureActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="cn.xiaoneng.activity.XNExplorerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="cn.xiaoneng.video.VideoPreviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="cn.xiaoneng.video.RecordVideoActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="cn.xiaoneng.video.XNVideoPlayer"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
 
         <!-- ***************************小能SDK所需要receiver和Service ********************* -->
-        <service android:name="cn.xiaoneng.xpush.pushxiaoneng.XPushIMService"></service>
+        <service android:name="cn.xiaoneng.xpush.pushxiaoneng.XPushIMService" />
+
         <receiver
             android:name="cn.xiaoneng.xpush.XPushReceiver"
             android:exported="true">
@@ -655,7 +658,7 @@
             </intent-filter>
         </receiver>
         <!-- ***************************小能SDK所需要receiver和Service ********************* -->
-        <!--Android 7.0 适配-->
+        <!-- Android 7.0 适配 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="shop.imake.fileprovider"
@@ -665,6 +668,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".activity.TelephoneFeeChargeActivity"></activity>
     </application>
 
 </manifest>

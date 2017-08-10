@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_tel_pay_num"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/selector_stroke_btn_bg"
+    android:gravity="center"
+    >
+    <TextView
+        android:id="@+id/tv_tel_pay_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="num"
+        android:textColor="@drawable/selector_tel_pay_num_txt_color"
+        android:textSize="20sp"
+        />
+
+</LinearLayout>

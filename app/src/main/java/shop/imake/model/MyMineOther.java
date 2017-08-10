@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class MyMineOther {
 
-
     private List<ThreeServicesBean> three_services;
 
     public List<ThreeServicesBean> getThree_services() {
@@ -24,13 +23,15 @@ public class MyMineOther {
 
     public static class ThreeServicesBean {
         /**
-         * id : 3
-         * icon : storage/app/public/serviceicon/2017/06/14/app_3/default_0_1497447096.jpg
+         * id : 5
+         * icon : https://api3.bjiuu.com/storage/app/public/serviceicon/2017/06/15/app_5/default_0_1497497295.png
          * service_name : 博盛租车
-         * request_url : https://www.baidu.com
-         * is_open : 1
+         * request_url : #
+         * is_open : 0
          * deleted_at : null
          * sort : 1
+         * type : 2
+         * param : null
          */
 
         private int id;
@@ -38,8 +39,10 @@ public class MyMineOther {
         private String service_name;
         private String request_url;
         private int is_open;
-        private Object deleted_at;
+        private String deleted_at;
         private int sort;
+        private int type;
+        private String param;
 
         public int getId() {
             return id;
@@ -81,11 +84,11 @@ public class MyMineOther {
             this.is_open = is_open;
         }
 
-        public Object getDeleted_at() {
+        public String getDeleted_at() {
             return deleted_at;
         }
 
-        public void setDeleted_at(Object deleted_at) {
+        public void setDeleted_at(String deleted_at) {
             this.deleted_at = deleted_at;
         }
 
@@ -95,6 +98,22 @@ public class MyMineOther {
 
         public void setSort(int sort) {
             this.sort = sort;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public String getParam() {
+            return param;
+        }
+
+        public void setParam(String param) {
+            this.param = param;
         }
     }
 }

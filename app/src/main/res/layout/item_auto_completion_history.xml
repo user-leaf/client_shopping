@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_tel_pay_history_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:gravity="center_horizontal"
+        android:paddingBottom="21.5dp"
+        android:paddingTop="21.5dp"
+        android:text="清空历史记录"
+        android:textColor="#28a7e1"
+        android:textSize="15sp"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/rl_tel_pay_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:visibility="visible"
+        >
+
+        <TextView
+            android:id="@+id/tv_tel_pay_history_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="telnum"
+            android:textColor="#333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_tel_pay_history_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_tel_pay_history_num"
+            android:text="name"
+            android:textColor="#999"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_tel_pay_history_local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_tel_pay_history_num"
+            android:text="local"
+            android:textColor="#999"
+            android:textSize="13sp"
+            android:layout_toRightOf="@+id/tv_tel_pay_history_name"
+            />
+    </RelativeLayout>
+
+</FrameLayout>
