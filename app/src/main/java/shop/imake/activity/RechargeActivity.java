@@ -202,7 +202,7 @@ public class RechargeActivity extends BaseActivity {
 
 
     private void toPay() {
-        new PaymentTask(RechargeActivity.this, RechargeActivity.this, mOrder_number, mChannel, mTvChargeCommit, TAG)
+        new PaymentTask(RechargeActivity.this, RechargeActivity.this, mOrder_number, mChannel, mTvChargeCommit, TAG, null)
                 .execute(new PaymentTask.PaymentRequest(mChannel, 1));
     }
 

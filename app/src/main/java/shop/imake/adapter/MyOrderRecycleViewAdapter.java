@@ -972,6 +972,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
                         channel,
                         holder.btPay,
                         MyOrderPaymentFragment.TAG
+                        ,null
                 ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
             }
@@ -1006,7 +1007,7 @@ public class MyOrderRecycleViewAdapter extends RecyclerView.Adapter<MyOrderRecyc
     }
 
     private void toPay() {
-        new PaymentTask(context, mFragment, mOrderNumber, mChannel, holder.btPay, MyOrderPaymentFragment.TAG)
+        new PaymentTask(context, mFragment, mOrderNumber, mChannel, holder.btPay, MyOrderPaymentFragment.TAG, null)
                 .execute(new PaymentTask.PaymentRequest(mChannel, 1));
     }
 

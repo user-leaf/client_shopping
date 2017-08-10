@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import cn.xiaoneng.uiapi.Ntalker;
 import shop.imake.R;
 import shop.imake.fragment.TaskPage;
@@ -18,9 +20,9 @@ import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DataCleanManager;
 import shop.imake.utils.JPushUtils;
 import shop.imake.utils.NetStateUtils;
+import shop.imake.utils.TelPayHistoryUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UpdateUtils;
-import com.bumptech.glide.Glide;
 
 /**
  * 设置
@@ -139,6 +141,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
                     // 极光推送别名清除
                     JPushUtils.deleteAlias();
+
+                    //清楚电话充值的本地缓存
+                    TelPayHistoryUtils.clearHistoryPay(this);
 
                     CurrentUserManager.clearCurrentUser();
                     finish();

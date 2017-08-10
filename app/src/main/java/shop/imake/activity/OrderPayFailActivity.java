@@ -300,6 +300,7 @@ public class OrderPayFailActivity extends BaseActivity implements View.OnClickLi
                         channel,
                        mBtOtherPay2,
                         OrderPayFailActivity.TAG
+                        ,null
                 ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
             }

@@ -422,8 +422,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     jump(LoginActivity.class, false);
                     return;
                 }
-                switch (i) {
-                    case 1:
+                String param=mLifeList.get(i).getParam();
+
+                switch (param) {
+                    case "plane":
                         //飞机票
                         showTicketReadmeDialog(
                                 ClientAPI.URL_WX_H5 + HttpUrls.MINE_README_PLANE,
@@ -435,7 +437,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                                     }
                                 });
                         break;
-                    case 2:
+                    case "train":
                         //火车票
                         showTicketReadmeDialog(
                                 ClientAPI.URL_WX_H5 + HttpUrls.MINE_README_TRAIN,
@@ -447,12 +449,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                                     }
                                 });
                         break;
-                    case 3:
+                    case "":
                         //五季汽贸
 
                         break;
-                    case 0://话费充值
-                        TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
+                    case "topup"://话费充值
+                        TelephoneFeeChargeActivity.startAction(getActivity());
                         break;
 
                 }
@@ -1365,7 +1367,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
             case 8:
                 //test，跳转我的兑换券
-                TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
+                TelephoneFeeChargeActivity.startAction(getActivity());
 //                break;
 
 //            case 8:

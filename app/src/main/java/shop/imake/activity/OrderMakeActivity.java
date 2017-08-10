@@ -865,7 +865,7 @@ public class OrderMakeActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onPayCallback(String channel) {
                         int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-                        new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mStrOrderNum, channel, mTvPay, TAG)
+                        new PaymentTask(OrderMakeActivity.this, OrderMakeActivity.this, mStrOrderNum, channel, mTvPay, TAG, null)
                                 .execute(new PaymentTask.PaymentRequest(channel, amount));
                     }
                 }

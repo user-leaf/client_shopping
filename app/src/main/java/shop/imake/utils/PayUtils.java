@@ -1,9 +1,7 @@
 package shop.imake.utils;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +19,6 @@ import okhttp3.Call;
 import shop.imake.Constants;
 import shop.imake.callback.DataCallback;
 import shop.imake.client.Api4Cart;
-import shop.imake.client.Api4Task;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.fragment.PayDetailFragment;
 import shop.imake.model.PayTypeModel;
@@ -132,7 +129,8 @@ public class PayUtils {
                                     orderNum,
                                     channel,
                                     clickView,
-                                    clazzName
+                                    clazzName,
+                                    null
                             ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
                         } else {    // 在activity中调用
@@ -142,7 +140,8 @@ public class PayUtils {
                                     orderNum,
                                     channel,
                                     clickView,
-                                    clazzName
+                                    clazzName,
+                                    null
                             ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
                         }

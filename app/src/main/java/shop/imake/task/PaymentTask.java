@@ -8,22 +8,6 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import shop.imake.ActivityCollector;
-import shop.imake.Constants;
-import shop.imake.activity.MineMemberCenterActivity;
-import shop.imake.activity.MineMemberCenterIntegralPayActivity;
-import shop.imake.activity.RechargeActivity;
-import shop.imake.client.HttpUrls;
-import shop.imake.fragment.TaskPage;
-import shop.imake.model.PayResultEvent;
-import shop.imake.model.PaymentTaskModel;
-import shop.imake.model.ResponseModel;
-import shop.imake.user.CurrentUserManager;
-import shop.imake.utils.DialogUtils;
-import shop.imake.utils.LogUtils;
-import shop.imake.utils.StringUtils;
-import shop.imake.utils.ToastUtils;
-import shop.imake.widget.LoadingDialog;
 import com.google.gson.Gson;
 import com.pingplusplus.android.Pingpp;
 
@@ -31,6 +15,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -43,6 +28,23 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import shop.imake.ActivityCollector;
+import shop.imake.Constants;
+import shop.imake.activity.MineMemberCenterActivity;
+import shop.imake.activity.MineMemberCenterIntegralPayActivity;
+import shop.imake.activity.RechargeActivity;
+import shop.imake.activity.TelephoneFeeChargeActivity;
+import shop.imake.client.HttpUrls;
+import shop.imake.fragment.TaskPage;
+import shop.imake.model.PayResultEvent;
+import shop.imake.model.PaymentTaskModel;
+import shop.imake.model.ResponseModel;
+import shop.imake.user.CurrentUserManager;
+import shop.imake.utils.DialogUtils;
+import shop.imake.utils.LogUtils;
+import shop.imake.utils.StringUtils;
+import shop.imake.utils.ToastUtils;
+import shop.imake.widget.LoadingDialog;
 
 /**
  * Ping++ 支付任务
@@ -66,6 +68,7 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
     // 调用此任务的类
     private String className;
     private LoadingDialog loadingDialog;
+    private Map<String,Object> mParamsMap;
 
     /**
      * @param context   上下文,用于dialog的显示
@@ -74,14 +77,16 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
      * @param channel   支付渠道
      * @param clickView 点击的按键,用于按键点击之后的禁用，防止重复点击
      * @param className 创建此任务的类名，用于根据类名走不同的URL
+     * @param params
      */
-    public PaymentTask(Context context, Activity activity, String orderNo, String channel, View clickView, String className) {
+    public PaymentTask(Context context, Activity activity, String orderNo, String channel, View clickView, String className, Map<String, Object> params) {
         this.context = context;
         this.activity = activity;
         this.orderNo = orderNo;
         this.channel = channel;
         this.clickView = clickView;
         this.className = className;
+        this.mParamsMap=params;
         loadingDialog = LoadingDialog.getInstance(context);
     }
 
@@ -92,14 +97,16 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
      * @param channel   支付渠道
      * @param clickView 点击的按键,用于按键点击之后的禁用，防止重复点击
      * @param className 创建此任务的类名，用于根据类名走不同的URL
+     * @param params
      */
-    public PaymentTask(Context context, Fragment fragment, String orderNo, String channel, View clickView, String className) {
+    public PaymentTask(Context context, Fragment fragment, String orderNo, String channel, View clickView, String className, Map<String, Object> params) {
         this.context = context;
         this.fragment = fragment;
         this.orderNo = orderNo;
         this.channel = channel;
         this.clickView = clickView;
         this.className = className;
+        this.mParamsMap=params;
         loadingDialog = LoadingDialog.getInstance(context);
     }
 
@@ -127,7 +134,20 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
                 sb.append("?token=").append(CurrentUserManager.getUserToken());
                 sb.append("&channel=").append(channel);
                 URL = sb.toString();
-            } else if (className.equals(MineMemberCenterIntegralPayActivity.TAG)) {
+                //话费充值
+            } else if (className.equals(TelephoneFeeChargeActivity.TAG)){
+                StringBuilder sb = new StringBuilder(HttpUrls.URL_PAY_TEL);
+                String amout= (String) mParamsMap.get(TelephoneFeeChargeActivity.AMOUNT);
+                String tel= (String) mParamsMap.get(TelephoneFeeChargeActivity.TEL);
+
+                sb.append("?token=").append(CurrentUserManager.getUserToken());
+                sb.append("&payment_channel=").append(channel);
+                sb.append("&amount=").append(amout);
+                sb.append("&tel=").append(tel);
+                URL = sb.toString();
+
+            }
+            else if (className.equals(MineMemberCenterIntegralPayActivity.TAG)) {
                 StringBuilder sb = new StringBuilder(Constants.PingppURL);
                 sb.append("?token=").append(CurrentUserManager.getUserToken());
                 sb.append("&orderNo=").append(orderNo);

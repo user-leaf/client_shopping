@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:completionHintView="@layout/item_auto_completion_clear_history"
             android:digits="0123456789"
             android:ellipsize="start"
             android:gravity="top"
@@ -37,7 +36,6 @@
             android:singleLine="true"
             android:text=""
             android:textColor="#333"
-            android:textCursorDrawable="@null"
             android:textSize="25sp" />
 
         <ImageView

@@ -22,14 +22,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import shop.imake.R;
+import shop.imake.adapter.TelPayHistoryAdapter;
 import shop.imake.adapter.TelPayNumAdapter;
 import shop.imake.callback.DataCallback;
 import shop.imake.callback.PingppPayResult;
@@ -37,12 +42,16 @@ import shop.imake.client.Api4Mine;
 import shop.imake.client.ClientApiHelper;
 import shop.imake.fragment.PayDetailFragment;
 import shop.imake.model.PayResultEvent;
+import shop.imake.model.TelPayHistoryModel;
+import shop.imake.model.TelPayLocalModel;
 import shop.imake.model.TelephonePayNum;
 import shop.imake.task.PaymentTask;
+import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.ContactsUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.PayUtils;
+import shop.imake.utils.TelPayHistoryUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.utils.ValidatorsUtils;
@@ -66,7 +75,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     public static int CONTACT_REQUESTCODE = 666;//获取通讯录请求码
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 888;//获取通讯录权限的请求码
     private String mTelNum;//输入的电话号码
-    private String mTelNumself;
+    private String mTelNumself= CurrentUserManager.getCurrentUser().getPhone();//本机号码
     public static String USER_TELNUM = "usertelephonenum";
 
     private Api4Mine mApi4Mine;
@@ -76,11 +85,18 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private double mPayMoney;
 
     public static final String TAG = TelephoneFeeChargeActivity.class.getSimpleName();
+
     private String mOrderNumber;//支付订单号
 
-    public static void startAction(Context context, String telNum) {
+    private List<TelPayHistoryModel.Bean> mHistoryList;//历史充值数据
+    private TelPayHistoryAdapter mHistoryAdapter;//历史充值适配器
+    public static String AMOUNT="amount";
+    public static String TEL="telephone";
+
+
+    public static void startAction(Context context) {
         Intent intent = new Intent(context, TelephoneFeeChargeActivity.class);
-        intent.putExtra(USER_TELNUM, telNum);
+//        intent.putExtra(USER_TELNUM, telNum);
         context.startActivity(intent);
     }
 
@@ -92,15 +108,32 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         EventBus.getDefault().register(this);
 
         mApi4Mine = (Api4Mine) ClientApiHelper.getInstance().getClientApi(Api4Mine.class);
-
         mTelPayMoneyList = new ArrayList<>();
+
         //获取传递的电话号码
-        Intent intent = getIntent();
-        mTelNumself = intent.getStringExtra(USER_TELNUM);
+//        Intent intent = getIntent();
+//        mTelNumself = intent.getStringExtra(USER_TELNUM);
 
         initView();
         setupView();
         LoadPayNums();
+        if (TelPayHistoryUtils.isHaveHistory(this)){
+            getHistoryPay();
+        }
+
+    }
+
+    /**
+     * 获取历史充值数据
+     */
+    private void getHistoryPay() {
+        String jsonStrig = TelPayHistoryUtils.getHistoryPay(this);
+        TelPayHistoryModel model = new Gson().fromJson(jsonStrig, TelPayHistoryModel.class);
+        //历史充值
+        mHistoryList = new ArrayList<>();
+        mHistoryList = model.getBeanList();
+        mHistoryAdapter = new TelPayHistoryAdapter(mHistoryList, this);
+        mEtTelNum.setAdapter(mHistoryAdapter);
 
     }
 
@@ -128,15 +161,16 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
             @Override
             public void onFail(Call call, Exception e, int id) {
-                if (!NetStateUtils.isNetworkAvailable(getApplicationContext())){
-                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(),e);
+                LoadPayNums();
+                if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
+                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                     return;
                 }
                 ToastUtils.showException(e);
-                LoadPayNums();
 
 
             }
+
             @Override
             public void onSuccess(Object response, int id) {
                 if (response == null) {
@@ -152,6 +186,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private void initView() {
         mTitle = ((IUUTitleBar) findViewById(R.id.title_telephone_pee_charge));
+
         mEtTelNum = ((AutoCompleteTextView) findViewById(R.id.et_tel_pay_num));
 
         mTvName = ((TextView) findViewById(R.id.tv_tel_pay_name));
@@ -166,6 +201,21 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         mTitle.setLeftLayoutClickListener(this);
 
         mEtTelNum.addTextChangedListener(mTelNumTextWatcher);
+        //处理历史充值条目点击事件
+        mEtTelNum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //清除历史
+                if (position == adapterView.getCount() - 1) {
+                    clearHistory();
+
+                } else {
+                    //将选择的电话号码填充在输入框里面
+                    mEtTelNum.setText(mHistoryList.get(position).getTelNum());
+                }
+
+            }
+        });
 
         //初始化输入框
         mEtTelNum.setText(mTelNumself);
@@ -173,6 +223,26 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         mIvDealTelNum.setOnClickListener(this);
 
         mGv.setOnItemClickListener(mPayFeeOnItemOnClickListener);
+
+    }
+
+    /**
+     * 清楚充值历史
+     */
+    private void clearHistory() {
+        int indexSelf = mHistoryList.indexOf(mTelNumself);
+
+        if (indexSelf != -1) {
+
+            while (mHistoryList.size() > 2) {
+                mHistoryList.remove(1);
+            }
+        } else {
+            mHistoryList.clear();
+        }
+        mHistoryAdapter.notifyDataSetChanged();
+
+        updateHistoryData();
 
     }
 
@@ -265,6 +335,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     }
 
 
+    private String mLocalInput;//输入电话的归属地
+    private String mNameInput;//输入姓名
     /**
      * 电话号码输入框监听
      */
@@ -303,7 +375,16 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 initCtlPayMoneyNums(true);
                 //获得姓名，归属地
                 String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                if (mTelNumself.equals(string)) {
+                    name = "账号绑定号码";
+                }
+                mNameInput = name;
                 mTvName.setText(name);
+
+                //获取归属地
+
+                //test
+//                getTelLocal();
 
 
                 //输入不符合条件
@@ -332,6 +413,42 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     };
 
     /**
+     * 获取电话归属地
+     */
+    private void getTelLocal() {
+        //获取成功在成功回调中向控价中填充
+        mApi4Mine.getTelLocal(mTelNum, new DataCallback<TelPayLocalModel>(getApplicationContext()) {
+            @Override
+            public void onFail(Call call, Exception e, int id) {
+                getTelLocal();
+                if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
+                    UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
+                    return;
+                }
+                ToastUtils.showException(e);
+            }
+
+            @Override
+            public void onSuccess(Object response, int id) {
+                if (response == null) {
+                    return;
+                }
+                TelPayLocalModel model = (TelPayLocalModel) response;
+                if (model != null) {
+                    TelPayLocalModel.DataBean bean = model.getData();
+                    if (bean != null) {
+                        mLocalInput = "（" + bean.getArea() + bean.getOperator() + "）";
+
+                        mTvLocal.setText(mLocalInput);
+                    }
+
+                }
+
+            }
+        });
+    }
+
+    /**
      * 处理话费选择列表点击事件
      */
 
@@ -343,13 +460,14 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
             //通讯录中存在
             if (ContactsUtils.isHave(getApplicationContext(), mTelNum)) {
-                pay(view);
+                makeOrder(view);
+
             } else {
                 //弹框提示
-                 Dialog dialog=DialogUtils.createConfirmDialog(
+                Dialog dialog = DialogUtils.createConfirmDialog(
                         TelephoneFeeChargeActivity.this,
                         null,
-                        "确认给手机号\n"+mTelNum+"(不在通讯录)\n"+"充值吗？",
+                        "确认给手机号\n" + mTelNum + "(不在通讯录)\n" + "充值吗？",
                         "充值",
                         "取消",
                         new DialogInterface.OnClickListener() {
@@ -357,7 +475,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                pay(view);
+                                makeOrder(view);
 
                             }
                         }, new DialogInterface.OnClickListener() {
@@ -374,20 +492,42 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         }
     };
 
+    /**
+     * 生成订单
+     */
+
+    private void makeOrder(View view) {
+        pay(view);
+
+    }
+
     private void pay(final View view) {
+        //test
+//        boolean test = true;
+//        if (test) {
+//            paySuccess();
+//            return;
+//        }
+
+
         //判断手机号码是否在通讯录中，存在吊起支付，不在弹框提示，吊起支付
         //吊起支付
         PayUtils.pay(getSupportFragmentManager(), TAG, mPayMoney, new PayDetailFragment.PayCallback() {
             @Override
             public void onPayCallback(String channel) {
                 int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
+                Map<String,Object>  map=new HashMap<>();
+                map.put(AMOUNT,mPayMoney);
+                map.put(TEL,mTelNum);
                 new PaymentTask(
                         TelephoneFeeChargeActivity.this,
                         TelephoneFeeChargeActivity.this,
                         mOrderNumber,
                         channel,
                         view,
-                        TAG
+                        TAG,
+                        map
+
                 ).execute(new PaymentTask.PaymentRequest(channel, amount));
             }
         });
@@ -470,7 +610,100 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 支付成功后的操作
      */
     private void paySuccess() {
+        updateHistory();
         ToastUtils.showShort("跳转到支付成功页面");
+    }
+
+    /**
+     * 更新本地历史存储
+     */
+    private void updateHistory() {
+
+        int index = mHistoryList.indexOf(mTelNum);
+        int indexSelf = mHistoryList.indexOf(mTelNumself);
+
+        switch (mHistoryList.size()) {
+            case 0:
+                addNewHistory(0, 0);
+
+                break;
+            case 2:
+                //电话不存在
+                if (index == -1) {
+                    if (indexSelf == -1) {
+                        addNewHistory(2, 0);
+                    } else {
+                        addNewHistory(2, 1);
+                    }
+                }
+                break;
+            case 3:
+                if (index == -1) {
+                    if (indexSelf == -1) {
+                        addNewHistory(3, 0);
+                    } else {
+                        addNewHistory(3, 1);
+                    }
+                } else {
+                    if (indexSelf == -1) {
+                        mHistoryList.remove(index);
+                        addNewHistory(3, 0);
+                    }
+                }
+
+                break;
+            case 4:
+                if (index == -1) {
+                    if (indexSelf == -1) {
+                        addNewHistory(4, 0);
+                    } else {
+                        addNewHistory(4, 1);
+                    }
+                } else {
+                    mHistoryList.remove(index);
+                    if (indexSelf == -1) {
+                        addNewHistory(4, 0);
+                    } else {
+                        addNewHistory(4, 1);
+                    }
+                }
+
+                break;
+
+        }
+    }
+
+    private void addNewHistory(int count, int index) {
+
+        TelPayHistoryModel.Bean bean;
+
+        bean = new TelPayHistoryModel.Bean();
+        bean.setTelNum(mTelNum);
+        bean.setName(mNameInput);
+        bean.setLocal(mLocalInput);
+        mHistoryList.add(index, bean);
+
+        if (count == 0) {
+            bean = new TelPayHistoryModel.Bean();
+            mHistoryList.add(bean);
+        }
+
+        updateHistoryData();
+    }
+
+    /**
+     * 处理本地存储历史充值数据
+     */
+
+    private void updateHistoryData() {
+        TelPayHistoryModel model = new TelPayHistoryModel();
+        String jsonString;
+        model.setBeanList(mHistoryList);
+
+        jsonString = new Gson().toJson(model);
+
+        TelPayHistoryUtils.clearHistoryPay(this);
+        TelPayHistoryUtils.putHistoryPay(this, jsonString);
     }
 
     /**
@@ -485,11 +718,5 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 第三方支付后的“回调”
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
+
 }

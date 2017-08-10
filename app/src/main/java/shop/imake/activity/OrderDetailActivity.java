@@ -696,7 +696,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                         mOrderNumber,
                         channel,
                         mTvPayNow,
-                        TAG
+                        TAG,
+                        null
                 ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
             }

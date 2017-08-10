@@ -552,7 +552,7 @@ public class MineMemberCenterIntegralPayActivity extends BaseActivity implements
 
 
     private void toPay() {
-        new PaymentTask(MineMemberCenterIntegralPayActivity.this, MineMemberCenterIntegralPayActivity.this, mOrder_number, mChannel, mBtnPay, TAG)
+        new PaymentTask(MineMemberCenterIntegralPayActivity.this, MineMemberCenterIntegralPayActivity.this, mOrder_number, mChannel, mBtnPay, TAG, null)
                 .execute(new PaymentTask.PaymentRequest(mChannel, 1));
     }
 

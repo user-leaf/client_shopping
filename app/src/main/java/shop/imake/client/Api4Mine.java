@@ -17,6 +17,7 @@ import shop.imake.model.ContactMemberModel;
 import shop.imake.model.MyCommissionModel;
 import shop.imake.model.MyIncomeModel;
 import shop.imake.model.MyMineOther;
+import shop.imake.model.TelPayLocalModel;
 import shop.imake.model.TelephonePayNum;
 import shop.imake.model.TokenModel;
 import shop.imake.model.User;
@@ -343,5 +344,20 @@ public class Api4Mine extends BaseClientApi {
     }
 
 
+    /**
+     * 获取电话归属地
+     * @param telNum
+     * @param callback
+     */
+    public void getTelLocal( String telNum,  DataCallback<TelPayLocalModel> callback){
+        StringBuilder sb = new StringBuilder(ClientAPI.API_POINT_JAVA);
+        sb.append("iuu/mobinfo");
+        sb.append("?mobilenum=").append(telNum);
+        String url = sb.toString();
+
+        LogUtils.d(TAG, "getTelLocal: " + url);
+
+        doPost(url, null, callback);
+    }
 
 }

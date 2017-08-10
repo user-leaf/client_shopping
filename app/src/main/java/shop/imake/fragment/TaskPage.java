@@ -545,7 +545,8 @@ public class TaskPage extends BaseFragment implements AdapterView.OnItemClickLis
                         null,
                         channel,
                         mTvVipRecharge,
-                        TAG
+                        TAG,
+                        null
                 ).execute(new PaymentTask.PaymentRequest(channel, amount));
 
                 break;

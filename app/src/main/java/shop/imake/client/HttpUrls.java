@@ -11,6 +11,8 @@ public class HttpUrls {
     // 会员开通支付接口
 //    public static final String URL_PAY_VIP = "http://testapi.bjaiyouyou.com/"+"api/v1/active_vip";
     public static final String URL_PAY_VIP = ClientAPI.API_POINT + "api/v1/active_vip";
+    //手机充值
+    public static final String URL_PAY_TEL = ClientAPI.API_POINT + "api/v1/rechageTopUp";
 
     // ----------------------------首页----------------------------------------------------------
     public static final String PANICBUY = "api/v1/product/allRushToPurchase?page=";                 //抢购拼接地址
