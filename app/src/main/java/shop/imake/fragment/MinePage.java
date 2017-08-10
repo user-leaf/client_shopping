@@ -425,9 +425,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 switch (i) {
                     case 1:
                         //飞机票
-                        showTicketDialog(
+                        showTicketReadmeDialog(
                                 ClientAPI.URL_WX_H5 + HttpUrls.MINE_README_PLANE,
-                                new ReadMeCallback() {
+                                new TicketReadmeCallback() {
 
                                     @Override
                                     public void agree() {
@@ -437,9 +437,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         break;
                     case 2:
                         //火车票
-                        showTicketDialog(
+                        showTicketReadmeDialog(
                                 ClientAPI.URL_WX_H5 + HttpUrls.MINE_README_TRAIN,
-                                new ReadMeCallback() {
+                                new TicketReadmeCallback() {
 
                                     @Override
                                     public void agree() {
@@ -460,28 +460,28 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         });
     }
 
-    private void showTicketDialog(String url, final ReadMeCallback callback) {
+    private void showTicketReadmeDialog(String url, final TicketReadmeCallback callback) {
 
         View readMeView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_ticket_readme, null);
         View closeView = readMeView.findViewById(R.id.ticket_dialog_close);
         WebView webview = (WebView) readMeView.findViewById(R.id.ticket_dialog_webview);
         View agreeView = readMeView.findViewById(R.id.ticket_dialog_agree);
 
-        final Dialog readMeDialog = DialogUtils.createRandomDialog(getContext(), null, null, null, null, null, readMeView);
+        final Dialog readmeDialog = DialogUtils.createRandomDialog(getContext(), null, null, null, null, null, readMeView);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.ticket_dialog_close:
-                        if (readMeDialog != null && readMeDialog.isShowing()) {
-                            readMeDialog.dismiss();
+                        if (readmeDialog != null && readmeDialog.isShowing()) {
+                            readmeDialog.dismiss();
                         }
                         break;
 
                     case R.id.ticket_dialog_agree:
-                        if (readMeDialog != null && readMeDialog.isShowing()) {
-                            readMeDialog.dismiss();
+                        if (readmeDialog != null && readmeDialog.isShowing()) {
+                            readmeDialog.dismiss();
                             callback.agree();
                         }
                         break;
@@ -501,7 +501,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
         webview.loadUrl(url);
 
-        readMeDialog.show();
+        readmeDialog.show();
     }
 
     /**
@@ -1514,7 +1514,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
     }
 
-    interface ReadMeCallback {
+    interface TicketReadmeCallback {
         void agree();
     }
 }
