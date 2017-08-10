@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -16,6 +17,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -420,11 +424,27 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 switch (i) {
                     case 1:
                         //飞机票
-                        NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_plane);
+                        showTicketDialog(
+                                ClientAPI.URL_WX_H5 + "user-instructions-plane.html",
+                                new ReadMeCallback() {
+
+                                    @Override
+                                    public void agree() {
+                                        NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_plane);
+                                    }
+                                });
                         break;
                     case 2:
                         //火车票
-                        NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_train);
+                        showTicketDialog(
+                                ClientAPI.URL_WX_H5 + "user-instructions-train.html",
+                                new ReadMeCallback() {
+
+                                    @Override
+                                    public void agree() {
+                                        NTalkerUtils.getInstance().startChat(getActivity(), NTalkerUtils.entryType.kefu_train);
+                                    }
+                                });
                         break;
                     case 3:
                         //五季汽贸
@@ -437,6 +457,50 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 }
             }
         });
+    }
+
+    private void showTicketDialog(String url, final ReadMeCallback callback) {
+
+        View readMeView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_ticket_readme, null);
+        View closeView = readMeView.findViewById(R.id.ticket_dialog_close);
+        WebView webview = (WebView) readMeView.findViewById(R.id.ticket_dialog_webview);
+        View agreeView = readMeView.findViewById(R.id.ticket_dialog_agree);
+
+        final Dialog readMeDialog = DialogUtils.createRandomDialog(getContext(), null, null, null, null, null, readMeView);
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.ticket_dialog_close:
+                        if (readMeDialog != null && readMeDialog.isShowing()) {
+                            readMeDialog.dismiss();
+                        }
+                        break;
+
+                    case R.id.ticket_dialog_agree:
+                        if (readMeDialog != null && readMeDialog.isShowing()) {
+                            readMeDialog.dismiss();
+                            callback.agree();
+                        }
+                        break;
+                }
+            }
+        };
+
+        closeView.setOnClickListener(onClickListener);
+        agreeView.setOnClickListener(onClickListener);
+
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
+            }
+        });
+
+        webview.loadUrl(url);
+
+        readMeDialog.show();
     }
 
     /**
@@ -1447,5 +1511,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 return;
         }
 
+    }
+
+    interface ReadMeCallback {
+        void agree();
     }
 }

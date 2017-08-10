@@ -50,7 +50,6 @@ public class ClientAPI {
         } else {    // 正式环境
             API_POINT = "https://zhapi.bjaiyouyou.com/";
             URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
-
         }
     }
 
