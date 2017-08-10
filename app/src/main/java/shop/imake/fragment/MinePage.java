@@ -467,6 +467,9 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         WebView webview = (WebView) readMeView.findViewById(R.id.ticket_dialog_webview);
         View agreeView = readMeView.findViewById(R.id.ticket_dialog_agree);
 
+        ViewGroup.LayoutParams layoutParams = webview.getLayoutParams();
+        layoutParams.height = ScreenUtils.getScreenHeight(getContext());
+
         final Dialog readmeDialog = DialogUtils.createRandomDialog(getContext(), null, null, null, null, null, readMeView);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
