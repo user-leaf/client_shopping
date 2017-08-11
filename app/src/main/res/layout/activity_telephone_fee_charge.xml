@@ -24,7 +24,7 @@
         <AutoCompleteTextView
             android:id="@+id/et_tel_pay_num"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@null"
             android:digits="0123456789"
             android:ellipsize="start"
@@ -33,6 +33,7 @@
             android:maxLength="11"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:paddingBottom="45.5dp"
             android:singleLine="true"
             android:text=""
             android:textColor="#333"
@@ -41,27 +42,20 @@
         <ImageView
             android:id="@+id/iv_tel_pay"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:paddingRight="10dp"
             android:paddingLeft="20dp"
+            android:paddingRight="10dp"
             android:scaleType="fitStart"
             android:src="@drawable/level_telephone_fee_charge_img" />
-    </FrameLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:orientation="vertical"
-        android:paddingBottom="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
 
         <RelativeLayout
+            android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
 
             <TextView
                 android:id="@+id/tv_tel_pay_name"
@@ -69,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="12.5dp"
-                android:text="账号绑定号码"
+                android:text=""
                 android:textColor="#666"
                 android:textSize="13sp" />
 
@@ -83,15 +77,30 @@
                 android:text=""
                 android:textColor="#666"
                 android:textSize="13sp" />
+            <View
+                android:id="@+id/view_tel_pay_drop_point"
+                style="@style/entry_divider_bold_line_cb"
+                android:layout_below="@+id/tv_tel_pay_local"
+                />
         </RelativeLayout>
+    </FrameLayout>
 
-        <View style="@style/entry_divider_bold_line_cb" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp"
             android:text="话费充值"
             android:textColor="#333"
             android:textSize="15sp" />

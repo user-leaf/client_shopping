@@ -49,6 +49,7 @@ import shop.imake.task.PaymentTask;
 import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.ContactsUtils;
 import shop.imake.utils.DialogUtils;
+import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.PayUtils;
 import shop.imake.utils.TelPayHistoryUtils;
@@ -92,6 +93,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private TelPayHistoryAdapter mHistoryAdapter;//历史充值适配器
     public static String AMOUNT="amount";
     public static String TEL="telephone";
+    private boolean isGetContas;
 
 
     public static void startAction(Context context) {
@@ -113,14 +115,16 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         //获取传递的电话号码
 //        Intent intent = getIntent();
 //        mTelNumself = intent.getStringExtra(USER_TELNUM);
-
-        initView();
-        setupView();
-        LoadPayNums();
-        if (TelPayHistoryUtils.isHaveHistory(this)){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            //申请授权，第一个参数为要申请用户授权的权限；第二个参数为requestCode 必须大于等于0，主要用于回调的时候检测，匹配特定的onRequestPermissionsResult。
+            //可以从方法名requestPermissions以及第二个参数看出，是支持一次性申请多个权限的，系统会通过对话框逐一询问用户是否授权。
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
+            initView();
+            setupView();
+            LoadPayNums();
             getHistoryPay();
         }
-
     }
 
     /**
@@ -128,10 +132,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      */
     private void getHistoryPay() {
         String jsonStrig = TelPayHistoryUtils.getHistoryPay(this);
+
+        jsonStrig=jsonStrig!=null?jsonStrig:"";
+
         TelPayHistoryModel model = new Gson().fromJson(jsonStrig, TelPayHistoryModel.class);
         //历史充值
         mHistoryList = new ArrayList<>();
-        mHistoryList = model.getBeanList();
+        mHistoryList = model!=null?model.getBeanList():mHistoryList;
+
+
         mHistoryAdapter = new TelPayHistoryAdapter(mHistoryList, this);
         mEtTelNum.setAdapter(mHistoryAdapter);
 
@@ -264,9 +273,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 根据编辑框的状态处理编辑框
      */
     private void dealTelNumInputView() {
+        isGetContas=true;
         //获取通讯录电话号码
         if (mLevel == 0) {
-            startContacts();
+//            startContacts();
+            jumpContacts();
             return;
         }
 
@@ -286,12 +297,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             //可以从方法名requestPermissions以及第二个参数看出，是支持一次性申请多个权限的，系统会通过对话框逐一询问用户是否授权。
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
-            jumpContacts();
+            if (isGetContas){
+                jumpContacts();
+            }
         }
 
     }
 
     private void jumpContacts() {
+        isGetContas=false;
         //如果该版本低于6.0，或者该权限已被授予，它则可以继续读取联系人。
         Uri uri = Uri.parse("content://contacts/people");
         Intent intent = new Intent(Intent.ACTION_PICK, uri);
@@ -384,7 +398,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 //获取归属地
 
                 //test
-//                getTelLocal();
+                getTelLocal();
 
 
                 //输入不符合条件
@@ -519,6 +533,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 Map<String,Object>  map=new HashMap<>();
                 map.put(AMOUNT,mPayMoney);
                 map.put(TEL,mTelNum);
+
                 new PaymentTask(
                         TelephoneFeeChargeActivity.this,
                         TelephoneFeeChargeActivity.this,
@@ -551,10 +566,21 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 用户成功授予权限
-                jumpContacts();
+//                // 用户成功授予权限
+//                if (isGetContas){
+//                    jumpContacts();
+//                    isGetContas=false;
+//                }
+                initView();
+                setupView();
+                LoadPayNums();
+                getHistoryPay();
+
+
             } else {
-                ToastUtils.showShort("您拒绝了此应用对读取联系人权限的申请");
+//                ToastUtils.showShort("您拒绝了此应用对读取联系人权限的申请");
+//                startContacts();
+                finish();
             }
         }
     }
@@ -593,6 +619,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
         switch (requestCode) {
             case 888://获取通讯录读取权限，成功跳转到通讯录
+                if (!isGetContas){
+                    return;
+                }
                 jumpContacts();
                 break;
 
@@ -701,6 +730,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         model.setBeanList(mHistoryList);
 
         jsonString = new Gson().toJson(model);
+
+        LogUtils.e("jsonString",jsonString);
 
         TelPayHistoryUtils.clearHistoryPay(this);
         TelPayHistoryUtils.putHistoryPay(this, jsonString);

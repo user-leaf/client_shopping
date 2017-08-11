@@ -137,12 +137,12 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
                 //话费充值
             } else if (className.equals(TelephoneFeeChargeActivity.TAG)){
                 StringBuilder sb = new StringBuilder(HttpUrls.URL_PAY_TEL);
-                String amout= (String) mParamsMap.get(TelephoneFeeChargeActivity.AMOUNT);
+                String amount= (String) mParamsMap.get(TelephoneFeeChargeActivity.AMOUNT);
                 String tel= (String) mParamsMap.get(TelephoneFeeChargeActivity.TEL);
 
                 sb.append("?token=").append(CurrentUserManager.getUserToken());
                 sb.append("&payment_channel=").append(channel);
-                sb.append("&amount=").append(amout);
+                sb.append("&amount=").append(amount);
                 sb.append("&tel=").append(tel);
                 URL = sb.toString();
 
