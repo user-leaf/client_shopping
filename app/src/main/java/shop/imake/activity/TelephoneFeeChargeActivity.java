@@ -261,7 +261,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      */
     private boolean ifExist(String num) {
         if (!TextUtils.isEmpty(num)) {
-            for (TelPayHistoryModel.Bean bean:mHistoryList) {
+            for (TelPayHistoryModel.Bean bean : mHistoryList) {
                 return num.equals(bean.getTelNum());
             }
         }
@@ -273,10 +273,10 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      */
     private int getIndxe(String num) {
         if (!TextUtils.isEmpty(num)) {
-            for (int i=0;i<mHistoryList.size()-1;i++) {
-
-                TelPayHistoryModel.Bean bean=mHistoryList.get(i);
-                return num.equals(bean.getTelNum())?i:-1;
+            for (int i = 0; i < mHistoryList.size() - 1; i++) {
+                ;
+                TelPayHistoryModel.Bean bean = mHistoryList.get(i);
+                return num.equals(bean.getTelNum()) ? i : -1;
 
             }
         }
@@ -699,15 +699,18 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                         addNewHistory(3, 1);
                     }
                 } else {
+                    mHistoryList.remove(getIndxe(mTelNum));
                     if (!ifExist(mTelNumself)) {
-                        mHistoryList.remove(getIndxe(mTelNum));
                         addNewHistory(3, 0);
+                    } else {
+                        addNewHistory(3, 1);
                     }
                 }
 
                 break;
             case 4:
                 if (!ifExist(mTelNum)) {
+                    mHistoryList.remove(3);
                     if (!ifExist(mTelNumself)) {
                         addNewHistory(4, 0);
                     } else {
