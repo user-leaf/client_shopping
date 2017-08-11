@@ -76,7 +76,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     public static int CONTACT_REQUESTCODE = 666;//获取通讯录请求码
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 888;//获取通讯录权限的请求码
     private String mTelNum;//输入的电话号码
-    private String mTelNumself= CurrentUserManager.getCurrentUser().getPhone();//本机号码
+    private String mTelNumself = CurrentUserManager.getCurrentUser().getPhone();//本机号码
     public static String USER_TELNUM = "usertelephonenum";
 
     private Api4Mine mApi4Mine;
@@ -91,8 +91,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private List<TelPayHistoryModel.Bean> mHistoryList;//历史充值数据
     private TelPayHistoryAdapter mHistoryAdapter;//历史充值适配器
-    public static String AMOUNT="amount";
-    public static String TEL="telephone";
+    public static String AMOUNT = "amount";
+    public static String TEL = "telephone";
     private boolean isGetContas;
 
 
@@ -133,12 +133,12 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private void getHistoryPay() {
         String jsonStrig = TelPayHistoryUtils.getHistoryPay(this);
 
-        jsonStrig=jsonStrig!=null?jsonStrig:"";
+        jsonStrig = jsonStrig != null ? jsonStrig : "";
 
         TelPayHistoryModel model = new Gson().fromJson(jsonStrig, TelPayHistoryModel.class);
         //历史充值
         mHistoryList = new ArrayList<>();
-        mHistoryList = model!=null?model.getBeanList():mHistoryList;
+        mHistoryList = model != null ? model.getBeanList() : mHistoryList;
 
 
         mHistoryAdapter = new TelPayHistoryAdapter(mHistoryList, this);
@@ -217,6 +217,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 //清除历史
                 if (position == adapterView.getCount() - 1) {
                     clearHistory();
+                    mEtTelNum.setText("");
 
                 } else {
                     //将选择的电话号码填充在输入框里面
@@ -239,20 +240,31 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 清楚充值历史
      */
     private void clearHistory() {
-        int indexSelf = mHistoryList.indexOf(mTelNumself);
 
-        if (indexSelf != -1) {
-
+        //自己的对象存在
+        if (ifExist(mTelNumself)) {
             while (mHistoryList.size() > 2) {
                 mHistoryList.remove(1);
             }
+            //自己的对象不存在
         } else {
             mHistoryList.clear();
         }
         mHistoryAdapter.notifyDataSetChanged();
-
         updateHistoryData();
 
+    }
+
+    /**
+     * 判断输入对象是否存在
+     */
+    private boolean ifExist(String num) {
+        if (!TextUtils.isEmpty(num)) {
+            for (TelPayHistoryModel.Bean bean : mHistoryList) {
+                return num.equals(bean.getTelNum());
+            }
+        }
+        return false;
     }
 
     @Override
@@ -273,7 +285,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 根据编辑框的状态处理编辑框
      */
     private void dealTelNumInputView() {
-        isGetContas=true;
+        isGetContas = true;
         //获取通讯录电话号码
         if (mLevel == 0) {
 //            startContacts();
@@ -297,7 +309,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             //可以从方法名requestPermissions以及第二个参数看出，是支持一次性申请多个权限的，系统会通过对话框逐一询问用户是否授权。
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
-            if (isGetContas){
+            if (isGetContas) {
                 jumpContacts();
             }
         }
@@ -305,7 +317,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     }
 
     private void jumpContacts() {
-        isGetContas=false;
+        isGetContas = false;
         //如果该版本低于6.0，或者该权限已被授予，它则可以继续读取联系人。
         Uri uri = Uri.parse("content://contacts/people");
         Intent intent = new Intent(Intent.ACTION_PICK, uri);
@@ -397,7 +409,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 //获取归属地
 
-                //test
                 getTelLocal();
 
 
@@ -517,11 +528,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private void pay(final View view) {
         //test
-        boolean test = true;
-        if (test) {
-            paySuccess();
-            return;
-        }
+//        boolean test = true;
+//        if (test) {
+//            paySuccess();
+//            return;
+//        }
 
 
         //判断手机号码是否在通讯录中，存在吊起支付，不在弹框提示，吊起支付
@@ -530,9 +541,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             @Override
             public void onPayCallback(String channel) {
                 int amount = 1; // 金额 接口已修改，不从此处判断订单金额，此处设置实际无效
-                Map<String,Object>  map=new HashMap<>();
-                map.put(AMOUNT,mPayMoney);
-                map.put(TEL,mTelNum);
+                Map<String, Object> map = new HashMap<>();
+                map.put(AMOUNT, mPayMoney);
+                map.put(TEL, mTelNum);
 
                 new PaymentTask(
                         TelephoneFeeChargeActivity.this,
@@ -619,7 +630,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
         switch (requestCode) {
             case 888://获取通讯录读取权限，成功跳转到通讯录
-                if (!isGetContas){
+                if (!isGetContas) {
                     return;
                 }
                 jumpContacts();
@@ -640,7 +651,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      */
     private void paySuccess() {
         updateHistory();
-        TelPaySuccessActivity.startAction(this,"¥ "+mPayMoney);
+        TelPaySuccessActivity.startAction(this, "¥ " + mPayMoney);
         finish();
     }
 
@@ -650,7 +661,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private void updateHistory() {
 
         int index = mHistoryList.indexOf(mTelNum);
-        int indexSelf = mHistoryList.indexOf(mTelNumself);
 
         switch (mHistoryList.size()) {
             case 0:
@@ -659,8 +669,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 break;
             case 2:
                 //电话不存在
-                if (index == -1) {
-                    if (indexSelf == -1) {
+                if (!ifExist(mTelNum)) {
+                    if (!ifExist(mTelNumself)) {
                         addNewHistory(2, 0);
                     } else {
                         addNewHistory(2, 1);
@@ -668,14 +678,14 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 }
                 break;
             case 3:
-                if (index == -1) {
-                    if (indexSelf == -1) {
+                if (!ifExist(mTelNum)) {
+                    if (!ifExist(mTelNumself)) {
                         addNewHistory(3, 0);
                     } else {
                         addNewHistory(3, 1);
                     }
                 } else {
-                    if (indexSelf == -1) {
+                    if (!ifExist(mTelNumself)) {
                         mHistoryList.remove(index);
                         addNewHistory(3, 0);
                     }
@@ -683,15 +693,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 break;
             case 4:
-                if (index == -1) {
-                    if (indexSelf == -1) {
+                if (!ifExist(mTelNum)) {
+                    if (!ifExist(mTelNumself)) {
                         addNewHistory(4, 0);
                     } else {
                         addNewHistory(4, 1);
                     }
                 } else {
                     mHistoryList.remove(index);
-                    if (indexSelf == -1) {
+                    if (!ifExist(mTelNumself)) {
                         addNewHistory(4, 0);
                     } else {
                         addNewHistory(4, 1);
@@ -732,7 +742,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
         jsonString = new Gson().toJson(model);
 
-        LogUtils.e("jsonString",jsonString);
+        LogUtils.e("jsonString", jsonString);
 
         TelPayHistoryUtils.clearHistoryPay(this);
         TelPayHistoryUtils.putHistoryPay(this, jsonString);

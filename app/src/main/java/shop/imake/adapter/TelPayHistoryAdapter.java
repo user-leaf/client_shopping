@@ -76,7 +76,7 @@ public class TelPayHistoryAdapter extends BaseAdapter implements Filterable {
 
         if (model != null) {
             holder.tvTelNum.setText(model.getTelNum());
-            holder.tvClear.setText(model.getName());
+            holder.tvName.setText(model.getName());
             holder.tvLocal.setText(model.getLocal());
         }
 
