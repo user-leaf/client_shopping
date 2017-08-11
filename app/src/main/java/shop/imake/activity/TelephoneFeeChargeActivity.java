@@ -274,8 +274,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private int getIndxe(String num) {
         if (!TextUtils.isEmpty(num)) {
             for (int i = 0; i < mHistoryList.size() - 1; i++) {
-                ;
                 TelPayHistoryModel.Bean bean = mHistoryList.get(i);
+                LogUtils.e("getIndxe",i+"");
                 return num.equals(bean.getTelNum()) ? i : -1;
 
             }
