@@ -517,11 +517,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private void pay(final View view) {
         //test
-//        boolean test = true;
-//        if (test) {
-//            paySuccess();
-//            return;
-//        }
+        boolean test = true;
+        if (test) {
+            paySuccess();
+            return;
+        }
 
 
         //判断手机号码是否在通讯录中，存在吊起支付，不在弹框提示，吊起支付
@@ -640,7 +640,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      */
     private void paySuccess() {
         updateHistory();
-        ToastUtils.showShort("跳转到支付成功页面");
+        TelPaySuccessActivity.startAction(this,"¥ "+mPayMoney);
+        finish();
     }
 
     /**

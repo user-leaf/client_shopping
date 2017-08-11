@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/white"
+    tools:context="shop.imake.activity.ScanPaySuccessActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_payment_success"
+        android:layout_marginTop="84dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="支付成功"
+        android:textSize="15sp"
+        android:textColor="#17A832"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        />
+
+    <TextView
+        android:id="@+id/tel_pay_success_tv_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginBottom="50dp"
+        android:textSize="40sp"
+        android:textColor="#222222"
+        />
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <Button
+        android:id="@+id/tel_pay_success_btn_complete"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:text="完成"
+        android:layout_marginBottom="42dp"
+        android:background="@drawable/shape_scan_pay_success_btn_bg"
+        android:textColor="@color/app_basic"
+        />
+
+</LinearLayout>
