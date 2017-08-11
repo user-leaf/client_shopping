@@ -55,6 +55,12 @@
             android:textSize="13sp"
             android:layout_toRightOf="@+id/tv_tel_pay_history_name"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@drawable/shape_dash_line"
+            android:layout_alignParentBottom="true"
+            />
     </RelativeLayout>
 
 </FrameLayout>
