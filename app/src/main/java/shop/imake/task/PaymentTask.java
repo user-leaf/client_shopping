@@ -134,10 +134,11 @@ public class PaymentTask extends AsyncTask<PaymentTask.PaymentRequest, Void, Str
                 sb.append("?token=").append(CurrentUserManager.getUserToken());
                 sb.append("&channel=").append(channel);
                 URL = sb.toString();
-                //话费充值
-            } else if (className.equals(TelephoneFeeChargeActivity.TAG)){
+            }
+            // 话费充值
+            else if (className.equals(TelephoneFeeChargeActivity.TAG)){
                 StringBuilder sb = new StringBuilder(HttpUrls.URL_PAY_TEL);
-                String amount= (String) mParamsMap.get(TelephoneFeeChargeActivity.AMOUNT);
+                double amount= (double) mParamsMap.get(TelephoneFeeChargeActivity.AMOUNT);
                 String tel= (String) mParamsMap.get(TelephoneFeeChargeActivity.TEL);
 
                 sb.append("?token=").append(CurrentUserManager.getUserToken());
