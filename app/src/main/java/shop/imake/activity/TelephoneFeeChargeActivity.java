@@ -197,6 +197,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         mTitle = ((IUUTitleBar) findViewById(R.id.title_telephone_pee_charge));
 
         mEtTelNum = ((AutoCompleteTextView) findViewById(R.id.et_tel_pay_num));
+        mEtTelNum.setThreshold(1);
 
         mTvName = ((TextView) findViewById(R.id.tv_tel_pay_name));
         mTvLocal = ((TextView) findViewById(R.id.tv_tel_pay_local));
