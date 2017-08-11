@@ -262,9 +262,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private boolean ifExist(String num) {
         if (!TextUtils.isEmpty(num)) {
             for (TelPayHistoryModel.Bean bean : mHistoryList) {
+                LogUtils.e("ifExist",num.equals(bean.getTelNum())+"");
                 return num.equals(bean.getTelNum());
             }
         }
+        LogUtils.e("ifExist","没跳转出去");
         return false;
     }
 
@@ -277,9 +279,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 TelPayHistoryModel.Bean bean = mHistoryList.get(i);
                 LogUtils.e("getIndxe",i+"");
                 return num.equals(bean.getTelNum()) ? i : -1;
-
             }
         }
+        LogUtils.e("ifExist","没跳转出去");
         return -1;
     }
 
@@ -501,7 +503,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
             //通讯录中存在
             if (ContactsUtils.isHave(getApplicationContext(), mTelNum)) {
-                makeOrder(view);
+                pay(view);
 
             } else {
                 //弹框提示
@@ -516,7 +518,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                makeOrder(view);
+                                pay(view);
 
                             }
                         }, new DialogInterface.OnClickListener() {
@@ -537,10 +539,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 生成订单
      */
 
-    private void makeOrder(View view) {
-        pay(view);
-
-    }
 
     private void pay(final View view) {
         //test
@@ -675,6 +673,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 更新本地历史存储
      */
     private void updateHistory() {
+        int indxe=-1;
 
         switch (mHistoryList.size()) {
             case 0:
@@ -699,12 +698,17 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                         addNewHistory(3, 1);
                     }
                 } else {
+//                    indxe=getIndxe(mTelNum);
+//                    if (indxe<0){
+//                        return;
+//                    }
                     mHistoryList.remove(getIndxe(mTelNum));
                     if (!ifExist(mTelNumself)) {
                         addNewHistory(3, 0);
                     } else {
                         addNewHistory(3, 1);
                     }
+
                 }
 
                 break;
