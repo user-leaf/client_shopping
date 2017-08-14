@@ -823,8 +823,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
         dataListLogin.add(mine7);
 
         //test
-        MyMine mine9 = new MyMine("话费充值", R.mipmap.personal_centeriocn_icon_prepaid_refill);
-        dataListLogin.add(mine9);
+//        MyMine mine9 = new MyMine("话费充值", R.mipmap.personal_centeriocn_icon_prepaid_refill);
+//        dataListLogin.add(mine9);
 
         adapter = new MineAdapter(getActivity(), gv, dataListLogin);
         gv.setAdapter(adapter);
@@ -1367,7 +1367,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
             case 8:
                 //test，跳转我的兑换券
-                TelephoneFeeChargeActivity.startAction(getActivity());
+//                TelephoneFeeChargeActivity.startAction(getActivity());
 //                break;
 
 //            case 8:

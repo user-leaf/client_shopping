@@ -262,11 +262,13 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private boolean ifExist(String num) {
         if (!TextUtils.isEmpty(num)) {
             for (TelPayHistoryModel.Bean bean : mHistoryList) {
-                LogUtils.e("ifExist",num.equals(bean.getTelNum())+"");
-                return num.equals(bean.getTelNum());
+                LogUtils.e("ifExist", num.equals(bean.getTelNum()) + "");
+                if (num.equals(bean.getTelNum())) {
+                    return true;
+                }
             }
         }
-        LogUtils.e("ifExist","没跳转出去");
+        LogUtils.e("ifExist", "没跳转出去");
         return false;
     }
 
@@ -274,14 +276,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * @param
      */
     private int getIndxe(String num) {
-        if (!TextUtils.isEmpty(num)) {
-            for (int i = 0; i < mHistoryList.size() - 1; i++) {
-                TelPayHistoryModel.Bean bean = mHistoryList.get(i);
-                LogUtils.e("getIndxe",i+"");
-                return num.equals(bean.getTelNum()) ? i : -1;
+
+        for (TelPayHistoryModel.Bean bean : mHistoryList) {
+
+            LogUtils.e("getIndxe", mHistoryList.indexOf(bean) + "");
+            if (num.equals(bean.getTelNum())) {
+                return mHistoryList.indexOf(bean);
             }
         }
-        LogUtils.e("ifExist","没跳转出去");
+        LogUtils.e("ifExist", "没跳转出去");
         return -1;
     }
 
@@ -463,7 +466,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         mApi4Mine.getTelLocal(mTelNum, new DataCallback<TelPayLocalModel>(getApplicationContext()) {
             @Override
             public void onFail(Call call, Exception e, int id) {
-                getTelLocal();
+//                getTelLocal();
                 if (!NetStateUtils.isNetworkAvailable(getApplicationContext())) {
                     UNNetWorkUtils.unNetWorkOnlyNotify(getApplicationContext(), e);
                     return;
@@ -673,7 +676,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 更新本地历史存储
      */
     private void updateHistory() {
-        int indxe=-1;
+        int indxe = -1;
 
         switch (mHistoryList.size()) {
             case 0:
@@ -714,7 +717,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 break;
             case 4:
                 if (!ifExist(mTelNum)) {
-                    mHistoryList.remove(3);
+                    mHistoryList.remove(2);
                     if (!ifExist(mTelNumself)) {
                         addNewHistory(4, 0);
                     } else {
