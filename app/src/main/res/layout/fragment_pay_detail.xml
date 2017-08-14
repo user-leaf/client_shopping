@@ -114,7 +114,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="10.00元"
                         android:textColor="@color/app_red"
                         />
                 </RelativeLayout>

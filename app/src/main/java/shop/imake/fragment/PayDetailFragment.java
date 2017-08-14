@@ -162,7 +162,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
 //        mLvPayWay.setOnItemClickListener(this);
 
         // 设置数据
-        tvMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney) + "元");
+        tvMoney.setText(DoubleTextUtils.setDoubleUtils(mMoney));
     }
 
     /**
