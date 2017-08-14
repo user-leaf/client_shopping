@@ -11,6 +11,9 @@ import shop.imake.user.CurrentUserManager;
 
 public class TelPayHistoryUtils {
 //    public static String TEL_PAY_HISTORY_LIST_KEY = "tel_pay_history_list_key";
+    //test
+
+//    public static String TEL_PAY_HISTORY_LIST_KEY = "";
     public static String TEL_PAY_HISTORY_LIST_KEY = CurrentUserManager.getCurrentUser().getPhone();
 
 

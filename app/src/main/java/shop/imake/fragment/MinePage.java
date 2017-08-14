@@ -1367,8 +1367,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
             case 8:
                 //test，跳转我的兑换券
-//                TelephoneFeeChargeActivity.startAction(getActivity());
-//                break;
+                TelephoneFeeChargeActivity.startAction(getActivity());
+                break;
 
 //            case 8:
 //                if (isLogin){

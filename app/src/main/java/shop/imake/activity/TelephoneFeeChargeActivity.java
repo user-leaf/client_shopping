@@ -76,7 +76,10 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     public static int CONTACT_REQUESTCODE = 666;//获取通讯录请求码
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 888;//获取通讯录权限的请求码
     private String mTelNum;//输入的电话号码
+    //test
+//    private String mTelNumself = "";//本机号码
     private String mTelNumself = CurrentUserManager.getCurrentUser().getPhone();//本机号码
+
     public static String USER_TELNUM = "usertelephonenum";
 
     private Api4Mine mApi4Mine;
@@ -340,7 +343,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private void jumpContacts() {
         isGetContas = false;
         //如果该版本低于6.0，或者该权限已被授予，它则可以继续读取联系人。
-        Uri uri = Uri.parse("content://contacts/people");
+//        Uri uri = Uri.parse("content://contacts/people");
+        Uri uri =ContactsContract.Contacts.CONTENT_URI;
         Intent intent = new Intent(Intent.ACTION_PICK, uri);
         startActivityForResult(intent, CONTACT_REQUESTCODE);
 
