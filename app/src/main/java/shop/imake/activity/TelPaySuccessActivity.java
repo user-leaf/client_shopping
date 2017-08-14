@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import shop.imake.R;
+import shop.imake.utils.DoubleTextUtils;
 
 /**
  * 话费充值成功页面
@@ -38,7 +39,7 @@ public class TelPaySuccessActivity extends BaseActivity {
         String money=intent.getStringExtra(TEL_PAY_MONEY);
         mTvMoney = ((TextView) findViewById(R.id.tel_pay_success_tv_money));
         if (!TextUtils.isEmpty(money)){
-            mTvMoney.setText(""+money);
+            mTvMoney.setText(""+ DoubleTextUtils.setDoubleUtils(Double.valueOf(money)));
         }
         mBtFinsh = ((Button) findViewById(R.id.tel_pay_success_btn_complete));
     }

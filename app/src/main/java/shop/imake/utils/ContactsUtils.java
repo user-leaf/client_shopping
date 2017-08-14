@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 
-import shop.imake.activity.TelephoneFeeChargeActivity;
-
 
 /**
  * 手机通讯处理工具
@@ -65,6 +63,6 @@ public class ContactsUtils {
     }
     public static boolean isHave(Context context, String number) {
 
-        return ("不在通讯录".equals(getDisplayNameByNumber(context,number)))?false:true;
+        return "不在通讯录".equals(getDisplayNameByNumber(context,number))?false:true;
     }
 }

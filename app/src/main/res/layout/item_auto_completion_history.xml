@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:background="#fff"
         android:gravity="center_horizontal"
-        android:paddingBottom="21.5dp"
-        android:paddingTop="21.5dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:text="清空历史记录"
         android:textColor="#28a7e1"
         android:textSize="15sp"
@@ -21,10 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:paddingBottom="15dp"
+        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="15dp"
+        android:paddingTop="10dp"
         android:visibility="visible"
         >
 

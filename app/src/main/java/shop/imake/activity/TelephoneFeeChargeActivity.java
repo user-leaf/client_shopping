@@ -77,7 +77,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 888;//获取通讯录权限的请求码
     private String mTelNum;//输入的电话号码
     //test
-//    private String mTelNumself = "";//本机号码
+//    private String mTelNumself ="18333618642";
     private String mTelNumself = CurrentUserManager.getCurrentUser().getPhone();//本机号码
 
     public static String USER_TELNUM = "usertelephonenum";
@@ -97,6 +97,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     public static String AMOUNT = "amount";
     public static String TEL = "telephone";
     private boolean isGetContas;
+
+    private String mTelNumShow;
 
 
     public static void startAction(Context context) {
@@ -234,6 +236,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         //初始化输入框
         mEtTelNum.setText(mTelNumself);
 
+
         mIvDealTelNum.setOnClickListener(this);
 
         mGv.setOnItemClickListener(mPayFeeOnItemOnClickListener);
@@ -346,7 +349,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         //存在通讯录排序错乱的问题，获取特殊字符联系人崩溃的问题
 //        Uri uri = Uri.parse("content://contacts/people");
 
-        Uri uri =ContactsContract.Contacts.CONTENT_URI;
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
         Intent intent = new Intent(Intent.ACTION_PICK, uri);
         startActivityForResult(intent, CONTACT_REQUESTCODE);
 
@@ -376,8 +379,20 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
             if (phone != null) {
-                phone.moveToFirst();
-                contact[1] = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                if (!phone.moveToFirst()){
+                    ToastUtils.showShort("联系人号码为空");
+                }
+                String phoneNum=phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
+                phoneNum = phoneNum.replaceAll("^(\\+86)", "");
+                phoneNum = phoneNum.replaceAll("^(86)", "");
+                phoneNum = phoneNum.replaceAll("-", "");
+                phoneNum = phoneNum.replaceAll(" ", "");
+                phoneNum = phoneNum.trim();
+                phoneNum=phoneNum.substring(0,11);
+                LogUtils.e("phoneNum",phoneNum);
+                contact[1] =phoneNum;
             }
             phone.close();
             cursor.close();
@@ -386,6 +401,22 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         }
         return contact;
     }
+
+    /**
+     * 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
+     * @param phoneNum
+     * @return
+     */
+    private String getPayTelNum(String phoneNum) {
+        phoneNum = phoneNum.replaceAll("^(\\+86)", "");
+        phoneNum = phoneNum.replaceAll("^(86)", "");
+        phoneNum = phoneNum.replaceAll("-", "");
+        phoneNum = phoneNum.replaceAll(" ", "");
+        phoneNum = phoneNum.trim();
+        LogUtils.e("getPayTelNum",phoneNum);
+        return phoneNum;
+    }
+
 
 
     private String mLocalInput;//输入电话的归属地
@@ -402,7 +433,13 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String string = charSequence.toString();
+            String string = charSequence.toString().trim();
+            //去掉空格,获得完全11位的电话号码
+            string=getPayTelNum(string);
+
+            String stringShow = charSequence.toString();
+
+            mTvName.setEnabled(true);
             //输入为空
             if (TextUtils.isEmpty(string)) {
                 //可获取通讯录
@@ -415,12 +452,31 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 return;
             }
-            //控制光标的位置
-            mEtTelNum.setSelection(string.length());
+
+
+            //获得显示号码
+            int length=string.length();
+            StringBuffer sb=new StringBuffer(string);
+
+            if (length>3&&length<7&&stringShow.indexOf(" ")==-1){
+                sb.insert(3," ");
+                mEtTelNum.setText(sb.toString());
+                //控制光标的位置
+                mEtTelNum.setSelection(sb.toString().length());
+            }else if(length>7&&stringShow.lastIndexOf(" ")!=8){
+                sb.insert(3," ").insert(8," ");
+                mEtTelNum.setText(sb.toString());
+                //控制光标的位置
+                mEtTelNum.setSelection(sb.toString().length());
+            }
+//            mEtTelNum.setText(mTelNumShow);
+
+
 
             //是合格的电话号码
             if (ValidatorsUtils.validateUserPhone(string)) {
                 mTelNum = string;
+                mTelNumShow=mEtTelNum.getText().toString();
                 //可获取通讯录
                 mLevel = 0;
                 mIvDealTelNum.setImageLevel(mLevel);
@@ -450,7 +506,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 mTvLocal.setText("");
 
                 if (string.length() == 11) {
-                    mTvName.setText("手机号码有误");
+                    mTvName.setText("输入手机号码有误");
+                    mTvName.setEnabled(false);
+                    //显示获取通讯录数据
+                    mLevel = 0;
+                    mIvDealTelNum.setImageLevel(mLevel);
                     return;
                 }
                 mTvName.setText("");
@@ -748,7 +808,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         TelPayHistoryModel.Bean bean;
 
         bean = new TelPayHistoryModel.Bean();
-        bean.setTelNum(mTelNum);
+        bean.setTelNum(mTelNumShow);
         bean.setName(mNameInput);
         bean.setLocal(mLocalInput);
         mHistoryList.add(index, bean);
