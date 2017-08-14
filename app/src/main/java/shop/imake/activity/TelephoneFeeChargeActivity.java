@@ -343,7 +343,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private void jumpContacts() {
         isGetContas = false;
         //如果该版本低于6.0，或者该权限已被授予，它则可以继续读取联系人。
+        //存在通讯录排序错乱的问题，获取特殊字符联系人崩溃的问题
 //        Uri uri = Uri.parse("content://contacts/people");
+
         Uri uri =ContactsContract.Contacts.CONTENT_URI;
         Intent intent = new Intent(Intent.ACTION_PICK, uri);
         startActivityForResult(intent, CONTACT_REQUESTCODE);
