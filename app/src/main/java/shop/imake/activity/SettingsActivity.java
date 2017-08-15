@@ -20,7 +20,6 @@ import shop.imake.user.CurrentUserManager;
 import shop.imake.utils.DataCleanManager;
 import shop.imake.utils.JPushUtils;
 import shop.imake.utils.NetStateUtils;
-import shop.imake.utils.TelPayHistoryUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UpdateUtils;
 
@@ -142,8 +141,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                     // 极光推送别名清除
                     JPushUtils.deleteAlias();
 
-                    //清楚电话充值的本地缓存
-                    TelPayHistoryUtils.clearHistoryPay(this);
+//                    //清楚电话充值的本地缓存
+//                    TelPayHistoryUtils.clearHistoryPay(this);
 
                     CurrentUserManager.clearCurrentUser();
                     finish();

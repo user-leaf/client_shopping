@@ -39,7 +39,7 @@ public class TelPaySuccessActivity extends BaseActivity {
         String money=intent.getStringExtra(TEL_PAY_MONEY);
         mTvMoney = ((TextView) findViewById(R.id.tel_pay_success_tv_money));
         if (!TextUtils.isEmpty(money)){
-            mTvMoney.setText(""+ DoubleTextUtils.setDoubleUtils(Double.valueOf(money)));
+            mTvMoney.setText("¥ " + DoubleTextUtils.setDoubleUtils(Double.valueOf(money)));
         }
         mBtFinsh = ((Button) findViewById(R.id.tel_pay_success_btn_complete));
     }

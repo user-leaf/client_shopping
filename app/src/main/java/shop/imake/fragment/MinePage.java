@@ -454,7 +454,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
                         break;
                     case "topup"://话费充值
-                        TelephoneFeeChargeActivity.startAction(getActivity());
+                        if (TextUtils.isEmpty(mTelNum)){
+                            initData();
+                            return;
+                        }
+                        TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
                         break;
 
                 }
@@ -669,8 +673,12 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                 mTvName.setText("");
             }
 
+            //获得用户账号电话号码
             String tel = memberBean.getPhone().trim();
-            mTelNum=tel;
+            if (!TextUtils.isEmpty(tel)){
+                mTelNum=tel;
+            }
+
 
             if (!TextUtils.isEmpty(tel)) {
                 tel = tel.substring(0, 3) + "****" + tel.substring(tel.length() - 4, tel.length());
@@ -1367,7 +1375,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
             case 8:
                 //test，跳转我的兑换券
-                TelephoneFeeChargeActivity.startAction(getActivity());
+                TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
                 break;
 
 //            case 8:

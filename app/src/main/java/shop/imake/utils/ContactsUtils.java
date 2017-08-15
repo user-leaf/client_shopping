@@ -19,36 +19,13 @@ public class ContactsUtils {
      * @return
      */
     public static String getDisplayNameByNumber(Context context, String number) {
-//        String displayName = null;
-//        Cursor cursor = null;
-//
-//        try {
-//            ContentResolver resolver = context.getContentResolver();
-//            Uri uri = ContactsContract.PhoneLookup.CONTENT_FILTER_URI.buildUpon().appendPath(number).build();
-//            String[] projection = new String[] { COLUMN_ID, COLUMN_DISPLAY_NAME };
-//            cursor = resolver.query(uri, projection, null, null, null);
-//
-//            if (cursor != null && cursor.moveToFirst()) {
-//                int columnIndexName = cursor.getColumnIndex(COLUMN_DISPLAY_NAME);
-//                displayName = cursor.getString(columnIndexName);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (cursor != null) {
-//                cursor.close();
-//            }
-//        }
-//
-//        return displayName;
-
 
         String contactName = "";
         ContentResolver cr = context.getContentResolver();
         Cursor pCur = cr.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
-                new String[]{number}, null);
+                new String[] { number }, null);
         if (pCur.moveToFirst()) {
             contactName = pCur
                     .getString(pCur

@@ -21,11 +21,13 @@ import shop.imake.model.TelPayHistoryModel;
 public class TelPayHistoryAdapter extends BaseAdapter implements Filterable {
     private List<TelPayHistoryModel.Bean> modelList;
     private Context mContext;
+    private OnItemOnItemClick onItemOnItemClick;
 
 
-    public TelPayHistoryAdapter(List<TelPayHistoryModel.Bean> modelList, Context mContext) {
+    public TelPayHistoryAdapter(List<TelPayHistoryModel.Bean> modelList, Context mContext, OnItemOnItemClick onItemOnItemClick) {
         this.modelList = modelList;
         this.mContext = mContext;
+        this.onItemOnItemClick = onItemOnItemClick;
     }
 
     @Override
@@ -45,11 +47,19 @@ public class TelPayHistoryAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(final int position, View convertView, final ViewGroup viewGroup) {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = View.inflate(mContext, R.layout.item_auto_completion_history, null);
+
+            //设置点击事件
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemOnItemClick.setOnItemClick(position,viewGroup.getChildCount());
+                }
+            });
 
             holder.tvClear = (TextView) convertView.findViewById(R.id.tv_tel_pay_history_clear);
             holder.rl = (RelativeLayout) convertView.findViewById(R.id.rl_tel_pay_history);
@@ -83,6 +93,10 @@ public class TelPayHistoryAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+
+    public interface OnItemOnItemClick {
+        void setOnItemClick(int position,int count);
+    }
 
     class ViewHolder {
         TextView tvClear;

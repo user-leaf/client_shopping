@@ -42,6 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_tel_pay_history_num"
             android:text="name"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="#999"
             android:textSize="13sp" />
 
