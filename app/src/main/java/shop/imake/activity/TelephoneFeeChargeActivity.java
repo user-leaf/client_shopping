@@ -19,10 +19,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -146,7 +149,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             LoadPayNums();
             getHistoryPay();
         }
-
 
     }
 
@@ -865,6 +867,40 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 多号码选择框
+     * @param phoneList
+     * @param choice
+     */
+    private void showPhoneChoiceDialog(List<String> phoneList, String choice){
+
+        View choiceView = LayoutInflater.from(this).inflate(R.layout.dialog_tel_fee_charge_choice, null);
+
+        ListView listView = (ListView) choiceView.findViewById(R.id.tel_fee_charge_choice_dialog_listview);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice, phoneList);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
+
+        Dialog choiceDialog = DialogUtils.createRandomDialog(this, "请选择一个号码", null, "取消", null,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                },
+                choiceView
+        );
+
+        if (choiceDialog != null && !choiceDialog.isShowing()){
+            choiceDialog.show();
+        }
+    }
 
     /**
      * 重写方法获取返回信息

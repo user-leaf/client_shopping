@@ -23,21 +23,25 @@ public class ContactsUtils {
         String contactName = "";
         ContentResolver cr = context.getContentResolver();
         Cursor pCur = cr.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
                 ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
-                new String[] { number }, null);
+                new String[] { number },
+                null
+        );
+
         if (pCur.moveToFirst()) {
-            contactName = pCur
-                    .getString(pCur
-                            .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            contactName = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             pCur.close();
         }
 
         if (TextUtils.isEmpty(contactName)){
             contactName="不在通讯录";
         }
+
         return contactName;
     }
+
     public static boolean isHave(Context context, String number) {
 
         return "不在通讯录".equals(getDisplayNameByNumber(context,number))?false:true;
