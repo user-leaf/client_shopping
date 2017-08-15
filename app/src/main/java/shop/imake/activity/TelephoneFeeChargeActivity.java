@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -54,6 +55,7 @@ import shop.imake.utils.LogUtils;
 import shop.imake.utils.NetStateUtils;
 import shop.imake.utils.PayUtils;
 import shop.imake.utils.TelPayHistoryUtils;
+import shop.imake.utils.TelPhoneFormatUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
 import shop.imake.utils.ValidatorsUtils;
@@ -230,32 +232,12 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     }
 
+
     private void initView() {
         mTitle = ((IUUTitleBar) findViewById(R.id.title_telephone_pee_charge));
 
         mEtTelNum = ((AutoCompleteTextView) findViewById(R.id.et_tel_pay_num));
         mEtTelNum.setThreshold(1);
-
-        //处理历史充值条目点击事件
-//        mEtTelNum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                ToastUtils.showShort("点击了历史"+position);
-//                //清除历史
-//                if (position == adapterView.getCount() - 1) {
-//                    clearHistory();
-//                    mEtTelNum.setText("");
-//
-//                } else {
-//                    //将选择的电话号码填充在输入框里面
-//                    String telNum=mHistoryList.get(position).getTelNum();
-//                    LogUtils.e("telNum",telNum+"");
-//                    mEtTelNum.setText(telNum);
-//                }
-//
-//            }
-//        });
-
 
         mTvName = ((TextView) findViewById(R.id.tv_tel_pay_name));
         mTvLocal = ((TextView) findViewById(R.id.tv_tel_pay_local));
@@ -271,6 +253,10 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
         mEtTelNum.addTextChangedListener(mTelNumTextWatcher);
 
+
+        mEtTelNum.addTextChangedListener(mNewTextWatcher);
+
+
         //初始化输入框
         mEtTelNum.setText(mTelNumself);
 
@@ -280,6 +266,114 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         mGv.setOnItemClickListener(mPayFeeOnItemOnClickListener);
 
     }
+
+    TextWatcher mNewTextWatcher = new TextWatcher() {
+
+        private boolean isDelete;
+
+        @Override
+        public void onTextChanged(CharSequence s, int cursorPosition, int before, int count) {
+            LogUtils.e("position", "before:" + before + ",count:" + count);
+
+
+            mTvName.setEnabled(true);
+            String string = s.toString().trim();
+            //去掉空格,获得完全11位的电话号码
+            string = getPayTelNum(string);
+
+            //输入为空
+            if (TextUtils.isEmpty(string)) {
+                //可获取通讯录
+                mLevel = 0;
+                mIvDealTelNum.setImageLevel(mLevel);
+                //下面的选择框bu可以选择
+                initCtlPayMoneyNums(false);
+                mTvName.setText("");
+                mTvLocal.setText("");
+
+                return;
+            }
+
+            mEtTelNum.setOnKeyListener(new View.OnKeyListener() {
+
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        isDelete = true;
+                    }
+                    return false;
+                }
+            });
+
+            TelPhoneFormatUtils.formatPhoneNumber(s, cursorPosition, before, count, mEtTelNum, this);
+
+            //是合格的电话号码
+            if (ValidatorsUtils.validateUserPhone(string)) {
+                mTelNum = string;
+                mTelNumShow = mEtTelNum.getText().toString();
+                //控制光标的位置
+                mEtTelNum.setSelection(mTelNumShow.length());
+                //可获取通讯录
+                mLevel = 0;
+                mIvDealTelNum.setImageLevel(mLevel);
+                //下面的选择框可以选择
+                initCtlPayMoneyNums(true);
+                String name = "";
+                //获得姓名，归属地
+//                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+
+
+                if (isFromContact) {
+                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
+                    isFromContact = false;
+                    mContactsTelNum = "";
+                } else {
+                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                }
+
+
+                if (mTelNumself.equals(string)) {
+                    name = "账号绑定号码";
+                }
+                mNameInput = name;
+                mTvName.setText(name);
+
+                //获取归属地
+
+                getTelLocal();
+
+
+                //输入不符合条件
+            } else {
+                //显示清除输入框按钮
+                mLevel = 1;
+                mIvDealTelNum.setImageLevel(mLevel);
+                //下面的选择框bu可以选择
+                initCtlPayMoneyNums(false);
+
+                mTvLocal.setText("");
+
+                if (string.length() == 11) {
+                    mTvName.setText("输入手机号码有误");
+                    mTvName.setEnabled(false);
+                    //显示获取通讯录数据
+                    mLevel = 0;
+                    mIvDealTelNum.setImageLevel(mLevel);
+                    return;
+                }
+                mTvName.setText("");
+            }
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+        }
+    };
 
     /**
      * 清楚充值历史
@@ -425,20 +519,19 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
             if (phone != null) {
 
-                if (!phone.moveToFirst()) {
-                    ToastUtils.showShort("联系人号码为空");
+                String phoneNum = "";
+                if (phone.moveToFirst()) {
+                    phoneNum = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    isFromContact = true;
+                    mContactsTelNum = phoneNum.replaceAll(" ", "").trim();
+                    // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
+                    phoneNum = phoneNum.replaceAll("^(\\+86)", "");
+                    phoneNum = phoneNum.replaceAll("^(86)", "");
+                    phoneNum = phoneNum.replaceAll("-", "");
+                    phoneNum = phoneNum.replaceAll(" ", "");
+                    phoneNum = phoneNum.trim();
                 }
-                String phoneNum = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                isFromContact = true;
-                mContactsTelNum = phoneNum.replaceAll(" ", "").trim();
 
-
-                // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
-                phoneNum = phoneNum.replaceAll("^(\\+86)", "");
-                phoneNum = phoneNum.replaceAll("^(86)", "");
-                phoneNum = phoneNum.replaceAll("-", "");
-                phoneNum = phoneNum.replaceAll(" ", "");
-                phoneNum = phoneNum.trim();
                 if (!ValidatorsUtils.validateUserPhone(phoneNum)) {
                     ToastUtils.showShort("号码错误");
                 }
@@ -472,6 +565,10 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         phoneNum = phoneNum.replaceAll("-", "");
         phoneNum = phoneNum.replaceAll(" ", "");
         phoneNum = phoneNum.trim();
+        if (phoneNum.length() > 11) {
+            phoneNum = phoneNum.substring(0, 11);
+        }
+
         LogUtils.e("getPayTelNum", phoneNum);
         return phoneNum;
     }
@@ -485,19 +582,18 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     TextWatcher mTelNumTextWatcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            mTvName.setEnabled(true);
             String string = charSequence.toString().trim();
             //去掉空格,获得完全11位的电话号码
             string = getPayTelNum(string);
 
-            String stringShow = charSequence.toString();
-
-            mTvName.setEnabled(true);
             //输入为空
             if (TextUtils.isEmpty(string)) {
                 //可获取通讯录
@@ -511,12 +607,24 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 return;
             }
 
+            //输入有误账号
+            String stringShow = charSequence.toString();
+
+            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
+                mEtTelNum.setText(string);
+                return;
+            }
+            if (stringShow.length() > 13) {
+                mEtTelNum.setText(stringShow.substring(0, 13));
+                mEtTelNum.setSelection(13);
+                return;
+            }
 
             //获得显示号码
             int length = string.length();
             StringBuffer sb = new StringBuffer(string);
 
-            if (length > 3 && length < 7 && stringShow.indexOf(" ") == -1) {
+            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
                 sb.insert(3, " ");
                 mEtTelNum.setText(sb.toString());
                 //控制光标的位置
@@ -529,7 +637,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 //控制光标的位置
                 mEtTelNum.setSelection(sb.toString().length());
 
+
             }
+
 //            mEtTelNum.setText(mTelNumShow);
 
 
@@ -645,7 +755,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 //            ToastUtils.showShort("充值" + mPayMoney);
 
             //通讯录中存在
-            if (ContactsUtils.isHave(getApplicationContext(), mTelNum)) {
+            if (ContactsUtils.isHave(getApplicationContext(), mTelNum) || mTelNumself.equals(mTelNum)) {
                 pay(view);
 
             } else {
@@ -685,11 +795,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private void pay(final View view) {
         //test
-//        boolean test = true;
-//        if (test) {
-//            paySuccess();
-//            return;
-//        }
+        boolean test = true;
+        if (test) {
+            paySuccess();
+            return;
+        }
 
 
         //判断手机号码是否在通讯录中，存在吊起支付，不在弹框提示，吊起支付

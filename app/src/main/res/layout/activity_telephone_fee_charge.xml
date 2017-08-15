@@ -30,7 +30,6 @@
             android:ellipsize="start"
             android:gravity="top"
             android:inputType="phone"
-            android:maxLength="13"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="50dp"
