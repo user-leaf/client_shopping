@@ -41,19 +41,18 @@ public class ClientAPI {
     /**
      * false 正式环境  true 测试环境
      */
-    private static boolean flag_test = true;
+    private static boolean flag_test = false;
 
     static {
         if (flag_test) {    // 测试环境
             API_POINT = "http://api3.bjiuu.com/";
             URL_WX_H5 = "http://wxweb2.bjiuu.com/zhweb/";
-//            API_POINT_JAVA="http://192.168.0.193:8084/";
             API_POINT_JAVA="http://192.168.0.30:8080/";
 
         } else {    // 正式环境
             API_POINT = "https://zhapi.bjaiyouyou.com/";
             URL_WX_H5 = "https://zhweb.bjaiyouyou.com/";
-            API_POINT_JAVA="";
+            API_POINT_JAVA="http://iuuboot.bjaiyouyou.com:8084/";
 
         }
     }

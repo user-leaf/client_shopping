@@ -520,12 +520,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 sb.insert(3, " ");
                 mEtTelNum.setText(sb.toString());
                 //控制光标的位置
-//                mEtTelNum.setSelection(sb.toString().length());
+                mEtTelNum.setSelection(sb.toString().length());
             } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
+
                 sb.insert(3, " ").insert(8, " ");
+
                 mEtTelNum.setText(sb.toString());
                 //控制光标的位置
-//                mEtTelNum.setSelection(sb.toString().length());
+                mEtTelNum.setSelection(sb.toString().length());
+
             }
 //            mEtTelNum.setText(mTelNumShow);
 
