@@ -99,7 +99,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private TelPayHistoryAdapter mHistoryAdapter;//历史充值适配器
     public static String AMOUNT = "amount";
     public static String TEL = "telephone";
-    private boolean isGetContas;
+    private boolean isGetContas;//判断是操作通讯录还是清除输入框
 
     private String mTelNumShow;
     private boolean isFromContact;//判读电话号码是不是来自通讯录
@@ -523,7 +523,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 if (phone.moveToFirst()) {
                     phoneNum = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     isFromContact = true;
-                    mContactsTelNum = phoneNum.replaceAll(" ", "").trim();
+                    mContactsTelNum=phoneNum;
                     // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
                     phoneNum = phoneNum.replaceAll("^(\\+86)", "");
                     phoneNum = phoneNum.replaceAll("^(86)", "");
