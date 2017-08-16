@@ -339,7 +339,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 //获取归属地
 
                 //test
-//                getTelLocal();
+                getTelLocal();
 
 
                 //输入不符合条件
