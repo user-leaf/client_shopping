@@ -80,7 +80,7 @@
                 android:layout_toRightOf="@+id/tv_tel_pay_name"
                 android:singleLine="true"
                 android:text=""
-                android:textColor="#666"
+                android:textColor="@drawable/selector_tel_pay_name_color"
                 android:textSize="13sp" />
             <View
                 android:id="@+id/view_tel_pay_drop_point"

@@ -112,6 +112,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private String mLocalInput;//输入电话的归属地
     private String mNameInput;//输入姓名
+    private String[] mContacts;//接收从通讯来的电话号码
 
 
     public static void startAction(Context context, String telNum) {
@@ -299,42 +300,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 return;
             }
-
-//
-//            //输入有误账号
-//            String stringShow = s.toString();
-//
-//            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
-//                mEtTelNum.setText(string);
-//                return;
-//            }
-//            if (stringShow.length() > 13) {
-//                mEtTelNum.setText(stringShow.substring(0, 13));
-//                mEtTelNum.setSelection(13);
-//                return;
-//            }
-//
-//            //获得显示号码
-//            int length = string.length();
-//            StringBuffer sb = new StringBuffer(string);
-//
-//            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
-//                sb.insert(3, " ");
-//                mEtTelNum.setText(sb.toString());
-//                //控制光标的位置
-//                mEtTelNum.setSelection(sb.toString().length());
-//            } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
-//
-//                sb.insert(3, " ").insert(8, " ");
-//
-//                mEtTelNum.setText(sb.toString());
-//                //控制光标的位置
-//                mEtTelNum.setSelection(sb.toString().length());
-//
-//
-//            }
-
-
             mEtTelNum.setOnKeyListener(new View.OnKeyListener() {
 
                 @Override
@@ -360,8 +325,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 //下面的选择框可以选择
                 initCtlPayMoneyNums(true);
                 String name = "";
+
                 //获得姓名，归属地
-                name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                if (isFromContact) {
+                    name = mContacts[0];
+                    isFromContact = false;
+                    mContactsTelNum = "";
+                } else {
+                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                }
 //                 name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mTelNum);
 //                 name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mTelNum);
 
@@ -390,7 +362,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 //获取归属地
 
-                getTelLocal();
+                //test
+//                getTelLocal();
 
 
                 //输入不符合条件
@@ -486,70 +459,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 mEtTelNum.setText(sb.toString());
                 //控制光标的位置
                 mEtTelNum.setSelection(sb.toString().length());
-
-
             }
-
-//            mEtTelNum.setText(mTelNumShow);
-
-
-            //是合格的电话号码
-            if (ValidatorsUtils.validateUserPhone(string)) {
-                mTelNum = string;
-                mTelNumShow = mEtTelNum.getText().toString();
-                //控制光标的位置
-                mEtTelNum.setSelection(mTelNumShow.length());
-                //可获取通讯录
-                mLevel = 0;
-                mIvDealTelNum.setImageLevel(mLevel);
-                //下面的选择框可以选择
-                initCtlPayMoneyNums(true);
-                String name = "";
-                //获得姓名，归属地
-//                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-
-
-                if (isFromContact) {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
-                    isFromContact = false;
-                    mContactsTelNum = "";
-                } else {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-                }
-
-
-                if (mTelNumself.equals(string)) {
-                    name = "账号绑定号码";
-                }
-                mNameInput = name;
-                mTvName.setText(name);
-
-                //获取归属地
-
-                getTelLocal();
-
-
-                //输入不符合条件
-            } else {
-                //显示清除输入框按钮
-                mLevel = 1;
-                mIvDealTelNum.setImageLevel(mLevel);
-                //下面的选择框bu可以选择
-                initCtlPayMoneyNums(false);
-
-                mTvLocal.setText("");
-
-                if (string.length() == 11) {
-                    mTvName.setText("输入手机号码有误");
-                    mTvName.setEnabled(false);
-                    //显示获取通讯录数据
-                    mLevel = 0;
-                    mIvDealTelNum.setImageLevel(mLevel);
-                    return;
-                }
-                mTvName.setText("");
-            }
-
         }
 
         @Override
@@ -638,6 +548,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         isGetContas = true;
         //获取通讯录电话号码
         if (mLevel == 0) {
+            isFromContact = true;
 //            startContacts();
             jumpContacts();
             return;
@@ -696,30 +607,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             cursor.moveToFirst();
             //取得联系人姓名
             int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+
+            isFromContact = true;
             contact[0] = cursor.getString(nameFieldColumnIndex);
             //取得电话号码
             String ContactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-
-//            Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-//                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
-//            if (phone != null) {
-//
-//                String phoneNum = "";
-//                if (phone.moveToFirst()) {
-//
-//                    phoneNum = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//                    isFromContact = true;
-//                    mContactsTelNum = phoneNum;
-//                    // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
-//                    phoneNum = phoneNum.replaceAll("^(\\+86)", "");
-//                    phoneNum = phoneNum.replaceAll("^(86)", "");
-//                    phoneNum = phoneNum.replaceAll("-", "");
-//                    phoneNum = phoneNum.replaceAll(" ", "");
-//                    phoneNum = phoneNum.trim();
-//                }
-
-
-            //test
 
             // 查看联系人有多少个号码，如果没有号码，返回0
             int phoneCount = cursor
@@ -747,6 +639,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                         LogUtils.e("pzhoneNumber", "" + phoneNumber);
+                        LogUtils.e("pzhoneNumber_name", "" + contact[0]);
 
                         mTelNumsOfDilogList.add(phoneNumber);
 
@@ -758,19 +651,19 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                             @Override
                             public void setChoiceNum(String choiceNum) {
                                 contact[1] = choiceNum;
+                                mContacts = contact;
                                 mTvName.setText(contact[0]);
                                 mEtTelNum.setText(contact[1]);
+
                                 if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
                                     ToastUtils.showShort("号码错误");
                                 }
-
-
                             }
                         });
 
-
                     } else {
                         contact[1] = phoneNumber;
+                        mContacts = contact;
                         mTvName.setText(contact[0]);
                         mEtTelNum.setText(contact[1]);
                         if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
@@ -782,21 +675,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 phoneCursor.close();
             }
-
-
-//                if (!ValidatorsUtils.validateUserPhone(phoneNum)) {
-//                    ToastUtils.showShort("号码错误");
-//                }
-//                if (phoneNum.length() > 11) {
-//                    phoneNum = phoneNum.substring(0, 11);
-//                }
-//
-//                LogUtils.e("phoneNum", phoneNum);
-//                contact[1] = phoneNum;
-//            }
-//            phone.close();
-
-
             cursor.close();
         } else {
             return null;
@@ -856,14 +734,21 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 if (model != null) {
                     TelPayLocalModel.DataBean bean = model.getData();
-                    if (bean != null) {
-                        mLocalInput = "（" + bean.getArea() + bean.getOperator() + "）";
+                    switch (model.getCode()) {
+                        case "200":
+                            mTvLocal.setEnabled(true);
+                            mLocalInput = "（" + bean.getArea() + bean.getOperator() + "）";
 
-                        mTvLocal.setText(mLocalInput);
+                            break;
+                        case "400":
+                            mTvLocal.setEnabled(false);
+                            mLocalInput = "查询失败";
+                            mTvName.setText("");
+                            break;
                     }
 
+                    mTvLocal.setText(mLocalInput);
                 }
-
             }
         });
     }
@@ -958,30 +843,20 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      */
     public void getContacts(Intent data) {
         Uri uri = data.getData();
-        String[] contacts = getPhoneContacts(uri);
-//        mTvName.setText(contacts[0]);
-//        mEtTelNum.setText(contacts[1]);
-
+        getPhoneContacts(uri);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // 用户成功授予权限
-//                if (isGetContas){
-//                    jumpContacts();
-//                    isGetContas=false;
-//                }
                 initView();
                 setupView();
                 LoadPayNums();
                 getHistoryPay();
 
-
             } else {
                 ToastUtils.showLong("未开启通讯录权限,请到设置中开启权限");
-//                startContacts();
                 finish();
             }
         }
