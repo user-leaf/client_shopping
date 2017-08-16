@@ -108,6 +108,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private boolean isFromContact;//判读电话号码是不是来自通讯录
     private String mContactsTelNum;
 
+    private List<String> mTelNumsOfDilogList;
+
 
     public static void startAction(Context context, String telNum) {
         Intent intent = new Intent(context, TelephoneFeeChargeActivity.class);
@@ -322,16 +324,25 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 initCtlPayMoneyNums(true);
                 String name = "";
                 //获得姓名，归属地
-//                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+//                 name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mTelNum);
+//                 name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mTelNum);
 
 
-                if (isFromContact) {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
-                    isFromContact = false;
-                    mContactsTelNum = "";
-                } else {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-                }
+//                if (isFromContact) {
+//                    name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mContactsTelNum);
+//                    name = ContactsUtils.getContactNameByPhoneNumber(TelephoneFeeChargeActivity.this,mContactsTelNum);
+
+//                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
+//                    isFromContact = false;
+//                    mContactsTelNum = "";
+//                } else {
+//                    name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this, mTelNum);
+//                    name = ContactsUtils.getContactNameByPhoneNumber(TelephoneFeeChargeActivity.this, mTelNum);
+
+//                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+
+//                }
 
 
                 if (mTelNumself.equals(string)) {
@@ -505,7 +516,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * @return
      */
     private String[] getPhoneContacts(Uri uri) {
-        String[] contact = new String[2];
+        final String[] contact = new String[2];
         //得到ContentResolver对象
         ContentResolver cr = getContentResolver();
         //取得电话本中开始一项的光标
@@ -517,34 +528,103 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             contact[0] = cursor.getString(nameFieldColumnIndex);
             //取得电话号码
             String ContactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
-            if (phone != null) {
 
-                String phoneNum = "";
-                if (phone.moveToFirst()) {
-                    phoneNum = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    isFromContact = true;
-                    mContactsTelNum=phoneNum;
-                    // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
-                    phoneNum = phoneNum.replaceAll("^(\\+86)", "");
-                    phoneNum = phoneNum.replaceAll("^(86)", "");
-                    phoneNum = phoneNum.replaceAll("-", "");
-                    phoneNum = phoneNum.replaceAll(" ", "");
-                    phoneNum = phoneNum.trim();
+//            Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+//                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
+//            if (phone != null) {
+//
+//                String phoneNum = "";
+//                if (phone.moveToFirst()) {
+//
+//                    phoneNum = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//                    isFromContact = true;
+//                    mContactsTelNum = phoneNum;
+//                    // 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
+//                    phoneNum = phoneNum.replaceAll("^(\\+86)", "");
+//                    phoneNum = phoneNum.replaceAll("^(86)", "");
+//                    phoneNum = phoneNum.replaceAll("-", "");
+//                    phoneNum = phoneNum.replaceAll(" ", "");
+//                    phoneNum = phoneNum.trim();
+//                }
+
+
+            //test
+
+            // 查看联系人有多少个号码，如果没有号码，返回0
+            int phoneCount = cursor
+                    .getInt(cursor
+                            .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+            LogUtils.e("phoneCount", "" + phoneCount);
+
+            if (phoneCount > 0) {
+                // 获得联系人的电话号码列表
+                Cursor phoneCursor = getContentResolver().query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                                + "=" + ContactId, null, null);
+                if (phoneCursor.moveToFirst()) {
+
+
+                    mTelNumsOfDilogList = new ArrayList<>();
+                    String phoneNumber;
+
+
+                    do {
+                        //遍历所有的联系人下面所有的电话号码
+                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                        LogUtils.e("pzhoneNumber", "" + phoneNumber);
+
+                        mTelNumsOfDilogList.add(phoneNumber);
+
+                    } while (phoneCursor.moveToNext());
+                    //吊起弹框
+                    //多个电话号码,弹窗选择
+                    if (mTelNumsOfDilogList.size() > 1) {
+                        showPhoneChoiceDialog(mTelNumsOfDilogList, new GetTelNumCallBack() {
+                            @Override
+                            public void setChoiceNum(String choiceNum) {
+                                contact[1] = choiceNum;
+                                mTvName.setText(contact[0]);
+                                mEtTelNum.setText(contact[1]);
+
+                            }
+                        });
+
+
+                    } else {
+                        contact[1] = phoneNumber;
+                        mTvName.setText(contact[0]);
+                        mEtTelNum.setText(contact[1]);
+                    }
+
+
+                    if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
+                        ToastUtils.showShort("号码错误");
+                    }
+
+
                 }
 
-                if (!ValidatorsUtils.validateUserPhone(phoneNum)) {
-                    ToastUtils.showShort("号码错误");
-                }
-                if (phoneNum.length() > 11) {
-                    phoneNum = phoneNum.substring(0, 11);
-                }
-
-                LogUtils.e("phoneNum", phoneNum);
-                contact[1] = phoneNum;
+                phoneCursor.close();
             }
-            phone.close();
+
+
+//                if (!ValidatorsUtils.validateUserPhone(phoneNum)) {
+//                    ToastUtils.showShort("号码错误");
+//                }
+//                if (phoneNum.length() > 11) {
+//                    phoneNum = phoneNum.substring(0, 11);
+//                }
+//
+//                LogUtils.e("phoneNum", phoneNum);
+//                contact[1] = phoneNum;
+//            }
+//            phone.close();
+
+
             cursor.close();
         } else {
             return null;
@@ -837,10 +917,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     public void getContacts(Intent data) {
         Uri uri = data.getData();
         String[] contacts = getPhoneContacts(uri);
-
-
-        mTvName.setText(contacts[0]);
-        mEtTelNum.setText(contacts[1]);
+//        mTvName.setText(contacts[0]);
+//        mEtTelNum.setText(contacts[1]);
 
     }
 
@@ -869,37 +947,55 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     /**
      * 多号码选择框
+     *
      * @param phoneList
-     * @param choice
      */
-    private void showPhoneChoiceDialog(List<String> phoneList, String choice){
+    private void showPhoneChoiceDialog(final List<String> phoneList, final GetTelNumCallBack callBack) {
 
-        View choiceView = LayoutInflater.from(this).inflate(R.layout.dialog_tel_fee_charge_choice, null);
+        final String[] choiceNum = {""};
+
+        final View choiceView = LayoutInflater.from(this).inflate(R.layout.dialog_tel_fee_charge_choice, null);
 
         ListView listView = (ListView) choiceView.findViewById(R.id.tel_fee_charge_choice_dialog_listview);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice, phoneList);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            }
-        });
 
-        Dialog choiceDialog = DialogUtils.createRandomDialog(this, "请选择一个号码", null, "取消", null,
+        final Dialog choiceDialog = DialogUtils.createRandomDialog(this, "请选择一个号码", null, "取消", null,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        dialogInterface.dismiss();
                     }
                 },
                 choiceView
         );
 
-        if (choiceDialog != null && !choiceDialog.isShowing()){
+        choiceDialog.setCancelable(false);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                callBack.setChoiceNum(phoneList.get(position));
+
+                if (choiceDialog != null && choiceDialog.isShowing()) {
+                    choiceDialog.dismiss();
+                }
+            }
+        });
+
+
+        if (choiceDialog != null && !choiceDialog.isShowing()) {
             choiceDialog.show();
         }
+
+    }
+
+    public interface GetTelNumCallBack {
+        void setChoiceNum(String choiceNum);
     }
 
     /**
