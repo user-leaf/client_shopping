@@ -112,6 +112,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private String[] mContacts;//接收从通讯来的电话号码
 
 
+
     public static void startAction(Context context, String telNum) {
         Intent intent = new Intent(context, TelephoneFeeChargeActivity.class);
         intent.putExtra(USER_TELNUM, telNum);
@@ -318,10 +319,13 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 mIvDealTelNum.setImageLevel(mLevel);
                 //下面的选择框可以选择
                 initCtlPayMoneyNums(true);
-//                String name = "";
+                String name = "";
 
                 //获得姓名，归属地
-                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                if (!mTelNumself.equals(mTelNum)) {
+                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                }
+
 //                if (isFromContact) {
 //                    name = mContacts[0];
 //                    isFromContact = false;
