@@ -255,9 +255,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         mTitle.setLeftLayoutClickListener(this);
 
 
+        //两个都是有用的
         mEtTelNum.addTextChangedListener(mTelNumTextWatcher);
-
-
         mEtTelNum.addTextChangedListener(mNewTextWatcher);
 
 
@@ -589,6 +588,10 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                                 contact[1] = choiceNum;
                                 mTvName.setText(contact[0]);
                                 mEtTelNum.setText(contact[1]);
+                                if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
+                                    ToastUtils.showShort("号码错误");
+                                }
+
 
                             }
                         });
@@ -598,14 +601,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                         contact[1] = phoneNumber;
                         mTvName.setText(contact[0]);
                         mEtTelNum.setText(contact[1]);
+                        if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
+                            ToastUtils.showShort("号码错误");
+                        }
+
                     }
-
-
-                    if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
-                        ToastUtils.showShort("号码错误");
-                    }
-
-
                 }
 
                 phoneCursor.close();
@@ -804,6 +804,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                     return;
                 }
                 ToastUtils.showException(e);
+                LogUtils.e("getTelLocal_Exception",e.getMessage());
             }
 
             @Override
@@ -812,6 +813,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                     return;
                 }
                 TelPayLocalModel model = (TelPayLocalModel) response;
+
+                LogUtils.e("getTelLocal",model.getCode());
+
                 if (model != null) {
                     TelPayLocalModel.DataBean bean = model.getData();
                     if (bean != null) {
@@ -959,7 +963,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         ListView listView = (ListView) choiceView.findViewById(R.id.tel_fee_charge_choice_dialog_listview);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice, phoneList);
         listView.setAdapter(adapter);
-
 
 
         final Dialog choiceDialog = DialogUtils.createRandomDialog(this, "请选择一个号码", null, "取消", null,

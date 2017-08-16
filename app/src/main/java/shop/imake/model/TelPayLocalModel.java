@@ -7,7 +7,8 @@ package shop.imake.model;
 public class TelPayLocalModel {
 
     /**
-     * code : 200
+     * code : 200//获取成功
+     * code : 400//非法提示
      * message : 成功
      * data : {"mobilenum":"18333618642","area":"河北廊坊","operator":"移动"}
      */
