@@ -108,7 +108,10 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private boolean isFromContact;//判读电话号码是不是来自通讯录
     private String mContactsTelNum;
 
-    private List<String> mTelNumsOfDilogList;
+    private List<String> mTelNumsOfDilogList;//同一个人有多个电话号码列表
+
+    private String mLocalInput;//输入电话的归属地
+    private String mNameInput;//输入姓名
 
 
     public static void startAction(Context context, String telNum) {
@@ -297,6 +300,41 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 return;
             }
 
+//
+//            //输入有误账号
+//            String stringShow = s.toString();
+//
+//            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
+//                mEtTelNum.setText(string);
+//                return;
+//            }
+//            if (stringShow.length() > 13) {
+//                mEtTelNum.setText(stringShow.substring(0, 13));
+//                mEtTelNum.setSelection(13);
+//                return;
+//            }
+//
+//            //获得显示号码
+//            int length = string.length();
+//            StringBuffer sb = new StringBuffer(string);
+//
+//            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
+//                sb.insert(3, " ");
+//                mEtTelNum.setText(sb.toString());
+//                //控制光标的位置
+//                mEtTelNum.setSelection(sb.toString().length());
+//            } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
+//
+//                sb.insert(3, " ").insert(8, " ");
+//
+//                mEtTelNum.setText(sb.toString());
+//                //控制光标的位置
+//                mEtTelNum.setSelection(sb.toString().length());
+//
+//
+//            }
+
+
             mEtTelNum.setOnKeyListener(new View.OnKeyListener() {
 
                 @Override
@@ -386,6 +424,140 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
         }
     };
+
+
+    /**
+     * 电话号码输入框监听
+     */
+
+    TextWatcher mTelNumTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            mTvName.setEnabled(true);
+            String string = charSequence.toString().trim();
+            //去掉空格,获得完全11位的电话号码
+            string = getPayTelNum(string);
+
+            //输入为空
+            if (TextUtils.isEmpty(string)) {
+                //可获取通讯录
+                mLevel = 0;
+                mIvDealTelNum.setImageLevel(mLevel);
+                //下面的选择框bu可以选择
+                initCtlPayMoneyNums(false);
+                mTvName.setText("");
+                mTvLocal.setText("");
+
+                return;
+            }
+
+            //输入有误账号
+            String stringShow = charSequence.toString();
+
+            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
+                mEtTelNum.setText(string);
+                return;
+            }
+            if (stringShow.length() > 13) {
+                mEtTelNum.setText(stringShow.substring(0, 13));
+                mEtTelNum.setSelection(13);
+                return;
+            }
+
+            //获得显示号码
+            int length = string.length();
+            StringBuffer sb = new StringBuffer(string);
+
+            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
+                sb.insert(3, " ");
+                mEtTelNum.setText(sb.toString());
+                //控制光标的位置
+                mEtTelNum.setSelection(sb.toString().length());
+            } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
+
+                sb.insert(3, " ").insert(8, " ");
+
+                mEtTelNum.setText(sb.toString());
+                //控制光标的位置
+                mEtTelNum.setSelection(sb.toString().length());
+
+
+            }
+
+//            mEtTelNum.setText(mTelNumShow);
+
+
+            //是合格的电话号码
+            if (ValidatorsUtils.validateUserPhone(string)) {
+                mTelNum = string;
+                mTelNumShow = mEtTelNum.getText().toString();
+                //控制光标的位置
+                mEtTelNum.setSelection(mTelNumShow.length());
+                //可获取通讯录
+                mLevel = 0;
+                mIvDealTelNum.setImageLevel(mLevel);
+                //下面的选择框可以选择
+                initCtlPayMoneyNums(true);
+                String name = "";
+                //获得姓名，归属地
+//                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+
+
+                if (isFromContact) {
+                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
+                    isFromContact = false;
+                    mContactsTelNum = "";
+                } else {
+                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                }
+
+
+                if (mTelNumself.equals(string)) {
+                    name = "账号绑定号码";
+                }
+                mNameInput = name;
+                mTvName.setText(name);
+
+                //获取归属地
+
+                getTelLocal();
+
+
+                //输入不符合条件
+            } else {
+                //显示清除输入框按钮
+                mLevel = 1;
+                mIvDealTelNum.setImageLevel(mLevel);
+                //下面的选择框bu可以选择
+                initCtlPayMoneyNums(false);
+
+                mTvLocal.setText("");
+
+                if (string.length() == 11) {
+                    mTvName.setText("输入手机号码有误");
+                    mTvName.setEnabled(false);
+                    //显示获取通讯录数据
+                    mLevel = 0;
+                    mIvDealTelNum.setImageLevel(mLevel);
+                    return;
+                }
+                mTvName.setText("");
+            }
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+
 
     /**
      * 清楚充值历史
@@ -656,140 +828,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     }
 
 
-    private String mLocalInput;//输入电话的归属地
-    private String mNameInput;//输入姓名
-    /**
-     * 电话号码输入框监听
-     */
-
-    TextWatcher mTelNumTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            mTvName.setEnabled(true);
-            String string = charSequence.toString().trim();
-            //去掉空格,获得完全11位的电话号码
-            string = getPayTelNum(string);
-
-            //输入为空
-            if (TextUtils.isEmpty(string)) {
-                //可获取通讯录
-                mLevel = 0;
-                mIvDealTelNum.setImageLevel(mLevel);
-                //下面的选择框bu可以选择
-                initCtlPayMoneyNums(false);
-                mTvName.setText("");
-                mTvLocal.setText("");
-
-                return;
-            }
-
-            //输入有误账号
-            String stringShow = charSequence.toString();
-
-            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
-                mEtTelNum.setText(string);
-                return;
-            }
-            if (stringShow.length() > 13) {
-                mEtTelNum.setText(stringShow.substring(0, 13));
-                mEtTelNum.setSelection(13);
-                return;
-            }
-
-            //获得显示号码
-            int length = string.length();
-            StringBuffer sb = new StringBuffer(string);
-
-            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
-                sb.insert(3, " ");
-                mEtTelNum.setText(sb.toString());
-                //控制光标的位置
-                mEtTelNum.setSelection(sb.toString().length());
-            } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
-
-                sb.insert(3, " ").insert(8, " ");
-
-                mEtTelNum.setText(sb.toString());
-                //控制光标的位置
-                mEtTelNum.setSelection(sb.toString().length());
-
-
-            }
-
-//            mEtTelNum.setText(mTelNumShow);
-
-
-            //是合格的电话号码
-            if (ValidatorsUtils.validateUserPhone(string)) {
-                mTelNum = string;
-                mTelNumShow = mEtTelNum.getText().toString();
-                //控制光标的位置
-                mEtTelNum.setSelection(mTelNumShow.length());
-                //可获取通讯录
-                mLevel = 0;
-                mIvDealTelNum.setImageLevel(mLevel);
-                //下面的选择框可以选择
-                initCtlPayMoneyNums(true);
-                String name = "";
-                //获得姓名，归属地
-//                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-
-
-                if (isFromContact) {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
-                    isFromContact = false;
-                    mContactsTelNum = "";
-                } else {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-                }
-
-
-                if (mTelNumself.equals(string)) {
-                    name = "账号绑定号码";
-                }
-                mNameInput = name;
-                mTvName.setText(name);
-
-                //获取归属地
-
-                getTelLocal();
-
-
-                //输入不符合条件
-            } else {
-                //显示清除输入框按钮
-                mLevel = 1;
-                mIvDealTelNum.setImageLevel(mLevel);
-                //下面的选择框bu可以选择
-                initCtlPayMoneyNums(false);
-
-                mTvLocal.setText("");
-
-                if (string.length() == 11) {
-                    mTvName.setText("输入手机号码有误");
-                    mTvName.setEnabled(false);
-                    //显示获取通讯录数据
-                    mLevel = 0;
-                    mIvDealTelNum.setImageLevel(mLevel);
-                    return;
-                }
-                mTvName.setText("");
-            }
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
     /**
      * 获取电话归属地
      */
@@ -804,7 +842,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                     return;
                 }
                 ToastUtils.showException(e);
-                LogUtils.e("getTelLocal_Exception",e.getMessage());
+                LogUtils.e("getTelLocal_Exception", e.getMessage());
             }
 
             @Override
@@ -814,7 +852,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 }
                 TelPayLocalModel model = (TelPayLocalModel) response;
 
-                LogUtils.e("getTelLocal",model.getCode());
+                LogUtils.e("getTelLocal", model.getCode());
 
                 if (model != null) {
                     TelPayLocalModel.DataBean bean = model.getData();
