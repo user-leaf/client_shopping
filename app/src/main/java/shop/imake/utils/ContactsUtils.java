@@ -5,9 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
-
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -15,31 +12,111 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ContactsUtils {
+
+
     /**
      * 根据电话号码，获取在通讯录中的姓名
+     *
      * @param context
      * @param number
      * @return
      */
     public static String getDisplayNameByNumber(Context context, String number) {
+         boolean isHave = false;//查询电话号码是否存在
 
-        String contactName = "";
-        ContentResolver cr = context.getContentResolver();
-        Cursor pCur = cr.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null,
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
-                new String[] { number },
-                null
-        );
-
-        if (pCur.moveToFirst()) {
-            contactName = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            pCur.close();
+        if (TextUtils.isEmpty(number)) {
+            return "";
         }
 
-        if (TextUtils.isEmpty(contactName)){
-            contactName="不在通讯录";
+        String contactName = "";
+//        ContentResolver cr = context.getContentResolver();
+//        Cursor pCur = cr.query(
+//                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+//                null,
+//                ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
+//                new String[] { number },
+//                null
+//        );
+//
+//        if (pCur.moveToFirst()) {
+//            contactName = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//            pCur.close();
+//        }
+//
+//        if (TextUtils.isEmpty(contactName)){
+//            contactName="不在通讯录";
+//        }
+
+
+        //生成ContentResolver对象
+        ContentResolver contentResolver = context.getContentResolver();
+
+        // 获得所有的联系人
+        Cursor cursor = contentResolver.query(
+                ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+        //这段代码和上面代码是等价的，使用两种方式获得联系人的Uri
+//        Cursor cursor = contentResolver.query(Uri.parse("content://com.android.contacts/contacts"), null, null, null, null);
+
+        // 循环遍历
+        if (cursor.moveToFirst()) {
+
+            int idColumn = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+            int displayNameColumn = cursor
+                    .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+
+            do {
+                // 获得联系人的ID
+                String contactId = cursor.getString(idColumn);
+
+                // 获得联系人姓名
+                String displayName = cursor.getString(displayNameColumn);
+
+                //使用Toast技术显示获得的联系人信息
+//                Toast.makeText(context, "联系人姓名：" + displayName, Toast.LENGTH_LONG).show();
+                // 查看联系人有多少个号码，如果没有号码，返回0
+                int phoneCount = cursor
+                        .getInt(cursor
+                                .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                if (phoneCount > 0) {
+                    // 获得联系人的电话号码列表
+                    Cursor phoneCursor = context.getContentResolver().query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                                    + "=" + contactId, null, null);
+                    if (phoneCursor.moveToFirst()) {
+                        do {
+                            //遍历所有的联系人下面所有的电话号码
+                            String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            //使用Toast技术显示获得的号码
+//                            Toast.makeText(context, "联系人电话：" + phoneNumber, Toast.LENGTH_LONG).show();
+                            //进行判断
+                            if (getPayTelNumCompaer(number).equals(getPayTelNumCompaer(phoneNumber))) {
+                                isHave = true;
+                                contactName = displayName;
+                                return displayName;
+                            }
+
+                            if (isHave) {
+                                break;
+                            }
+
+                        } while (phoneCursor.moveToNext());
+                    }
+                }
+
+
+                if (isHave) {
+                    break;
+                }
+
+            } while (cursor.moveToNext());
+        }
+
+        if (TextUtils.isEmpty(contactName)) {
+            contactName = "不在通讯录";
         }
 
         return contactName;
@@ -47,74 +124,43 @@ public class ContactsUtils {
 
     public static boolean isHave(Context context, String number) {
 
-        return "不在通讯录".equals(getDisplayNameByNumber(context,number))?false:true;
+        return "不在通讯录".equals(getDisplayNameByNumber(context, number)) ? false : true;
     }
 
 
-
-
-    /*
-     * 根据电话号码取得联系人姓名
+    /**
+     * 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
+     *
+     * @param phoneNum
+     * @return
      */
-    public static String getContactNameByPhoneNumber(Context context, String address) {
-        String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER };
-
-        // 将自己添加到 msPeers 中
-        Cursor cursor = context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                projection, // Which columns to return.
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " = '"
-                        + address + "'", // WHERE clause.
-                null, // WHERE clause value substitution
-                null); // Sort order.
-
-        if (cursor == null) {
-            Log.d(TAG, "getPeople null");
-            return null;
-        }
-        for (int i = 0; i < cursor.getCount(); i++) {
-            cursor.moveToPosition(i);
-
-            // 取得联系人名字
-            int nameFieldColumnIndex = cursor
-                    .getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-            String name = cursor.getString(nameFieldColumnIndex);
-            return name;
-        }
-        return null;
-    }
-
-
-
-
-    public static String getPeople(Context context,String mNumber) {
-        String name = "";
-        String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME,
-                                /*ContactsContract.CommonDataKinds.Phone.NUMBER*/};
-
-        Cursor cursor = context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                projection,
-                ContactsContract.CommonDataKinds.Phone.NUMBER + " = '" + mNumber + "'",
-                null,
-                null);
-        if( cursor == null ) {
+    public static String getPayTelNum(String phoneNum) {
+        if (TextUtils.isEmpty(phoneNum)) {
             return "";
         }
-        for( int i = 0; i < cursor.getCount(); i++ )
-        {
-            cursor.moveToPosition(i);
+        phoneNum = phoneNum.replaceAll("^(\\+86)", "");
+        phoneNum = phoneNum.replaceAll("^(86)", "");
+        phoneNum = phoneNum.replaceAll("-", "");
+        phoneNum = phoneNum.replaceAll(" ", "");
+        phoneNum = phoneNum.trim();
+        if (phoneNum.length() > 11) {
+            phoneNum = phoneNum.substring(0, 11);
+        }
 
-            int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-            cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-            name = cursor.getString(nameFieldColumnIndex);
-            Log.i(TAG, "lanjianlong" + name + " .... " + nameFieldColumnIndex); // 这里提示 force close
-            break;
+        LogUtils.e("getPayTelNum", phoneNum);
+        return phoneNum;
+    }
+
+    public static String getPayTelNumCompaer(String phoneNum) {
+        if (TextUtils.isEmpty(phoneNum)) {
+            return "";
         }
-        if(cursor != null){
-            cursor.close();
-        }
-        return name;
+        phoneNum = phoneNum.replaceAll("^(\\+86)", "");
+        phoneNum = phoneNum.replaceAll("^(86)", "");
+        phoneNum = phoneNum.replaceAll("-", "");
+        phoneNum = phoneNum.replaceAll(" ", "");
+        phoneNum = phoneNum.trim();
+        LogUtils.e("getPayTelNum", phoneNum);
+        return phoneNum;
     }
 }

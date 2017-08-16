@@ -1,6 +1,5 @@
 package shop.imake.activity;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -65,6 +63,8 @@ import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollGridView;
 
+import static shop.imake.utils.ContactsUtils.getPayTelNum;
+
 /**
  * 话费充值页面
  */
@@ -96,8 +96,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     public static final String TAG = TelephoneFeeChargeActivity.class.getSimpleName();
 
-    private String mOrderNumber;//支付订单号
-
     private List<TelPayHistoryModel.Bean> mHistoryList;//历史充值数据
     private TelPayHistoryAdapter mHistoryAdapter;//历史充值适配器
     public static String AMOUNT = "amount";
@@ -106,7 +104,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     private String mTelNumShow;
     private boolean isFromContact;//判读电话号码是不是来自通讯录
-    private String mContactsTelNum;
 
     private List<String> mTelNumsOfDilogList;//同一个人有多个电话号码列表
 
@@ -258,15 +255,12 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private void setupView() {
         mTitle.setLeftLayoutClickListener(this);
 
-
         //两个都是有用的
         mEtTelNum.addTextChangedListener(mTelNumTextWatcher);
         mEtTelNum.addTextChangedListener(mNewTextWatcher);
 
-
         //初始化输入框
         mEtTelNum.setText(mTelNumself);
-
 
         mIvDealTelNum.setOnClickListener(this);
 
@@ -281,8 +275,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         @Override
         public void onTextChanged(CharSequence s, int cursorPosition, int before, int count) {
             LogUtils.e("position", "before:" + before + ",count:" + count);
-
-
+            mTvLocal.setText("");
+            mTvLocal.setText("");
             mTvName.setEnabled(true);
             String string = s.toString().trim();
             //去掉空格,获得完全11位的电话号码
@@ -324,33 +318,15 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 mIvDealTelNum.setImageLevel(mLevel);
                 //下面的选择框可以选择
                 initCtlPayMoneyNums(true);
-                String name = "";
+//                String name = "";
 
                 //获得姓名，归属地
-                if (isFromContact) {
-                    name = mContacts[0];
-                    isFromContact = false;
-                    mContactsTelNum = "";
-                } else {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-                }
-//                 name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mTelNum);
-//                 name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mTelNum);
-
-
+                String name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
 //                if (isFromContact) {
-//                    name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this,mContactsTelNum);
-//                    name = ContactsUtils.getContactNameByPhoneNumber(TelephoneFeeChargeActivity.this,mContactsTelNum);
-
-//                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mContactsTelNum);
+//                    name = mContacts[0];
 //                    isFromContact = false;
-//                    mContactsTelNum = "";
 //                } else {
-//                    name = ContactsUtils.getPeople(TelephoneFeeChargeActivity.this, mTelNum);
-//                    name = ContactsUtils.getContactNameByPhoneNumber(TelephoneFeeChargeActivity.this, mTelNum);
-
 //                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-
 //                }
 
 
@@ -560,22 +536,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
     }
 
-    /**
-     * 打开通讯录
-     */
-    private void startContacts() {
-        //如果当前版本大于等于Android 6.0，且该权限未被授予，则申请授权
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            //申请授权，第一个参数为要申请用户授权的权限；第二个参数为requestCode 必须大于等于0，主要用于回调的时候检测，匹配特定的onRequestPermissionsResult。
-            //可以从方法名requestPermissions以及第二个参数看出，是支持一次性申请多个权限的，系统会通过对话框逐一询问用户是否授权。
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-        } else {
-            if (isGetContas) {
-                jumpContacts();
-            }
-        }
-
-    }
 
     private void jumpContacts() {
         isGetContas = false;
@@ -660,8 +620,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                                 }
                             }
                         });
+                        return contact;
 
-                    } else {
+                    } else if (mTelNumsOfDilogList.size() == 1) {
                         contact[1] = phoneNumber;
                         mContacts = contact;
                         mTvName.setText(contact[0]);
@@ -669,7 +630,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                         if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
                             ToastUtils.showShort("号码错误");
                         }
-
+                        return contact;
                     }
                 }
 
@@ -680,29 +641,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             return null;
         }
         return contact;
-    }
-
-    /**
-     * 对手机号码进行预处理（去掉号码前的+86、首尾空格、“-”号等）
-     *
-     * @param phoneNum
-     * @return
-     */
-    private String getPayTelNum(String phoneNum) {
-        if (TextUtils.isEmpty(phoneNum)) {
-            return "";
-        }
-        phoneNum = phoneNum.replaceAll("^(\\+86)", "");
-        phoneNum = phoneNum.replaceAll("^(86)", "");
-        phoneNum = phoneNum.replaceAll("-", "");
-        phoneNum = phoneNum.replaceAll(" ", "");
-        phoneNum = phoneNum.trim();
-        if (phoneNum.length() > 11) {
-            phoneNum = phoneNum.substring(0, 11);
-        }
-
-        LogUtils.e("getPayTelNum", phoneNum);
-        return phoneNum;
     }
 
 
@@ -824,7 +762,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 new PaymentTask(
                         TelephoneFeeChargeActivity.this,
                         TelephoneFeeChargeActivity.this,
-                        mOrderNumber,
+                        null,
                         channel,
                         view,
                         TAG,
