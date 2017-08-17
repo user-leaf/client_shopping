@@ -112,7 +112,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private String[] mContacts;//接收从通讯来的电话号码
 
 
-
     public static void startAction(Context context, String telNum) {
         Intent intent = new Intent(context, TelephoneFeeChargeActivity.class);
         intent.putExtra(USER_TELNUM, telNum);
@@ -323,15 +322,13 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 //获得姓名，归属地
                 if (!mTelNumself.equals(mTelNum)) {
-                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                    if (isFromContact) {
+                        name = mContacts[0];
+                        isFromContact = false;
+                    } else {
+                        name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                    }
                 }
-
-//                if (isFromContact) {
-//                    name = mContacts[0];
-//                    isFromContact = false;
-//                } else {
-//                    name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
-//                }
 
 
                 if (mTelNumself.equals(string)) {
