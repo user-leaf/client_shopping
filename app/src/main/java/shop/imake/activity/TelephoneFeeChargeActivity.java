@@ -663,7 +663,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                     ToastUtils.showShort("号码错误");
                 }
             }else {
-                ToastUtils.showShort("通讯录权限未开启");
+                ToastUtils.showShort(getString(R.string.mine_contact_permission));
             }
         } finally {
             if (cursor != null) {
@@ -826,7 +826,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 getHistoryPay();
 
             } else {
-                ToastUtils.showLong("未开启通讯录权限,请到设置中开启权限");
+                ToastUtils.showLong(getString(R.string.mine_contact_permission));
                 finish();
             }
         }
