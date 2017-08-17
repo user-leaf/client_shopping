@@ -50,6 +50,7 @@ import shop.imake.model.TelPayHistoryModel;
 import shop.imake.model.TelPayLocalModel;
 import shop.imake.model.TelephonePayNum;
 import shop.imake.task.PaymentTask;
+import shop.imake.task.TelPayContactTask;
 import shop.imake.utils.ContactsUtils;
 import shop.imake.utils.DialogUtils;
 import shop.imake.utils.LogUtils;
@@ -110,6 +111,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private String mLocalInput;//输入电话的归属地
     private String mNameInput;//输入姓名
     private String[] mContacts;//接收从通讯来的电话号码
+    private boolean isHaveLocal = false;
 
 
     public static void startAction(Context context, String telNum) {
@@ -276,7 +278,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         public void onTextChanged(CharSequence s, int cursorPosition, int before, int count) {
             LogUtils.e("position", "before:" + before + ",count:" + count);
             mTvLocal.setText("");
-            mTvLocal.setText("");
+            mTvName.setText("");
             mTvName.setEnabled(true);
             String string = s.toString().trim();
             //去掉空格,获得完全11位的电话号码
@@ -317,31 +319,45 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 mLevel = 0;
                 mIvDealTelNum.setImageLevel(mLevel);
                 //下面的选择框可以选择
-                initCtlPayMoneyNums(true);
-                String name = "";
+                final String[] name = {""};
 
                 //获得姓名，归属地
                 if (!mTelNumself.equals(mTelNum)) {
                     if (isFromContact) {
-                        name = mContacts[0];
+                        name[0] = mContacts[0];
+                        mNameInput = name[0];
+                        mTvName.setText(name[0]);
                         isFromContact = false;
                     } else {
-                        name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+//                        name = ContactsUtils.getDisplayNameByNumber(getApplicationContext(), mTelNum);
+                        new TelPayContactTask(TelephoneFeeChargeActivity.this, mTelNum, new TelPayContactTask.TelNameDealCall() {
+                            @Override
+                            public void setName(String telName) {
+                                if (!isHaveLocal) {
+                                    name[0] = "";
+                                    mNameInput = name[0];
+                                    mTvName.setText(name[0]);
+                                } else {
+                                    name[0] = telName;
+                                    mNameInput = name[0];
+                                    mTvName.setText(name[0]);
+                                }
+
+                            }
+                        }).execute(mTelNum);
+
                     }
+                } else {
+                    name[0] = "账号绑定号码";
+                    mNameInput = name[0];
+                    mTvName.setText(name[0]);
                 }
-
-
-                if (mTelNumself.equals(string)) {
-                    name = "账号绑定号码";
-                }
-                mNameInput = name;
-                mTvName.setText(name);
 
                 //获取归属地
-
                 //test
                 getTelLocal();
 
+                initCtlPayMoneyNums(true);
 
                 //输入不符合条件
             } else {
@@ -675,11 +691,13 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                     TelPayLocalModel.DataBean bean = model.getData();
                     switch (model.getCode()) {
                         case "200":
+                            isHaveLocal = true;
                             mTvLocal.setEnabled(true);
                             mLocalInput = "（" + bean.getArea() + bean.getOperator() + "）";
 
                             break;
                         case "400":
+                            isHaveLocal = false;
                             mTvLocal.setEnabled(false);
                             mLocalInput = "查询失败";
                             mTvName.setText("");
@@ -759,7 +777,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 Map<String, Object> map = new HashMap<>();
                 map.put(AMOUNT, mPayMoney);
                 map.put(TEL, mTelNum);
-                LogUtils.e("pay","AMOUNT"+mPayMoney+"----TEL"+mTelNum);
+                LogUtils.e("pay", "AMOUNT" + mPayMoney + "----TEL" + mTelNum);
                 new PaymentTask(
                         TelephoneFeeChargeActivity.this,
                         TelephoneFeeChargeActivity.this,
