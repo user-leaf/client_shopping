@@ -579,83 +579,94 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         //得到ContentResolver对象
         ContentResolver cr = getContentResolver();
         //取得电话本中开始一项的光标
-        Cursor cursor = cr.query(uri, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            //取得联系人姓名
-            int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+        Cursor cursor = null;
+        try {
+            cursor = cr.query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                //取得联系人姓名
+                int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
 
-            isFromContact = true;
-            contact[0] = cursor.getString(nameFieldColumnIndex);
-            //取得电话号码
-            String ContactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                isFromContact = true;
+                contact[0] = cursor.getString(nameFieldColumnIndex);
+                //取得电话号码
+                String ContactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
 
-            // 查看联系人有多少个号码，如果没有号码，返回0
-            int phoneCount = cursor
-                    .getInt(cursor
-                            .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                // 查看联系人有多少个号码，如果没有号码，返回0
+                int phoneCount = cursor
+                        .getInt(cursor
+                                .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
 
-            LogUtils.e("phoneCount", "" + phoneCount);
+                LogUtils.e("phoneCount", "" + phoneCount);
 
-            if (phoneCount > 0) {
-                // 获得联系人的电话号码列表
-                Cursor phoneCursor = getContentResolver().query(
-                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                        null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-                                + "=" + ContactId, null, null);
-                if (phoneCursor.moveToFirst()) {
-
-
-                    mTelNumsOfDilogList = new ArrayList<>();
-                    String phoneNumber;
+                if (phoneCount > 0) {
+                    // 获得联系人的电话号码列表
+                    Cursor phoneCursor = null;
+                    try {
+                        phoneCursor = getContentResolver().query(
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                                        + "=" + ContactId, null, null);
+                        if (phoneCursor.moveToFirst()) {
 
 
-                    do {
-                        //遍历所有的联系人下面所有的电话号码
-                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            mTelNumsOfDilogList = new ArrayList<>();
+                            String phoneNumber;
 
-                        LogUtils.e("pzhoneNumber", "" + phoneNumber);
-                        LogUtils.e("pzhoneNumber_name", "" + contact[0]);
 
-                        mTelNumsOfDilogList.add(phoneNumber);
+                            do {
+                                //遍历所有的联系人下面所有的电话号码
+                                phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                    } while (phoneCursor.moveToNext());
-                    //吊起弹框
-                    //多个电话号码,弹窗选择
-                    if (mTelNumsOfDilogList.size() > 1) {
-                        showPhoneChoiceDialog(mTelNumsOfDilogList, new GetTelNumCallBack() {
-                            @Override
-                            public void setChoiceNum(String choiceNum) {
-                                contact[1] = choiceNum;
+                                LogUtils.e("pzhoneNumber", "" + phoneNumber);
+                                LogUtils.e("pzhoneNumber_name", "" + contact[0]);
+
+                                mTelNumsOfDilogList.add(phoneNumber);
+
+                            } while (phoneCursor.moveToNext());
+                            //吊起弹框
+                            //多个电话号码,弹窗选择
+                            if (mTelNumsOfDilogList.size() > 1) {
+                                showPhoneChoiceDialog(mTelNumsOfDilogList, new GetTelNumCallBack() {
+                                    @Override
+                                    public void setChoiceNum(String choiceNum) {
+                                        contact[1] = choiceNum;
+                                        mContacts = contact;
+                                        mTvName.setText(contact[0]);
+                                        mEtTelNum.setText(contact[1]);
+
+                                        if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
+                                            ToastUtils.showShort("号码错误");
+                                        }
+                                    }
+                                });
+                                return contact;
+
+                            } else if (mTelNumsOfDilogList.size() == 1) {
+                                contact[1] = phoneNumber;
                                 mContacts = contact;
                                 mTvName.setText(contact[0]);
                                 mEtTelNum.setText(contact[1]);
-
                                 if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
                                     ToastUtils.showShort("号码错误");
                                 }
+                                return contact;
                             }
-                        });
-                        return contact;
-
-                    } else if (mTelNumsOfDilogList.size() == 1) {
-                        contact[1] = phoneNumber;
-                        mContacts = contact;
-                        mTvName.setText(contact[0]);
-                        mEtTelNum.setText(contact[1]);
-                        if (!ValidatorsUtils.validateUserPhone(getPayTelNum(contact[1]))) {
-                            ToastUtils.showShort("号码错误");
                         }
-                        return contact;
+                    } finally {
+                        if (phoneCursor != null) {
+                            phoneCursor.close();
+                        }
                     }
+                } else {
+                    ToastUtils.showShort("号码错误");
                 }
-
-                phoneCursor.close();
             }
-            cursor.close();
-        } else {
-            return null;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
         return contact;
     }
