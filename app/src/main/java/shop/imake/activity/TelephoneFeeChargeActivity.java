@@ -759,7 +759,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 Map<String, Object> map = new HashMap<>();
                 map.put(AMOUNT, mPayMoney);
                 map.put(TEL, mTelNum);
-
+                LogUtils.e("pay","AMOUNT"+mPayMoney+"----TEL"+mTelNum);
                 new PaymentTask(
                         TelephoneFeeChargeActivity.this,
                         TelephoneFeeChargeActivity.this,
