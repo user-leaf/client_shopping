@@ -582,8 +582,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         Cursor cursor = null;
         try {
             cursor = cr.query(uri, null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
+//            if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 //取得联系人姓名
                 int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
 
@@ -662,6 +662,8 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 } else {
                     ToastUtils.showShort("号码错误");
                 }
+            }else {
+                ToastUtils.showShort("通讯录权限未开启");
             }
         } finally {
             if (cursor != null) {
