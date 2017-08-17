@@ -703,7 +703,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 //            ToastUtils.showShort("充值" + mPayMoney);
 
             //通讯录中存在
-            if (ContactsUtils.isHave(getApplicationContext(), mTelNum) || mTelNumself.equals(mTelNum)) {
+            if (ContactsUtils.isHave(getApplicationContext(), mTvName.getText().toString()) || mTelNumself.equals(mTelNum)) {
                 pay(view);
 
             } else {
