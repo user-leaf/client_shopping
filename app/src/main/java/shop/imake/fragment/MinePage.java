@@ -422,7 +422,25 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     jump(LoginActivity.class, false);
                     return;
                 }
-                String param=mLifeList.get(i).getParam();
+                String param = mLifeList.get(i).getParam();
+                if (TextUtils.isEmpty(param)) {
+                    Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "暂未开通相关服务,敬请期待~", "确认", null, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    if (dialog != null) {
+                        dialog.show();
+                    }
+                    return;
+                }
 
                 switch (param) {
                     case "plane":
@@ -449,16 +467,17 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                                     }
                                 });
                         break;
-                    case "":
-                        //五季汽贸
 
-                        break;
                     case "topup"://话费充值
-                        if (TextUtils.isEmpty(mTelNum)){
+                        if (TextUtils.isEmpty(mTelNum)) {
                             initData();
                             return;
                         }
-                        TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
+                        TelephoneFeeChargeActivity.startAction(getActivity(), mTelNum);
+                        break;
+                    default:
+
+
                         break;
 
                 }
@@ -675,8 +694,8 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
 
             //获得用户账号电话号码
             String tel = memberBean.getPhone().trim();
-            if (!TextUtils.isEmpty(tel)){
-                mTelNum=tel;
+            if (!TextUtils.isEmpty(tel)) {
+                mTelNum = tel;
             }
 
 
@@ -1375,7 +1394,10 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
             //test
             case 8:
                 //test，跳转我的兑换券
-                TelephoneFeeChargeActivity.startAction(getActivity(),mTelNum);
+                TelephoneFeeChargeActivity.startAction(getActivity(), mTelNum);
+                break;
+
+            default:
                 break;
 
 //            case 8:
