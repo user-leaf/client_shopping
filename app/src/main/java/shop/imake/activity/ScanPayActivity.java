@@ -20,8 +20,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.Serializable;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import shop.imake.MainApplication;
@@ -44,7 +42,6 @@ import shop.imake.utils.LoadViewHelper;
 import shop.imake.utils.LogUtils;
 import shop.imake.utils.MathUtil;
 import shop.imake.utils.ScreenUtils;
-import shop.imake.utils.StringUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.Utility;
 import shop.imake.widget.IUUTitleBar;
@@ -344,6 +341,11 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+
+        if (Utility.isFastDoubleClick()){
+            return;
+        }
+
         switch (v.getId()) {
             case R.id.left_layout:
                 KeyBoardUtils.closeKeybord(mEtMoney, this);
@@ -427,9 +429,9 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         TextView tvMoney = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_money);
         final EditText etSafecode = (EditText) inflate.findViewById(R.id.scan_pay_dialog_et_psw);
         TextView tvForget = (TextView) inflate.findViewById(R.id.scan_pay_dialog_tv_forget);
-        Button btnCommit = (Button) inflate.findViewById(R.id.scan_pay_dialog_btn_commit);
+        final Button btnCommit = (Button) inflate.findViewById(R.id.scan_pay_dialog_btn_commit);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Utility.isFastDoubleClick()) {
@@ -449,7 +451,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                         break;
 
                     case R.id.scan_pay_dialog_btn_commit:   // 确定
-                        validateSafeCode(payDialog, etSafecode, money);
+                        validateSafeCode(payDialog, etSafecode, money, btnCommit, this);
                         break;
                 }
             }
@@ -463,7 +465,7 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
         etSafecode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                validateSafeCode(payDialog, etSafecode, money);
+                validateSafeCode(payDialog, etSafecode, money, btnCommit, onClickListener);
 
                 return true;
             }
@@ -511,18 +513,21 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
 
     /**
      * 验证安全码
-     *
      * @param pswDialog
      * @param etPasswordView
      * @param money
+     * @param clickView
+     * @param onClickListener
      */
-    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final double money) {
+    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final double money, final View clickView, final View.OnClickListener onClickListener) {
         final String safeCode = etPasswordView.getText().toString();
 
         if (TextUtils.isEmpty(safeCode)) {
             ToastUtils.showShort("请输入安全码");
             return;
         }
+
+        clickView.setOnClickListener(null);
 
         mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
             @Override
@@ -546,11 +551,13 @@ public class ScanPayActivity extends BaseActivity implements View.OnClickListene
                                 CurrentUserManager.TokenDue(e);
                                 dismissLoadingDialog();
                                 ToastUtils.showException(e);
+                                clickView.setOnClickListener(onClickListener);
                             }
 
                             @Override
                             public void onSuccess(Object response, int id) {
                                 dismissLoadingDialog();
+                                clickView.setOnClickListener(onClickListener);
                                 ScanPaySuccessActivity.actionStart(ScanPayActivity.this, money, mShopImgUrl, mShopName);
                                 finish();
                             }
