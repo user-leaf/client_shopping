@@ -24,7 +24,7 @@ android {
         applicationId "shop.imake"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 11
+        versionCode 12
         versionName "1.2.0"
         multiDexEnabled true
 
