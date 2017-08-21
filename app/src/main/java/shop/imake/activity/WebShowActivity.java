@@ -62,6 +62,7 @@ public class WebShowActivity extends BaseActivity implements View.OnClickListene
         intent.putExtra(PARAM_URLPATH, url);
         intent.putExtra(PARAM_TITLE, title);
         startUrl = url;
+        LogUtils.e("startUrl",url);
         context.startActivity(intent);
     }
 
