@@ -436,9 +436,13 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
 
         clickView.setOnClickListener(null);
 
+        final LoadingDialog loadingDialog = LoadingDialog.getInstance(mContext);
+        loadingDialog.show();
+
         mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                loadingDialog.dismiss();
                 clickView.setOnClickListener(onClickListener);
                 ToastUtils.showException(e);
                 etPasswordView.getText().clear();
@@ -446,6 +450,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
 
             @Override
             public void onResponse(String response, int id) {
+                loadingDialog.dismiss();
                 clickView.setOnClickListener(onClickListener);
                 KeyBoardUtils.closeKeybord(etPasswordView, MainApplication.getContext());
                 pswDialog.dismiss();
