@@ -60,6 +60,7 @@ import shop.imake.utils.TelPayHistoryUtils;
 import shop.imake.utils.TelPhoneFormatUtils;
 import shop.imake.utils.ToastUtils;
 import shop.imake.utils.UNNetWorkUtils;
+import shop.imake.utils.Utility;
 import shop.imake.utils.ValidatorsUtils;
 import shop.imake.widget.IUUTitleBar;
 import shop.imake.widget.NoScrollGridView;
@@ -691,6 +692,11 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     AdapterView.OnItemClickListener mPayFeeOnItemOnClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, final View view, int position, long l) {
+
+            if (Utility.isFastDoubleClick()) {
+                return;
+            }
+
             mPayMoney = Double.valueOf(mTelPayMoneyList.get(position));
 //            ToastUtils.showShort("充值" + mPayMoney);
 
