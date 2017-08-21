@@ -370,11 +370,11 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
         window.setAttributes(lp);
 
         View closeView = pswDialog.findViewById(R.id.pay_psw_close);
-        View commitView = pswDialog.findViewById(R.id.pay_psw_tv_commit);
+        final View commitView = pswDialog.findViewById(R.id.pay_psw_tv_commit);
         final EditText etPasswordView = (EditText) pswDialog.findViewById(R.id.pay_psw_et);
         View tvForget = pswDialog.findViewById(R.id.pay_psw_tv_forget);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -389,7 +389,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
                         break;
 
                     case R.id.pay_psw_tv_commit: // 提交
-                        validateSafeCode(pswDialog, etPasswordView, channel);
+                        validateSafeCode(pswDialog, etPasswordView, channel, commitView, this);
                         break;
 
                     case R.id.pay_psw_tv_forget: // 忘记安全码
@@ -409,7 +409,7 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                validateSafeCode(pswDialog, etPasswordView, channel);
+                validateSafeCode(pswDialog, etPasswordView, channel, commitView, onClickListener);
                 return true;
             }
         });
@@ -425,23 +425,28 @@ public class PayDetailFragment extends DialogFragment implements AdapterView.OnI
 
     /**
      * 验证安全码
-     *
-     * @param pswDialog
+     *  @param pswDialog
      * @param etPasswordView
      * @param channel
+     * @param clickView
+     * @param onClickListener
      */
-    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final String channel) {
+    private void validateSafeCode(final Dialog pswDialog, final EditText etPasswordView, final String channel, final View clickView, final View.OnClickListener onClickListener) {
         String safeCode = etPasswordView.getText().toString();
+
+        clickView.setOnClickListener(null);
 
         mApi4Cart.validateSafeCode(safeCode, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                clickView.setOnClickListener(onClickListener);
                 ToastUtils.showException(e);
                 etPasswordView.getText().clear();
             }
 
             @Override
             public void onResponse(String response, int id) {
+                clickView.setOnClickListener(onClickListener);
                 KeyBoardUtils.closeKeybord(etPasswordView, MainApplication.getContext());
                 pswDialog.dismiss();
                 // 调用支付
