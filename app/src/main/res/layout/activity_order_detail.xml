@@ -536,6 +536,7 @@
             android:background="@drawable/shape_copy_button_bg_stroke_gray"
             android:gravity="center"
             android:text="申请退款"
+            android:visibility="gone"
             />
 
     </RelativeLayout>
