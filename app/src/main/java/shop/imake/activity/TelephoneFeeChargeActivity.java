@@ -100,7 +100,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private List<String> mTelNumsOfDilogList;//同一个人有多个电话号码列表
     private String mLocalInput;//输入电话的归属地
     private String mNameInput;//输入姓名
-    private String[] mContacts;//接收从通讯来的电话号码
+    private String[] mContacts = new String[2];//接收从通讯来的电话号码
     private boolean isHaveLocal = false;//标识是否存在归属地信息
 
     public static void startAction(Context context, String telNum) {
@@ -294,7 +294,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
                 //获得姓名，归属地
                 if (!mTelNumself.equals(mTelNum)) {
-                    if (isFromContact) {
+                    if (isFromContact && mContacts != null) {
                         name[0] = mContacts[0];
                         mNameInput = name[0];
                         mTvName.setText(name[0]);
