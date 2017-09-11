@@ -410,7 +410,7 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     jump(LoginActivity.class, false);
                     return;
                 }
-                goToHtml(position);
+                goToHtml(myMineList,position);
             }
         });
 
@@ -422,23 +422,11 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                     jump(LoginActivity.class, false);
                     return;
                 }
+
+                goToHtml(mLifeList,i);
+
                 String param = mLifeList.get(i).getParam();
                 if (TextUtils.isEmpty(param)) {
-                    Dialog dialog = DialogUtils.createConfirmDialog(getContext(), null, "暂未开通相关服务,敬请期待~", "确认", null, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-
-                        }
-                    }, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    if (dialog != null) {
-                        dialog.show();
-                    }
                     return;
                 }
 
@@ -476,8 +464,6 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
                         TelephoneFeeChargeActivity.startAction(getActivity(), mTelNum);
                         break;
                     default:
-
-
                         break;
 
                 }
@@ -537,31 +523,34 @@ public class MinePage extends BaseFragment implements View.OnClickListener, Adap
      *
      * @param position
      */
-    private void goToHtml(int position) {
-        if (myMineList != null && position < myMineList.size()) {
-            MyMineOther.ThreeServicesBean threeServicesBean = myMineList.get(position);
-            if (threeServicesBean != null) {
-                int type = threeServicesBean.getIs_open();
-                if (type == 1) {
-                    StringBuilder stringBuilder = new StringBuilder(threeServicesBean.getRequest_url());
-                    stringBuilder.append("?token=").append(CurrentUserManager.getUserToken())
-                            .append("&type=android").append("&vt=").append(System.currentTimeMillis());
-                    String htmlUrl = stringBuilder.toString();
+    private void goToHtml(List<MyMineOther.ThreeServicesBean> list, int position) {
+        if (list != null && position < list.size()) {
+            MyMineOther.ThreeServicesBean threeServicesBean = list.get(position);
+            int type = threeServicesBean.getIs_open();
+            String param=threeServicesBean.getParam();
 
-                    WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
-                } else if (type == 0) {
-                    Dialog dialog = DialogUtils.createMessageDialog(
-                            getActivity(), null, "暂未开通相关服务，敬请期待～", "确定",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
+            if (!TextUtils.isEmpty(param)){
+                return;
+            }
+
+            if (type == 1) {
+                StringBuilder stringBuilder = new StringBuilder(threeServicesBean.getRequest_url());
+                stringBuilder.append("?token=").append(CurrentUserManager.getUserToken())
+                        .append("&type=android").append("&vt=").append(System.currentTimeMillis());
+                String htmlUrl = stringBuilder.toString();
+
+                WebShowActivity.actionStart(getContext(), htmlUrl, WebShowActivity.PARAM_PAGE_HIDE);
+            } else if (type == 0) {
+                Dialog dialog = DialogUtils.createMessageDialog(
+                        getActivity(), null, "暂未开通相关服务，敬请期待～", "确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
                             }
-                    );
-                    dialog.show();
-
-                }
+                        }
+                );
+                dialog.show();
             }
         }
     }

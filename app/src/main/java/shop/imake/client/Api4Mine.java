@@ -250,7 +250,7 @@ public class Api4Mine extends BaseClientApi {
         sb.append("api/v1/threeService");
 
         String url = sb.toString();
-        LogUtils.d(MinePage.TAG, "getMyMineOther: " + url);
+        LogUtils.e(MinePage.TAG, "getMyMineOther: " + url);
 
         doGet(url,tag, null, callback);
     }
