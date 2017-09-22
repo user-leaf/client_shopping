@@ -232,7 +232,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
     private void setupView() {
         mTitle.setLeftLayoutClickListener(this);
         //两个都是有用的
-        mEtTelNum.addTextChangedListener(mTelNumTextWatcher);
+//        mEtTelNum.addTextChangedListener(mTelNumTextWatcher);
         mEtTelNum.addTextChangedListener(mNewTextWatcher);
         //初始化输入框
         mEtTelNum.setText(mTelNumself);
@@ -247,14 +247,14 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int cursorPosition, int before, int count) {
-            LogUtils.e("position", "before:" + before + ",count:" + count);
+            LogUtils.e("position", "cursorPosition:" + cursorPosition + ",before:" + before + ",count:" + count);
             mTvLocal.setText("");
             mTvName.setText("");
             mTvName.setEnabled(true);
+
             String string = s.toString().trim();
             //去掉空格,获得完全11位的电话号码
             string = getPayTelNum(string);
-
             //输入为空
             if (TextUtils.isEmpty(string)) {
                 //可获取通讯录
@@ -264,9 +264,9 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 initCtlPayMoneyNums(false);
                 mTvName.setText("");
                 mTvLocal.setText("");
-
                 return;
             }
+
             mEtTelNum.setOnKeyListener(new View.OnKeyListener() {
 
                 @Override
@@ -284,8 +284,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
             if (ValidatorsUtils.validateUserPhone(string)) {
                 mTelNum = string;
                 mTelNumShow = mEtTelNum.getText().toString();
-                //控制光标的位置
-                mEtTelNum.setSelection(mTelNumShow.length());
                 //可获取通讯录
                 mLevel = 0;
                 mIvDealTelNum.setImageLevel(mLevel);
@@ -350,7 +348,6 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
                 }
                 mTvName.setText("");
             }
-
         }
 
         @Override
@@ -358,7 +355,7 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
         }
 
         @Override
-        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
     };
 
@@ -367,70 +364,70 @@ public class TelephoneFeeChargeActivity extends BaseActivity {
      * 电话号码输入框监听
      */
 
-    TextWatcher mTelNumTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            mTvName.setEnabled(true);
-            String string = charSequence.toString().trim();
-            //去掉空格,获得完全11位的电话号码
-            string = getPayTelNum(string);
-
-            //输入为空
-            if (TextUtils.isEmpty(string)) {
-                //可获取通讯录
-                mLevel = 0;
-                mIvDealTelNum.setImageLevel(mLevel);
-                //下面的选择框bu可以选择
-                initCtlPayMoneyNums(false);
-                mTvName.setText("");
-                mTvLocal.setText("");
-
-                return;
-            }
-
-            //输入有误账号
-            String stringShow = charSequence.toString();
-
-            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
-                mEtTelNum.setText(string);
-                return;
-            }
-            if (stringShow.length() > 13) {
-                mEtTelNum.setText(stringShow.substring(0, 13));
-                mEtTelNum.setSelection(13);
-                return;
-            }
-
-            //获得显示号码
-            int length = string.length();
-            StringBuffer sb = new StringBuffer(string);
-
-            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
-                sb.insert(3, " ");
-                mEtTelNum.setText(sb.toString());
-                //控制光标的位置
-                mEtTelNum.setSelection(sb.toString().length());
-            } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
-
-                sb.insert(3, " ").insert(8, " ");
-
-                mEtTelNum.setText(sb.toString());
-                //控制光标的位置
-                mEtTelNum.setSelection(sb.toString().length());
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
+//    TextWatcher mTelNumTextWatcher = new TextWatcher() {
+//        @Override
+//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            mTvName.setEnabled(true);
+//            String string = charSequence.toString().trim();
+//            //去掉空格,获得完全11位的电话号码
+//            string = getPayTelNum(string);
+//
+//            //输入为空
+//            if (TextUtils.isEmpty(string)) {
+//                //可获取通讯录
+//                mLevel = 0;
+//                mIvDealTelNum.setImageLevel(mLevel);
+//                //下面的选择框bu可以选择
+//                initCtlPayMoneyNums(false);
+//                mTvName.setText("");
+//                mTvLocal.setText("");
+//
+//                return;
+//            }
+//
+//            //输入有误账号
+//            String stringShow = charSequence.toString();
+//
+//            if (stringShow.contains("+86") || stringShow.startsWith("86")) {
+//                mEtTelNum.setText(string);
+//                return;
+//            }
+//            if (stringShow.length() > 13) {
+//                mEtTelNum.setText(stringShow.substring(0, 13));
+//                mEtTelNum.setSelection(13);
+//                return;
+//            }
+//
+//            //获得显示号码
+//            int length = string.length();
+//            StringBuffer sb = new StringBuffer(string);
+//
+//            if (length > 3 && length <= 7 && stringShow.indexOf(" ") == -1) {
+//                sb.insert(3, " ");
+//                mEtTelNum.setText(sb.toString());
+//                //控制光标的位置
+//                mEtTelNum.setSelection(sb.toString().length());
+//            } else if (length > 7 && stringShow.lastIndexOf(" ") != 8) {
+//
+//                sb.insert(3, " ").insert(8, " ");
+//
+//                mEtTelNum.setText(sb.toString());
+//                //控制光标的位置
+//                mEtTelNum.setSelection(sb.toString().length());
+//            }
+//        }
+//
+//        @Override
+//        public void afterTextChanged(Editable editable) {
+//
+//        }
+//    };
 
 
     /**

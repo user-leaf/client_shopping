@@ -8,14 +8,16 @@ import java.util.regex.Pattern;
 
 public class TelPhoneFormatUtils {
     public static void formatPhoneNumber(CharSequence s, int cursorPosition, int before, int count, EditText mEditText, TextWatcher mTextWatcher) {
-        if (before == 0 && count == 1) {  //Entering values
-
+        //输入有误账号
+        if (count >= 1) {  //Entering values
             String val = s.toString();
+//            String val = string;
             String a = "";
             String b = "";
             String c = "";
             if (val != null && val.length() > 0) {
-                val = val.replace(" ", "");
+//                val = val.replace(" ", "");
+                val = ContactsUtils.getPayTelNum(val);
                 if (val.length() >= 3) {
                     a = val.substring(0, 3);
                 } else if (val.length() < 3) {
@@ -52,8 +54,10 @@ public class TelPhoneFormatUtils {
 
                 if (cursorPosition == 3 || cursorPosition == 8) {
                     cursorPosition = cursorPosition + 2;
+                } else if (count >= 11) {
+                    cursorPosition = 13;
                 } else {
-                    cursorPosition = cursorPosition + 1;
+                    cursorPosition = cursorPosition + count;
                 }
                 if (cursorPosition <= mEditText.getText().toString().length()) {
                     mEditText.setSelection(cursorPosition);
@@ -68,30 +72,6 @@ public class TelPhoneFormatUtils {
             }
 
         }
-
-//        if (count > 1) {
-//
-//            String val = s.toString();
-//            int length = val.length();
-//            StringBuffer sb = new StringBuffer(val);
-//
-//            if (length > 3 && length <= 7) {
-//                sb.insert(3, " ");
-//
-//            } else if (length > 7 && length <= 11) {
-//
-//                sb.insert(3, " ").insert(8, " ");
-//
-//            } else if (length > 11) {
-//                sb.substring(0, 11);
-//            }
-//
-//            mEditText.removeTextChangedListener(mTextWatcher);
-//            mEditText.setText(sb.toString());
-//            mEditText.setSelection(sb.toString().length());
-//            mEditText.addTextChangedListener(mTextWatcher);
-//
-//        }
 
         if (before == 1 && count == 0) {  //Deleting values
 
